@@ -22,3 +22,4 @@ class Beer extends Model
      */
     protected $fillable = ['name', 'style', 'percent'];
 }
+
