@@ -29,9 +29,9 @@ class BeersTableSeeder extends Seeder {
     {
         DB::table('beers')->delete();
 
-        Beer::create(['name' => 'Budlight', 'style' => 'Light', 'percent' => '4.1', 'brand' => 'Budlight', 'slug' => 'Budlight']);
-        Beer::create(['name' => 'Keith', 'style' => 'Red', 'percent' => '5.5', 'brand' => 'Budlight', 'slug' => 'Keith']);
-        Beer::create(['name' => 'Coorslight', 'style' => 'Light', 'percent' => '4.5', 'brand' => 'Budlight', 'slug' => 'Coorslight']);
+        Beer::create(['brand' => 'Labatt', 'name' => 'Blue', 'style' => 'Dry', 'percent' => '4.1', 'slug' => 'blue']);
+        Beer::create(['brand' => 'Alexandre Keith', 'name' => 'Keith', 'style' => 'Red', 'percent' => '5.5', 'slug' => 'keith']);
+        Beer::create(['brand' => 'Coors', 'name' => 'Coorslight', 'style' => 'Light', 'percent' => '4.5', 'slug' => 'coorslight']);
 
         $this->command->info('Beers table seeded!');
     }

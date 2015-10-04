@@ -20,5 +20,6 @@ Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 Route::get('/beers', 'BeersController@index');
-Route::get('/beers/{slug}', 'BeersController@show');
+Route::get('/beers/{slug}', 'BeersController@edit');
+Route::post('/beers/{slug}', 'BeersController@update');
 
