@@ -24,7 +24,6 @@ class DatabaseSeeder extends Seeder
         Model::unguard();
 
         // $this->call(UserTableSeeder::class);
-        $this->call(BeersTableSeeder::class);
         $this->call(SuppliersTableSeeder::class);
         $this->call(OrdersTableSeeder::class);
         $this->call(ItemTypesTableSeeder::class);
@@ -35,21 +34,6 @@ class DatabaseSeeder extends Seeder
 
         Model::reguard();
     }
-}
-
-class BeersTableSeeder extends Seeder {
-
-    public function run()
-    {
-        DB::table('beers')->delete();
-
-        Beer::create(['brand' => 'Labatt', 'name' => 'Blue', 'style' => 'Dry', 'percent' => '4.1', 'slug' => 'blue']);
-        Beer::create(['brand' => 'Alexandre Keith', 'name' => 'Keith', 'style' => 'Red', 'percent' => '5.5', 'slug' => 'keith']);
-        Beer::create(['brand' => 'Coors', 'name' => 'Coorslight', 'style' => 'Light', 'percent' => '4.5', 'slug' => 'coorslight']);
-
-        $this->command->info('Beers table seeded!');
-    }
-
 }
 
 class SuppliersTableSeeder extends Seeder {
@@ -86,8 +70,8 @@ class ItemTypesTableSeeder extends Seeder {
     {
         DB::table('item_types')->delete();
 
-        ItemType::create(['model' => 'Beer', 'slug' => 'beer']);
-        ItemType::create(['model' => 'Drink', 'slug' => 'drink']);
+        ItemType::create(['type' => 'Beer', 'slug' => 'beer']);
+        ItemType::create(['type' => 'Drink', 'slug' => 'drink']);
 
         $this->command->info('ItemTypes table seeded!');
     }

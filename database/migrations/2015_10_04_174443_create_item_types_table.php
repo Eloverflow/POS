@@ -14,12 +14,14 @@ class CreateItemTypesTable extends Migration
     /**
      *Lead to a type beer, or drink for example
      * À vérifier
+     *
+     * Model name based on field type
     */
     public function up()
     {
         Schema::create('item_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('model');
+            $table->string('type');
             $table->string('slug')->unique();
             $table->timestamps();
         });

@@ -37,7 +37,7 @@
                 <li class="{{ Request::segment(1) === null ? 'active' : null }}" ><a href="{{@URL::to('/')}}">Home</a></li>
                 <li class="{{ Request::segment(1) === 'about' ? 'active' : null }}" ><a href="{{@URL::to('/about')}}">About</a></li>
                 <li class="{{ Request::segment(1) === 'contact' ? 'active' : null }}" ><a href="{{@URL::to('/contact')}}">Contact</a></li>
-                <li class="{{ Request::segment(1) === 'beers' ? 'active' : null }}" ><a href="{{@URL::to('/beers')}}">Beers</a></li>
+                <li class="{{ Request::segment(1) === 'itemtypes' ? 'active' : null }}" ><a href="{{@URL::to('/itemtypes')}}">Item Types</a></li>
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
                     <ul class="dropdown-menu">

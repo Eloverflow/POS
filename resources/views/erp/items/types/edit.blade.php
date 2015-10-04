@@ -1,15 +1,15 @@
 @extends('master')
 
-@section('title', 'Beer')
+@section('title', $title)
 
 @section('content')
     <div class="jumbotron">
-        <h2><a href="{{@URL::to('/beers')}}">Beers</a> -> Beer -> {{ $beer->brand }} -> {{ $beer->name }}</h2>
-        <form METHOD="POST" action="{{ URL::to('beers') }}/{{ $beer->slug }}">
+        <h2><a href="{{@URL::to($title)}}">Beers</a> -> Beer -> {{ $item->brand }} -> {{ $item->name }}</h2>
+        <form METHOD="POST" action="{{ URL::to($title) }}/{{ $item->slug }}">
             <div class="form-group">
                 @foreach($columns as $column)
                     <label for="{{ $column }}" >{{ ucfirst($column) }}</label>
-                    <input class="form-control" type="text" name="{{ $column }}" value="{{ $beer->$column }}">
+                    <input class="form-control" type="text" name="{{ $column }}" value="{{ $item->$column }}">
                 @endforeach
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             </div>
@@ -28,12 +28,12 @@
     </div>
     <nav>
         <ul class="pager">
-            @if($previous_beer->slug)
-            <li class="previous"><a href="{{@URL::to('/beers/')}}/{{ $previous_beer->slug }}"><span aria-hidden="true">&larr;</span> {{ $previous_beer->slug }}</a></li>
+            @if($previous_item->slug)
+            <li class="previous"><a href="{{@URL::to($title)}}/{{ $previous_item->slug }}"><span aria-hidden="true">&larr;</span> {{ $previous_item->slug }}</a></li>
             @endif
 
-            @if($next_beer->slug)
-            <li class="next"><a href="{{@URL::to('/beers/')}}/{{ $next_beer->slug }}">{{ $next_beer->slug }} <span aria-hidden="true">&rarr;</span></a></li>
+            @if($next_item>slug)
+            <li class="next"><a href="{{@URL::to($title)}}/{{ $next_item->slug }}">{{ $next_item->slug }} <span aria-hidden="true">&rarr;</span></a></li>
             @endif
         </ul>
     </nav>

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\ERP;
 
 use App\Http\Requests;
 use App\Models\Beer;
@@ -9,7 +9,7 @@ use Input;
 use Redirect;
 use Session;
 
-class BeersController extends Controller
+class ItemsController extends Controller
 {
 
     public  function index()
