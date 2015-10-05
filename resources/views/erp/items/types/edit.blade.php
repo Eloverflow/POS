@@ -11,6 +11,14 @@
                     <label for="{{ $column }}" >{{ ucfirst($column) }}</label>
                     <input class="form-control" type="text" name="{{ $column }}" value="{{ $item->$column }}">
                 @endforeach
+
+                <?php $i = 1 ?>
+                @foreach($customsFields as $fieldName)
+                    <?php $field = 'customs_field' . $i ?>
+                    <label for="{{ $fieldName }}" >{{ ucfirst($fieldName) }}</label>
+                    <input class="form-control" type="text" name="{{ $fieldName }}" value="{{ $item->$field }}">
+                    <?php $i++ ?>
+                @endforeach
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             </div>
             <button type="submit" class="btn btn-default">Update</button>
@@ -32,7 +40,7 @@
             <li class="previous"><a href="{{@URL::to($title)}}/{{ $previous_item->slug }}"><span aria-hidden="true">&larr;</span> {{ $previous_item->slug }}</a></li>
             @endif
 
-            @if($next_item>slug)
+            @if($next_item->slug)
             <li class="next"><a href="{{@URL::to($title)}}/{{ $next_item->slug }}">{{ $next_item->slug }} <span aria-hidden="true">&rarr;</span></a></li>
             @endif
         </ul>

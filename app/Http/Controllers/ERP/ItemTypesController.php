@@ -24,21 +24,27 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         return view('erp.items.types.list',compact('items', 'columns', 'type', 'title'));
     }
 
-    public  function type($type)
+    /*public  function type($type)
     {
         $title = ucfirst($type);
         $table = 'item_type_' . $type. 's';
-        $items = DB::select('select * from ' .$table);
+        $items = DB::select('SELECT * FROM item_types INNER JOIN item_type_beers ON item_types.id=item_type_beers.item_type_id' .$table);
         $columns = array('id', 'style');
         return view('erp.items.types.list',compact('items', 'columns', 'type', 'title'));
-    }
+    }*/
 
-    public  function edit($type, $culumns,  $slug)
+    public  function edit($slug)
     {
-        $item = $type::whereSlug($slug)->first();
-        $next_item = $type::findOrNew(($item->id)+1);
-        $previous_item = $type::findOrNew(($item->id)-1);
-        return view('erp.items.types.edit',compact('item', 'type','columns','next_item','previous_item'));
+        $item = ItemType::whereSlug($slug)->first();
+        $title = 'itemtypes';
+        $next_item = ItemType::findOrNew(($item->id)+1);
+        $previous_item = ItemType::findOrNew(($item->id)-1);
+
+        $customsFields = explode(',', $item->customs_fields_names);
+
+        $columns = array('id', 'type');
+
+        return view('erp.items.types.edit',compact('item', 'customsFields', 'slug', 'title','columns','next_item','previous_item'));
     }
 
     public  function update($type, $slug, Request $request)

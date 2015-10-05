@@ -1,15 +1,15 @@
 <?php
 
-namespace App\Models\ERP\ItemTypes;
+namespace App\Models\ERP;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ItemTypeDrink extends Model
+class ItemFieldList extends Model
 {
     /**
      * The database table used by the model.
      *
      * @var string
      */
-    protected $table = 'item_type_drinks';
+    protected $table = 'item_field_lists';
 }

@@ -15,6 +15,6 @@ Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 Route::get('/itemtypes', 'ERP\ItemTypesController@index');
-Route::get('/itemtypes/{type}', 'ERP\ItemTypesController@type');
+Route::get('/itemtypes/{slug}', 'ERP\ItemTypesController@edit');
 Route::post('/itemtypes/{slug}', 'ERP\ItemTypesController@update');
 

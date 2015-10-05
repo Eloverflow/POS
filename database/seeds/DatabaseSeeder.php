@@ -1,9 +1,8 @@
 <?php
 
 use App\Models\ERP\Item;
+use App\Models\ERP\ItemFieldList;
 use App\Models\ERP\ItemType;
-use App\Models\ERP\ItemTypes\ItemTypeBeer;
-use App\Models\ERP\ItemTypes\ItemTypeDrink;
 use App\Models\ERP\Supplier;
 use App\Models\ERP\Order;
 use App\Models\ERP\Inventory;
@@ -28,8 +27,8 @@ class DatabaseSeeder extends Seeder
         $this->call(OrdersTableSeeder::class);
         $this->call(ItemTypesTableSeeder::class);
         $this->call(ItemsTableSeeder::class);
-        $this->call(ItemTypeBeersTableSeeder::class);
-        $this->call(ItemTypeDrinksTableSeeder::class);
+        //$this->call(ItemTypeBeersTableSeeder::class);
+        //$this->call(ItemTypeDrinksTableSeeder::class);
         $this->call(InventoriesTableSeeder::class);
 
         Model::reguard();
@@ -64,14 +63,28 @@ class OrdersTableSeeder extends Seeder {
 
 }
 
+class ItemFieldListsTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('item_field_lists')->delete();
+
+        ItemFieldList::create(['type' => 'Beer', 'slug' => 'beer']);
+        ItemFieldList::create(['type' => 'Drink', 'slug' => 'drink']);
+
+        $this->command->info('ItemFieldLists table seeded!');
+    }
+
+}
+
 class ItemTypesTableSeeder extends Seeder {
 
     public function run()
     {
         DB::table('item_types')->delete();
 
-        ItemType::create(['type' => 'Beer', 'slug' => 'beer']);
-        ItemType::create(['type' => 'Drink', 'slug' => 'drink']);
+        ItemType::create(['item_field_list_id' => '0', 'type' => 'Beer', 'slug' => 'beer']);
+        ItemType::create(['item_field_list_id' => '1', 'type' => 'Drink', 'slug' => 'drink']);
 
         $this->command->info('ItemTypes table seeded!');
     }
@@ -88,36 +101,6 @@ class ItemsTableSeeder extends Seeder {
         Item::create(['item_type_id' => '1', 'name' => 'Blue', 'slug' => 'blue']);
 
         $this->command->info('Items table seeded!');
-    }
-
-}
-
-class ItemTypeBeersTableSeeder extends Seeder {
-
-    public function run()
-    {
-        DB::table('item_type_beers')->delete();
-
-        ItemTypeBeer::create(['item_type_id' => '1', 'brand' => 'Alexander Keith', 'style' => 'Red', 'percent' => '5.5']);
-        ItemTypeBeer::create(['item_type_id' => '1', 'brand' => 'Labatt', 'style' => 'Dry', 'percent' => '5.9']);
-
-        $this->command->info('ItemTypeBeers table seeded!');
-    }
-
-}
-
-
-
-class ItemTypeDrinksTableSeeder extends Seeder {
-
-    public function run()
-    {
-        DB::table('item_type_drinks')->delete();
-
-        ItemTypeDrink::create(['item_type_id' => '2', 'style' => 'Lux', 'flavour' => 'Spicy', 'author' => 'Jino']);
-        ItemTypeDrink::create(['item_type_id' => '2', 'style' => 'Hangover', 'flavour' => 'Sour', 'author' => 'Jino']);
-
-        $this->command->info('ItemTypeDrinks table seeded!');
     }
 
 }
