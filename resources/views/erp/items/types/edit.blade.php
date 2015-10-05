@@ -8,17 +8,10 @@
         <form METHOD="POST" action="{{ URL::to($title) }}/{{ $item->slug }}">
             <div class="form-group">
                 @foreach($columns as $column)
-                    <label for="{{ $column }}" >{{ ucfirst($column) }}</label>
-                    <input class="form-control" type="text" name="{{ $column }}" value="{{ $item->$column }}">
+                    <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
+                    <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $item->$column }}">
                 @endforeach
 
-                <?php $i = 1 ?>
-                @foreach($customsFields as $fieldName)
-                    <?php $field = 'customs_field' . $i ?>
-                    <label for="{{ $fieldName }}" >{{ ucfirst($fieldName) }}</label>
-                    <input class="form-control" type="text" name="{{ $fieldName }}" value="{{ $item->$field }}">
-                    <?php $i++ ?>
-                @endforeach
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             </div>
             <button type="submit" class="btn btn-default">Update</button>

@@ -14,17 +14,16 @@ class CreateItemFieldListsTable extends Migration
     {
         Schema::create('item_field_lists', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('customs_fields_names')->nullable();
-            $table->string('customs_field1')->nullable();
-            $table->string('customs_field2')->nullable();
-            $table->string('customs_field3')->nullable();
-            $table->string('customs_field4')->nullable();
-            $table->string('customs_field5')->nullable();
-            $table->string('customs_field6')->nullable();
-            $table->string('customs_field7')->nullable();
-            $table->string('customs_field8')->nullable();
-            $table->string('customs_field9')->nullable();
-            $table->string('customs_field10')->nullable();
+            $table->string('field1')->nullable();
+            $table->string('field2')->nullable();
+            $table->string('field3')->nullable();
+            $table->string('field4')->nullable();
+            $table->string('field5')->nullable();
+            $table->string('field6')->nullable();
+            $table->string('field7')->nullable();
+            $table->string('field8')->nullable();
+            $table->string('field9')->nullable();
+            $table->string('field10')->nullable();
             $table->timestamps();
         });
     }

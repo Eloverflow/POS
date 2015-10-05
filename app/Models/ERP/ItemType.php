@@ -12,4 +12,7 @@ class ItemType extends Model
      * @var string
      */
     protected $table = 'item_types';
+
+
+    protected $fillable = array('type', 'fields_names');
 }

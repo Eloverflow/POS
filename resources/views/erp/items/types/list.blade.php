@@ -11,7 +11,7 @@
             <!-- Table Header --->
             <tr>
                 @foreach($columns as $column)
-                    <th>{{ucfirst($column)}}</th>
+                    <th>{{ucwords( str_replace('_', ' ', $column))}}</th>
                 @endforeach
             </tr>
             <!-- End Table Header --->

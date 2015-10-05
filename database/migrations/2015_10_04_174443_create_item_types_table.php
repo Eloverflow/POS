@@ -21,8 +21,7 @@ class CreateItemTypesTable extends Migration
     {
         Schema::create('item_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('item_field_list_id')->unsigned();
-            $table->foreign('item_field_list_id')->references('id')->on('item_field_lists');
+            $table->string('fields_names')->nullable();
             $table->string('type');
             $table->string('slug')->unique();
             $table->timestamps();

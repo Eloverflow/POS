@@ -4,8 +4,6 @@ namespace App\Http\Controllers\ERP;
 
 use App\Http\Requests;
 use App\Models\ERP\ItemType;
-use App\Models\ERP\ItemTypes\ItemTypeBeer;
-use App\Models\ERP\ItemTypes\ItemTypeDrink;
 use Illuminate\Http\Request;
 use Input;
 use Redirect;
@@ -20,9 +18,10 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         $items = ItemType::get();
         $type = 'All';
         $title = 'ItemTypes';
-        $columns = array('id', 'type');
+        $columns = array('id', 'type', 'fields_names');
         return view('erp.items.types.list',compact('items', 'columns', 'type', 'title'));
     }
+
 
     /*public  function type($type)
     {
@@ -42,16 +41,18 @@ class ItemTypesController extends \App\Http\Controllers\Controller
 
         $customsFields = explode(',', $item->customs_fields_names);
 
-        $columns = array('id', 'type');
+        $columns = array('type', 'fields_names');
 
         return view('erp.items.types.edit',compact('item', 'customsFields', 'slug', 'title','columns','next_item','previous_item'));
     }
 
-    public  function update($type, $slug, Request $request)
+    public  function update($slug, Request $request)
     {
-        $item = $type::whereSlug($slug)->first();
+        $item = ItemType::whereSlug($slug)->first();
 
         $input = $request->all();
+
+        var_dump($input);
 
         $item->update($input);
 

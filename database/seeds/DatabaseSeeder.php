@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SuppliersTableSeeder::class);
         $this->call(OrdersTableSeeder::class);
         $this->call(ItemTypesTableSeeder::class);
+        $this->call(ItemFieldListsTableSeeder::class);
         $this->call(ItemsTableSeeder::class);
         //$this->call(ItemTypeBeersTableSeeder::class);
         //$this->call(ItemTypeDrinksTableSeeder::class);
@@ -63,19 +64,6 @@ class OrdersTableSeeder extends Seeder {
 
 }
 
-class ItemFieldListsTableSeeder extends Seeder {
-
-    public function run()
-    {
-        DB::table('item_field_lists')->delete();
-
-        ItemFieldList::create(['type' => 'Beer', 'slug' => 'beer']);
-        ItemFieldList::create(['type' => 'Drink', 'slug' => 'drink']);
-
-        $this->command->info('ItemFieldLists table seeded!');
-    }
-
-}
 
 class ItemTypesTableSeeder extends Seeder {
 
@@ -83,13 +71,33 @@ class ItemTypesTableSeeder extends Seeder {
     {
         DB::table('item_types')->delete();
 
-        ItemType::create(['item_field_list_id' => '0', 'type' => 'Beer', 'slug' => 'beer']);
-        ItemType::create(['item_field_list_id' => '1', 'type' => 'Drink', 'slug' => 'drink']);
+        ItemType::create(['type' => 'Beer', 'fields_names' => 'brand,style,percent ', 'slug' => 'beer']);
+        ItemType::create(['type' => 'Drink', 'fields_names' => 'flavour,color,author,percent', 'slug' => 'drink']);
 
         $this->command->info('ItemTypes table seeded!');
     }
 
 }
+
+
+class ItemFieldListsTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('item_field_lists')->delete();
+
+        /*One for each item | this is an extention to have custum field for every type of item*/
+        /*Every fiel could lead to a list of sugguestion by doing a select with the ItemType fields_names*/
+        ItemFieldList::create(['field1' => 'Alexander Keith', 'field2' => 'Red', 'field3' => '5']);
+        ItemFieldList::create(['field1' => 'Labatt', 'field2' => 'Dry', 'field3' => '5.6']);
+        ItemFieldList::create(['field1' => 'Coors', 'field2' => 'Light', 'field3' => '4.5']);
+        ItemFieldList::create(['field1' => 'Sour', 'field2' => 'green', 'field3' => 'Jino', 'field4' => '20']);
+
+        $this->command->info('ItemFieldLists table seeded!');
+    }
+
+}
+
 
 class ItemsTableSeeder extends Seeder {
 
@@ -97,8 +105,11 @@ class ItemsTableSeeder extends Seeder {
     {
         DB::table('items')->delete();
 
-        Item::create(['item_type_id' => '1', 'name' => 'Keith', 'slug' => 'keith']);
-        Item::create(['item_type_id' => '1', 'name' => 'Blue', 'slug' => 'blue']);
+        /* The item type will define their item_field_name  */
+        Item::create(['item_type_id' => '1', 'item_field_list_id' => '1', 'name' => 'Keith', 'slug' => 'keith']);
+        Item::create(['item_type_id' => '1', 'item_field_list_id' => '2', 'name' => 'Blue', 'slug' => 'blue']);
+        Item::create(['item_type_id' => '1', 'item_field_list_id' => '3', 'name' => 'Coorslight', 'slug' => 'coorslight']);
+        Item::create(['item_type_id' => '2', 'item_field_list_id' => '4', 'name' => 'MyDrinkName', 'slug' => 'mydrinkname']);
 
         $this->command->info('Items table seeded!');
     }
