@@ -4,35 +4,41 @@ namespace App\Http\Controllers\ERP;
 
 use App\Http\Requests;
 use App\Models\Beer;
+use App\Models\ERP\Item;
 use Illuminate\Http\Request;
 use Input;
 use Redirect;
 use Session;
 
-class ItemsController extends Controller
+class ItemsController extends \App\Http\Controllers\Controller
 {
 
     public  function index()
     {
-        $beers = Beer::get();
-        $columns = array('id','brand', 'name', 'style', 'percent' );
-        return view('beers.beers',compact('beers', 'columns'));
+        /*$items = Item::get();*/
+        $items = Item::with('itemtype')->get();
+
+        $title = "Items";
+        $columns = array('id', 'name', 'desc');
+        $columnsWith = array('type');
+        $withName = 'itemtype';
+        return view('erp.items.list',compact('items', 'columns', 'columnsWith', 'withName', 'title'));
     }
 
     public  function edit($slug)
     {
         $columns = array('brand', 'name', 'style', 'percent', 'description' );
-        $beer = Beer::whereSlug($slug)->first();
-        $next_beer = Beer::findOrNew(($beer->id)+1);
-        $previous_beer = Beer::findOrNew(($beer->id)-1);
-        return view('beers.show',compact('beer','columns','next_beer','previous_beer'));
+        $item = Item::whereSlug($slug)->first();
+        $next_item = Item::findOrNew(($item->id)+1);
+        $previous_item = Item::findOrNew(($item->id)-1);
+        return view('beers.show',compact('item','columns','next_item','previous_item'));
     }
 
 
 
     public  function update($slug, Request $request)
     {
-        $beer = Beer::whereSlug($slug)->first();
+        $beer = Item::whereSlug($slug)->first();
 
         $input = $request->all();
 

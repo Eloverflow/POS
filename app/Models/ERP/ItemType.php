@@ -15,4 +15,9 @@ class ItemType extends Model
 
 
     protected $fillable = array('type', 'fields_names');
+
+    public function item()
+    {
+        return $this->hasMany('App\Models\ERP\Item');
+    }
 }

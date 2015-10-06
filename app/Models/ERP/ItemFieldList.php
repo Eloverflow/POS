@@ -12,4 +12,9 @@ class ItemFieldList extends Model
      * @var string
      */
     protected $table = 'item_field_lists';
+
+    public function item()
+    {
+        return $this->belongsTo('App\Models\ERP\Item');
+    }
 }
