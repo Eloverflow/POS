@@ -19,7 +19,7 @@ class ItemsController extends \App\Http\Controllers\Controller
         $items = Item::with('itemtype')->get();
 
         $title = "Items";
-        $columns = array('id', 'name', 'desc');
+        $columns = array('id', 'name');
         $columnsWith = array('type');
         $withName = 'itemtype';
         return view('erp.items.list',compact('items', 'columns', 'columnsWith', 'withName', 'title'));
@@ -27,11 +27,20 @@ class ItemsController extends \App\Http\Controllers\Controller
 
     public  function edit($slug)
     {
-        $columns = array('brand', 'name', 'style', 'percent', 'description' );
+
+        $title = "Items";
+        $columns = array('id', 'name', 'description' );
         $item = Item::whereSlug($slug)->first();
+        $item::with('itemtype')->get();
+
+        $columnsWith = array('type');
+        $withName = 'itemtype';
+
+        columnsField
+
         $next_item = Item::findOrNew(($item->id)+1);
         $previous_item = Item::findOrNew(($item->id)-1);
-        return view('beers.show',compact('item','columns','next_item','previous_item'));
+        return view('erp.items.edit',compact('item', 'columns', 'columnsWith', 'withName', 'next_item', 'previous_item', 'title'));
     }
 
 
