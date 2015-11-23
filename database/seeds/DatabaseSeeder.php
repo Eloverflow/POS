@@ -6,6 +6,8 @@ use App\Models\ERP\ItemType;
 use App\Models\ERP\Supplier;
 use App\Models\ERP\Order;
 use App\Models\ERP\Inventory;
+use App\Models\Addons\Rfid\TableRfid;
+use App\Models\Addons\Rfid\TableRfidRequest;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Beer;
@@ -31,6 +33,8 @@ class DatabaseSeeder extends Seeder
         //$this->call(ItemTypeBeersTableSeeder::class);
         //$this->call(ItemTypeDrinksTableSeeder::class);
         $this->call(InventoriesTableSeeder::class);
+        $this->call(RfidTableSeeder::class);
+        $this->call(RfidTableRequestSeeder::class);
 
         Model::reguard();
     }
@@ -126,6 +130,33 @@ class InventoriesTableSeeder extends Seeder {
         Inventory::create(['order_id' => '1', 'item_id' => '2', 'quantity' => '50']);
 
         $this->command->info('Inventories table seeded!');
+    }
+
+}
+
+class RfidTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('rfid_tables')->delete();
+
+        TableRfid::create(['flash_card_hw_code' => '1', 'name' => 'Poste 1', 'description' => '100']);
+        TableRfid::create(['flash_card_hw_code' => '2', 'name' => 'Poste 2', 'description' => '50']);
+
+        $this->command->info('rfid_tables table seeded!');
+    }
+
+}
+
+class RfidTableRequestSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('rfid_table_requests')->delete();
+
+        TableRfidRequest::create(['id' => '1', 'flash_card_hw_code' => '1', 'rfid_card_code' => 'ad1213213']);
+
+        $this->command->info('rfid_table_requests table seeded!');
     }
 
 }
