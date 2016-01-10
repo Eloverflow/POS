@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalesTable extends Migration
+class CreateTableRfidsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,8 +12,10 @@ class CreateSalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('rfid_tables', function (Blueprint $table) {
+            $table->integer('flash_card_hw_code');
+            $table->String('name');
+            $table->String('description')->nullable();
             $table->timestamps();
         });
     }
@@ -25,6 +27,6 @@ class CreateSalesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('sales');
+        Schema::drop('rfid_tables');
     }
 }
