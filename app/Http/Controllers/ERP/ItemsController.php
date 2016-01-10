@@ -36,7 +36,7 @@ class ItemsController extends \App\Http\Controllers\Controller
         $columnsWith = array('type');
         $withName = 'itemtype';
 
-        columnsField
+        //columnsField
 
         $next_item = Item::findOrNew(($item->id)+1);
         $previous_item = Item::findOrNew(($item->id)-1);

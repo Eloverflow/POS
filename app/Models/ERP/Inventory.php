@@ -12,4 +12,6 @@ class Inventory extends Model
      * @var string
      */
     protected $table = 'inventories';
+
+    protected $fillable = array('item_id' ,'order_id', 'quantity');
 }

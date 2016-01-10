@@ -120,7 +120,7 @@ class InventoriesTableSeeder extends Seeder {
 
     public function run()
     {
-        DB::table('inventories')->delete();
+        DB::table('inventory')->delete();
 
         Inventory::create(['order_id' => '1', 'item_id' => '1', 'quantity' => '100']);
         Inventory::create(['order_id' => '1', 'item_id' => '2', 'quantity' => '50']);
