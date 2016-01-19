@@ -24,3 +24,6 @@ Route::get('/items', 'ERP\ItemsController@index');
 Route::get('/items/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/{slug}', 'ERP\ItemsController@update');
 
+Route::get('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@index');
+Route::post('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@create');
+Route::post('/addon/rfid/checkRequest', 'Addons\Rfid\RfidRequestController@checkTableRequest');

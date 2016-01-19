@@ -13,8 +13,8 @@ class CreateTableRfidsTable extends Migration
     public function up()
     {
         Schema::create('rfid_tables', function (Blueprint $table) {
-            $table->integer('flash_card_hw_code');
-            $table->String('name');
+            $table->String('flash_card_hw_code');
+            $table->String('name')->nullable();
             $table->String('description')->nullable();
             $table->timestamps();
         });

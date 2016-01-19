@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\ERP;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Beer;
 use App\Models\ERP\Item;
@@ -10,7 +11,7 @@ use Input;
 use Redirect;
 use Session;
 
-class ItemsController extends \App\Http\Controllers\Controller
+class ItemsController extends Controller
 {
 
     public  function index()

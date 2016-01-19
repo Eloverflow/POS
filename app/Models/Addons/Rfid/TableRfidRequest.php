@@ -10,4 +10,5 @@ class TableRfidRequest extends Model
 
 
     protected $fillable = array('flash_card_hw_code', 'rfid_card_code');
+
 }
