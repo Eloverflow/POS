@@ -24,6 +24,24 @@ Route::get('/items', 'ERP\ItemsController@index');
 Route::get('/items/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/{slug}', 'ERP\ItemsController@update');
 
+/* Start Employee */
+Route::get('/Employee', 'POS\EmployeeController@index');
+
+Route::get('/Employee/Create', 'POS\EmployeeController@create');
+Route::post('/Employee/Create', 'POS\EmployeeController@postCreate');
+
+Route::get('/Employee/Details/{id}', 'POS\EmployeeController@details');
+
+Route::get('/Employee/Edit/{id}', 'POS\EmployeeController@edit');
+Route::post('/Employee/Edit/{id}', 'POS\EmployeeController@postEdit');
+
+Route::get('/Employee/Delete/{id}', 'POS\EmployeeController@delete');
+Route::post('/Employee/PartialDelete', 'POS\EmployeeController@ajaxPartDelete');
+Route::post('/Employee/CompleteDelete', 'POS\EmployeeController@ajaxCompDelete');
+/* End Delete */
+
 Route::get('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@index');
 Route::post('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@create');
 Route::post('/addon/rfid/checkRequest', 'Addons\Rfid\RfidRequestController@checkTableRequest');
+
+

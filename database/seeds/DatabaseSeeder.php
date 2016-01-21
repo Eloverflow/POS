@@ -11,7 +11,9 @@ use App\Models\Addons\Rfid\TableRfidRequest;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Beer;
-
+use App\Models\Auth\User;
+use App\Models\POS\Employee;
+use App\Models\POS\EmployeeTitle;
 
 class DatabaseSeeder extends Seeder
 {
@@ -24,7 +26,7 @@ class DatabaseSeeder extends Seeder
     {
         Model::unguard();
 
-        // $this->call(UserTableSeeder::class);
+        $this->call(UserTableSeeder::class);
         $this->call(SuppliersTableSeeder::class);
         $this->call(OrdersTableSeeder::class);
         $this->call(ItemTypesTableSeeder::class);
@@ -36,8 +38,23 @@ class DatabaseSeeder extends Seeder
         $this->call(RfidTableSeeder::class);
         $this->call(RfidTableRequestSeeder::class);
 
+        $this->call(EmployeeTitleSeeder::class);
+        $this->call(EmployeeSeeder::class);
         Model::reguard();
     }
+}
+
+class UserTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('users')->delete();
+
+        User::create(['name' => 'Labatt', 'email' => 'labatt@email.com', 'password' => 'pass12345']);
+
+        $this->command->info('Users table seeded!');
+    }
+
 }
 
 class SuppliersTableSeeder extends Seeder {
@@ -124,7 +141,7 @@ class InventoriesTableSeeder extends Seeder {
 
     public function run()
     {
-        DB::table('inventory')->delete();
+        DB::table('inventories')->delete();
 
         Inventory::create(['order_id' => '1', 'item_id' => '1', 'quantity' => '100']);
         Inventory::create(['order_id' => '1', 'item_id' => '2', 'quantity' => '50']);
@@ -159,4 +176,65 @@ class RfidTableRequestSeeder extends Seeder {
         $this->command->info('rfid_table_requests table seeded!');
     }
 
+}
+
+class EmployeeSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('employees')->delete();
+
+        Employee::create([
+            'firstName' => 'Isael',
+            'lastName' => 'Blais',
+            'streetAddress' => 'Chapdelaine',
+            'phone' => '5818886704',
+            'city' => 'Quebec',
+            'state' => 'Quebec',
+            'pc' => 'g0r3a0',
+            'nas' => '123456789',
+            'employeeTitle' => 1,
+            'userId' => 1,
+            'salary' => 12.2,
+            'birthDate' => date('2016-01-01'),
+            'hireDate' => date('2016-01-01')
+        ]);
+        Employee::create([
+            'firstName' => 'Jean',
+            'lastName' => 'Fortin-Moreau',
+            'streetAddress' => 'Place Philippe',
+            'phone' => 'None',
+            'city' => 'Quebec',
+            'state' => 'Quebec',
+            'pc' => 'g0w0w3',
+            'nas' => '123456789',
+            'employeeTitle' => 1,
+            'userId' => 1,
+            'salary' => 12.2,
+            'birthDate' => date('2016-01-01'),
+            'hireDate' => date('2016-01-01')
+        ]);
+        $this->command->info('People table seeded!');
+    }
+
+}
+
+class EmployeeTitleSeeder extends Seeder {
+    public function run()
+    {
+        DB::table('employee_titles')->delete();
+
+        EmployeeTitle::create([
+            'name' => 'Barmaid'
+        ]);
+        EmployeeTitle::create([
+            'name' => 'Livreur'
+        ]);
+        EmployeeTitle::create([
+            'name' => 'Plongeur'
+        ]);
+        EmployeeTitle::create([
+            'name' => 'Cuisinier'
+        ]);
+    }
 }

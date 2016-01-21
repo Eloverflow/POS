@@ -1,71 +1,122 @@
-
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
-    <meta name="description" content="">
-    <meta name="author" content="">
-    <link rel="icon" href="http://www.shipstation.com/wp-content/themes/shipstation/img/favicon.ico">
+    <title>Mirageflow @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
 
-    <title>POS - @yield('title')</title>
-    <!-- Bootstrap core CSS -->
-    <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Bootstrap theme -->
-    <link href="/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    {{--Stylesheet call--}}
+    <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('Framework/LuminoAdmin/css/datepicker3.css')}}" rel="stylesheet">
+    <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
+    <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('css/styles.css') }}" rel="stylesheet">
+    {{--End of Stylesheet call--}}
 
+    <!--Icons-->
+    <script src="{{ @URL::to('Framework/LuminoAdmin/js/lumino.glyphs.js') }}"></script>
+
+    <!--[if lt IE 9]>
+    <script src="{{ @URL::to('Framework/LuminoAdmin/js/html5shiv.js') }}"></script>
+    <script src="{{ @URL::to('Framework/LuminoAdmin/js/respond.min.js') }}"></script>
+    <![endif]-->
+    @yield('csrfToken')
 </head>
 
-<body role="document">
-
-<!-- Fixed navbar -->
-<nav class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
+<body>
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+    <div class="container-fluid">
         <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="navbar-brand" >POS</a>
+            <a class="navbar-brand" href="#"><span>Pub</span>Alex</a>
+
         </div>
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li class="{{ Request::segment(1) === null ? 'active' : null }}" ><a href="{{@URL::to('/')}}">Home</a></li>
-                <li class="{{ Request::segment(1) === 'about' ? 'active' : null }}" ><a href="{{@URL::to('/about')}}">About</a></li>
-                <li class="{{ Request::segment(1) === 'contact' ? 'active' : null }}" ><a href="{{@URL::to('/contact')}}">Contact</a></li>
-                <li class="{{ Request::segment(1) === 'items' ? 'active' : null }}" ><a href="{{@URL::to('/items')}}">Items</a></li>
-                <li class="{{ Request::segment(1) === 'itemtypes' ? 'active' : null }}" ><a href="{{@URL::to('/itemtypes')}}">Item Types</a></li>
-                <li class="{{ Request::segment(1) === 'inventory' ? 'active' : null }}" ><a href="{{@URL::to('/inventory')}}">Inventory</a></li>
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#">Action</a></li>
-                        <li><a href="#">Another action</a></li>
-                        <li><a href="#">Something else here</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li class="dropdown-header">Nav header</li>
-                        <li><a href="#">Separated link</a></li>
-                        <li><a href="#">One more separated link</a></li>
-                    </ul>
-                </li>
-            </ul>
-        </div><!--/.nav-collapse -->
-    </div>
+
+    </div><!-- /.container-fluid -->
 </nav>
 
-<div class="container theme-showcase" role="main">
-    @yield('content')
-</div>
-<!-- /container -->
+<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
+    <form role="search">
+        <div class="form-group">
+            <input type="text" class="form-control" placeholder="Search">
+        </div>
+    </form>
+    <ul class="nav menu">
+        <li><a href="Employee"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
+        <li role="presentation" class="divider"></li>
+        <li><a href="login.html"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
+    </ul>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-<script src="/bootstrap/js/bootstrap.min.js"></script>
-<script src="/bootstrap/js/docs.min.js"></script>
-<!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
-<script src="/bootstrap/js/ie10-viewport-bug-workaround.js"></script>
+
+</div><!--/.sidebar-->
+
+<div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row">
+        <ol class="breadcrumb">
+            <li><a href="{{ @URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
+            <?php $url = "";?>
+            @foreach(Request::segments() as $segment)
+                <?php $url = $url . $segment . '/' ?>
+                <li>
+                    <a href="{{ @URL::to($url) }}">{{ucwords( str_replace('_', ' ', $segment))}}</a>
+                </li>
+            @endforeach
+        </ol>
+    </div>
+
+    @if(Session::has('success'))
+        <div id="flash-msg" class="row collapse in">
+            <div class="col-lg-12">
+                <div id="flash-success" class="alert bg-success" role="alert">
+                    <svg class="glyph stroked checkmark"><use xlink:href="#stroked-checkmark"></use></svg> {{ Session::get('success') }} <a data-toggle="collapse" href="#flash-msg" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                </div>
+            </div>
+        </div>
+    @endif
+    @yield('content')
+
+</div>
+
+{{--Script call--}}
+<script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>
+<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.js') }}"></script>
+<script src="{{ @URL::to('Framework/LuminoAdmin/js/chart.min.js') }}"></script>
+<script src="{{ @URL::to('Framework/LuminoAdmin/js/chart-data.js') }}"></script>
+<script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart.js') }}"></script>
+<script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>
+<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.js') }}"></script>
+<script src="{{ @URL::to('js/baseEffect.js') }}"></script>
+@if(Request::path() == "Menu/Edit")
+    <script src="{{ @URL::asset('js/jquery.sortable.js') }}"></script>
+    <script src="{{ @URL::asset('js/listener.js') }}"></script>
+@endif
+{{--End of Script call--}}
+
+<script>
+    $('#calendar').datepicker({
+    });
+
+    !function ($) {
+        $(document).on("click","ul.nav li.parent > a > span.icon", function(){
+            $(this).find('em:first').toggleClass("glyphicon-minus");
+        });
+        $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+    }(window.jQuery);
+
+    $(window).on('resize', function () {
+        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+    })
+    $(window).on('resize', function () {
+        if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+    })
+</script>
+@yield('myjsfile')
 </body>
+
 </html>
