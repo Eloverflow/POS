@@ -11,7 +11,9 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-                        {!! Form::open(array('url' => 'Employee/Create', 'role' => 'form')) !!}
+                        {!! Form::open(array('url' => 'Employee/Edit', 'role' => 'form')) !!}
+                        {!! Form::text('idUser', $ViewBag['employee']->idUser, array('style' => 'display:none;visibility:hidden;')) !!}
+                        {!! Form::text('idEmployee', $ViewBag['employee']->idEmployee, array('style' => 'display:none;visibility:hidden;')) !!}
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -119,47 +121,47 @@
                             <div class="mfs">
                                 <div class="form-group">
                                     {!! Form::label('title', "Job Title" ) !!}
-                                    <select name="title" class="form-control">
+                                    <select name="employeeTitle" class="form-control">
                                         @foreach ($ViewBag['employeeTitles'] as $employeeTitle)
-                                            <option value="{{ $employeeTitle->id }}">{{ $employeeTitle->name }}</option>
+                                            <option value="{{ $employeeTitle->id }}" <?php if ($ViewBag['employee']->employeeTitle == $employeeTitle->name){ echo "selected"; }?>>{{ $employeeTitle->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group">
                                     {!! Form::label('salary', "Salary" ) !!}
-                                    @if($errors->has('pc'))
+                                    @if($errors->has('salary'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('pc', $ViewBag['employee']->salary, array('class' => 'form-control')) !!}
+                                            {!! Form::text('salary', $ViewBag['employee']->salary, array('class' => 'form-control')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('pc', $ViewBag['employee']->salary, array('class' => 'form-control')) !!}
+                                        {!! Form::text('salary', $ViewBag['employee']->salary, array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
 
                                 <div class="form-group">
                                     {!! Form::label('birthDate', "birthDate" ) !!}
-                                    @if($errors->has('pc'))
+                                    @if($errors->has('birthDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('pc', $ViewBag['employee']->birthDate, array('class' => 'form-control')) !!}
+                                            {!! Form::text('birthDate', $ViewBag['employee']->birthDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('pc', $ViewBag['employee']->birthDate, array('class' => 'form-control')) !!}
+                                        {!! Form::text('birthDate', $ViewBag['employee']->birthDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                     @endif
                                 </div>
 
                                 <div class="form-group">
                                     {!! Form::label('hireDate', "Hire Date" ) !!}
-                                    @if($errors->has('pc'))
+                                    @if($errors->has('hireDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('pc', $ViewBag['employee']->hireDate, array('class' => 'form-control')) !!}
+                                            {!! Form::text('birthDate', $ViewBag['employee']->hireDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('pc', $ViewBag['employee']->hireDate, array('class' => 'form-control')) !!}
+                                        {!! Form::text('birthDate', $ViewBag['employee']->hireDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                     @endif
                                 </div>
                             </div>
-                        {!! Form::submit('Create', array('class' => 'btn btn-primary')) !!}
+                        {!! Form::submit('Edit', array('class' => 'btn btn-primary')) !!}
                         {!! Form::close() !!}
                     </div>
                 </div>

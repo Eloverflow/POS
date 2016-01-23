@@ -11,6 +11,8 @@ use App\Models\Addons\Rfid\TableRfidRequest;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Beer;
+use App\Models\POS\Day_Disponibilities;
+use App\Models\POS\Disponibility;
 use App\Models\Auth\User;
 use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
@@ -40,9 +42,61 @@ class DatabaseSeeder extends Seeder
 
         $this->call(EmployeeTitleSeeder::class);
         $this->call(EmployeeSeeder::class);
+
+        $this->call(DisponibilitiesTableSeeder::class);
+        $this->call(Day_DisponibilitiesTableSeeder::class);
+
         Model::reguard();
     }
 }
+
+class DisponibilitiesTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('disponibilities')->delete();
+
+        Disponibility::create(['name' => 'Dispo 1', 'employee_id' => 1]);
+
+        $this->command->info('Disponibilities table seeded!');
+    }
+
+}
+
+class Day_DisponibilitiesTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('day_disponibilities')->delete();
+
+        Day_Disponibilities::create(['disponibility_id' => 1,
+            'day' => date('2016-01-01'),
+            'day_number' => 0,
+            'startTime' => date('15:00:00'),
+            'endTime' => date('17:00:00')
+        ]);
+
+        Day_Disponibilities::create(['disponibility_id' => 1,
+            'day' => date('2016-01-01'),
+            'day_number' => 0,
+            'startTime' => date('18:00:00'),
+            'endTime' => date('16:55:00')
+        ]);
+
+        Day_Disponibilities::create(['disponibility_id' => 1,
+            'day' => date('2016-01-01'),
+            'day_number' => 3,
+            'startTime' => date('14:00:00'),
+            'endTime' => date('16:00:00')
+        ]);
+        $this->command->info('Day Disponibilities table seeded!');
+    }
+
+}
+
+
+
+
 
 class UserTableSeeder extends Seeder {
 

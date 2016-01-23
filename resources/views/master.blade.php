@@ -47,7 +47,10 @@
         </div>
     </form>
     <ul class="nav menu">
-        <li><a href="Employee"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
+        <li><a href="{{ URL::to('Punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> Punch</a></li>
+        <li><a href="{{ URL::to('Employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
+        <li><a href="{{ URL::to('Disponibility') }}"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg> Disponibilities</a></li>
+        <li><a href="{{ URL::to('Schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> Schedules</a></li>
         <li role="presentation" class="divider"></li>
         <li><a href="login.html"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
     </ul>
@@ -98,24 +101,7 @@
 @endif
 {{--End of Script call--}}
 
-<script>
-    $('#calendar').datepicker({
-    });
 
-    !function ($) {
-        $(document).on("click","ul.nav li.parent > a > span.icon", function(){
-            $(this).find('em:first').toggleClass("glyphicon-minus");
-        });
-        $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-    }(window.jQuery);
-
-    $(window).on('resize', function () {
-        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-    })
-    $(window).on('resize', function () {
-        if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-    })
-</script>
 @yield('myjsfile')
 </body>
 

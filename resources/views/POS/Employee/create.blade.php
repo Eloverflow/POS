@@ -85,6 +85,17 @@
                                 </div>
 
                                 <div class="form-group">
+                                    {!! Form::label('nas', "NAS" ) !!}
+                                    @if($errors->has('nas'))
+                                        <div class="form-group has-error">
+                                            {!! Form::text('nas', null, array('class' => 'form-control')) !!}
+                                        </div>
+                                    @else
+                                        {!! Form::text('nas', null, array('class' => 'form-control')) !!}
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
                                     {!! Form::label('streetAddress', "Street Address" ) !!}
                                     @if($errors->has('streetAddress'))
                                         <div class="form-group has-error">
@@ -145,7 +156,7 @@
                             <div class="mfs">
                                 <div class="form-group">
                                     {!! Form::label('title', "Job Title" ) !!}
-                                    <select name="title" class="form-control">
+                                    <select name="employeeTitle" class="form-control">
                                         @foreach ($employeeTitles as $employeeTitle)
                                             <option value="{{ $employeeTitle->id }}">{{ $employeeTitle->name }}</option>
                                         @endforeach
@@ -154,34 +165,34 @@
 
                                 <div class="form-group">
                                     {!! Form::label('salary', "Salary" ) !!}
-                                    @if($errors->has('pc'))
+                                    @if($errors->has('salary'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('pc', null, array('class' => 'form-control')) !!}
+                                            {!! Form::text('salary', null, array('class' => 'form-control')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('pc', null, array('class' => 'form-control')) !!}
+                                        {!! Form::text('salary', null, array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
 
                                 <div class="form-group">
                                     {!! Form::label('birthDate', "birthDate" ) !!}
-                                    @if($errors->has('pc'))
+                                    @if($errors->has('birthDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('pc', null, array('class' => 'form-control')) !!}
+                                            {!! Form::text('birthDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('pc', null, array('class' => 'form-control')) !!}
+                                        {!! Form::text('birthDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                     @endif
                                 </div>
 
                                 <div class="form-group">
                                     {!! Form::label('hireDate', "Hire Date" ) !!}
-                                    @if($errors->has('pc'))
+                                    @if($errors->has('hireDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('pc', null, array('class' => 'form-control')) !!}
+                                            {!! Form::text('hireDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('pc', null, array('class' => 'form-control')) !!}
+                                        {!! Form::text('hireDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                     @endif
                                 </div>
                             </div>

@@ -33,7 +33,7 @@ Route::post('/Employee/Create', 'POS\EmployeeController@postCreate');
 Route::get('/Employee/Details/{id}', 'POS\EmployeeController@details');
 
 Route::get('/Employee/Edit/{id}', 'POS\EmployeeController@edit');
-Route::post('/Employee/Edit/{id}', 'POS\EmployeeController@postEdit');
+Route::post('/Employee/Edit', 'POS\EmployeeController@postEdit');
 
 Route::get('/Employee/Delete/{id}', 'POS\EmployeeController@delete');
 Route::post('/Employee/PartialDelete', 'POS\EmployeeController@ajaxPartDelete');
@@ -44,4 +44,20 @@ Route::get('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@index');
 Route::post('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@create');
 Route::post('/addon/rfid/checkRequest', 'Addons\Rfid\RfidRequestController@checkTableRequest');
 
+/* Start Schedule */
+Route::get('/Schedule', 'POS\ScheduleController@index');
 
+/* End Schedule */
+
+/* Start Punch */
+Route::get('/Punch', 'POS\PunchController@index');
+/* End Punch */
+
+/* Start Disponibility */
+Route::get('/Disponibility', 'POS\DisponibilityController@index');
+Route::get('/Disponibility/Manage/{id}', 'POS\DisponibilityController@manage');
+/* End Disponibility */
+
+/* Start Punch */
+
+/* End Punch */

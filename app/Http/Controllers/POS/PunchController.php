@@ -14,12 +14,12 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class EmployeeController extends Controller
+class PunchController extends Controller
 {
     public function index()
     {
-        $employees = Employee::getAll();
-        $view = \View::make('POS.Employee.index')->with('employees', $employees);
+
+        $view = \View::make('POS.Punch.index');
         return $view;
     }
 

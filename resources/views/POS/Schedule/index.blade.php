@@ -3,16 +3,25 @@
 @section('content')
     <div class="row">
         <div class="col-md-6">
-            <h1 class="page-header">Employees</h1>
+            <h1 class="page-header">Schedules</h1>
         </div>
         <div class="col-md-6">
             <div class="vcenter">
-                <a class="btn btn-primary pull-right" href="{{ @URL::to('Employee/Create') }}"> Create New </a>
+                <a class="btn btn-primary pull-right" href="{{ @URL::to('Schedule/Create') }}"> Create New </a>
             </div>
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-md-4">
+
+            <div class="panel panel-red">
+                <div class="panel-heading dark-overlay"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"></use></svg>Calendar</div>
+                <div class="panel-body">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-body">
                     @if (!empty($success))
@@ -32,19 +41,7 @@
                         </thead>
                         <tbody>
 
-                        @foreach ($employees as $employee)
-                            <tr>
-                                <td>{{ $employee->idEmployee }}</td>
-                                <td>{{ $employee->firstName }}</td>
-                                <td>{{ $employee->lastName }}</td>
-                                <td>{{ $employee->email }}</td>
-                                <td>{{ $employee->name }}</td>
-                                <td>{{ $employee->hireDate }}</td>
-                                <td><a href="{{ URL::to('Employee/Details', $employee->idEmployee) }}">Details</a>
-                                    <a href="{{ URL::to('Employee/Edit', $employee->idEmployee) }}">Edit</a>
-                                    <a href="{{ URL::to('Employee/Delete', $employee->idEmployee) }}">Delete</a></td>
-                            </tr>
-                        @endforeach
+
 
                         </tbody>
                     </table>

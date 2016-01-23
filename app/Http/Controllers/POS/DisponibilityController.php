@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\POS;
 
 use App\Http\Controllers\Controller;
+use App\Models\POS\Disponibility;
 use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
 use App\Models\Project;
@@ -14,20 +15,31 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class EmployeeController extends Controller
+class DisponibilityController extends Controller
 {
     public function index()
     {
-        $employees = Employee::getAll();
-        $view = \View::make('POS.Employee.index')->with('employees', $employees);
+        $disponibilities = Disponibility::getAll();
+        $view = \View::make('POS.Disponibility.index')->with('ViewBag', array(
+            'disponibilities' => $disponibilities
+        ));
         return $view;
     }
 
-    public function details($id)
+    public function manage($id)
     {
-        $employee = Employee::GetById($id);
-        //DB::table('users')->get();
-        $view = \View::make('POS.Employee.details')->with('employee', $employee);
+        $disponibility = Disponibility::GetById($id);
+
+        $view = \View::make('POS.Disponibility.manage')->with('ViewBag', array(
+            'disponibility' => $disponibility,
+            'sunday' => Disponibility::GetDayDisponibilities($id, 0),
+            'monday' => Disponibility::GetDayDisponibilities($id, 1),
+            'tuesday' => Disponibility::GetDayDisponibilities($id, 2),
+            'wednesday' => Disponibility::GetDayDisponibilities($id, 3),
+            'thursday' => Disponibility::GetDayDisponibilities($id, 4),
+            'friday' => Disponibility::GetDayDisponibilities($id, 5),
+            'saturday' => Disponibility::GetDayDisponibilities($id, 6)
+        ));
         return $view;
     }
 
