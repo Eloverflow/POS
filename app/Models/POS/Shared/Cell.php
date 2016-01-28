@@ -22,4 +22,8 @@ class Cell
         return "<td class=\"" . $this->_classname . "\">" . $this->_text . "</td>";
     }
 
+    public function getTxt(){
+        return $this->_text;
+    }
+
 }

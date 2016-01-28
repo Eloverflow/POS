@@ -37,7 +37,7 @@ class Row
         $cellCompiled = "";
         for($i = 0; $i < count($this->_cells); $i++)
         {
-            $cellCompiled = $cellCompiled . $this->_cells[0]->ToString();
+            $cellCompiled = $cellCompiled . $this->_cells[$i]->ToString();
         }
         return  $cellCompiled;
     }

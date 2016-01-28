@@ -115,22 +115,35 @@ class Utils
     static public function arrangeRows($rows)
     {
         $Cells = array();
-        $crisdfnisd = 0;
-        for($j = 0; $j < 7; $j++)
-        {
-            $crisdfnisd++;
 
-            array_push($Cells, new Cell("criss "));
+        /*for($k = 0; $k < 7; $k++)
+        {*/
+        $k = 0;
+        while($k < 7){
+            if ($k == 5) {
+                /*array_push($Cells, new Cell("crisssss"));*/
+                $Cells[$k] = new Cell("crisssss");
+            } else {
+                $Cells[$k] = new Cell("vagina");
+                /*array_push($Cells, new Cell("vagina"));*/
+            }
+            $k++;
+            echo $k;
         }
 
+        foreach($Cells as $cell){
+            echo $cell->getTxt();
+        }
+        /*}*/
+
         //unset($Cells[1]);
-        $Cells[1] = new Cell("vagina");
+        //$Cells[1] = new Cell("vagina");
         //var_dump($Cells[1]);
         //$Cells = array_values($Cells);
         //array_push($Cells, new Cell("moufta"));
 
         $Row = new Row($Cells);
-        $rows[0][0] = $Row;
+        $rows[1] = $Row;
         return $rows;
     }
 }
