@@ -1,5 +1,12 @@
 @extends('master')
-
+@section('csrfToken')
+    <style>
+        table, td, th
+        {
+            border: 1px solid black;
+        }
+    </style>
+    @stop
 @section('content')
     <div class="row">
         <div class="col-md-6">
@@ -10,6 +17,7 @@
                 <a class="btn btn-primary pull-right" href="{{ @URL::to('Disponibility/Create') }}"> Create New </a>
             </div>
         </div>
+
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -42,7 +50,7 @@
                     @if (!empty($success))
                         {{ $success }}
                     @endif
-                    <table data-toggle="table">
+                    <table>
                         <thead>
                         <tr>
                             <th></th>
@@ -56,46 +64,15 @@
                         </tr>
                         </thead>
                         <tbody>
+                        <?php
+                        $rows = $ViewBag['Rows'];
 
-                                @for($i = 1; $i <= 24; $i++)
-                                    <tr>
-                                        <td><?php
-                                                if($i > 12)
-                                                {
-                                                    echo $i . " PM";
-                                                } else {
-                                                    echo $i . " AM";
-                                                }
-                                            ?>
-                                        </td>
-                                        <?php
-                                        $SUDispo = $ViewBag['sunday'];
-                                        foreach($SUDispo as $dispo){
-                                            $date = new DateTime($dispo->startTime);
-                                            $number = $date->format('H');
-                                            if($number == $i)
-                                            {
-                                                $cell = "<td class=\"bluepalecell\"></td>";
-                                            }
-                                            else if($number)
-                                            {
+                        for($i = 0; $i < count($rows); $i++)
+                        {
+                            echo $rows[$i];
+                        }
 
-                                            }
-                                            else{
-
-                                                $cell = "<td></td>";
-
-                                            }
-
-                                        }
-                                        echo $cell;
-
-                                        ?>
-
-                                    </tr>
-                                @endfor
-
-
+                        ?>
                         </tbody>
                     </table>
                 </div>

@@ -38,7 +38,9 @@ Route::post('/Employee/Edit', 'POS\EmployeeController@postEdit');
 Route::get('/Employee/Delete/{id}', 'POS\EmployeeController@delete');
 Route::post('/Employee/PartialDelete', 'POS\EmployeeController@ajaxPartDelete');
 Route::post('/Employee/CompleteDelete', 'POS\EmployeeController@ajaxCompDelete');
-/* End Delete */
+
+Route::post('/Employee/Punch', 'POS\EmployeeController@ajaxPunchEmployee');
+/* End Employee */
 
 Route::get('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@index');
 Route::post('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@create');

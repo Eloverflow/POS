@@ -149,4 +149,27 @@ class PunchController extends Controller
         $view = \View::make('POS.Employee.delete')->with('employee', $employee);
         return $view;
     }
+
+    public function ajaxPunchEmployee()
+    {
+        $employee = EmployeeAssignedProject::where(['project_id' => \Input::get('idProject'), 'employee_id' => \Input::get('idEmployee')])->first();
+        if (count($employee)) {
+
+            return response()->json(['status' => 'Error',
+                'message' =>  'The employee ' . \Input::get('emplName') . ' has been already assigned to the project !']);
+        }
+        else{
+            EmployeeAssignedProject::create([
+                'project_id' => \Input::get('idProject'),
+                'employee_id' => \Input::get('idEmployee')
+            ]);
+            $empl = Employee::getById(\Input::get('idEmployee'));
+            return response()->json(['status' => 'Success',
+                'message' =>  'The employee ' . \Input::get('emplName') . ' has been successfully assigned to the project !',
+                'row' => "<tr class=\"newrow\"><td>" . $empl->firstName . "</td><td>" . $empl->lastName . "</td><td>" . $empl->name . "</td><td>" . $empl->salary . "</td></tr>"
+            ]);
+        }
+
+    }
+
 }
