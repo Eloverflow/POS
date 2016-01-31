@@ -1,7 +1,7 @@
 @extends('master')
 @section('csrfToken')
     <style>
-        table, td, th
+        #Schedule, td, th
         {
             border: 1px solid black;
         }
@@ -50,7 +50,7 @@
                     @if (!empty($success))
                         {{ $success }}
                     @endif
-                    <table>
+                    <table id="Schedule" >
                         <thead>
                         <tr>
                             <th></th>
@@ -66,12 +66,10 @@
                         <tbody>
                         <?php
                         $rows = $ViewBag['Rows'];
-
-                        for($i = 0; $i < count($rows); $i++)
-                        {
-                            echo $rows[$i];
-                        }
-
+                            for($i = 0; $i < count($rows); $i++)
+                            {
+                                echo $rows[$i];
+                            }
                         ?>
                         </tbody>
                     </table>

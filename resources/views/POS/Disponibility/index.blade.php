@@ -32,9 +32,9 @@
                         <tr>
                             <th data-field="id" data-checkbox="true" >Item ID</th>
                             <th data-field="name" data-sortable="true">Name</th>
+                            <th data-field="employee" data-sortable="true">Employee</th>
                             <th data-field="createdAt"  data-sortable="true">Created At</th>
                             <th data-field="lastUpdated"  data-sortable="true">Last Updated</th>
-                            <th data-field="employee" data-sortable="true">Employee</th>
                             <th></th>
                         </tr>
                         </thead>
@@ -43,6 +43,7 @@
                             <tr>
                                 <td>{{ $disponibility->idDisponibility }}</td>
                                 <td>{{ $disponibility->name }}</td>
+                                <td>{{ $disponibility->firstName . " - " . $disponibility->lastName }}</td>
                                 <td>{{ $disponibility->created_at }}</td>
                                 <td>{{ $disponibility->updated_at }}</td>
                                 <td><a href="{{ URL::to('Disponibility/Manage', $disponibility->idDisponibility) }}">Manage</a>
