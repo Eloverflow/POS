@@ -7,7 +7,7 @@ $('#contentPanel').css('visibility', 'visible');
 
 $('#contentPanel').show(200);
 
-$('.datepickerInput').datepicker({
+$('.datepicker').datepicker({
     format: 'yyyy-mm-dd',
     startDate: '-3d'
 });

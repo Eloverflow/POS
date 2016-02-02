@@ -89,8 +89,10 @@ class ScheduleController extends Controller
 
     public function create()
     {
-        $employeeTitles = EmployeeTitle::All();
-        $view = \View::make('POS.Employee.create')->with('employeeTitles', $employeeTitles);
+        $employees = Employee::getAll();
+        $view = \View::make('POS.Schedule.create')->with('ViewBag', array(
+            'employees' => $employees
+        ));
         return $view;
     }
 
