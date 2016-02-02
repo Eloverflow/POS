@@ -19,11 +19,11 @@ class RfidTableController extends Controller
     {
         $items = TableRfid::get();
 
-        $title = "test";
+        $title = "Table";
 
-        $columns = array('id', 'flash_card_hw_code', 'name');
+        $columns = array('flash_card_hw_code', 'name');
 
-        return view('addins.rfid.request.list', compact('title', 'items', 'columns'));
+        return view('addins.rfid.table.list', compact('title', 'items', 'columns'));
     }
 
     protected function create(Request $request)
