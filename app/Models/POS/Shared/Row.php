@@ -35,9 +35,10 @@ class Row
     public function ToString()
     {
         $cellCompiled = "";
-        for($i = 0; $i < count($this->_cells); $i++)
-        {
-            $cellCompiled = $cellCompiled . $this->_cells[$i]->ToString();
+        for($i = 0; $i < count($this->_cells); $i++) {
+            if ($this->_cells[$i] != null) {
+                $cellCompiled = $cellCompiled . $this->_cells[$i]->ToString();
+            }
         }
         return  $cellCompiled;
     }

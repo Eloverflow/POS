@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\POS;
 
 use App\Http\Controllers\Controller;
+use App\Models\POS\Day_Disponibilities;
 use App\Models\POS\Disponibility;
 use App\Models\POS\Employee;
 use App\Helpers\Utils;
@@ -112,8 +113,10 @@ class DisponibilityController extends Controller
 
     public function create()
     {
-        $employeeTitles = EmployeeTitle::All();
-        $view = \View::make('POS.Employee.create')->with('employeeTitles', $employeeTitles);
+        $employees = Employee::getAll();
+        $view = \View::make('POS.Disponibility.create')->with('ViewBag', array(
+            'employees' => $employees
+        ));
         return $view;
     }
 
@@ -122,8 +125,7 @@ class DisponibilityController extends Controller
         $inputs = \Input::all();
 
         $rules = array(
-            'firstName' => 'required',
-            'lastName' => 'required'
+            'name' => 'required'
         );
 
         $message = array(
@@ -133,36 +135,33 @@ class DisponibilityController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            if (\Input::has('id')) {
-                return \Redirect::action('POS\EmployeeController@create')->withErrors($validation)
-                    ->withInput();
-            }
+            return \Redirect::action('POS\DisponibilityController@create')->withErrors($validation)
+                ->withInput();
+
         }
         else
         {
-            $user = User::create([
-                'name' => 'default_username',
-                'email' => \Input::get('email'),
-                'password' => bcrypt(\Input::get('password')),
 
+            $disponiblity = Disponibility::create([
+                'employee_id' => \Input::get('employeeSelect'),
+                'name' => \Input::get('name')
             ]);
-            $employee = Employee::create([
-                'firstName' => \Input::get('firstName'),
-                'lastName' => \Input::get('lastName'),
-                'streetAddress' => \Input::get('streetAddress'),
-                'phone' => \Input::get('phone'),
-                'city' => \Input::get('city'),
-                'state' => \Input::get('state'),
-                'pc' => \Input::get('pc'),
-                'nas' => \Input::get('nas'),
-                'employeeTitle' => \Input::get('employeeTitle'),
-                'userId' => $user->id,
-                'salary' => \Input::get('salary'),
-                'birthDate' => \Input::get('birthDate'),
-                'hireDate' => \Input::get('hireDate')
-            ]);
+            for($i = 0; $i < count(\Input::get('sunDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('sunDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $disponiblity->id,
+                    "day_number" => 0,
+                    "startTime" => $jsonObj["StartTime"] . ":00:00",
+                    "endTime" => $jsonObj["EndTime"] . ":00:00"
+                ]);
+            }
 
-            return \Redirect::action('POS\EmployeeController@index')->withSuccess('The employee has been successfully created !');
+            //var_dump(\Input::get('name'));
+            //var_dump(\Input::get('sunDispos'));
+
+            return \Redirect::action('POS\DisponibilityController@index')->withSuccess('The disponibility has been successfully created !');
         }
     }
 

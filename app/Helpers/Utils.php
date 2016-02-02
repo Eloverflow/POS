@@ -3,6 +3,7 @@ namespace App\Helpers;
 use App\Models\POS\Disponibility;
 use App\Models\POS\Shared\Cell;
 use App\Models\POS\Shared\Row;
+use App\Models\POS\Shared\Intersect;
 
 /**
  * Created by PhpStorm.
@@ -15,21 +16,12 @@ use App\Models\POS\Shared\Row;
 
 class Utils
 {
-    static public function CalculateHorizontalIntersect($weekDispos, $LeftRight, $DayNumber, $Hour)
+    static public function CalculateIntersects($Hour, $weekDispos)
     {
+
         $countIntersects = 0;
-        $isIntersect = false;
-
-        if($LeftRight == "Left") {
-            $JIncrement = 0;
-            $DDayNumber = $DayNumber;
-        }
-        else {
-            $JIncrement = $DayNumber + 1;
-            $DDayNumber = 7;
-        }
-
-        for ($j = $JIncrement; $j < $DDayNumber; $j++) {
+        $Intersects = array();
+        for ($j = 0; $j < 7; $j++) {
             $diposJour = $weekDispos[$j];
             for ($k = 0; $k < count($diposJour); $k++) {
                 $DTST = new \DateTime($diposJour[$k]->startTime);
@@ -37,32 +29,39 @@ class Utils
                 $DTET = new \DateTime($diposJour[$k]->endTime);
                 $EndTime = $DTET->format('H');
                 $diff = $EndTime - $StartTime;
-                if ($StartTime == $Hour || ($Hour < $EndTime && $Hour > $StartTime )) {
-                    $countIntersects = $countIntersects +1;
-                    if(($DayNumber - 1) == $j)
-                    {
-                        $isIntersect = true;
-                    }
-                    else if(($DayNumber + 1) == $j){
-                        $isIntersect = true;
-                    }
-                } else {
-
+                if (($Hour < $EndTime && $Hour > $StartTime) ) {
+                    $newInters = new Intersect($j, $Hour, $EndTime);
+                    $countIntersects = $countIntersects + 1;
+                    $Intersects[] = $newInters;
                 }
             }
-
         }
-
-        if ($isIntersect == true) {
-
-            return $countIntersects . "|" . 1;
-        }
-        else
-        {
-            return $countIntersects . "|" . 0;
-        }
+        return $Intersects ;
     }
 
+
+    static public function CalculateStarts($Hour, $weekDispos)
+    {
+
+        $countIntersects = 0;
+        $Intersects = array();
+        for ($j = 0; $j < 7; $j++) {
+            $diposJour = $weekDispos[$j];
+            for ($k = 0; $k < count($diposJour); $k++) {
+                $DTST = new \DateTime($diposJour[$k]->startTime);
+                $StartTime = $DTST->format('H');
+                $DTET = new \DateTime($diposJour[$k]->endTime);
+                $EndTime = $DTET->format('H');
+                $diff = $EndTime - $StartTime;
+                if ($StartTime == $Hour) {
+                    $newInters = new Intersect($j, $Hour, $EndTime);
+                    $countIntersects = $countIntersects + 1;
+                    $Intersects[] = $newInters;
+                }
+            }
+        }
+        return $Intersects ;
+    }
 
     static public function GenerateDisponibilityTable($idUser)
     {
@@ -78,15 +77,22 @@ class Utils
             6 => Disponibility::GetDayDisponibilities($idUser, 6),
         );
 
-        $BlankTable = Utils::GetBlankTable("haha");
-        $arrangedTable = Utils::arrangeRows($BlankTable);
+        $BlankTable = Utils::GetBlankTable("");
+        $arrangedTable = Utils::arrangeRows($BlankTable, $WeekDisponibilities);
 
         $count = 0;
         $rows = null;
         while($count < count($arrangedTable))
         {
             $row = $arrangedTable[$count];
-            $rows[] = "<tr><td>$count</td>" . $row->ToString() . "</tr>";
+
+            if($count < 13)
+            {
+                $firstCellText = ($count + 1) . " AM";
+            } else {
+                $firstCellText = ($count + 1) . " PM";
+            }
+            $rows[] = "<tr><td>" . $firstCellText . "</td>" . $row->ToString() . "</tr>";
             $count += 1;
         }
 
@@ -96,7 +102,7 @@ class Utils
     static public function GetBlankTable($message)
     {
         $Rows = null;
-        for($i = 1; $i <= 24; $i++) {
+        for($i = 0; $i < 24; $i++) {
 
             $Cells = null;
 
@@ -112,38 +118,43 @@ class Utils
         return $Rows;
     }
 
-    static public function arrangeRows($rows)
+    static public function arrangeRows($rows, $weekDispos)
     {
         $Cells = array();
 
-        /*for($k = 0; $k < 7; $k++)
-        {*/
-        $k = 0;
-        while($k < 7){
-            if ($k == 5) {
-                /*array_push($Cells, new Cell("crisssss"));*/
-                $Cells[$k] = new Cell("crisssss");
-            } else {
-                $Cells[$k] = new Cell("vagina");
-                /*array_push($Cells, new Cell("vagina"));*/
+
+        $theIntersect = Utils::CalculateIntersects(16,$weekDispos);
+
+        for($i = 1; $i < 24; $i++)
+        {
+            $starts = Utils::CalculateStarts($i,$weekDispos);
+            $normalIntersects = Utils::CalculateIntersects($i,$weekDispos);
+            $curRow = $rows[$i -1];
+
+            for($j = 0; $j < count($starts); $j++)
+            {
+                $start = $starts[$j];
+                //var_dump($start);
+                //var_dump($start->GetDayNumber());
+                $rowspan = $start->GetEndTime() - $start->GetHour();
+                $cellText = $start->GetHour() . " To " . $start->GetEndTime();
+                $selluz = new Cell($cellText, $rowspan, "bluepalecell");
+                $dayNumb = $start->GetDayNumber();
+
+                $curRow->SetCell($dayNumb, $selluz);
             }
-            $k++;
-            echo $k;
+            for($k = 0; $k < count($normalIntersects); $k++)
+            {
+                $nIntersect = $normalIntersects[$k];
+                //var_dump($nIntersect);
+                //var_dump($start->GetDayNumber());
+
+                $dayNumb = $nIntersect->GetDayNumber();
+
+                $curRow->RemoveCell($dayNumb);
+            }
         }
 
-        foreach($Cells as $cell){
-            echo $cell->getTxt();
-        }
-        /*}*/
-
-        //unset($Cells[1]);
-        //$Cells[1] = new Cell("vagina");
-        //var_dump($Cells[1]);
-        //$Cells = array_values($Cells);
-        //array_push($Cells, new Cell("moufta"));
-
-        $Row = new Row($Cells);
-        $rows[1] = $Row;
         return $rows;
     }
 }

@@ -32,7 +32,7 @@ class Disponibility extends Model
             birthDate,
             hireDate,
             hireDate'))
-            ->where('employees.id', '=', $id)
+            ->where('disponibilities.id', '=', $id)
             ->first();
     }
 

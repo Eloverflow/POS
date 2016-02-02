@@ -59,6 +59,9 @@ Route::get('/Punch', 'POS\PunchController@index');
 
 /* Start Disponibility */
 Route::get('/Disponibility', 'POS\DisponibilityController@index');
+Route::get('/Disponibility/Create', 'POS\DisponibilityController@create');
+Route::post('/Disponibility/Create', 'POS\DisponibilityController@postCreate');
+
 Route::get('/Disponibility/Manage/{id}', 'POS\DisponibilityController@manage');
 /* End Disponibility */
 
