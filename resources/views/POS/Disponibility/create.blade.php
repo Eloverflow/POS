@@ -47,12 +47,15 @@
 
                             </div>
                         </fieldset>
-                        <fieldset>
-                            <legend>Time disponibilities</legend>
-                            <h2>Sunday</h2>
-                            <div class="mfs">
-                                <div class="form-group">
+                    </div>
 
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="panel panel-primary">
+                                <div class="panel-heading">
+                                    Sunday
+                                </div>
+                                <div class="panel-body">
                                     {!! Form::label('startTime', "Start Time" ) !!}
                                     {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
 
@@ -69,9 +72,35 @@
                                     <select id="sunMultiSelect" name="sunDispos[]" multiple class="form-control">
 
                                     </select>
-
                                 </div>
                             </div>
+                        </div>
+
+                    <div class="col-md-4">
+                        <div class="panel panel-primary">
+                            <div class="panel-heading">
+                                Sunday
+                            </div>
+                            <div class="panel-body">
+                                {!! Form::label('startTime', "Start Time" ) !!}
+                                {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
+
+                                {!! Form::label('endTime', "End Time" ) !!}
+                                {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
+
+                                <br />
+                                <a class="bdel btn btn-default pull-right" data-Day="0">Delete -</a>
+                                <a class="badd btn btn-primary pull-right" data-Day="0">Add +</a>
+                                <br />
+
+                                <label>Sunday Disponibilities</label>
+
+                                <select id="sunMultiSelect" name="sunDispos[]" multiple class="form-control">
+
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                             <h2>Monday</h2>
                             <div class="mfs">
@@ -142,8 +171,8 @@
                                 </div>
                             </div>
 
-                        </fieldset>
-                    </div>
+
+
                     <div class="col-md-6">
                         <h2>Thursday</h2>
                         <div class="mfs">
