@@ -6,28 +6,33 @@
     <div class="jumbotron">
         <h2>{{ $title }}</h2>
 
-        <table class="table table-hover">
-
-            <!-- Table Header --->
-            <tr>
-                @foreach($columns as $column)
-                    <th>{{ucwords( str_replace('_', ' ', $column))}}</th>
-                @endforeach
-            </tr>
-            <!-- End Table Header --->
-
+        <div class="well" id="rfidTablesGrid">
             <!-- Table Content --->
+
             @foreach($items as $item)
-                <tr style="cursor: pointer; cursor: hand;" onclick="location.href='{{ strtolower($title) }}/{{ $item->slug }}';">
 
-                    @foreach($columns as $column)
-                        <td>{{ $item->$column }}</td>
-                    @endforeach
+                <div class="rfidTableBorder">
+                    <ul class="rfidTable"  style="cursor: pointer; cursor: hand;" onclick="location.href='{{ strtolower($title) }}/{{ $item->slug }}';">
 
-                </tr>
-                @endforeach
-                        <!-- End Table Content --->
-        </table>
+                        @foreach($columns as $column)
+                            <li>{{ucwords( str_replace('_', ' ', $column))}} : {{ $item->$column }}</li>
+                        @endforeach
+
+                    </ul>
+
+                </div>
+            @endforeach
+
+
+            {{ $i = count($items) }}
+            @for( $i; $i < 20; $i++ )
+                <div class="rfidTableBorder">
+
+
+                </div>
+            @endfor
+
+        </div>
     </div>
 
 @stop
