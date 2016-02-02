@@ -24,10 +24,12 @@
             @endforeach
 
 
-            {{ $i = count($items) }}
+            <?php $i = count($items) ?>
             @for( $i; $i < 20; $i++ )
                 <div class="rfidTableBorder">
-
+                    <ul class="rfidTable">
+                        <li><button class="form-control">Add</button></li>
+                    </ul>
 
                 </div>
             @endfor
