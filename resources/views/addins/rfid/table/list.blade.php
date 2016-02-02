@@ -3,15 +3,17 @@
 @section('title', $title)
 
 @section('content')
-    <div class="jumbotron">
         <h2>{{ $title }}</h2>
 
-        <div class="well" id="rfidTablesGrid">
+        <div class="row">
+        <div class="col-lg-12" id="rfidTablesGrid">
             <!-- Table Content --->
+            <div class="panel well">
 
+            <table>
             @foreach($items as $item)
 
-                <div class="rfidTableBorder">
+                <td class="rfidTableBorder">
                     <ul class="rfidTable"  style="cursor: pointer; cursor: hand;" onclick="location.href='{{ strtolower($title) }}/{{ $item->slug }}';">
 
                         @foreach($columns as $column)
@@ -20,21 +22,22 @@
 
                     </ul>
 
-                </div>
+                </td>
             @endforeach
 
 
-            <?php $i = count($items) ?>
-            @for( $i; $i < 20; $i++ )
-                <div class="rfidTableBorder">
-                    <ul class="rfidTable">
-                        <li><button class="form-control">Add</button></li>
-                    </ul>
+                <?php $i = count($items) ?>
+                {{--@for( $i; $i < 20; $i++ )
+                    <td class="rfidTableBorder">
+                        <ul class="rfidTable">
+                            <li class="addTable"><span class="glyphicon glyphicon-plus-sign"></span></li>
+                        </ul>
 
-                </div>
-            @endfor
-
+                    </td>
+                @endfor--}}
+            </table>
         </div>
-    </div>
+        </div>
+        </div>
 
 @stop
