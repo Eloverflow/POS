@@ -327,7 +327,7 @@ a.bg-danger:hover {
 	margin: 0 -5px;
 }
 
-.panel-footer .input-group-btn:last-child>.btn,
+.panel-footer .input-group-btn:last-child>.btn, 
 .panel-footer .input-group-btn:last-child>.btn-group {
 	margin: 0;
 }
@@ -349,8 +349,8 @@ a.bg-danger:hover {
 .panel-blue .panel-body p,
 .panel-teal .panel-body p,
 .panel-orange .panel-body p,
-.panel-red .panel-body p {
-	color: #fff;
+.panel-red .panel-body p { 
+	color: #fff; 
 	color: rgba(255, 255, 255, .8);
 }
 
@@ -364,8 +364,8 @@ a.bg-danger:hover {
 .panel-blue .text-muted,
 .panel-teal .text-muted,
 .panel-orange .text-muted,
-.panel-red .text-muted {
-	color: rgba(255, 255, 255, .5);
+.panel-red .text-muted { 
+	color: rgba(255, 255, 255, .5); 
 }
 
 .dark-overlay {
@@ -525,7 +525,6 @@ a.bg-danger:hover {
 
 /* Sidebar */
 
-
 .sidebar {
 	display: block;
 	background-color: #fff;
@@ -539,7 +538,6 @@ a.bg-danger:hover {
 	margin-bottom: 20px;
 }
 
-/*
 @media (min-width: 768px) {
 	.sidebar {
 		display: block;
@@ -547,12 +545,12 @@ a.bg-danger:hover {
 		top: 50px;
 		bottom: 0;
 		left: 0;
-		z-index: 8;
+		z-index: 1000;
 		display: block;
 		margin: 0;
 		padding: 0;
 		overflow-x: hidden;
-		overflow-y: auto;
+		overflow-y: auto; 
 		background-color: #fff;
 		box-shadow: 1px 0px 10px rgba(0, 0, 0, .05);
 	}
@@ -560,27 +558,8 @@ a.bg-danger:hover {
 		width: 100%;
 	}
 }
-*/
-.sidebar {
-	display: block;
-	position: fixed;
-	top: 50px;
-	bottom: 0;
-	left: 0;
-	z-index: 8;
-	margin: 0;
-	padding: 0;
-	overflow-y: auto;
-	background-color: #fff;
-	box-shadow: 1px 0px 10px rgba(0, 0, 0, .05);
-}
-.navbar-header {
-	width: 100%;
-}
 
-
-
-.sidebar ul.nav a:hover,
+.sidebar ul.nav a:hover, 
 .sidebar ul.nav li.parent ul li a:hover {
 	text-decoration: none;
 	background-color: #e9ecf2;
@@ -592,8 +571,6 @@ a.bg-danger:hover {
 	color: #fff;
 	background-color: #30a5ff;
 }
-
-
 
 .sidebar ul.nav ul,
 .sidebar ul.nav ul li {
@@ -614,12 +591,6 @@ a.bg-danger:hover {
 	color: #30a5ff!important;
 }
 
-.sidebar ul.nav ul.children li a {
-	height: 40px;
-	background: #f9f9f9;
-	color: #30a5ff!important;
-}
-
 .sidebar ul.nav li.current a {
 	background-color: #30a5ff;
 	color: #fff!important;
@@ -632,11 +603,6 @@ a.bg-danger:hover {
 	line-height: 40px;
 }
 
-.sidebar ul.nav ul.children li.active  a {
-	color: #ffffff!important;
-	background-color: #30a5cc;
-}
-
 
 .sidebar span.glyphicon {
 	margin-right: 10px;
@@ -645,7 +611,6 @@ a.bg-danger:hover {
 .sidebar ul.nav li.divider {
 	border-bottom: 1px solid #eee;
 	margin: 20px 0;
-
 }
 
 .sidebar .attribution {
@@ -772,17 +737,17 @@ h1.page-header {
 
 /*Todo List Widget*/
 
-.todo-list-item .glyphicon {
-	margin-right:5px;
-	color: #9fadbb;
+.todo-list-item .glyphicon { 
+	margin-right:5px; 
+	color: #9fadbb; 
 }
 
-.todo-list-item .glyphicon:hover {
-	margin-right:5px;
-	color: #1b3548;
+.todo-list-item .glyphicon:hover { 
+	margin-right:5px; 
+	color: #1b3548; 
 }
 
-.todo-list {
+.todo-list { 
 	padding: 0;
 	margin: -15px;
 	background: #fff;
@@ -793,14 +758,14 @@ h1.page-header {
 	margin: 0;
 }
 
-.todo-list .checkbox {
-	display:inline-block;
+.todo-list .checkbox { 
+	display:inline-block; 
 	margin: 0px;
 }
 
-.panel-body input[type=checkbox]:checked + label {
+.panel-body input[type=checkbox]:checked + label { 
 	text-decoration: line-through;
-	color: #777;
+	color: #777; 
 }
 
 .todo-list-item {
@@ -856,7 +821,6 @@ h1.page-header {
 /*Tables*/
 .table {
 	background: #fff;
-	table-layout: fixed;
 }
 
 .fixed-table-container {
