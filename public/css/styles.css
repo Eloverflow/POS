@@ -420,3 +420,41 @@ li.sortable-placeholder {
 .rfidTablesGrid{
 
 }
+
+
+.nestedList ul
+{
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+.nestedList a
+{
+	display: block;
+	color: #FFF;
+	background-color: #036;
+	width: 9em;
+	padding: 3px 12px 3px 8px;
+	text-decoration: none;
+	border-bottom: 1px solid #fff;
+	font-weight: bold;
+}
+
+.nestedList a:hover
+{
+	background-color: #369;
+	color: #FFF;
+}
+
+.nestedList li li a
+{
+	display: block;
+	color: #FFF;
+	background-color: #69C;
+	width: 9em;
+	padding: 3px 3px 3px 17px;
+	text-decoration: none;
+	border-bottom: 1px solid #fff;
+	font-weight: normal;
+}

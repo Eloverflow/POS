@@ -37,12 +37,25 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('employee', "Employee" ) !!}
-                                    <select id="employeeSelect" name="employeeSelect" class="form-control">
-                                        @foreach ($ViewBag['employees'] as $employee)
-                                            <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
-                                        @endforeach
-                                    </select>
+                                    {!! Form::label('startDate', "Start Date" ) !!}
+                                    @if($errors->has('startDate'))
+                                        <div class="form-group has-error">
+                                            {!! Form::text('startDate', null, array('class' => 'datepicker form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                        </div>
+                                    @else
+                                        {!! Form::text('startDate', null, array('class' => 'datepicker form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                    @endif
+                                </div>
+
+                                <div class="form-group">
+                                    {!! Form::label('endDate', "End Date" ) !!}
+                                    @if($errors->has('endDate'))
+                                        <div class="form-group has-error">
+                                            {!! Form::text('endDate', null, array('class' => 'datepicker form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                        </div>
+                                    @else
+                                        {!! Form::text('endDate', null, array('class' => 'datepicker form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                    @endif
                                 </div>
 
                             </div>
@@ -60,6 +73,40 @@
                     Sunday
                 </div>
                 <div class="panel-body">
+
+                    <div class="form-group">
+                        {!! Form::label('employee', "Employee" ) !!}
+                        <select id="employeeSelect" name="employeeSelect" class="form-control">
+                            <option value="-2"> - Select - </option>
+                            <option value="-1">All</option>
+                            @foreach ($ViewBag['employees'] as $employee)
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div id="sunNestedList" class="nestedList">
+                        <ul>
+                            <li><a href="#">Jean</a>
+                                <ul>
+                                    <li><a href="#">10h To 20h</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Isael</a>
+                                <ul>
+                                    <li><a href="#">8h To 9h</a></li>
+                                    <li><a href="#">12h To 14h</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Kevin</a>
+                                <ul>
+                                    <li><a href="#">18h To 21h</a></li>
+                                    <li><a href="#">22h To 2h</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+
                     {!! Form::label('startTime', "Start Time" ) !!}
                     {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
 
@@ -74,7 +121,6 @@
                     <label>Sunday Disponibilities</label>
 
                     <select id="sunMultiSelect" name="sunDispos[]" multiple class="form-control">
-
                     </select>
                 </div>
             </div>
@@ -123,7 +169,7 @@
                     <a class="bdel btn btn-primary pull-right" data-Day="2">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Tuesday Disponibilities</label>
                     <select id="tueMultiSelect" name="tueDispos[]" multiple class="form-control">
 
                     </select>
@@ -150,7 +196,7 @@
                     <a class="badd btn btn-primary pull-right" data-Day="3">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Wednesday Disponibilities</label>
                     <select id="wedMultiSelect" name="wedDispos[]" multiple class="form-control">
 
                     </select>
@@ -175,7 +221,7 @@
                     <a class="bdel btn btn-primary pull-right" data-Day="4">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Thursday Disponibilities</label>
                     <select id="thuMultiSelect" name="thuDispos[]" multiple class="form-control">
 
                     </select>
@@ -200,7 +246,7 @@
                     <a class="badd btn btn-primary pull-right" data-Day="5">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Friday Disponibilities</label>
                     <select id="friMultiSelect" name="friDispos[]" multiple class="form-control">
 
                     </select>
@@ -227,7 +273,7 @@
                     <a class="badd btn btn-primary pull-right" data-Day="6">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Saturday Disponibilities</label>
                     <select id="satMultiSelect" name="satDispos[]" multiple class="form-control">
 
                     </select>
