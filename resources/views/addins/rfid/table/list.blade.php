@@ -6,56 +6,45 @@
         <h2>{{ $title }}</h2>
 
         <div class="row">
-        <div class="col-lg-12" >
+        <div class="col-lg-12 panel-rfidTable" >
+            <div class="panel">
+                <div class="panel-body">
             <!-- Table Content --->
-            <div class="panel well">
+                    <ul class="sortable grid ">
+                    <?php $i = count($items); ?>
 
-            <table class="table table-bordered rfidTableGrid">
-                <tbody>
-                <tr>
 
-                    <?php $i = count($items); $j = 0; ?>
+                        @foreach($items as $item)
 
-                        @for(  $j; $j < $i; $j++)
 
-                        @if(($i % 4) == 0)
-                            </tr>
-                            <tr>
+                            <div class="rfidTable">
 
-                        @endif
+                                <div class="rfidTableInside">
+                                    <ul style="cursor: pointer; cursor: hand;" onclick="location.href='{{ strtolower($title) }}/{{ $item->slug }}';">
 
-                        <td class="">
-                            <div class="rfidTableBorder">
-                            <ul class="rfidTable"  style="cursor: pointer; cursor: hand;" onclick="location.href='{{ strtolower($title) }}/{{ $items[$j]->slug }}';">
+                                        @foreach($columns as $column)
+                                            <li>{{ucwords( str_replace('_', ' ', $column))}} : {{ $item->$column }}</li>
+                                        @endforeach
 
-                                @foreach($columns as $column)
-                                    <li>{{ucwords( str_replace('_', ' ', $column))}} : {{ $items[$j]->$column }}</li>
-                                @endforeach
-
-                            </ul>
+                                    </ul>
+                                </div>
                             </div>
-                        </td>
-                    @endfor
+                    @endforeach
 
 
-                    @for( $i; $i <= $j*2*3 -1; $i++ )
-                                    @if(($i % 4) == 0)
-                            </tr>
-                <tr>
-
-                    @endif
-                        <td class="">
-                            <div class="rfidTableBorder">
-                            <ul class="rfidTable">
-                                <li class="addTable"><span class="glyphicon glyphicon-plus-sign"></span></li>
-                            </ul>
+                    @for( $i; $i < count($items)+1; $i++ )
+                            <div class="rfidTable">
+                                <div class="rfidTableInside">
+                                    <ul>
+                                        <li class="addTable"><span class="glyphicon glyphicon-plus-sign"></span></li>
+                                    </ul>
+                                </div>
                             </div>
-                        </td>
+
                     @endfor
-                </tr>
-                </tbody>
-            </table>
-        </div>
+                    </ul>
+                </div>
+            </div>
         </div>
         </div>
 

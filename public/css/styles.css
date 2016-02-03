@@ -341,7 +341,103 @@ li.sortable-placeholder {
 	color: white;
 }
 
+.panel-rfidTable, .panel-rfidTable .panel{
+	width: 300px;
+}
+
+@media (min-width: 500px) {
+	.panel-rfidTable, .panel-rfidTable .panel{
+		width: 600px;
+	}
+}
+
+@media (min-width: 1000px) {
+	.panel-rfidTable, .panel-rfidTable .panel{
+		width: 900px;
+	}
+}
+
+@media (min-width: 1300px) {
+	.panel-rfidTable, .panel-rfidTable .panel{
+		width: 1200px;
+	}
+}
+
+
+@media (min-width: 1600px) {
+	.panel-rfidTable, .panel-rfidTable .panel{
+		width: 1500px;
+	}
+}
+
 .rfidTable{
+	transition: background-color 0.1s;
+	border-radius: 6px;
+	margin: 40px;
+	width: 200px;
+	height: 100px;
+	display: inline-block;
+	background-color: #333;
+
+	/*border: 5px solid red;*/
+
+}
+
+.rfidTable:hover{
+	background-color: #444;
+	cursor: move;
+
+	/*border: 5px solid red;*/
+
+}
+
+.sortable.grid{
+	padding-left: 0;
+}
+
+.rfidTable ul{
+	padding: 0;
+	white-space: nowrap;
+}
+
+.rfidTable ul li{
+	width: 100%!important;
+	height: auto!important;
+	line-height: 30px!important;
+}
+
+.rfidTableInside{
+
+	cursor: pointer;
+	transition: width 0.5s, height 0.5s, margin 0.5s, text-shadow 0.5s, box-shadow 0.5s;
+	color: #fff;
+	border-radius: 3px;
+	margin: 20px;
+	position: relative;
+	width: 160px;
+	height: 60px;
+	background-color: #30a5ff;
+}
+
+.rfidTableInside:hover{
+	margin: 15px;
+	width: 170px;
+	text-shadow: 0 4px 8px rgba(0,0,0,1);
+	box-shadow: 0 4px 8px rgba(0,0,0,1);
+	height: 70px;
+	color: #fff;
+	background-color: #30a5ff;
+}
+
+li.addTable .glyphicon{
+	padding: 8%;
+	font-size: 35px;
+}
+
+
+
+/*.rfidTable{
+	float: left;
 	text-shadow: 0 4px 8px rgba(0,0,0,1);
 	width: 100%;
 	height: 100%;
@@ -358,7 +454,7 @@ li.sortable-placeholder {
 
 
 .rfidTable li{
-	position: relative;
+	display: inline-block;
 	vertical-align: text-top;
 	text-align: center;
 }
@@ -368,7 +464,7 @@ li.sortable-placeholder {
 
 
 .rfidTable li.addTable{
-	font-size: 24px;
+	font-size: 200%;
 
 	transition: font-size 0.2s, margin-top 0.2s;
 	margin-top: 8%;
@@ -382,9 +478,9 @@ li.sortable-placeholder {
 
 
 .rfidTable li.addTable:hover{
-	/*color: #30a5ff;*/
-	margin-top: 4%;
-	font-size: 40px;
+	/!*color: #30a5ff;*!/
+	margin-top: 3%;
+	font-size: 300%;
 	cursor: pointer;
 }
 
@@ -413,36 +509,16 @@ li.sortable-placeholder {
 	background-color: #333;
 	margin: 20px 0 20px 0 ;
 
-/*
+/!*
 	border-color: #30a5ff;
 	border-style: solid;
-	border-width: 40px;*/
+	border-width: 40px;*!/
 }
 
 
 .rfidTable:hover{
 	background-color: #444;
-}
-/*
-table.rfidTablesGrid{
-	border: 5px solid red;
-	background-color: #0000C2;
- }
-
-table.rfidTablesGrid tr{
-
-	border: 5px solid red;
 }*/
-
-table.rfidTableGrid tbody tr td{
-	text-align: center!important;
-	border: none;
-	background-color: transparent;
-}
-
-table.rfidTableGrid{
-	background-color: transparent;
-}
 
 .nestedList ul
 {

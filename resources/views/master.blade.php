@@ -96,7 +96,7 @@
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>
 <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.js') }}"></script>
 <script src="{{ @URL::to('js/baseEffect.js') }}"></script>
-@if(Request::path() == "Menu/Edit")
+@if(Request::path() == "addon/rfid/table")
     <script src="{{ @URL::asset('js/jquery.sortable.js') }}"></script>
     <script src="{{ @URL::asset('js/listener.js') }}"></script>
 @endif
