@@ -40,10 +40,10 @@
                                     {!! Form::label('startDate', "Start Date" ) !!}
                                     @if($errors->has('startDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('startDate', null, array('class' => 'datepicker form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                            {!! Form::text('startDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('startDate', null, array('class' => 'datepicker form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                        {!! Form::text('startDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                     @endif
                                 </div>
 
@@ -51,10 +51,10 @@
                                     {!! Form::label('endDate', "End Date" ) !!}
                                     @if($errors->has('endDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('endDate', null, array('class' => 'datepicker form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                            {!! Form::text('endDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('endDate', null, array('class' => 'datepicker form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                        {!! Form::text('endDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                     @endif
                                 </div>
 
@@ -296,6 +296,14 @@
         });
         $('.bdel').click(function (e) {
             remDisponibility($(this));
+        });
+    </script>
+    <script>
+        $('#employeeSelect').on('change', function (e) {
+            var optionSelected = $("option:selected", this);
+            var valueSelected = this.value;
+            alert(valueSelected);
+
         });
     </script>
 @stop
