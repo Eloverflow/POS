@@ -51,6 +51,8 @@ Route::get('/addon/rfid/table', 'Addons\Rfid\RfidTableController@index');
 /* Start Schedule */
 Route::get('/Schedule', 'POS\ScheduleController@index');
 Route::get('/Schedule/Create', 'POS\ScheduleController@create');
+
+Route::post('/Schedule/AjaxFindDipos', 'POS\ScheduleController@AjaxFindDipos');
 /* End Schedule */
 
 /* Start Punch */

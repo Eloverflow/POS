@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
 use App\Models\Project;
+use App\Models\POS\Schedule;
+use App\Models\POS\Disponibility;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
@@ -151,4 +153,29 @@ class ScheduleController extends Controller
         $view = \View::make('POS.Employee.delete')->with('employee', $employee);
         return $view;
     }
+
+    public function AjaxFindDipos()
+    {
+
+        $dayNumber = \Input::get('dayNumber');
+        $userID = \Input::get('idUser');
+
+        if($userID != -2)
+        {
+            if($userID == -1)
+            {
+                $disponibilities = Disponibility::GetDayDisponibilitiesForAll($dayNumber);
+
+            }
+            else
+            {
+
+            }
+        }
+
+        return response()->json(['status' => 'Success',
+            'row' => $disponibilities->toJson()
+        ]);
+    }
+
 }
