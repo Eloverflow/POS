@@ -4,31 +4,45 @@
 
 @section('content')
     <div class="jumbotron">
-        <h2><a href="{{@URL::to($title)}}">{{ $title }}</a> -> {{ $item->name }}</h2>
-        <form METHOD="POST" action="{{ URL::to($title) }}/{{ $item->slug }}">
+        <?php $path = dirname(Request::path());?>
+        <h2><a href="{{@URL::to($path)}}">{{ $title }}</a></h2>
+        <form METHOD="POST" action="{{ @URL::to(Request::path()) }}">
             <div class="form-group">
-                @foreach($columns as $column)
+                @foreach($tableColumns as $column)
                     <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
-                    <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $item->$column }}">
-                @endforeach
-                @foreach($columnsWith as $columnWith)
-                    <label for="{{ $columnWith }}" >{{ ucwords( str_replace('_', ' ', $columnWith)) }}</label>
-                    <input class="form-control" type="text" id="{{ $columnWith }}" name="{{ $columnWith }}" value="{{ $item->$withName->$columnWith }}">
+                    <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $tableRow->$column }}">
                 @endforeach
 
-                    <?php $test = explode(',', $item->$withName->fields_names) ?>
+                @if( is_array($tableChildRows))
+                    @foreach($tableChildRows as $tableChildRow)
 
-                @foreach($item->$withName->$columnWith as $columnWith)
-                    <label for="{{ $columnWith }}" >{{ ucwords( str_replace('_', ' ', $columnWith)) }}</label>
-                    <input class="form-control" type="text" id="{{ $columnWith }}" name="{{ $columnWith }}" value="{{ $item->$withName->$columnWith }}">
-                @endforeach
+                        @foreach($tableChildColumns as $column)
+                            <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
+                            <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $tableChildRow->$column }}">
+                        @endforeach
+
+                    @endforeach
+                @else
+                    @foreach($tableChildColumns as $column)
+                        <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
+                        <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $tableChildRows->$column }}">
+                    @endforeach
+                @endif
+
+                    <label for="image" >Image</label>
+                    {!! Form::open(array('url'=>'apply/upload','method'=>'POST', 'files'=>true)) !!}
+                    <div class="control-group">
+                        <div class="controls">
+                            {!! Form::file('image') !!}
+                            <p class="errors">{!!$errors->first('image')!!}</p>
+                            @if(Session::has('error'))
+                                <p class="errors">{!! Session::get('error') !!}</p>
+                            @endif
 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             </div>
             <button type="submit" class="btn btn-default">Update</button>
         </form>
-
-        {{ var_dump($item) }}
         <br>
 
         @include('partials.alerts.errors')
@@ -42,12 +56,12 @@
     </div>
     <nav>
         <ul class="pager">
-            @if($previous_item->slug)
-            <li class="previous"><a href="./{{ $previous_item->slug }}"><span aria-hidden="true">&larr;</span> {{ $previous_item->slug }}</a></li>
+            @if($previousTableRow->slug)
+                <li class="previous"><a href="{{@URL::to( $path ) }}/{{ $previousTableRow->slug }}"><span aria-hidden="true">&larr;</span> {{ $previousTableRow->slug }}</a></li>
             @endif
 
-            @if($next_item->slug)
-            <li class="next"><a href="./{{ $next_item->slug }}">{{ $next_item->slug }} <span aria-hidden="true">&rarr;</span></a></li>
+            @if($nextTableRow->slug)
+                <li class="next"><a href="{{@URL::to( $path ) }}/{{ $nextTableRow->slug }}">{{ $nextTableRow->slug }} <span aria-hidden="true">&rarr;</span></a></li>
             @endif
         </ul>
     </nav>

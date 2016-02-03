@@ -28,31 +28,52 @@ class ItemsController extends Controller
 
     public  function edit($slug)
     {
+        $title = 'Items';
 
-        $title = "Items";
-        $columns = array('id', 'name', 'description' );
-        $item = Item::whereSlug($slug)->first();
-        $item::with('itemtype')->get();
+        /*Main table row to retrieve from DB*/
+        $tableRow = Item::whereSlug($slug)->first();
+        /*Main table desired column to display*/
+        $tableColumns = array('name', 'description' );
 
-        $columnsWith = array('type');
-        $withName = 'itemtype';
+        /*Child table name*/
+        $tableChild = "itemtype";
+        /*Child table rows*/
+        $tableChildRows = $tableRow->$tableChild;
+        /*Child table desired column to display*/
+        $tableChildColumns = array('type');
 
-        //columnsField
+        /*Previous and Next */
+        $previousTableRow = Item::findOrNew(($tableRow->id)-1);
+        $nextTableRow = Item::findOrNew(($tableRow->id)+1);
 
-        $next_item = Item::findOrNew(($item->id)+1);
-        $previous_item = Item::findOrNew(($item->id)-1);
-        return view('erp.items.edit',compact('item', 'columns', 'columnsWith', 'withName', 'next_item', 'previous_item', 'title'));
+        return view('erp.items.edit',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
     }
 
 
 
     public  function update($slug, Request $request)
     {
-        $beer = Item::whereSlug($slug)->first();
+        /*Main table row to retrieve from DB*/
+        $tableRow = Item::whereSlug($slug)->first();
+
+        /*Child table name*/
+        $tableChild = "itemtype";
+        /*Child table rows*/
+        $tableChildRows = $tableRow->$tableChild;
 
         $input = $request->all();
 
-        $beer->update($input);
+        $tableRow->update($input);
+
+        if(is_array($tableChildRows)){
+            foreach($tableChildRows as $tableChildRow){
+                $tableChildRow->update($input);
+            }
+        }
+        else
+        {
+            $tableChildRows->update($input);
+        }
 
 
         Session::flash('flash_message', $slug.' successfully updated!');

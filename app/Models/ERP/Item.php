@@ -13,6 +13,8 @@ class Item extends Model
      */
     protected $table = 'items';
 
+    protected $fillable = array('name' ,'description');
+
     public function itemtype()
     {
         return $this->hasOne('App\Models\ERP\ItemType', 'id', 'item_type_id');

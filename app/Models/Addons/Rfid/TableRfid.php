@@ -13,7 +13,7 @@ class TableRfid extends Model
 
 
 
-    public function tableRfidBeer()
+    public function tablerfidbeer()
     {
         return $this->hasMany('App\Models\Addons\Rfid\TableRfidBeer', 'table_flash_card_hw_code', 'flash_card_hw_code');
     }
