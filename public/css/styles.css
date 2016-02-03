@@ -341,39 +341,10 @@ li.sortable-placeholder {
 	color: white;
 }
 
-.panel-rfidTable, .panel-rfidTable .panel{
-	width: 300px;
-}
-
-@media (min-width: 500px) {
-	.panel-rfidTable, .panel-rfidTable .panel{
-		width: 600px;
-	}
-}
-
-@media (min-width: 1000px) {
-	.panel-rfidTable, .panel-rfidTable .panel{
-		width: 900px;
-	}
-}
-
-@media (min-width: 1300px) {
-	.panel-rfidTable, .panel-rfidTable .panel{
-		width: 1200px;
-	}
-}
-
-
-@media (min-width: 1600px) {
-	.panel-rfidTable, .panel-rfidTable .panel{
-		width: 1500px;
-	}
-}
-
 .rfidTable{
 	transition: background-color 0.1s;
 	border-radius: 6px;
-	margin: 40px;
+	margin: 50px;
 	width: 200px;
 	height: 100px;
 	display: inline-block;

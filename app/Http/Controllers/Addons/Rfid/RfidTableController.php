@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Input;
+use Redirect;
+use Session;
 
 class RfidTableController extends Controller
 {
@@ -37,6 +39,36 @@ class RfidTableController extends Controller
             'flash_card_hw_code' => $input['flash_card_hw_code'],
             'name' => $input['name'],
         ]);
+    }
+
+
+    public  function edit($slug)
+    {
+        $itemB4Join = TableRfid::whereSlug($slug)->first();
+        $item = $itemB4Join->with('tableRfidBeer')->get();
+        $title = 'table';
+        $next_item = TableRfid::findOrNew(($itemB4Join->id)+1);
+        $previous_item = TableRfid::findOrNew(($itemB4Join->id)-1);
+
+        $columns = array('name');
+        $columnsWith = array('img_url');
+        $withName = "tableRfidBeer";
+
+
+        return view('addins.rfid.table.edit',compact('item', 'slug', 'title','columns', 'columnsWith', 'withName', 'next_item','previous_item'));
+    }
+
+    public  function update($slug, Request $request)
+    {
+        $item = TableRfid::whereSlug($slug)->first();
+
+        $input = $request->all();
+
+        $item->update($input);
+
+        Session::flash('flash_message', $slug.' successfully updated!');
+
+        return Redirect::back();
     }
 
 }

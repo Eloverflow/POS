@@ -14,7 +14,7 @@ class CreateTableRfidBeersTable extends Migration
     {
         Schema::create('rfid_table_beers', function (Blueprint $table) {
             $table->increments('id');
-            $table->String('flash_card_hw_code')->references('flash_card_hw_code')->on('rfid_tables')->nullable();
+            $table->String('table_flash_card_hw_code')->references('flash_card_hw_code')->on('rfid_tables')->nullable();
             $table->String('img_url');
             $table->timestamps();
         });
