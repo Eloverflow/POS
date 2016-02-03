@@ -6,35 +6,54 @@
         <h2>{{ $title }}</h2>
 
         <div class="row">
-        <div class="col-lg-12" id="rfidTablesGrid">
+        <div class="col-lg-12" >
             <!-- Table Content --->
             <div class="panel well">
 
-            <table>
-            @foreach($items as $item)
+            <table class="table table-bordered rfidTableGrid">
+                <tbody>
+                <tr>
 
-                <td class="rfidTableBorder">
-                    <ul class="rfidTable"  style="cursor: pointer; cursor: hand;" onclick="location.href='{{ strtolower($title) }}/{{ $item->slug }}';">
+                    <?php $i = count($items); $j = 0; ?>
 
-                        @foreach($columns as $column)
-                            <li>{{ucwords( str_replace('_', ' ', $column))}} : {{ $item->$column }}</li>
-                        @endforeach
+                        @for(  $j; $j < $i; $j++)
 
-                    </ul>
+                        @if(($i % 4) == 0)
+                            </tr>
+                            <tr>
 
-                </td>
-            @endforeach
+                        @endif
+
+                        <td class="">
+                            <div class="rfidTableBorder">
+                            <ul class="rfidTable"  style="cursor: pointer; cursor: hand;" onclick="location.href='{{ strtolower($title) }}/{{ $items[$j]->slug }}';">
+
+                                @foreach($columns as $column)
+                                    <li>{{ucwords( str_replace('_', ' ', $column))}} : {{ $items[$j]->$column }}</li>
+                                @endforeach
+
+                            </ul>
+                            </div>
+                        </td>
+                    @endfor
 
 
-                <?php $i = count($items) ?>
-                {{--@for( $i; $i < 20; $i++ )
-                    <td class="rfidTableBorder">
-                        <ul class="rfidTable">
-                            <li class="addTable"><span class="glyphicon glyphicon-plus-sign"></span></li>
-                        </ul>
+                    @for( $i; $i <= $j*2*3 -1; $i++ )
+                                    @if(($i % 4) == 0)
+                            </tr>
+                <tr>
 
-                    </td>
-                @endfor--}}
+                    @endif
+                        <td class="">
+                            <div class="rfidTableBorder">
+                            <ul class="rfidTable">
+                                <li class="addTable"><span class="glyphicon glyphicon-plus-sign"></span></li>
+                            </ul>
+                            </div>
+                        </td>
+                    @endfor
+                </tr>
+                </tbody>
             </table>
         </div>
         </div>

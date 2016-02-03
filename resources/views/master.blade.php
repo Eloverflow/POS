@@ -51,6 +51,7 @@
         <li><a href="{{ URL::to('Employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
         <li><a href="{{ URL::to('Disponibility') }}"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg> Disponibilities</a></li>
         <li><a href="{{ URL::to('Schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> Schedules</a></li>
+        <li><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> RFID Tables</a></li>
         <li role="presentation" class="divider"></li>
         <li><a href="login.html"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
     </ul>
