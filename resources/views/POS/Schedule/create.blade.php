@@ -76,7 +76,7 @@
 
                     <div class="form-group">
                         {!! Form::label('employee', "Employee" ) !!}
-                        <select id="employeeSelect" name="employeeSelect" class="form-control">
+                        <select id="employeeSelect" name="employeeSelect" class="form-control" data-Day="0">
                             <option value="-2"> - Select - </option>
                             <option value="-1">All</option>
                             @foreach ($ViewBag['employees'] as $employee)
@@ -290,6 +290,7 @@
 
 @section("myjsfile")
     <script src="{{ @URL::to('js/disponibilityMultiSelect.js') }}"></script>
+    <script src="{{ @URL::to('js/Disponibilities.js') }}"></script>
     <script>
         $('.badd').click(function (e) {
             addDisponibility($(this));
@@ -297,12 +298,9 @@
         $('.bdel').click(function (e) {
             remDisponibility($(this));
         });
-    </script>
-    <script>
         $('#employeeSelect').on('change', function (e) {
-            var optionSelected = $("option:selected", this);
-            var valueSelected = this.value;
-            alert(valueSelected);
+
+            findDisponibilities(this);
 
         });
     </script>

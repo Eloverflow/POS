@@ -69,5 +69,21 @@ class Disponibility extends Model
             ->where($matches)
             ->get();
     }
+
+    public static function GetDayDisponibilitiesForAll($day_number)
+    {
+        $matches = ['day_number' => $day_number];
+        return \DB::table('day_disponibilities')
+            ->where($matches)
+            ->get();
+    }
+
+    public static function GetDayDisponibilitiesForEmployee($day_number, $idEmployee)
+    {
+        $matches = ['disponibility_id' => $id, 'day_number' => $day_number];
+        return \DB::table('day_disponibilities')
+            ->where($matches)
+            ->get();
+    }
     //
 }
