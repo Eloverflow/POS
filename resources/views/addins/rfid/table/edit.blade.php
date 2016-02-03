@@ -4,18 +4,22 @@
 
 @section('content')
     <div class="jumbotron">
-        <h2><a href="{{@URL::to($title)}}">{{ $title }}</a></h2>
-        <form METHOD="POST" action="{{ @URL::to("addon/rfid/table") }}/{{ $item[0]->slug }}">
+        <?php $path = dirname(Request::path());?>
+        <h2><a href="{{@URL::to($path)}}">{{ $title }}</a></h2>
+        <form METHOD="POST" action="{{ @URL::to(Request::path()) }}">
             <div class="form-group">
-                @foreach($columns as $column)
+                @foreach($tableColumns as $column)
                     <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
-                    <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $item[0]->$column }}">
+                    <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $tableRow->$column }}">
                 @endforeach
 
+                @foreach($tableChildRows as $tableChildRow)
 
-                @foreach($columnsWith as $column)
-                    <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
-                    <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $item->$withName->$column }}">
+                    @foreach($tableChildColumns as $column)
+                        <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
+                        <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $tableChildRow->$column }}">
+                    @endforeach
+
                 @endforeach
 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
@@ -35,12 +39,12 @@
     </div>
     <nav>
         <ul class="pager">
-            @if($previous_item->slug)
-            <li class="previous"><a href="{{@URL::to("addon/rfid/table")}}/{{ $previous_item->slug }}"><span aria-hidden="true">&larr;</span> {{ $previous_item->slug }}</a></li>
+            @if($previousTableRow->slug)
+            <li class="previous"><a href="{{@URL::to( $path ) }}/{{ $previousTableRow->slug }}"><span aria-hidden="true">&larr;</span> {{ $previousTableRow->slug }}</a></li>
             @endif
 
-            @if($next_item->slug)
-            <li class="next"><a href="{{@URL::to("addon/rfid/table")}}/{{ $next_item->slug }}">{{ $next_item->slug }} <span aria-hidden="true">&rarr;</span></a></li>
+            @if($nextTableRow->slug)
+            <li class="next"><a href="{{@URL::to( $path ) }}/{{ $nextTableRow->slug }}">{{ $nextTableRow->slug }} <span aria-hidden="true">&rarr;</span></a></li>
             @endif
         </ul>
     </nav>

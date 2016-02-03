@@ -44,27 +44,53 @@ class RfidTableController extends Controller
 
     public  function edit($slug)
     {
-        $itemB4Join = TableRfid::whereSlug($slug)->first();
-        $item = $itemB4Join->with('tableRfidBeer')->get();
+        /*Page Title*/
         $title = 'table';
-        $next_item = TableRfid::findOrNew(($itemB4Join->id)+1);
-        $previous_item = TableRfid::findOrNew(($itemB4Join->id)-1);
 
-        $columns = array('name');
-        $columnsWith = array('img_url');
-        $withName = "tableRfidBeer";
+        /*Main table row to retrieve from DB*/
+        $tableRow = TableRfid::whereSlug($slug)->first();
+        /*Main table desired column to display*/
+        $tableColumns = array('name');
+
+        /*Child table name*/
+        $tableChild = "tableRfidbeer";
+        /*Child table rows*/
+        $tableChildRows = $tableRow->$tableChild;
+        /*Child table desired column to display*/
+        $tableChildColumns = array('img_url');
+
+        /*Previous and Next */
+        $previousTableRow = TableRfid::findOrNew(($tableRow->id)-1);
+        $nextTableRow = TableRfid::findOrNew(($tableRow->id)+1);
 
 
-        return view('addins.rfid.table.edit',compact('item', 'slug', 'title','columns', 'columnsWith', 'withName', 'next_item','previous_item'));
+        return view('addins.rfid.table.edit',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
     }
 
     public  function update($slug, Request $request)
     {
-        $item = TableRfid::whereSlug($slug)->first();
+        /*Main table row to retrieve from DB*/
+        $tableRow = TableRfid::whereSlug($slug)->first();
+
+        /*Child table name*/
+        $tableChild = "tableRfidbeer";
+        /*Child table rows*/
+        $tableChildRows = $tableRow->$tableChild;
 
         $input = $request->all();
 
-        $item->update($input);
+        $tableRow->update($input);
+
+        if(is_array($tableChildRows)){
+            foreach($tableChildRows as $tableChildRow){
+                $tableChildRow->update($input);
+            }
+        }
+        else
+        {
+            $tableChildRows->update($input);
+        }
+
 
         Session::flash('flash_message', $slug.' successfully updated!');
 
