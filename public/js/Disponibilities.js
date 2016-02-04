@@ -7,7 +7,10 @@ function findDisponibilities($lethis) {
 
     var optionSelected = $("option:selected", $lethis);
     var $idUser = $lethis.value;
-    var $selectedDayNumber = $lethis.data("day")
+    var $selectedDayNumber = "";
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    $theParent  = $($lethis).data("day");
+    console.log($theParent);
     //alert(valueSelected);
 
     $.ajax({
