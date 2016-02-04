@@ -15,6 +15,7 @@ class CreateTableRfidsTable extends Migration
         Schema::create('rfid_tables', function (Blueprint $table) {
             $table->increments('id');
             $table->String('flash_card_hw_code');
+            $table->String('items_id')->references('id')->on('items')->nullable();
             $table->String('name')->nullable();
             $table->String('description')->nullable();
             $table->String('slug')->nullable();
