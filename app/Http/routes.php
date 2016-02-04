@@ -49,6 +49,7 @@ Route::post('/addon/rfid/checkRequest', 'Addons\Rfid\RfidRequestController@check
 Route::get('/addon/rfid/table', 'Addons\Rfid\RfidTableController@index');
 Route::get('/addon/rfid/table/{slug}', 'Addons\Rfid\RfidTableController@edit');
 Route::post('/addon/rfid/table/{slug}', 'Addons\Rfid\RfidTableController@update');
+Route::post('/addon/rfid/beers', 'Addons\Rfid\RfidTableController@getBeers');
 
 /* Start Schedule */
 Route::get('/Schedule', 'POS\ScheduleController@index');

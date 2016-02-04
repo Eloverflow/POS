@@ -28,10 +28,7 @@ class RfidRequestController extends Controller
 
     protected function create(Request $request)
     {
-
         $input = $request->all();
-
-        var_dump($input);
 
         return TableRfidRequest::create([
             'flash_card_hw_code' => $input['flash_card_hw_code'],
@@ -41,7 +38,6 @@ class RfidRequestController extends Controller
 
     protected function checkTableRequest(Request $request)
     {
-
         $input = $request->all();
 
         var_dump($input);
