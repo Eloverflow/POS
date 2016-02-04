@@ -6,7 +6,7 @@
     <div class="jumbotron">
         <?php $path = dirname(Request::path());?>
         <h2><a href="{{@URL::to($path)}}">{{ $title }}</a></h2>
-        <form METHOD="POST" action="{{ @URL::to(Request::path()) }}">
+            {!! Form::open(array('url' => @URL::to(Request::path()),'files' => true)) !!}
             <div class="form-group">
                 @foreach($tableColumns as $column)
                     <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
@@ -29,15 +29,13 @@
                     @endforeach
                 @endif
 
-                    <label for="image" >Image</label>
-                    {!! Form::open(array('url'=>'apply/upload','method'=>'POST', 'files'=>true)) !!}
-                    <div class="control-group">
-                        <div class="controls">
+                    <label for="image" class="secure">Upload form</label>
                             {!! Form::file('image') !!}
                             <p class="errors">{!!$errors->first('image')!!}</p>
                             @if(Session::has('error'))
                                 <p class="errors">{!! Session::get('error') !!}</p>
                             @endif
+                    <div id="success"> </div>
 
                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
             </div>

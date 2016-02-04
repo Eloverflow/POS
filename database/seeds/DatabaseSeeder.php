@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
         $this->call(InventoriesTableSeeder::class);
         $this->call(RfidTableSeeder::class);
         $this->call(RfidTableRequestSeeder::class);
-        $this->call(RfidTableBeerSeeder::class);
+        //$this->call(RfidTableBeerSeeder::class);
 
         $this->call(EmployeeTitleSeeder::class);
         $this->call(EmployeeSeeder::class);
@@ -183,10 +183,31 @@ class ItemsTableSeeder extends Seeder {
         DB::table('items')->delete();
 
         /* The item type will define their item_field_name  */
-        Item::create(['item_type_id' => '1', 'item_field_list_id' => '1', 'name' => 'Keith', 'slug' => 'keith']);
-        Item::create(['item_type_id' => '1', 'item_field_list_id' => '2', 'name' => 'Blue', 'slug' => 'blue']);
-        Item::create(['item_type_id' => '1', 'item_field_list_id' => '3', 'name' => 'Coorslight', 'slug' => 'coorslight']);
-        Item::create(['item_type_id' => '2', 'item_field_list_id' => '4', 'name' => 'MyDrinkName', 'slug' => 'mydrinkname']);
+        Item::create([
+            'item_type_id' => '1',
+            'item_field_list_id' => '1',
+            'name' => 'Keith',
+            'description' => 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+            'slug' => 'keith']);
+
+        Item::create([
+            'item_type_id' => '1',
+            'item_field_list_id' => '2',
+            'name' => 'Blue', 'description' => 'Tous mes sens sont émus d\'une volupté douce et pure, comme l\'haleine du matin dans cette saison délicieuse. Seul, au milieu d\'une contrée qui semble fait exprès pour un coeur tel que mien.',
+            'slug' => 'blue']);
+
+        Item::create(['item_type_id' => '1',
+            'item_field_list_id' => '3',
+            'name' => 'Coorslight',
+            'description' => 'Voyez ce jeu exquis wallon, de graphie en kit mais bref. Portez ce vieux whisky au juge blond qui fume sur son île intérieure, à côté de l\'alcôve ovoïde, où les bûches se consument dans l\'âtre.',
+            'slug' => 'coorslight']);
+
+        Item::create([
+            'item_type_id' => '2',
+            'item_field_list_id' => '4',
+            'name' => 'MyDrinkName',
+            'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ',
+            'slug' => 'mydrinkname']);
 
         $this->command->info('Items table seeded!');
     }

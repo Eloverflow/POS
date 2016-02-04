@@ -98,6 +98,7 @@
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart.js') }}"></script>
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>
 <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.js') }}"></script>
+<script src="{{ @URL::asset('js/jquery.nicescroll.min.js') }}"></script>
 <script src="{{ @URL::to('js/baseEffect.js') }}"></script>
 @if(Request::path() == "addon/rfid/table")
     <script src="{{ @URL::asset('js/jquery.sortable.js') }}"></script>

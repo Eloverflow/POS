@@ -527,3 +527,39 @@ li.addTable .glyphicon{
 	border-bottom: 1px solid #fff;
 	font-weight: normal;
 }
+
+.tableChoiceList{
+	visibility: hidden;
+	overflow-y: hidden;
+	height: 140px;
+	margin-bottom: 0;
+}
+
+.tableChoice{
+	transition: color 0.5s, background-color 0.5s;
+	cursor: pointer;
+}
+
+.tableChoiceList a.list-group-item{
+	height: 140px;
+}
+
+::-webkit-scrollbar {
+	width: 12px;
+}
+
+::-webkit-scrollbar-track {
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+	border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+	border-radius: 10px;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+}
+
+.tableChoiceListArrow{
+	padding: 0;
+	text-align: center;
+	cursor: pointer;
+}

@@ -7,9 +7,12 @@ use App\Http\Requests;
 use App\Models\Beer;
 use App\Models\ERP\Item;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\File;
 use Input;
+use Intervention\Image\Facades\Image;
 use Redirect;
 use Session;
+use Validator;
 
 class ItemsController extends Controller
 {
@@ -74,6 +77,27 @@ class ItemsController extends Controller
         {
             $tableChildRows->update($input);
         }
+
+        // resizing an uploaded file/*
+
+        /*Image::make(Input::file('image'))->resize(300, 200)->save('foo.jpg');*/
+
+/*
+        $file = Input::file('image');
+        $filename = "test";
+        Image::make($file->getRealPath())->resize('200','200')->save($filename);*/
+
+
+
+        $image = Input::file('image');
+        $filename  = time() . '.' . $image->getClientOriginalExtension();
+/*
+        File::exists(storage_path('img/item/' . $filename)) or File::makeDirectory(storage_path('img/item/' . $filename));*/
+
+        $path = public_path('img/item/' . $filename);
+        Image::make($image->getRealPath())->resize(468, 249)->save($path);
+        /*$product->image = 'img/item/'.$filename;
+        $product->save();*/
 
 
         Session::flash('flash_message', $slug.' successfully updated!');
