@@ -23,7 +23,7 @@
                                     <ul style="cursor: pointer; cursor: hand;" onclick="location.href='{{ strtolower($title) }}/{{ $item->slug }}';">
 
                                         @foreach($columns as $column)
-                                            <li>{{ucwords( str_replace('_', ' ', $column))}} : {{ $item->$column }}</li>
+                                            <li><span class="itemColumnTitle">{{ucwords( str_replace('_', ' ', $column))}} </span> @if( strlen($item->$column) > 10 || strlen($column) > 10)<br> @else : @endif {{ $item->$column }}</li>
                                         @endforeach
 
                                     </ul>
