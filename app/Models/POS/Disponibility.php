@@ -74,15 +74,25 @@ class Disponibility extends Model
     {
         $matches = ['day_number' => $day_number];
         return \DB::table('day_disponibilities')
+            ->join('disponibilities', 'day_disponibilities.disponibility_id', '=', 'disponibilities.id')
+            ->join('employees', 'disponibilities.employee_id', '=', 'employees.id')
+            ->select(\DB::raw('disponibility_id, firstName, lastName, phone, startTime, endTime'))
             ->where($matches)
+            ->orderBy('firstName', 'desc')
+            ->orderBy('lastName', 'desc')
             ->get();
     }
 
     public static function GetDayDisponibilitiesForEmployee($day_number, $idEmployee)
     {
-        $matches = ['disponibility_id' => $id, 'day_number' => $day_number];
+        $matches = ['employee_id' => $idEmployee, 'day_number' => $day_number];
+
         return \DB::table('day_disponibilities')
+            ->join('disponibilities', 'day_disponibilities.disponibility_id', '=', 'disponibilities.id')
+            ->select(\DB::raw('disponibility_id, firstName, lastName, phone, startTime, endTime'))
+            ->join('employees', 'disponibilities.employee_id', '=', 'employees.id')
             ->where($matches)
+            ->orderBy('firstName', 'desc')
             ->get();
     }
     //
