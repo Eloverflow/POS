@@ -5,6 +5,7 @@ namespace App\Http\Controllers\POS;
 use App\Http\Controllers\Controller;
 use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
+use App\Models\POS\Punch;
 use App\Models\Project;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\DB;
@@ -152,22 +153,31 @@ class PunchController extends Controller
 
     public function ajaxPunchEmployee()
     {
-        $employee = EmployeeAssignedProject::where(['project_id' => \Input::get('idProject'), 'employee_id' => \Input::get('idEmployee')])->first();
-        if (count($employee)) {
+        $employeeId =  \Input::get('EmployeeNumber');
 
-            return response()->json(['status' => 'Error',
-                'message' =>  'The employee ' . \Input::get('emplName') . ' has been already assigned to the project !']);
+        $validEmplId = 100 - $employeeId;
+        $employee = Punch::GetLatestPunch($employeeId);
+        //var_dump($employee);
+
+        if (count($employee)) {
+            if($employee->inout == "in"){
+                Punch::create(['inout' => 'out', 'employee_id' => $employeeId]);
+                return response()->json(['status' => 'Success',
+                    'message' =>  'The employee has been successfully punched out !'
+                ]);
+            }
+            else if($employee->inout == "out") {
+                Punch::create(['inout' => 'in', 'employee_id' => $employeeId]);
+                return response()->json(['status' => 'Success',
+                    'message' =>  'The employee has been successfully punched in !'
+                ]);
+            }
+
         }
         else{
-            EmployeeAssignedProject::create([
-                'project_id' => \Input::get('idProject'),
-                'employee_id' => \Input::get('idEmployee')
-            ]);
-            $empl = Employee::getById(\Input::get('idEmployee'));
-            return response()->json(['status' => 'Success',
-                'message' =>  'The employee ' . \Input::get('emplName') . ' has been successfully assigned to the project !',
-                'row' => "<tr class=\"newrow\"><td>" . $empl->firstName . "</td><td>" . $empl->lastName . "</td><td>" . $empl->name . "</td><td>" . $empl->salary . "</td></tr>"
-            ]);
+            return response()->json(['status' => 'Error',
+                'message' =>  'This employee doesnt exist !']);
+
         }
 
     }

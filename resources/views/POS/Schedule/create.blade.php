@@ -88,25 +88,7 @@
                     </div>
 
                     <div id="sunNestedList" class="nestedList">
-                        <ul>
-                            <li><a href="#">Jean</a>
-                                <ul>
-                                    <li><a href="#">10h To 20h</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Isael</a>
-                                <ul>
-                                    <li><a href="#">8h To 9h</a></li>
-                                    <li><a href="#">12h To 14h</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Kevin</a>
-                                <ul>
-                                    <li><a href="#">18h To 21h</a></li>
-                                    <li><a href="#">22h To 2h</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+
                     </div>
 
                     {!! Form::label('startTime', "Start Time" ) !!}
@@ -134,6 +116,20 @@
                     Monday
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        {!! Form::label('employee', "Employee" ) !!}
+                        <select id="employeeSelect" name="employeeSelect" class="form-control" data-Day="1">
+                            <option value="-2"> - Select - </option>
+                            <option value="-1">All</option>
+                            @foreach ($ViewBag['employees'] as $employee)
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div id="monNestedList" class="nestedList">
+
+                    </div>
                     {!! Form::label('startTime', "Start Time" ) !!}
                     {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
 
@@ -160,6 +156,20 @@
                     Tuesday
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        {!! Form::label('employee', "Employee" ) !!}
+                        <select id="employeeSelect" name="employeeSelect" class="form-control" data-Day="2">
+                            <option value="-2"> - Select - </option>
+                            <option value="-1">All</option>
+                            @foreach ($ViewBag['employees'] as $employee)
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div id="tueNestedList" class="nestedList">
+
+                    </div>
                     {!! Form::label('startTime', "Start Time" ) !!}
                     {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
 
@@ -187,6 +197,20 @@
                     Wednesday
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        {!! Form::label('employee', "Employee" ) !!}
+                        <select id="employeeSelect" name="employeeSelect" class="form-control" data-Day="3">
+                            <option value="-2"> - Select - </option>
+                            <option value="-1">All</option>
+                            @foreach ($ViewBag['employees'] as $employee)
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div id="wedNestedList" class="nestedList">
+
+                    </div>
                     {!! Form::label('startTime', "Start Time" ) !!}
                     {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
 
@@ -212,6 +236,20 @@
                     Thursday
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        {!! Form::label('employee', "Employee" ) !!}
+                        <select id="employeeSelect" name="employeeSelect" class="form-control" data-Day="4">
+                            <option value="-2"> - Select - </option>
+                            <option value="-1">All</option>
+                            @foreach ($ViewBag['employees'] as $employee)
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div id="thuNestedList" class="nestedList">
+
+                    </div>
                     {!! Form::label('startTime', "Start Time" ) !!}
                     {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
 
@@ -237,6 +275,20 @@
                     Friday
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        {!! Form::label('employee', "Employee" ) !!}
+                        <select id="employeeSelect" name="employeeSelect" class="form-control" data-Day="5">
+                            <option value="-2"> - Select - </option>
+                            <option value="-1">All</option>
+                            @foreach ($ViewBag['employees'] as $employee)
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div id="friNestedList" class="nestedList">
+
+                    </div>
                     {!! Form::label('startTime', "Start Time" ) !!}
                     {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
 
@@ -264,6 +316,38 @@
                     Saturday
                 </div>
                 <div class="panel-body">
+                    <div class="form-group">
+                        {!! Form::label('employee', "Employee" ) !!}
+                        <select id="employeeSelect" name="employeeSelect" class="form-control" data-Day="6">
+                            <option value="-2"> - Select - </option>
+                            <option value="-1">All</option>
+                            @foreach ($ViewBag['employees'] as $employee)
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div id="satNestedList" class="nestedList">
+                        <ul>
+                            <li><a href="#">Jean</a>
+                                <ul>
+                                    <li><a href="#">10h To 20h</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Isael</a>
+                                <ul>
+                                    <li><a href="#">8h To 9h</a></li>
+                                    <li><a href="#">12h To 14h</a></li>
+                                </ul>
+                            </li>
+                            <li><a href="#">Kevin</a>
+                                <ul>
+                                    <li><a href="#">18h To 21h</a></li>
+                                    <li><a href="#">22h To 2h</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
                     {!! Form::label('startTime', "Start Time" ) !!}
                     {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
 
@@ -300,10 +384,16 @@
         $('.bdel').click(function (e) {
             remDisponibility($(this));
         });
-        $('#employeeSelect').on('change', function (e) {
+        $('select[id^=employeeSelect]').on('change', function (e) {
 
-            findDisponibilities(this);
+            var optionSelected = $("option:selected", this);
+            var $idSelected = this.value;
+
+            if($idSelected != -2) {
+                findDisponibilities(this);
+            }
 
         });
+
     </script>
 @stop

@@ -39,7 +39,7 @@ Route::get('/Employee/Delete/{id}', 'POS\EmployeeController@delete');
 Route::post('/Employee/PartialDelete', 'POS\EmployeeController@ajaxPartDelete');
 Route::post('/Employee/CompleteDelete', 'POS\EmployeeController@ajaxCompDelete');
 
-Route::post('/Employee/Punch', 'POS\EmployeeController@ajaxPunchEmployee');
+Route::post('/Employee/Punch', 'POS\PunchController@ajaxPunchEmployee');
 /* End Employee */
 
 Route::get('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@index');
@@ -54,7 +54,7 @@ Route::post('/addon/rfid/table/{slug}', 'Addons\Rfid\RfidTableController@update'
 Route::get('/Schedule', 'POS\ScheduleController@index');
 Route::get('/Schedule/Create', 'POS\ScheduleController@create');
 
-Route::post('/Schedule/AjaxFindDipos', 'POS\ScheduleController@AjaxFindDipos');
+Route::post('/Schedule/AjaxFindDispos', 'POS\ScheduleController@AjaxFindDispos');
 /* End Schedule */
 
 /* Start Punch */

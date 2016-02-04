@@ -14,8 +14,9 @@ class CreatePunchesTable extends Migration
     {
         Schema::create('punches', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('punch_in_id')->unsigned();
-            $table->foreign('punch_in_id')->references('id')->on('punches');
+            $table->string('inout');
+            $table->integer('employee_id')->unsigned();
+            $table->foreign('employee_id')->references('id')->on('employees');
             $table->timestamps();
         });
     }

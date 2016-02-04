@@ -3,8 +3,9 @@
  */
 
 function punchEmployee($lethis) {
-    var $employeeNumber = $('#EmployeeNumber').val();
-    var $selectedEmployeeText = $('#EmployeeNumber').text();
+
+    var $selectedEmployeeText = $('#EmployeeNumber').val();
+
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
     $.ajax({
@@ -12,10 +13,11 @@ function punchEmployee($lethis) {
         type: 'POST',
         data: {
             _token: CSRF_TOKEN,
-            EmployeeNumber: $employeeNumber
+            EmployeeNumber: $selectedEmployeeText
         },
         dataType: 'JSON',
         success: function (data) {
+            ///console.log(data);
             if (data["status"] == "Error") {
                 $('#displayMessage').html(getErrorMessage(data["message"]));
             }

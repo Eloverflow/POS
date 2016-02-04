@@ -154,28 +154,27 @@ class ScheduleController extends Controller
         return $view;
     }
 
-    public function AjaxFindDipos()
+    public function AjaxFindDispos()
     {
 
         $dayNumber = \Input::get('dayNumber');
-        $userID = \Input::get('idUser');
+        $idEmployee = \Input::get('idEmployee');
 
-        if($userID != -2)
+        if($idEmployee != -2) // -2 represente le "Select" de la Select Option
         {
-            if($userID == -1)
+            if($idEmployee == -1) // -1 represente le "All" de la Select Option
             {
                 $disponibilities = Disponibility::GetDayDisponibilitiesForAll($dayNumber);
 
             }
             else
             {
-
+                // Evidemment, un employee a ete selectionne
+                $disponibilities = Disponibility::GetDayDisponibilitiesForEmployee($dayNumber, $idEmployee);
             }
         }
 
-        return response()->json(['status' => 'Success',
-            'row' => $disponibilities->toJson()
-        ]);
+        return response()->json(json_encode($disponibilities));
     }
 
 }

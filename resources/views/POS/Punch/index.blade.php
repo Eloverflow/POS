@@ -29,7 +29,7 @@
                         <input id="EmployeeNumber" class="form-control" placeholder="Employee Number Here" name="employeeNumber" type="text">
                     </div>
                     <div class="form-group">
-                        <a id="punch" class="btn btn-primary pull-right" href="{{ @URL::to('/Punch') }}"> Punch </a>
+                        <a id="punch" class="btn btn-primary pull-right" href="#"> Punch </a>
                     </div>
                 </div>
             </div>
@@ -41,11 +41,9 @@
     <script src="{{ @URL::to('js/utils.js') }}"></script>
     <script src="{{ @URL::to('js/punchEmployee.js') }}"></script>
     <script>
-        window.onload = function() {
-            $('#punch').click(function (e) {
-                punchEmployee($(this));
-            });
-        }
+        $('#punch').click(function (e) {
+            punchEmployee($(this));
+        });
     </script>
     <script>
         (function () {
