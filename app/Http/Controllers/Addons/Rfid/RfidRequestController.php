@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Addons\Rfid;
 
 use App\Models\Addons\Rfid\TableRfidRequest;
+use DateTime;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -28,6 +29,7 @@ class RfidRequestController extends Controller
 
     protected function create(Request $request)
     {
+
         $input = $request->all();
 
         return TableRfidRequest::create([
@@ -38,11 +40,34 @@ class RfidRequestController extends Controller
 
     protected function checkTableRequest(Request $request)
     {
+
+        $result = "No scan request found in the last 10 sec for this rfid table";
         $input = $request->all();
 
-        var_dump($input);
+        /*var_dump($input);*/
 
-        return TableRfidRequest::whereId($input['flash_card_hw_code'])->last();
+        $lastRequest = TableRfidRequest::where('flash_card_hw_code', $input['flash_card_hw_code'])
+            ->orderBy('created_at', 'desc')
+            ->take(1)
+            ->get();
+
+        $currentDate = new DateTime(date('Y-m-d H:i:s'));
+
+        $requestDate = new DateTime($lastRequest[0]['created_at']);
+
+        $interval =  $currentDate->diff($requestDate);
+        /* We also need to verify the time since the last request at this table to avoid double order*/
+
+       /* echo $interval->format('%Y%M%D%H%I%S');*/
+
+        if($interval->format('%Y%M%D%H%I%S') < 10){
+            $result = $lastRequest;
+
+            /*Here we do the request to unluck the beer*/
+        }
+
+        return $result;
     }
 }
+
 
