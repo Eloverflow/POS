@@ -14,6 +14,6 @@ class VerifyCsrfToken extends BaseVerifier
     protected $except = [
         //
         'addon/*',
-        'Schedule/AjaxFindDispos',
+        'Schedule/*',
     ];
 }
