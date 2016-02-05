@@ -15,46 +15,79 @@ $('.datepickerInput').datepicker({
     startDate: '-3d'
 });
 
-$('.tableChoiceList').slideUp(0);
-$('.tableChoiceList').css('visibility', 'visible');
-$('.tableChoiceList').slideDown(500);
 
-$('.tableChoiceListArrow').click(function(){
-        if($('.tableChoiceListArrow').html() == '<span class="glyphicon glyphicon-chevron-down"></span>'){
-            autoHeightAnimate($('.tableChoiceList'), 1000);
+var tableItaration = 1;
+
+
+while(document.getElementById('tableChoiceList'+tableItaration) !=null){
+
+    var currentTableChoiceList = $('#tableChoiceList'+tableItaration);
+    var currentTableChoiceListArrow = $('#tableChoiceListArrow'+tableItaration);
+    var currentTableChoiceActive = $('.tableChoice.choiceList'+tableItaration+'.active');
+    var allCurrentTableChoice = $('.tableChoice.choiceList'+tableItaration);
+
+    currentTableChoiceList.slideUp(0);
+    currentTableChoiceList.css('visibility', 'visible');
+    currentTableChoiceList.slideDown(500);
+
+    arrowClick(currentTableChoiceList, currentTableChoiceListArrow, tableItaration);
+
+    choiceClick(allCurrentTableChoice, tableItaration);
+
+    currentTableChoiceList.prepend(currentTableChoiceActive);
+
+    tableItaration++;
+}
+
+function choiceClick(allCurrentTableChoice, tableItaration){
+    allCurrentTableChoice.click(function(){
+
+        var currentTableChoiceActive = $('.tableChoice.choiceList'+tableItaration+'.active');
+
+        currentTableChoiceActive.removeClass("active");
+
+        this.className = this.className + " active";
+
+        $('.input'+tableItaration).attr("value", this.id);
+
+    });
+
+}
+
+
+function arrowClick(currentTableChoiceList, currentTableChoiceListArrow, tableItaration){
+    currentTableChoiceListArrow.click(function() {
+
+
+        var currentTableChoiceActive = $('.tableChoice.choiceList'+tableItaration+'.active');
+
+
+        if(currentTableChoiceListArrow.html() == '<span class="glyphicon glyphicon-chevron-down"></span>'){
+            autoHeightAnimate(currentTableChoiceList, 1000);
 
             setTimeout(function() { pageScroll.resize(); }, 800);
 
-            $('.tableChoiceListArrow').html('<span class="glyphicon glyphicon-chevron-up"></span>');
+            currentTableChoiceListArrow.html('<span class="glyphicon glyphicon-chevron-up"></span>');
 
         }else{
 
-            var selected = $('.tableChoice.active');
-            selected.delay(100).slideUp(600);
+            currentTableChoiceActive.delay(100).slideUp(600);
 
 
-            setTimeout(function() {$('.tableChoiceList').prepend(selected); }, 700);
+            setTimeout(function() {currentTableChoiceList.prepend(currentTableChoiceActive); }, 700);
 
-            selected.slideDown(300);
+            currentTableChoiceActive.slideDown(300);
 
 
-            $('.tableChoiceList').animate({height: 140 }, 1000);
+            currentTableChoiceList.animate({height: 140 }, 1000);
             pageScroll.resize();
-            $('.tableChoiceListArrow').html('<span class="glyphicon glyphicon-chevron-down"></span>');
+            currentTableChoiceListArrow.html('<span class="glyphicon glyphicon-chevron-down"></span>');
         }
-    }
-);
+    });
+
+}
 
 
-
-$('.tableChoice').click(function(){
-
-    $('.tableChoice').removeClass("active");
-
-    this.className = this.className + " active";
-
-
-});
 
 
 /*

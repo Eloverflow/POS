@@ -234,7 +234,7 @@ class RfidTableSeeder extends Seeder {
     {
         DB::table('rfid_tables')->delete();
 
-        TableRfid::create(['flash_card_hw_code' => '1', 'name' => 'Poste 1', 'description' => '100', 'slug' => 'poste1']);
+        TableRfid::create(['flash_card_hw_code' => 'b8:27:eb:d7:b7:7b', 'name' => 'Poste 1', 'description' => '100', 'beer1_item_id' => '2', 'slug' => 'poste1']);
         TableRfid::create(['flash_card_hw_code' => '2', 'name' => 'Poste 2', 'description' => '50', 'slug' => 'poste2']);
         TableRfid::create(['flash_card_hw_code' => '3', 'name' => 'Poste 3', 'description' => '50', 'slug' => 'poste3']);
         TableRfid::create(['flash_card_hw_code' => '4', 'name' => 'Poste 4', 'description' => '50', 'slug' => 'poste4']);

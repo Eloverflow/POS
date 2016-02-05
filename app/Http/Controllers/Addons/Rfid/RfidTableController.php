@@ -54,12 +54,27 @@ class RfidTableController extends Controller
         $tableColumns = array('name');
 
 
-        $tableChoiceList = Item::all();
+        $tableChoiceListTable = Item::all();
         /*select all where type = beer*/
 
-
+        $tableChoiceListTitle = "Beer 1";
+        $tableChoiceListDBColumn = "beer1_item_id";
         $tableChoiceListTitleColumn = "name";
         $tableChoiceListContentColumn = "description";
+
+        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
+
+
+        $tableChoiceListTitle = "Beer 2";
+        $tableChoiceListDBColumn = "beer2_item_id";
+        $tableChoiceListTitleColumn = "name";
+        $tableChoiceListContentColumn = "description";
+
+        $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
+
+
+
+        $tableChoiceLists = array($tableChoiceList1, $tableChoiceList2);
 
         /*Child table name
         $tableChild = "tableRfidbeer";
@@ -73,10 +88,10 @@ class RfidTableController extends Controller
         $nextTableRow = TableRfid::findOrNew(($tableRow->id)+1);
 
 
-        return view('addins.rfid.table.edit',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow', 'tableChoiceList','tableChoiceListTitleColumn', 'tableChoiceListContentColumn'));
+        return view('addins.rfid.table.edit',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow', 'tableChoiceLists'));
     }
 
-    public  function update($slug, Request $request)
+    public function update($slug, Request $request)
     {
         /*Main table row to retrieve from DB*/
         $tableRow = TableRfid::whereSlug($slug)->first();
@@ -108,6 +123,19 @@ class RfidTableController extends Controller
         Session::flash('flash_message', $slug.' successfully updated!');
 
         return Redirect::back();
+    }
+
+    public function getBeers(Request $request)
+    {
+        $input = $request->all();
+
+        $table = TableRfid::where('flash_card_hw_code', '=', $input['flash_card_hw_code'])->first();
+
+        $beers = array('beer1' => $table->beer1, 'beer2' => $table->beer2);
+
+        Return $beers;
+
+        /*return Response::make($content)->withCookie($cookie);*/
     }
 
 }
