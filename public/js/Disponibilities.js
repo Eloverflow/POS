@@ -9,7 +9,6 @@ function findDisponibilities($lethis) {
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     $DayNumber  = $($lethis).data("day");
 
-
     $.ajax({
         url: '/Schedule/AjaxFindDispos',
         type: 'POST',
@@ -49,40 +48,31 @@ function findDisponibilities($lethis) {
 
                 }
                 $("#" + $nestedListName ).empty();
-                console.log(data);
                 var validJsonData = JSON.parse(data);
-                console.log(validJsonData[0].day)
-                //console.log(penis);
-                //$validJsonData = JSON.parse($JsonData);
                 var list = $("#" + $nestedListName).append('<ul></ul>').find('ul');
-                //alert($validJsonData.length)
+
 
                 var lastPerson = "";
 
-
-                //li.appendChild('<a href="#"></a>');
-                var textnode = document.createTextNode("Water");
+                var current = '';
+                var personCounter = -1;
                 for (var i = 0; i < validJsonData.length; i++) {
-                    //var counter = data.counters[i];
 
                     var currentPerson = validJsonData[i].firstName + " " + validJsonData[i].lastName;
-                    //var current = '';
 
                     if(lastPerson != currentPerson ){
-                        current = list.append('<li><a href="#">' + currentPerson + '</a><ul></ul>').find('ul');
+
+                        personCounter++;
+                        current = list.append('<li><a href="#">' + currentPerson + '</a><ul></ul>').find('ul:eq(' + personCounter + ')');
 
                         current.append('<li><a href="#">' + validJsonData[i].startTime + ' To ' + validJsonData[i].endTime + '</a></li>');
                     }
                     else{
-                        //current = list.append('<li><a href="#">' + currentPerson + '</a><ul></ul>').find('ul');
                         current.append('<li><a href="#">' + validJsonData[i].startTime + ' To ' + validJsonData[i].endTime + '</a></li>');
                     }
 
                     lastPerson = currentPerson;
-
                 }
-
-                console.log(list);
             }
         }
     });
