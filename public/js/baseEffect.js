@@ -4,6 +4,7 @@
 
 
 var pageScroll = false;
+setTimeout(function() { pageScroll.resize(); }, 500);
 
 $('#contentPanel').hide(0);
 $('#contentPanel').css('visibility', 'visible');
