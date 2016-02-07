@@ -76,7 +76,7 @@ class Disponibility extends Model
         return \DB::table('day_disponibilities')
             ->join('disponibilities', 'day_disponibilities.disponibility_id', '=', 'disponibilities.id')
             ->join('employees', 'disponibilities.employee_id', '=', 'employees.id')
-            ->select(\DB::raw('disponibility_id, firstName, lastName, phone, startTime, endTime'))
+            ->select(\DB::raw("disponibility_id, firstName, lastName, phone, date_format(startTime, '%H:%i') as startTime, date_format(endTime, '%H:%i') as endTime"))
             ->where($matches)
             ->orderBy('firstName', 'desc')
             ->orderBy('lastName', 'desc')
@@ -89,7 +89,7 @@ class Disponibility extends Model
 
         return \DB::table('day_disponibilities')
             ->join('disponibilities', 'day_disponibilities.disponibility_id', '=', 'disponibilities.id')
-            ->select(\DB::raw('disponibility_id, firstName, lastName, phone, startTime, endTime'))
+            ->select(\DB::raw("disponibility_id, firstName, lastName, phone, date_format(startTime, '%H:%i') as startTime, date_format(endTime, '%H:%i') as endTime"))
             ->join('employees', 'disponibilities.employee_id', '=', 'employees.id')
             ->where($matches)
             ->orderBy('firstName', 'desc')

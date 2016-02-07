@@ -153,8 +153,8 @@ class DisponibilityController extends Controller
                 Day_Disponibilities::create([
                     "disponibility_id" => $disponiblity->id,
                     "day_number" => 0,
-                    "startTime" => $jsonObj["StartTime"] . ":00:00",
-                    "endTime" => $jsonObj["EndTime"] . ":00:00"
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
                 ]);
             }
 

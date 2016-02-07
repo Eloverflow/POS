@@ -139,6 +139,7 @@ class EmployeeController extends Controller
                 'hireDate' => \Input::get('hireDate')
             ]);
 
+
             return \Redirect::action('POS\EmployeeController@index')->withSuccess('The employee has been successfully created !');
         }
     }
