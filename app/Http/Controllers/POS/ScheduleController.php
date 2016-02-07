@@ -20,8 +20,10 @@ class ScheduleController extends Controller
 {
     public function index()
     {
-
-        $view = \View::make('POS.Schedule.index');
+        $schedules = Schedule::GetAll();
+        $view = \View::make('POS.Schedule.index')->with('ViewBag', array(
+            'schedules' => $schedules
+        ));;
         return $view;
     }
 
@@ -103,8 +105,9 @@ class ScheduleController extends Controller
         $inputs = \Input::all();
 
         $rules = array(
-            'firstName' => 'required',
-            'lastName' => 'required'
+            'name' => 'required',
+            'startDate' => 'required',
+            'endDate' => 'required'
         );
 
         $message = array(
@@ -114,10 +117,9 @@ class ScheduleController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            if (\Input::has('id')) {
-                return \Redirect::action('POS\EmployeeController@create')->withErrors($validation)
-                    ->withInput();
-            }
+            return \Redirect::action('POS\ScheduleController@create')->withErrors($validation)
+                ->withInput();
+
         }
         else
         {

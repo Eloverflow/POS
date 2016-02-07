@@ -13,8 +13,45 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    @if (!empty($success))
+                        {{ $success }}
+                    @endif
+                    <table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
+                        <thead>
+                        <tr>
+                            <th data-field="id" data-checkbox="true" >Item ID</th>
+                            <th data-field="name" data-sortable="true">Name</th>
+                            <th data-field="startDate"  data-sortable="true">Start Date</th>
+                            <th data-field="endDate" data-sortable="true">End Date</th>
+                            <th data-field="nbEmployees"  data-sortable="true">Nb Employees</th>
+                            <th data-field="status"  data-sortable="true">Status</th>
+                            <th data-field="createdAt" data-sortable="true">Created At</th>
+                            <th data-field="actions" data-sortable="true"></th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
+                        @foreach ($ViewBag['schedules'] as $schedule)
+                            <tr>
+                                <td>{{ $schedule->idSchedule }}</td>
+                                <td>{{ $schedule->name }}</td>
+                                <td>{{ $schedule->startDate }}</td>
+                                <td>{{ $schedule->endDate }}</td>
+                                <td>{{ $schedule->nbEmployees }}</td>
+                                <td>{{ $schedule->status }}</td>
+                                <td>{{ $schedule->created_at }}</td>
+                                <td><a href="{{ URL::to('Schedule/Details', $schedule->idSchedule) }}">Track</a>
+                                    <a href="{{ URL::to('Schedule/Edit', $schedule->idSchedule) }}">Edit</a>
+                                    <a href="{{ URL::to('Schedule/Delete', $schedule->idSchedule) }}">Delete</a></td>
+                            </tr>
+                        @endforeach
 
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 @stop

@@ -53,7 +53,16 @@ Route::post('/addon/rfid/beers', 'Addons\Rfid\RfidTableController@getBeers');
 
 /* Start Schedule */
 Route::get('/Schedule', 'POS\ScheduleController@index');
+
 Route::get('/Schedule/Create', 'POS\ScheduleController@create');
+Route::post('/Schedule/Create', 'POS\ScheduleController@postCreate');
+
+Route::get('/Schedule/Edit/{id}', 'POS\ScheduleController@edit');
+Route::post('/Schedule/Edit', 'POS\ScheduleController@postEdit');
+
+Route::get('/Schedule/Delete/{id}', 'POS\ScheduleController@delete');
+Route::delete('/Schedule/DeleteArch/{id}', 'POS\ScheduleController@deleteArch');
+Route::delete('/Schedule/DeleteComp/{id}', 'POS\ScheduleController@deleteComp');
 
 Route::post('/Schedule/AjaxFindDispos', 'POS\ScheduleController@AjaxFindDispos');
 /* End Schedule */
@@ -64,8 +73,16 @@ Route::get('/Punch', 'POS\PunchController@index');
 
 /* Start Disponibility */
 Route::get('/Disponibility', 'POS\DisponibilityController@index');
+
 Route::get('/Disponibility/Create', 'POS\DisponibilityController@create');
 Route::post('/Disponibility/Create', 'POS\DisponibilityController@postCreate');
+
+Route::get('/Disponibility/Edit/{id}', 'POS\DisponibilityController@edit');
+Route::post('/Disponibility/Edit', 'POS\DisponibilityController@postEdit');
+
+Route::get('/Disponibility/Delete/{id}', 'POS\DisponibilityController@delete');
+Route::delete('/Disponibility/DeleteArch/{id}', 'POS\DisponibilityController@deleteArch');
+Route::delete('/Disponibility/DeleteComp/{id}', 'POS\DisponibilityController@deleteComp');
 
 Route::get('/Disponibility/Manage/{id}', 'POS\DisponibilityController@manage');
 /* End Disponibility */

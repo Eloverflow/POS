@@ -13,7 +13,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-                        {!! Form::open(array('url' => 'Disponibility/Create', 'role' => 'form')) !!}
+                        {!! Form::open(array('url' => 'Schedule/Create', 'role' => 'form')) !!}
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -307,7 +307,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div>+
 
     <div class="row">
         <div class="col-md-4">
@@ -328,25 +328,7 @@
                     </div>
 
                     <div id="satNestedList" class="nestedList">
-                        <ul>
-                            <li><a href="#">Jean</a>
-                                <ul>
-                                    <li><a href="#">10h To 20h</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Isael</a>
-                                <ul>
-                                    <li><a href="#">8h To 9h</a></li>
-                                    <li><a href="#">12h To 14h</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Kevin</a>
-                                <ul>
-                                    <li><a href="#">18h To 21h</a></li>
-                                    <li><a href="#">22h To 2h</a></li>
-                                </ul>
-                            </li>
-                        </ul>
+
                     </div>
                     {!! Form::label('startTime', "Start Time" ) !!}
                     {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
