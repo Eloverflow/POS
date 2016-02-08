@@ -175,9 +175,16 @@ class PunchController extends Controller
 
         }
         else{
-            return response()->json(['status' => 'Error',
-                'message' =>  'This employee doesnt exist !']);
-
+            if(is_null(Employee::getById($employeeId)) == false){
+                Punch::create(['inout' => 'in', 'employee_id' => $employeeId]);
+                return response()->json(['status' => 'Success',
+                    'message' =>  'The employee has been successfully punched in !'
+                ]);
+            }
+            else {
+                return response()->json(['status' => 'Error',
+                    'message' =>  'This employee doesnt exist !']);
+            }
         }
 
     }

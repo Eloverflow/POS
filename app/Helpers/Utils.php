@@ -10,7 +10,7 @@ use App\Models\POS\Shared\Intersect;
  * User: Maype-IsaelBlais
  * Date: 2016-01-26
  * Time: 12:03
-*/
+ */
 
 /* shdyhsyhsys */
 
@@ -26,11 +26,13 @@ class Utils
             for ($k = 0; $k < count($diposJour); $k++) {
                 $DTST = new \DateTime($diposJour[$k]->startTime);
                 $StartTime = $DTST->format('H');
+                $StartMin = $DTST->format('i');
                 $DTET = new \DateTime($diposJour[$k]->endTime);
                 $EndTime = $DTET->format('H');
+                $EndMin = $DTET->format('i');
                 $diff = $EndTime - $StartTime;
                 if (($Hour < $EndTime && $Hour > $StartTime) ) {
-                    $newInters = new Intersect($j, $Hour, $EndTime);
+                    $newInters = new Intersect($j, $Hour, $EndTime, $StartMin, $EndMin);
                     $countIntersects = $countIntersects + 1;
                     $Intersects[] = $newInters;
                 }
@@ -50,11 +52,13 @@ class Utils
             for ($k = 0; $k < count($diposJour); $k++) {
                 $DTST = new \DateTime($diposJour[$k]->startTime);
                 $StartTime = $DTST->format('H');
+                $StartMin = $DTST->format('i');
                 $DTET = new \DateTime($diposJour[$k]->endTime);
                 $EndTime = $DTET->format('H');
+                $EndMin = $DTET->format('i');
                 $diff = $EndTime - $StartTime;
                 if ($StartTime == $Hour) {
-                    $newInters = new Intersect($j, $Hour, $EndTime);
+                    $newInters = new Intersect($j, $Hour, $EndTime, $StartMin, $EndMin);
                     $countIntersects = $countIntersects + 1;
                     $Intersects[] = $newInters;
                 }
@@ -86,11 +90,11 @@ class Utils
         {
             $row = $arrangedTable[$count];
 
-            if($count < 13)
+            if($count < 9)
             {
-                $firstCellText = ($count + 1) . " AM";
+                $firstCellText = "0" . ($count + 1) . ":00";
             } else {
-                $firstCellText = ($count + 1) . " PM";
+                $firstCellText = ($count + 1) . ":00";
             }
             $rows[] = "<tr><td>" . $firstCellText . "</td>" . $row->ToString() . "</tr>";
             $count += 1;
@@ -108,7 +112,7 @@ class Utils
 
             for($j = 0; $j < 7; $j++)
             {
-                    $Cells[] = new Cell($message);
+                $Cells[] = new Cell($message);
             }
 
 
@@ -131,13 +135,29 @@ class Utils
             $normalIntersects = Utils::CalculateIntersects($i,$weekDispos);
             $curRow = $rows[$i -1];
 
+            //var_dump($starts);
             for($j = 0; $j < count($starts); $j++)
             {
                 $start = $starts[$j];
-                //var_dump($start);
-                //var_dump($start->GetDayNumber());
-                $rowspan = $start->GetEndTime() - $start->GetHour();
-                $cellText = $start->GetHour() . " To " . $start->GetEndTime();
+
+                $rowspan = $start->GetEndTime() - $start->GetStartTime();
+                $formattedStartTime = "";
+                $formattedEndTime = "";
+
+                if($start->GetStartTime() < 10)
+                {
+                    $formattedStartTime = "0" . $start->GetStartTime() . ":" . $start->GetStartMin();
+                } else {
+                    $formattedStartTime = $start->GetStartTime() . ":" . $start->GetStartMin();
+                }
+                if($start->GetEndTime() < 10)
+                {
+                    $formattedEndTime = $start->GetEndTime() . ":" . $start->GetEndMin();
+                } else {
+                    $formattedEndTime = $start->GetEndTime() . ":" . $start->GetEndMin();
+                }
+
+                $cellText = $formattedStartTime . " <br />To<br /> " . $formattedEndTime;
                 $selluz = new Cell($cellText, $rowspan, "bluepalecell");
                 $dayNumb = $start->GetDayNumber();
 
