@@ -8,5 +8,5 @@ class Day_Schedules extends Model
 {
     //
     protected $table = 'day_schedules';
-    protected $fillable = ['disponibility_id', 'day', 'day_number', 'startTime', 'endTime'];
+    protected $fillable = ['schedule_id', 'employee_id', 'day_number', 'startTime', 'endTime'];
 }

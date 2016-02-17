@@ -7,8 +7,8 @@ use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
 use App\Models\Project;
 use App\Models\POS\Schedule;
+use App\Models\POS\Day_Schedules;
 use App\Models\POS\Disponibility;
-use App\Models\Auth\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -105,9 +105,7 @@ class ScheduleController extends Controller
         $inputs = \Input::all();
 
         $rules = array(
-            'name' => 'required',
-            'startDate' => 'required',
-            'endDate' => 'required'
+            'name' => 'required'
         );
 
         $message = array(
@@ -123,29 +121,105 @@ class ScheduleController extends Controller
         }
         else
         {
-            $user = User::create([
-                'name' => 'default_username',
-                'email' => \Input::get('email'),
-                'password' => bcrypt(\Input::get('password')),
 
-            ]);
-            $employee = Employee::create([
-                'firstName' => \Input::get('firstName'),
-                'lastName' => \Input::get('lastName'),
-                'streetAddress' => \Input::get('streetAddress'),
-                'phone' => \Input::get('phone'),
-                'city' => \Input::get('city'),
-                'state' => \Input::get('state'),
-                'pc' => \Input::get('pc'),
-                'nas' => \Input::get('nas'),
-                'employeeTitle' => \Input::get('employeeTitle'),
-                'userId' => $user->id,
-                'salary' => \Input::get('salary'),
-                'birthDate' => \Input::get('birthDate'),
-                'hireDate' => \Input::get('hireDate')
+            $Schedule = Schedule::create([
+                'name' => \Input::get('name'),
+                'startDate' => \Input::get('startDate'),
+                'endDate' => \Input::get('endDate')
             ]);
 
-            return \Redirect::action('POS\EmployeeController@index')->withSuccess('The employee has been successfully created !');
+            for($i = 0; $i < count(\Input::get('sunDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('sunDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Schedules::create([
+                    "schedule_id" => $Schedule->id,
+                    "employee_id" => $jsonObj["EmployeeId"],
+                    "day_number" => 0,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('monDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('monDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Schedules::create([
+                    "schedule_id" => $Schedule->id,
+                    "employee_id" => $jsonObj["EmployeeId"],
+                    "day_number" => 1,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('tueDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('tueDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Schedules::create([
+                    "schedule_id" => $Schedule->id,
+                    "employee_id" => $jsonObj["EmployeeId"],
+                    "day_number" => 2,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('wedDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('wedDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Schedules::create([
+                    "schedule_id" => $Schedule->id,
+                    "employee_id" => $jsonObj["EmployeeId"],
+                    "day_number" => 3,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('thuDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('thuDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Schedules::create([
+                    "schedule_id" => $Schedule->id,
+                    "employee_id" => $jsonObj["EmployeeId"],
+                    "day_number" => 4,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('friDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('friDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Schedules::create([
+                    "schedule_id" => $Schedule->id,
+                    "employee_id" => $jsonObj["EmployeeId"],
+                    "day_number" => 5,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('satDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('satDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Schedules::create([
+                    "schedule_id" => $Schedule->id,
+                    "employee_id" => $jsonObj["EmployeeId"],
+                    "day_number" => 6,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            return \Redirect::action('POS\ScheduleController@index')->withSuccess('The schedule has been successfully created !');
         }
     }
 

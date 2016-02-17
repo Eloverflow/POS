@@ -30,7 +30,7 @@ class DisponibilityController extends Controller
 
 
 
-    public function manage($id)
+    public function details($id)
     {
         $disponibility = Disponibility::GetById($id);
 
@@ -47,7 +47,7 @@ class DisponibilityController extends Controller
 
 
 
-        $view = \View::make('POS.Disponibility.manage')->with('ViewBag', array(
+        $view = \View::make('POS.Disponibility.details')->with('ViewBag', array(
             'disponibility' => $disponibility,
             'Rows' => Utils::GenerateDisponibilityTable($id)
                 )
@@ -158,6 +158,77 @@ class DisponibilityController extends Controller
                 ]);
             }
 
+            for($i = 0; $i < count(\Input::get('monDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('monDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $disponiblity->id,
+                    "day_number" => 1,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('tueDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('tueDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $disponiblity->id,
+                    "day_number" => 2,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('wedDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('wedDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $disponiblity->id,
+                    "day_number" => 3,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('thuDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('thuDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $disponiblity->id,
+                    "day_number" => 4,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('friDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('friDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $disponiblity->id,
+                    "day_number" => 5,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('satDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('satDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $disponiblity->id,
+                    "day_number" => 6,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
             //var_dump(\Input::get('name'));
             //var_dump(\Input::get('sunDispos'));
 

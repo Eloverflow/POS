@@ -64,6 +64,8 @@ Route::get('/Schedule/Delete/{id}', 'POS\ScheduleController@delete');
 Route::delete('/Schedule/DeleteArch/{id}', 'POS\ScheduleController@deleteArch');
 Route::delete('/Schedule/DeleteComp/{id}', 'POS\ScheduleController@deleteComp');
 
+Route::get('/Schedule/View/{id}', 'POS\ScheduleController@details');
+
 Route::post('/Schedule/AjaxFindDispos', 'POS\ScheduleController@AjaxFindDispos');
 /* End Schedule */
 
@@ -84,7 +86,7 @@ Route::get('/Disponibility/Delete/{id}', 'POS\DisponibilityController@delete');
 Route::delete('/Disponibility/DeleteArch/{id}', 'POS\DisponibilityController@deleteArch');
 Route::delete('/Disponibility/DeleteComp/{id}', 'POS\DisponibilityController@deleteComp');
 
-Route::get('/Disponibility/Manage/{id}', 'POS\DisponibilityController@manage');
+Route::get('/Disponibility/View/{id}', 'POS\DisponibilityController@details');
 /* End Disponibility */
 
 /* Start Punch */

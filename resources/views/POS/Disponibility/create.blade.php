@@ -119,11 +119,11 @@
                     {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
 
                     <br />
-                    <a class="badd btn btn-default pull-right" data-Day="2">Delete -</a>
-                    <a class="bdel btn btn-primary pull-right" data-Day="2">Add +</a>
+                    <a class="bdel btn btn-default pull-right" data-Day="2">Delete -</a>
+                    <a class="badd btn btn-primary pull-right" data-Day="2">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Tuesday Disponibilities</label>
                     <select id="tueMultiSelect" name="tueDispos[]" multiple class="form-control">
 
                     </select>
@@ -150,7 +150,7 @@
                     <a class="badd btn btn-primary pull-right" data-Day="3">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Wednesday Disponibilities</label>
                     <select id="wedMultiSelect" name="wedDispos[]" multiple class="form-control">
 
                     </select>
@@ -171,11 +171,11 @@
                     {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
 
                     <br />
-                    <a class="badd btn btn-default pull-right" data-Day="4">Delete -</a>
-                    <a class="bdel btn btn-primary pull-right" data-Day="4">Add +</a>
+                    <a class="bdel btn btn-default pull-right" data-Day="4">Delete -</a>
+                    <a class="badd btn btn-primary pull-right" data-Day="4">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Thursday Disponibilities</label>
                     <select id="thuMultiSelect" name="thuDispos[]" multiple class="form-control">
 
                     </select>
@@ -200,7 +200,7 @@
                     <a class="badd btn btn-primary pull-right" data-Day="5">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Friday Disponibilities</label>
                     <select id="friMultiSelect" name="friDispos[]" multiple class="form-control">
 
                     </select>
@@ -227,7 +227,7 @@
                     <a class="badd btn btn-primary pull-right" data-Day="6">Add +</a>
                     <br />
 
-                    <label>Sunday Disponibilities</label>
+                    <label>Saturday Disponibilities</label>
                     <select id="satMultiSelect" name="satDispos[]" multiple class="form-control">
 
                     </select>

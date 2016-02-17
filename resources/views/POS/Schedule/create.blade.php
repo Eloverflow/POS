@@ -177,8 +177,8 @@
                     {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
 
                     <br />
-                    <a class="badd btn btn-default pull-right" data-Day="2">Delete -</a>
-                    <a class="bdel btn btn-primary pull-right" data-Day="2">Add +</a>
+                    <a class="bdel btn btn-default pull-right" data-Day="2">Delete -</a>
+                    <a class="badd btn btn-primary pull-right" data-Day="2">Add +</a>
                     <br />
 
                     <label>Tuesday Disponibilities</label>
@@ -257,8 +257,8 @@
                     {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
 
                     <br />
-                    <a class="badd btn btn-default pull-right" data-Day="4">Delete -</a>
-                    <a class="bdel btn btn-primary pull-right" data-Day="4">Add +</a>
+                    <a class="bdel btn btn-default pull-right" data-Day="4">Delete -</a>
+                    <a class="badd btn btn-primary pull-right" data-Day="4">Add +</a>
                     <br />
 
                     <label>Thursday Disponibilities</label>
@@ -357,14 +357,14 @@
 @stop
 
 @section("myjsfile")
-    <script src="{{ @URL::to('js/disponibilityMultiSelect.js') }}"></script>
+    <script src="{{ @URL::to('js/scheduleMultiSelect.js') }}"></script>
     <script src="{{ @URL::to('js/Disponibilities.js') }}"></script>
     <script>
         $('.badd').click(function (e) {
-            addDisponibility($(this));
+            addSchedule($(this));
         });
         $('.bdel').click(function (e) {
-            remDisponibility($(this));
+            remSchedule($(this));
         });
         $('select[id^=employeeSelect]').on('change', function (e) {
 

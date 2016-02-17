@@ -13,12 +13,14 @@ class Schedule extends Model
     {
         return \DB::table('schedules')
             ->select(\DB::raw('schedules.id as idSchedule,
+            name,
             startDate,
             endDate,
-            created_at,
-            "12" as nbEmployees,
-            "Current" as status
+            schedules.created_at,
+            count(day_schedules.employee_id) as "nbEmployees",
+            "fakestatus" as status
             '))
+            ->join('day_schedules', 'schedules.id', '=', 'day_schedules.schedule_id')
             ->get();
     }
 
