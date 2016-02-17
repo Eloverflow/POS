@@ -1,11 +1,6 @@
 @extends('master')
 @section('csrfToken')
-    <style>
-        #Schedule, td, th
-        {
-            border: 1px solid black;
-        }
-    </style>
+
     @stop
 @section('content')
     <div class="row">
