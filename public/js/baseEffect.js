@@ -64,23 +64,23 @@ function arrowClick(currentTableChoiceList, currentTableChoiceListArrow, tableIt
 
 
         if(currentTableChoiceListArrow.html() == '<span class="glyphicon glyphicon-chevron-down"></span>'){
-            autoHeightAnimate(currentTableChoiceList, 1000);
+            autoHeightAnimate(currentTableChoiceList, 300);
 
-            setTimeout(function() { pageScroll.resize(); }, 800);
+            setTimeout(function() { pageScroll.resize(); }, 300);
 
             currentTableChoiceListArrow.html('<span class="glyphicon glyphicon-chevron-up"></span>');
 
         }else{
 
-            currentTableChoiceActive.delay(100).slideUp(600);
+            currentTableChoiceActive.slideUp(150);
 
 
-            setTimeout(function() {currentTableChoiceList.prepend(currentTableChoiceActive); }, 700);
+            setTimeout(function() {currentTableChoiceList.prepend(currentTableChoiceActive); }, 200);
 
-            currentTableChoiceActive.slideDown(300);
+            currentTableChoiceActive.slideDown(150);
 
 
-            currentTableChoiceList.animate({height: 140 }, 1000);
+            currentTableChoiceList.animate({height: 100 }, 300);
             pageScroll.resize();
             currentTableChoiceListArrow.html('<span class="glyphicon glyphicon-chevron-down"></span>');
         }

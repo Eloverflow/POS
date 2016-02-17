@@ -11,11 +11,20 @@
 |
 */
 
+/* Start Authentication */
+Route::controllers([
+    'auth' => 'Auth\AuthController',
+    'password' => 'Auth\PasswordController',
+]);
+/* End Authentication */
+
+
+
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 Route::get('/inventory', 'ERP\InventoriesController@index');
-Route::get('/invntory/{slug}', 'ERP\InventoriesController@edit');
+Route::get('/inventory/{slug}', 'ERP\InventoriesController@edit');
 Route::post('/inventory/{slug}', 'ERP\InventoriesController@update');
 Route::get('/itemtypes', 'ERP\ItemTypesController@index');
 Route::get('/itemtypes/{slug}', 'ERP\ItemTypesController@edit');

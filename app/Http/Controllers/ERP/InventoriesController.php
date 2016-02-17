@@ -14,27 +14,51 @@ use DB;
 class InventoriesController extends \App\Http\Controllers\Controller
 {
 
-    public  function index()
+    public function index()
     {
-        $items = Inventory::get();
-        $title = 'inventory';
-        $columns = array('id', 'item_id', 'order_id', 'quantity');
-        return view('erp.inventory.list',compact('items', 'columns', 'title'));
+        $title = 'Inventory';
+
+        /*Main table row to retrieve from DB*/
+        $tableRows = Inventory::get();
+        /*Main table desired column to display*/
+        $tableColumns = array('id', 'item_id', 'order_id', 'quantity');
+
+        /*Child table name*/
+        $tableChild = "item";
+        /*Child table rows*/
+        $tableChildRows = $tableRows->$tableChild;
+        /*Child table desired column to display*/
+        $tableChildColumns = array('name');
+
+
+        return view('shared.list',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns'));
     }
 
-    public  function edit($slug)
+    public function edit($slug)
     {
-        $item = Inventory::whereId($slug)->first();
-        $title = 'inventory';
-        $next_item = Inventory::findOrNew(($item->id)+1);
-        $previous_item = Inventory::findOrNew(($item->id)-1);
+        /*Page Title*/
+        $title = 'Inventory';
 
-        $columns = array('item_id', 'order_id', 'quantity');
+        /*Main table row to retrieve from DB*/
+        $tableRow = Inventory::whereId($slug)->first();
+        /*Main table desired column to display*/
+        $tableColumns = array('item_id', 'order_id', 'quantity');
 
-        return view('erp.inventory.edit',compact('item', 'title','columns','next_item','previous_item'));
+        /*Child table name
+        $tableChild = "";
+        /*Child table rows
+        $tableChildRows = $tableRow->$tableChild;
+        /*Child table desired column to display
+        $tableChildColumns = array('img_url');
+
+        /*Previous and Next */
+        $previousTableRow = Inventory::findOrNew(($tableRow->id)-1);
+        $nextTableRow = Inventory::findOrNew(($tableRow->id)+1);
+
+        return view('shared.edit',compact('title','tableRow', 'tableColumns', 'previousTableRow', 'nextTableRow'));
     }
 
-    public  function update($slug, Request $request)
+    public function update($slug, Request $request)
     {
         $item = Inventory::whereId($slug)->first();
 

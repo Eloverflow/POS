@@ -14,4 +14,9 @@ class Inventory extends Model
     protected $table = 'inventories';
 
     protected $fillable = array('item_id' ,'order_id', 'quantity');
+
+    public function item()
+    {
+        return $this->hasOne('App\Models\ERP\Item', 'id', 'item_id');
+    }
 }
