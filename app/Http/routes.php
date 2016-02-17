@@ -24,7 +24,10 @@ Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 Route::get('/inventory', 'ERP\InventoriesController@index');
-Route::get('/inventory/{slug}', 'ERP\InventoriesController@edit');
+Route::get('/inventory/Edit',  function() { return Redirect::to('/inventory');});
+Route::get('/inventory/Edit/{slug}', 'ERP\InventoriesController@edit');
+Route::get('/inventory/View',  function() { return Redirect::to('/inventory');});
+Route::get('/inventory/View/{slug}', 'ERP\InventoriesController@details');
 Route::post('/inventory/{slug}', 'ERP\InventoriesController@update');
 Route::get('/itemtypes', 'ERP\ItemTypesController@index');
 Route::get('/itemtypes/{slug}', 'ERP\ItemTypesController@edit');
@@ -32,6 +35,7 @@ Route::post('/itemtypes/{slug}', 'ERP\ItemTypesController@update');
 Route::get('/items', 'ERP\ItemsController@index');
 Route::get('/items/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/{slug}', 'ERP\ItemsController@update');
+
 
 /* Start Employee */
 Route::get('/Employee', 'POS\EmployeeController@index');

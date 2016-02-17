@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\ERP;
 
 use App\Http\Requests;
-use App\Models\Beer;
 use App\Models\ERP\Inventory;
 use Illuminate\Http\Request;
 use Input;
@@ -19,19 +18,35 @@ class InventoriesController extends \App\Http\Controllers\Controller
         $title = 'Inventory';
 
         /*Main table row to retrieve from DB*/
-        $tableRows = Inventory::get();
+        $tableRows = Inventory::all();
         /*Main table desired column to display*/
         $tableColumns = array('id', 'item_id', 'order_id', 'quantity');
 
+
         /*Child table name*/
-        $tableChild = "item";
+        $tableChildName = "item";
         /*Child table rows*/
-        $tableChildRows = $tableRows->$tableChild;
+        $tableChildRows =  $tableRows->load($tableChildName);
         /*Child table desired column to display*/
         $tableChildColumns = array('name');
 
+        $tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);
 
-        return view('shared.list',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns'));
+        /*--------*/
+
+        /*Child table name*/
+        $tableChildName = "item";
+        /*Child table rows*/
+        $tableChildRows =  $tableRows->load($tableChildName);
+        /*Child table desired column to display*/
+        $tableChildColumns = array('name');
+
+        $tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);
+
+        $tableChildren = array($tableChild1);
+
+
+        return view('shared.list',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
     }
 
     public function edit($slug)
@@ -56,6 +71,30 @@ class InventoriesController extends \App\Http\Controllers\Controller
         $nextTableRow = Inventory::findOrNew(($tableRow->id)+1);
 
         return view('shared.edit',compact('title','tableRow', 'tableColumns', 'previousTableRow', 'nextTableRow'));
+    }
+
+    public function details($slug)
+    {
+        /*Page Title*/
+        $title = 'Inventory';
+
+        /*Main table row to retrieve from DB*/
+        $tableRow = Inventory::whereId($slug)->first();
+        /*Main table desired column to display*/
+        $tableColumns = array('item_id', 'order_id', 'quantity');
+
+        /*Child table name
+        $tableChild = "";
+        /*Child table rows
+        $tableChildRows = $tableRow->$tableChild;
+        /*Child table desired column to display
+        $tableChildColumns = array('img_url');
+
+        /*Previous and Next */
+        $previousTableRow = Inventory::findOrNew(($tableRow->id)-1);
+        $nextTableRow = Inventory::findOrNew(($tableRow->id)+1);
+
+        return view('shared.details',compact('title','tableRow', 'tableColumns', 'previousTableRow', 'nextTableRow'));
     }
 
     public function update($slug, Request $request)

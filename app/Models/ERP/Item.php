@@ -24,6 +24,11 @@ class Item extends Model
     {
         return $this->hasOne('App\Models\ERP\ItemFieldList', 'id', 'item_field_list_id');
     }
+
+    public function inventory()
+    {
+        return $this->belongsTo('App\Models\ERP\Inventory');
+    }
 }
 
 
