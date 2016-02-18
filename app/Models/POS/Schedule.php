@@ -12,33 +12,20 @@ class Schedule extends Model
     public static function getById($id)
     {
         return \DB::table('schedules')
-            ->join('employees', 'schedules.employee_id', '=', 'employees.id')
-            ->join('employee_titles', 'employees.employeeTitle', '=', 'employee_titles.id')
-            ->select(\DB::raw('employees.id as idEmployee,
-            disponibilities.id as idDisponibility,
-            disponibilities.created_at,
-            disponibilities.updated_at,
-            disponibilities.name,
-            employees.salary,
-            streetAddress,
-            phone,
-            firstName,
-            lastName,
-            employee_titles.name as employeeTitle,
-            city,
-            nas,
-            pc,
-            state,
-            birthDate,
-            hireDate,
-            hireDate'))
-            ->where('disponibilities.id', '=', $id)
+            ->select(\DB::raw('id,
+            name,
+            startDate,
+            endDate,
+            created_at,
+            updated_at
+            '))
+            ->where('id', '=', $id)
             ->first();
     }
 
     public static function getAll()
     {
-        return \DB::table('schedules')
+        return  \DB::table('schedules')
             ->select(\DB::raw('schedules.id as idSchedule,
             name,
             startDate,
@@ -47,7 +34,7 @@ class Schedule extends Model
             count(day_schedules.employee_id) as "nbEmployees",
             "fakestatus" as status
             '))
-            ->join('day_schedules', 'schedules.id', '=', 'day_schedules.schedule_id')
+            ->leftJoin('day_schedules', 'schedules.id', '=', 'day_schedules.schedule_id')
             ->get();
     }
 

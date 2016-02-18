@@ -40,9 +40,9 @@
                                 <td>{{ $employee->email }}</td>
                                 <td>{{ $employee->name }}</td>
                                 <td>{{ $employee->hireDate }}</td>
-                                <td><a href="{{ URL::to('Employee/Details', $employee->idEmployee) }}">Details</a>
-                                    <a href="{{ URL::to('Employee/Edit', $employee->idEmployee) }}">Edit</a>
-                                    <a href="{{ URL::to('Employee/Delete', $employee->idEmployee) }}">Delete</a></td>
+                                <td><a href="{{ URL::to('employee/details', $employee->idEmployee) }}">Details</a>
+                                    <a href="{{ URL::to('employee/edit', $employee->idEmployee) }}">Edit</a>
+                                    <a href="{{ URL::to('employee/delete', $employee->idEmployee) }}">Delete</a></td>
                             </tr>
                         @endforeach
 

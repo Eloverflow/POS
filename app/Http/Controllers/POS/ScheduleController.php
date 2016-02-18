@@ -32,9 +32,8 @@ class ScheduleController extends Controller
     {
         $schedule = Schedule::GetById($id);
 
-        $view = \View::make('POS.schedule.details')->with('ViewBag', array(
-                'schedule' => $schedule,
-                'Rows' => Utils::GenerateDisponibilityTable($id)
+        $view = \View::make('POS.Schedule.details')->with('ViewBag', array(
+                'schedule' => $schedule
             )
         );
         return $view;
