@@ -102,7 +102,12 @@
                     <a class="btn btn-danger pull-right" href="{{@URL::to($path)}}" >Back to @if($pathArray[count($pathArray)-1] == "") Home @else {{$pathArray[count($pathArray)-1]}} @endif</a>
                 @endif
 
-                <?php $path = dirname(dirname(Request::path()));?>
+                <?php $path = dirname(Request::path());
+                    $pathArray = explode('/', $path);
+                    if($pathArray[count($pathArray)-1] === 'View' || $pathArray[count($pathArray)-1] === 'Edit'){
+                        $path = dirname($path);
+                    }
+                    ;?>
                 <a class="btn btn-primary pull-right" href="{{ @URL::to($path. '/Create') }}">Add to {{$title}}</a>
 
             </div>

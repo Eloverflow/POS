@@ -1,3 +1,5 @@
+
+
 <?php
 
 /*
@@ -24,10 +26,10 @@ Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 Route::get('/inventory', 'ERP\InventoriesController@index');
-Route::get('/inventory/Edit',  function() { return Redirect::to('/inventory');});
-Route::get('/inventory/Edit/{slug}', 'ERP\InventoriesController@edit');
-Route::get('/inventory/View',  function() { return Redirect::to('/inventory');});
-Route::get('/inventory/View/{slug}', 'ERP\InventoriesController@details');
+Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});
+Route::get('/inventory/edit/{slug}', 'ERP\InventoriesController@edit');
+Route::get('/inventory/view',  function() { return Redirect::to('/inventory');});
+Route::get('/inventory/view/{slug}', 'ERP\InventoriesController@details');
 Route::post('/inventory/{slug}', 'ERP\InventoriesController@update');
 Route::get('/itemtypes', 'ERP\ItemTypesController@index');
 Route::get('/itemtypes/{slug}', 'ERP\ItemTypesController@edit');
@@ -37,23 +39,23 @@ Route::get('/items/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/{slug}', 'ERP\ItemsController@update');
 
 
-/* Start Employee */
-Route::get('/Employee', 'POS\EmployeeController@index');
+/* Start employee */
+Route::get('/employee', 'POS\EmployeeController@index');
 
-Route::get('/Employee/Create', 'POS\EmployeeController@create');
-Route::post('/Employee/Create', 'POS\EmployeeController@postCreate');
+Route::get('/employee/create', 'POS\EmployeeController@create');
+Route::post('/employee/create', 'POS\EmployeeController@postcreate');
 
-Route::get('/Employee/Details/{id}', 'POS\EmployeeController@details');
+Route::get('/employee/details/{id}', 'POS\EmployeeController@details');
 
-Route::get('/Employee/Edit/{id}', 'POS\EmployeeController@edit');
-Route::post('/Employee/Edit', 'POS\EmployeeController@postEdit');
+Route::get('/employee/edit/{id}', 'POS\EmployeeController@edit');
+Route::post('/employee/edit', 'POS\EmployeeController@postedit');
 
-Route::get('/Employee/Delete/{id}', 'POS\EmployeeController@delete');
-Route::post('/Employee/PartialDelete', 'POS\EmployeeController@ajaxPartDelete');
-Route::post('/Employee/CompleteDelete', 'POS\EmployeeController@ajaxCompDelete');
+Route::get('/employee/delete/{id}', 'POS\EmployeeController@delete');
+Route::post('/employee/Partialdelete', 'POS\EmployeeController@ajaxPartdelete');
+Route::post('/employee/Completedelete', 'POS\EmployeeController@ajaxCompdelete');
 
-Route::post('/Employee/Punch', 'POS\PunchController@ajaxPunchEmployee');
-/* End Employee */
+Route::post('/employee/Punch', 'POS\PunchController@ajaxPunchEmployee');
+/* End employee */
 
 Route::get('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@index');
 Route::post('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@create');
@@ -64,43 +66,43 @@ Route::get('/addon/rfid/table/{slug}', 'Addons\Rfid\RfidTableController@edit');
 Route::post('/addon/rfid/table/{slug}', 'Addons\Rfid\RfidTableController@update');
 Route::post('/addon/rfid/beers', 'Addons\Rfid\RfidTableController@getBeers');
 
-/* Start Schedule */
-Route::get('/Schedule', 'POS\ScheduleController@index');
+/* Start schedule */
+Route::get('/schedule', 'POS\ScheduleController@index');
 
-Route::get('/Schedule/Create', 'POS\ScheduleController@create');
-Route::post('/Schedule/Create', 'POS\ScheduleController@postCreate');
+Route::get('/schedule/create', 'POS\ScheduleController@create');
+Route::post('/schedule/create', 'POS\ScheduleController@postcreate');
 
-Route::get('/Schedule/Edit/{id}', 'POS\ScheduleController@edit');
-Route::post('/Schedule/Edit', 'POS\ScheduleController@postEdit');
+Route::get('/schedule/edit/{id}', 'POS\ScheduleController@edit');
+Route::post('/schedule/edit', 'POS\ScheduleController@postedit');
 
-Route::get('/Schedule/Delete/{id}', 'POS\ScheduleController@delete');
-Route::delete('/Schedule/DeleteArch/{id}', 'POS\ScheduleController@deleteArch');
-Route::delete('/Schedule/DeleteComp/{id}', 'POS\ScheduleController@deleteComp');
+Route::get('/schedule/delete/{id}', 'POS\ScheduleController@delete');
+Route::delete('/schedule/deleteArch/{id}', 'POS\ScheduleController@deleteArch');
+Route::delete('/schedule/deleteComp/{id}', 'POS\ScheduleController@deleteComp');
 
-Route::get('/Schedule/View/{id}', 'POS\ScheduleController@details');
+Route::get('/schedule/view/{id}', 'POS\ScheduleController@details');
 
-Route::post('/Schedule/AjaxFindDispos', 'POS\ScheduleController@AjaxFindDispos');
-/* End Schedule */
+Route::post('/schedule/AjaxFindDispos', 'POS\ScheduleController@AjaxFindDispos');
+/* End schedule */
 
 /* Start Punch */
-Route::get('/Punch', 'POS\PunchController@index');
+Route::get('/punch', 'POS\PunchController@index');
 /* End Punch */
 
-/* Start Disponibility */
-Route::get('/Disponibility', 'POS\DisponibilityController@index');
+/* Start disponibility */
+Route::get('/disponibility', 'POS\DisponibilityController@index');
 
-Route::get('/Disponibility/Create', 'POS\DisponibilityController@create');
-Route::post('/Disponibility/Create', 'POS\DisponibilityController@postCreate');
+Route::get('/disponibility/create', 'POS\DisponibilityController@create');
+Route::post('/disponibility/create', 'POS\DisponibilityController@postcreate');
 
-Route::get('/Disponibility/Edit/{id}', 'POS\DisponibilityController@edit');
-Route::post('/Disponibility/Edit', 'POS\DisponibilityController@postEdit');
+Route::get('/disponibility/edit/{id}', 'POS\DisponibilityController@edit');
+Route::post('/disponibility/edit', 'POS\DisponibilityController@postedit');
 
-Route::get('/Disponibility/Delete/{id}', 'POS\DisponibilityController@delete');
-Route::delete('/Disponibility/DeleteArch/{id}', 'POS\DisponibilityController@deleteArch');
-Route::delete('/Disponibility/DeleteComp/{id}', 'POS\DisponibilityController@deleteComp');
+Route::get('/disponibility/delete/{id}', 'POS\DisponibilityController@delete');
+Route::delete('/disponibility/deleteArch/{id}', 'POS\DisponibilityController@deleteArch');
+Route::delete('/disponibility/deleteComp/{id}', 'POS\DisponibilityController@deleteComp');
 
-Route::get('/Disponibility/View/{id}', 'POS\DisponibilityController@details');
-/* End Disponibility */
+Route::get('/disponibility/view/{id}', 'POS\DisponibilityController@details');
+/* End disponibility */
 
 /* Start Punch */
 
