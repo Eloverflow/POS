@@ -13,7 +13,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-                        {!! Form::open(array('url' => 'Schedule/Create', 'role' => 'form')) !!}
+                        {!! Form::open(array('url' => 'schedule/create', 'role' => 'form')) !!}
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <strong>Whoops!</strong> There were some problems with your input.<br><br>

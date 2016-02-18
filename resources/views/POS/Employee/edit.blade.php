@@ -11,7 +11,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-                        {!! Form::open(array('url' => 'Employee/Edit', 'role' => 'form')) !!}
+                        {!! Form::open(array('url' => 'employee/edit', 'role' => 'form')) !!}
                         {!! Form::text('idUser', $ViewBag['employee']->idUser, array('style' => 'display:none;visibility:hidden;')) !!}
                         {!! Form::text('idEmployee', $ViewBag['employee']->idEmployee, array('style' => 'display:none;visibility:hidden;')) !!}
                         @if (count($errors) > 0)

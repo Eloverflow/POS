@@ -119,14 +119,14 @@ class Utils
         );
 
         $BlankTable = Utils::GetBlankTable("");
-        $arrangedTable = Utils::arrangeRows($BlankTable, $WeekDisponibilities);
+        $arrangedTable = Utils::arrangeScheduleRows($BlankTable, $WeekDisponibilities);
 
         $count = 0;
         $rows = null;
-        while($count < count($arrangedTable))
+        while($count < count($BlankTable))
         {
-            $row = $arrangedTable[$count];
-
+            $row = $BlankTable[$count];
+            // Premiere colonne
             if($count < 9)
             {
                 $firstCellText = "0" . ($count + 1) . ":00";
@@ -161,10 +161,6 @@ class Utils
 
     static public function arrangeRows($rows, $weekDispos)
     {
-        $Cells = array();
-
-
-        $theIntersect = Utils::CalculateIntersects(16,$weekDispos);
 
         for($i = 1; $i < 24; $i++)
         {
@@ -214,4 +210,14 @@ class Utils
 
         return $rows;
     }
+
+
+    static public function arrangeScheduleRows($rows, $weekDispos)
+    {
+
+
+
+        //return $rows;
+    }
+
 }

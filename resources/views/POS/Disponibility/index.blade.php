@@ -46,9 +46,9 @@
                                 <td>{{ $disponibility->firstName . " - " . $disponibility->lastName }}</td>
                                 <td>{{ $disponibility->created_at }}</td>
                                 <td>{{ $disponibility->updated_at }}</td>
-                                <td><a href="{{ URL::to('Disponibility/View', $disponibility->idDisponibility) }}">View</a>
-                                    <a href="{{ URL::to('Disponibility/Edit', $disponibility->idDisponibility) }}">Edit</a>
-                                    <a href="{{ URL::to('Disponibility/Delete', $disponibility->idDisponibility) }}">Delete</a></td>
+                                <td><a href="{{ URL::to('disponibility/view', $disponibility->idDisponibility) }}">View</a>
+                                    <a href="{{ URL::to('disponibility/edit', $disponibility->idDisponibility) }}">Edit</a>
+                                    <a href="{{ URL::to('disponibility/delete', $disponibility->idDisponibility) }}">Delete</a></td>
                             </tr>
                         @endforeach
 

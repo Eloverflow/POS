@@ -40,12 +40,11 @@
                                 <td>{{ $schedule->startDate }}</td>
                                 <td>{{ $schedule->endDate }}</td>
                                 <td>{{ $schedule->nbEmployees }}</td>
-                                <td>{{ $schedule->status }}</td>
                                 <td>{{ $schedule->created_at }}</td>
-                                <td><a href="{{ URL::to('Schedule/Track', $schedule->idSchedule) }}">Track</a>
-                                    <a href="{{ URL::to('Schedule/View', $schedule->idSchedule) }}">View</a>
-                                    <a href="{{ URL::to('Schedule/Edit', $schedule->idSchedule) }}">Edit</a>
-                                    <a href="{{ URL::to('Schedule/Delete', $schedule->idSchedule) }}">Delete</a></td>
+                                <td><a href="{{ URL::to('schedule/track', $schedule->idSchedule) }}">Track</a>
+                                    <a href="{{ URL::to('schedule/view', $schedule->idSchedule) }}">View</a>
+                                    <a href="{{ URL::to('schedule/edit', $schedule->idSchedule) }}">Edit</a>
+                                    <a href="{{ URL::to('schedule/delete', $schedule->idSchedule) }}">Delete</a></td>
                             </tr>
                         @endforeach
 
