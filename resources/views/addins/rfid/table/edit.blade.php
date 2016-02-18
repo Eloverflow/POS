@@ -3,9 +3,8 @@
 @section('title', $title)
 
 @section('content')
-    <div class="row">
-        <div class="col-md-8 col-md-offset-2 ">
-            <div class="panel panel-default panel-edit">
+    <div class="panel panel-default">
+        <div class="panel-body">
                 <?php $path = dirname(Request::path());?>
                 <div class="panel-heading"><h2><a href="{{@URL::to($path)}}">{{ $title }}</a></h2></div>
                 <div class="panel-body">

@@ -62,9 +62,8 @@
 
 
 </div><!--/.sidebar-->
-
-<div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-    <div class="row">
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+    <div class="row fixed">
         <ol class="breadcrumb">
             <li><a href="{{ @URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
             <?php $url = "";?>
@@ -76,6 +75,9 @@
             @endforeach
         </ol>
     </div>
+</div>
+<div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+
 
     @if(Session::has('success'))
         <div id="flash-msg" class="row collapse in">
@@ -86,7 +88,50 @@
             </div>
         </div>
     @endif
-    @yield('content')
+
+    <div class="row">
+        @if(!empty($title))
+        <div class="col-md-6">
+            <h1 class="page-header">{{$title}}</h1>
+        </div>
+        <div class="col-md-6">
+            <div class="vcenter">
+                @if(!empty($_SERVER['HTTP_REFERER']))
+                    <?php $path = $_SERVER['HTTP_REFERER'];?>
+                    <?php $pathArray = explode('/', $path) ?>
+                    <a class="btn btn-danger pull-right" href="{{@URL::to($path)}}" >Back to @if($pathArray[count($pathArray)-1] == "") Home @else {{$pathArray[count($pathArray)-1]}} @endif</a>
+                @endif
+
+                <?php $path = dirname(dirname(Request::path()));?>
+                <a class="btn btn-primary pull-right" href="{{ @URL::to($path. '/Create') }}">Add to {{$title}}</a>
+
+            </div>
+        </div>
+        @endif
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            @yield('content')
+            @if(!empty($previousTableRow) || !empty($nextTableRow))
+                <nav>
+                    <ul class="pager">
+                        @if($previousTableRow->slug)
+                            <li class="previous"><a href="{{@URL::to( $path ) }}/{{ $previousTableRow->slug }}"><span aria-hidden="true">&larr;</span> {{ $previousTableRow->slug }}</a></li>
+                        @elseif($previousTableRow->id)
+                            <li class="previous"><a href="{{@URL::to( $path ) }}/{{ $previousTableRow->id }}"><span aria-hidden="true">&larr;</span> {{ $previousTableRow->id }}</a></li>
+                        @endif
+
+                        @if($nextTableRow->slug)
+                            <li class="next"><a href="{{@URL::to( $path ) }}/{{ $nextTableRow->slug }}">{{ $nextTableRow->slug }} <span aria-hidden="true">&rarr;</span></a></li>
+                        @elseif($nextTableRow->id)
+                            <li class="next"><a href="{{@URL::to( $path ) }}/{{ $nextTableRow->id }}">{{ $nextTableRow->id }} <span aria-hidden="true">&rarr;</span></a></li>
+                        @endif
+                    </ul>
+                </nav>
+            @endif
+        </div>
+    </div>
+
 
 </div>
 

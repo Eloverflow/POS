@@ -470,19 +470,34 @@ li.addTable .glyphicon{
 	height: 100px;
 }
 
-::-webkit-scrollbar {
-	width: 12px;
+/* Side panel scrollbar */
+::-webkit-scrollbar  {
+	width: 8px;
+	margin-bottom: 0;
 }
 
-::-webkit-scrollbar-track {
+/* Track */
+::-webkit-scrollbar-track  {
 	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
-	border-radius: 10px;
+	-webkit-border-radius: 2px;
+	/*border-radius: 2px;*/
 }
 
-::-webkit-scrollbar-thumb {
-	border-radius: 10px;
-	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+/* Handle */
+::-webkit-scrollbar-thumb:vertical  {
+	-webkit-border-radius: 2px;
+	/*border-radius: 2px;*/
+	background: #30a5ff;
+	-webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.2);
 }
+::-webkit-scrollbar-thumb:window-inactive:vertical {
+	background: #30a5ff;
+}
+
+::-webkit-scrollbar-corner{
+	background: rgba(0,0,0,0);
+}
+
 
 .tableChoiceListArrow{
 	padding: 0;
@@ -511,4 +526,16 @@ li.addTable .glyphicon{
 
 .table-options-delete{
 	color: #c70000;
+}
+
+.row.fixed{
+	width: 100%;
+	height: auto;
+	position: fixed;
+	z-index: 3;
+}
+
+
+#contentPanel{
+	margin-top: 40px;
 }

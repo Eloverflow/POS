@@ -3,10 +3,6 @@
 @section('title', $title)
 
 @section('content')
-        <h2>{{ $title }}</h2>
-
-        <div class="row">
-        <div class="col-lg-12 panel-rfidTable" >
             <div class="panel">
                 <div class="panel-body">
             <!-- Table Content --->
@@ -45,7 +41,5 @@
                     </ul>
                 </div>
             </div>
-        </div>
-        </div>
 
 @stop

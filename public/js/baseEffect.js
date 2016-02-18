@@ -110,7 +110,7 @@ $(document).ready(
 
     function() {
 
-        pageScroll = $("html").niceScroll({cursorcolor:"#30a5ff", cursorborderradius:"4px", cursorwidth:"10px"});
+        pageScroll = $("html").niceScroll({cursorcolor:"#30a5ff", cursorborderradius:"2px", cursorwidth:"8px"});
 
     }
 
