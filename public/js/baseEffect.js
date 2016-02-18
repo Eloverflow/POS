@@ -80,7 +80,7 @@ function arrowClick(currentTableChoiceList, currentTableChoiceListArrow, tableIt
             currentTableChoiceActive.slideDown(150);
 
 
-            currentTableChoiceList.animate({height: 100 }, 300);
+            currentTableChoiceList.animate({height: 80 }, 300);
             pageScroll.resize();
             currentTableChoiceListArrow.html('<span class="glyphicon glyphicon-chevron-down"></span>');
         }

@@ -25,6 +25,7 @@ class CreateDaySchedulesTable extends Migration
         });
     }
 
+
     /**
      * Reverse the migrations.
      *

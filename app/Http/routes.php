@@ -25,15 +25,20 @@ Route::controllers([
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
+
 Route::get('/inventory', 'ERP\InventoriesController@index');
 Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});
 Route::get('/inventory/edit/{slug}', 'ERP\InventoriesController@edit');
 Route::get('/inventory/view',  function() { return Redirect::to('/inventory');});
 Route::get('/inventory/view/{slug}', 'ERP\InventoriesController@details');
-Route::post('/inventory/{slug}', 'ERP\InventoriesController@update');
+Route::post('/inventory/edit/{slug}', 'ERP\InventoriesController@update');
+Route::get('/inventory/create', 'ERP\InventoriesController@create');
+Route::post('/inventory/create', 'ERP\InventoriesController@postCreate');
+
 Route::get('/itemtypes', 'ERP\ItemTypesController@index');
 Route::get('/itemtypes/{slug}', 'ERP\ItemTypesController@edit');
 Route::post('/itemtypes/{slug}', 'ERP\ItemTypesController@update');
+
 Route::get('/items', 'ERP\ItemsController@index');
 Route::get('/items/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/{slug}', 'ERP\ItemsController@update');
