@@ -102,10 +102,10 @@
                     <a class="btn btn-danger pull-right" href="{{@URL::to($path)}}" >Back to @if($pathArray[count($pathArray)-1] == "") Home @else {{$pathArray[count($pathArray)-1]}} @endif</a>
                 @endif
 
-                <?php $path = dirname(Request::path());
+                <?php $path = Request::path();
                     $pathArray = explode('/', $path);
-                    if($pathArray[count($pathArray)-1] === 'view' || $pathArray[count($pathArray)-1] === 'edit'){
-                        $path = dirname($path);
+                    if( count($pathArray) > 1 && ($pathArray[count($pathArray)-2] === 'view' || $pathArray[count($pathArray)-2] === 'edit')){
+                        $path = dirname(dirname($path));
                     }
                     ;?>
                 <a class="btn btn-primary pull-right" href="{{ @URL::to($path. '/create') }}">Add to {{$title}}</a>
@@ -118,6 +118,7 @@
         <div class="col-lg-12">
             @yield('content')
             @if(!empty($previousTableRow) || !empty($nextTableRow))
+                <?php $path = dirname(Request::path()); ?>
                 <nav>
                     <ul class="pager">
                         @if($previousTableRow->slug)

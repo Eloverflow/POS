@@ -55,7 +55,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
         $title = 'Inventory';
 
         /*Main table row to retrieve from DB*/
-        $tableRow = Inventory::whereId($slug)->first();
+        $tableRow = Inventory::whereSlug($slug)->first();
         /*Main table desired column to display*/
         $tableColumns = array('item_id', 'order_id', 'quantity');
 
@@ -79,7 +79,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
         $title = 'Inventory';
 
         /*Main table row to retrieve from DB*/
-        $tableRow = Inventory::whereId($slug)->first();
+        $tableRow = Inventory::whereSlug($slug)->first();
         /*Main table desired column to display*/
         $tableColumns = array('item_id', 'order_id', 'quantity');
 
