@@ -49,9 +49,9 @@
                                         @endforeach
                                 @endif
                                 <td class="table-options">
-                                    <a href="{{ @URL::to(Request::path().'/View/'.$tableRows[$i]->id)}}"><svg class="glyph stroked eye table-options-view"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-eye"></use></svg></a>
-                                    <a href="{{ @URL::to(Request::path().'/Edit/'.$tableRows[$i]->id)}}"><svg class="glyph stroked pencil table-options-modify"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-pencil"></use></svg></a>
-                                    <a href="{{ @URL::to(Request::path().'/Delete/'.$tableRows[$i]->id)}}"><svg class="glyph stroked cancel table-options-delete"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-cancel"></use></svg></a>
+                                    <a href="{{ @URL::to(Request::path().'/view/'.$tableRows[$i]->id)}}"><svg class="glyph stroked eye table-options-view"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-eye"></use></svg></a>
+                                    <a href="{{ @URL::to(Request::path().'/edit/'.$tableRows[$i]->id)}}"><svg class="glyph stroked pencil table-options-modify"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-pencil"></use></svg></a>
+                                    <a href="{{ @URL::to(Request::path().'/delete/'.$tableRows[$i]->id)}}"><svg class="glyph stroked cancel table-options-delete"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-cancel"></use></svg></a>
                                 </td>
 
                             </tr>

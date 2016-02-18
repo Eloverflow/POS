@@ -47,10 +47,10 @@
         </div>
     </form>
     <ul class="nav menu">
-        <li><a href="{{ URL::to('Punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> Punch</a></li>
-        <li><a href="{{ URL::to('Employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
-        <li><a href="{{ URL::to('Disponibility') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> Disponibilities</a></li>
-        <li><a href="{{ URL::to('Schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> Schedules</a></li>
+        <li><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> Punch</a></li>
+        <li><a href="{{ URL::to('employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
+        <li><a href="{{ URL::to('disponibility') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> Disponibilities</a></li>
+        <li><a href="{{ URL::to('schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> Schedules</a></li>
         <li><a href="{{ URL::to('items') }}"><svg class="glyph stroked bacon burger"><use xlink:href="#stroked-bacon-burger"/></svg></svg> Items</a></li>
         <li><a href="{{ URL::to('itemtypes') }}"><svg class="glyph stroked paper coffee cup"><use xlink:href="#stroked-paper-coffee-cup"/></svg> Item Types</a></li>
         <li><a href="{{ URL::to('inventory') }}"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg> Inventory</a></li>
@@ -104,11 +104,11 @@
 
                 <?php $path = dirname(Request::path());
                     $pathArray = explode('/', $path);
-                    if($pathArray[count($pathArray)-1] === 'View' || $pathArray[count($pathArray)-1] === 'Edit'){
+                    if($pathArray[count($pathArray)-1] === 'view' || $pathArray[count($pathArray)-1] === 'edit'){
                         $path = dirname($path);
                     }
                     ;?>
-                <a class="btn btn-primary pull-right" href="{{ @URL::to($path. '/Create') }}">Add to {{$title}}</a>
+                <a class="btn btn-primary pull-right" href="{{ @URL::to($path. '/create') }}">Add to {{$title}}</a>
 
             </div>
         </div>
