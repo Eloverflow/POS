@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
 use App\Models\Project;
+use App\Helpers\Utils;
 use App\Models\POS\Schedule;
 use App\Models\POS\Day_Schedules;
 use App\Models\POS\Disponibility;
@@ -29,9 +30,13 @@ class ScheduleController extends Controller
 
     public function details($id)
     {
-        $employee = Employee::GetById($id);
-        //DB::table('users')->get();
-        $view = \View::make('POS.Employee.details')->with('employee', $employee);
+        $schedule = Schedule::GetById($id);
+
+        $view = \View::make('POS.schedule.details')->with('ViewBag', array(
+                'schedule' => $schedule,
+                'Rows' => Utils::GenerateDisponibilityTable($id)
+            )
+        );
         return $view;
     }
 

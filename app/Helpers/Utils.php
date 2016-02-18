@@ -1,6 +1,7 @@
 <?php
 namespace App\Helpers;
 use App\Models\POS\Disponibility;
+use App\Models\POS\Schedule;
 use App\Models\POS\Shared\Cell;
 use App\Models\POS\Shared\Row;
 use App\Models\POS\Shared\Intersect;
@@ -67,18 +68,54 @@ class Utils
         return $Intersects ;
     }
 
-    static public function GenerateDisponibilityTable($idUser)
+    static public function GenerateDisponibilityTable($id)
     {
         $Cells = null;
 
         $WeekDisponibilities = array(
-            0 => Disponibility::GetDayDisponibilities($idUser, 0),
-            1 => Disponibility::GetDayDisponibilities($idUser, 1),
-            2 => Disponibility::GetDayDisponibilities($idUser, 2),
-            3 => Disponibility::GetDayDisponibilities($idUser, 3),
-            4 => Disponibility::GetDayDisponibilities($idUser, 4),
-            5 => Disponibility::GetDayDisponibilities($idUser, 5),
-            6 => Disponibility::GetDayDisponibilities($idUser, 6),
+            0 => Disponibility::GetDayDisponibilities($id, 0),
+            1 => Disponibility::GetDayDisponibilities($id, 1),
+            2 => Disponibility::GetDayDisponibilities($id, 2),
+            3 => Disponibility::GetDayDisponibilities($id, 3),
+            4 => Disponibility::GetDayDisponibilities($id, 4),
+            5 => Disponibility::GetDayDisponibilities($id, 5),
+            6 => Disponibility::GetDayDisponibilities($id, 6),
+        );
+
+        $BlankTable = Utils::GetBlankTable("");
+        $arrangedTable = Utils::arrangeRows($BlankTable, $WeekDisponibilities);
+
+        $count = 0;
+        $rows = null;
+        while($count < count($arrangedTable))
+        {
+            $row = $arrangedTable[$count];
+
+            if($count < 9)
+            {
+                $firstCellText = "0" . ($count + 1) . ":00";
+            } else {
+                $firstCellText = ($count + 1) . ":00";
+            }
+            $rows[] = "<tr><td>" . $firstCellText . "</td>" . $row->ToString() . "</tr>";
+            $count += 1;
+        }
+
+        return $rows;
+    }
+
+    static public function GenerateScheduleTable($id)
+    {
+        $Cells = null;
+
+        $WeekDisponibilities = array(
+            0 => Schedule::GetDaySchedules($id, 0),
+            1 => Schedule::GetDaySchedules($id, 1),
+            2 => Schedule::GetDaySchedules($id, 2),
+            3 => Schedule::GetDaySchedules($id, 3),
+            4 => Schedule::GetDaySchedules($id, 4),
+            5 => Schedule::GetDaySchedules($id, 5),
+            6 => Schedule::GetDaySchedules($id, 6),
         );
 
         $BlankTable = Utils::GetBlankTable("");
