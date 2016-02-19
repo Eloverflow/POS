@@ -1,5 +1,6 @@
 @extends('master')
 @section('csrfToken')
+    <meta name="schedule-id" content="{{ $ViewBag['schedule']->id }}" />
     @stop
 @section('content')
     <div class="row">
@@ -37,7 +38,6 @@
                         <label>Updated At :</label>
                         <p>{{ $ViewBag['schedule']->updated_at }}</p>
                     </div>
-                    <p>Content here. <a class="alert" href=#>Alert!</a></p>
                 </div>
             </div>
         </div>
@@ -79,36 +79,14 @@
 @stop
 
 @section("myjsfile")
+    <script src="{{ @URL::to('js/getScheduledEmployees.js') }}"></script>
     <script>
         $('#Schedule').on("click", "td", function(e) {
-            $(this).css("background-color","red");
-            var mytable = "<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>";
-
-            for (var i = 1; i < 31; i++) {
-                if (i % 3 == 1 && i != 1) {
-                    mytable += "</tr><tr>";
-                }
-                mytable += "<td>[" + i + "]</td>";
-            }
-
-            mytable += "</tr></tbody></table>";
             var col = $(this).parent().children().index($(this));
-            var row = $(this).parent().parent().children().index($(this).parent());
-            alert('Row: ' + row + ', Column: ' + col);
+            GetScheduledEmployees(col - 1);
 
-            bootbox.dialog({
-                message: mytable,
-                title: "Scheduled employees",
-                buttons: {
-                    main: {
-                        label: "Ok",
-                        className: "btn-primary",
-                        callback: function() {
-                            Example.show("Primary button");
-                        }
-                    }
-                }
-            });
+            //var row = $(this).parent().parent().children().index($(this).parent());
+
         });
     </script>
     <script src="{{ @URL::to('Framework/Bootstrap/js/bootbox.js') }}"></script>

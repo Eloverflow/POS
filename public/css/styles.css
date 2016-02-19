@@ -610,3 +610,20 @@ li.addTable .glyphicon{
 
 	background: #337ab7!important;
 }*/
+
+#modalTable {
+	border-collapse: collapse;
+	width: 100%;
+}
+
+#modalTable th, td {
+	text-align: left;
+	padding: 8px;
+}
+
+#modalTable tr:nth-child(even){background-color: #f2f2f2}
+
+#modalTable th {
+	background-color: #4CAF50;
+	color: white;
+}
