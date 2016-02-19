@@ -541,7 +541,7 @@ li.addTable .glyphicon{
 }
 
 .add-one{;
-	transition: color 0.1s, box-shadow 0.5s;;
+	transition: color 0.1s, text-shadow 0.1s;;
 	color: #337ab7;
 	font-size: 60px;/*
 	stroke-width: 6;*/
@@ -555,9 +555,37 @@ li.addTable .glyphicon{
 
 }
 
+.add-new div input.form-control{
+	height:  30px!important;
+}
 
-.tableChoice.focus{/*
-	text-align: center;*/
+.add-new div.block{
+	width: 50%;
+	float: left;
+}
+
+.action{
+	float: right;
+	font-size: 60px;
+}
+
+.action{
+	transition: color 0.1s, text-shadow 0.1s;;
+}
+
+.sumbit-one:hover{
+	color: #49d100;
+	text-shadow: 0 1px 30px rgba(0,0,0,0.8);
+}
+
+
+.cancel-one:hover{
+	color: #C20000;
+	text-shadow: 0 1px 30px rgba(0,0,0,0.8);
+}
+
+.tableChoice.focus{
+	text-align: center;
 	background: #ffffff!important;
 }
 
