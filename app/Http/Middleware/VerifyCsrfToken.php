@@ -14,7 +14,7 @@ class VerifyCsrfToken extends BaseVerifier
     protected $except = [
         //
         'addon/*',
-        'Schedule/*',
+        'schedule/*',
         ''
     ];
 }
