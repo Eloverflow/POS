@@ -22,6 +22,11 @@ var tableItaration = 1;
 
 while(document.getElementById('tableChoiceList'+tableItaration) !=null){
 
+
+    var sumbitOneAction = $('.choiceList'+tableItaration+'.sumbit-one.action');
+
+    sumbitOneActionClick(sumbitOneAction, tableItaration);
+
     var currentTableChoiceList = $('#tableChoiceList'+tableItaration);
     var currentTableChoiceListArrow = $('#tableChoiceListArrow'+tableItaration);
     var currentTableChoiceActive = $('.tableChoice.choiceList'+tableItaration+'.active');
@@ -49,17 +54,49 @@ while(document.getElementById('tableChoiceList'+tableItaration) !=null){
     tableItaration++;
 }
 
+
+function sumbitOneActionClick(sumbitOneAction, tableItaration){
+    sumbitOneAction.click(function(){
+        var currentTableChoiceActive = $('.tableChoice.choiceList'+tableItaration+'.active');
+
+        //We store inpout here
+
+        var newItem1 = $('#newItemValue1')
+        var newItem2 = $('#newItemValue2')
+
+        var newItemName1 = newItem1.getAttribute('name');
+        var newItemName2 = newItem2.getAttribute('name');;
+
+        var newItemValue1 = newItem1.getAttribute('value');
+        var newItemValue2 = newItem2.getAttribute('value');;
+
+
+        currentTableChoiceActive.children().fadeOut(200).promise().then(function() {
+
+            currentTableChoiceActive.empty();
+        });
+/*
+        newItem2.ajax*/
+
+
+        //we display new input now, fadein
+    });
+
+
+}
+
 function currentTableChoiceAdd(currentTableChoiceFocus, tableItaration){
     currentTableChoiceFocus.click(function(){
 
         var currentTableChoiceFocus = $('.tableChoice.choiceList'+tableItaration+'.focus');
 
-        var currentTableChoiceAddNew = $('.choiceList'+tableItaration+'.add-new');
 
         currentTableChoiceFocus.children().fadeOut(200).promise().then(function() {
             /*currentTableChoiceFocus.empty();*/
             /*var currentTableChoiceAddOne = $('.choiceList'+tableItaration+'.add-one');
             currentTableChoiceAddOne.remove();*/
+
+            var currentTableChoiceAddNew = $('.choiceList'+tableItaration+'.add-new');
 
             currentTableChoiceFocus.removeClass("focus");
             currentTableChoiceAddNew.fadeIn(200);

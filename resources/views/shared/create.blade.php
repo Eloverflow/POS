@@ -46,24 +46,24 @@
                                         <a id="{{$oneChoice->id}}" class="list-group-item tableChoice focus choiceList{{$tableIteration}} active' ">
 
 
-                                            <form class="form-horizontal " role="form" method="POST" action="{{ @URL::to('/items/create') }}">
                                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
 
                                                 <div class="form-group choiceList{{$tableIteration}} add-new">
 
                                                     <div class="block">
-                                                    <label class="control-label">Name</label>
-                                                        <input type="text" class="form-control" name="{{ $tableChoiceList["titleColumn"]}}" value="{{ old($tableChoiceList["titleColumn"]) }}">
+                                                    <label class="control-label">{{ucwords( str_replace('_', ' ', $tableChoiceList["titleColumn"])) }}</label>
+                                                        <input id="newItemValue1" type="text" class="form-control" name="{{ $tableChoiceList["titleColumn"] }}" value="{{ old($tableChoiceList["titleColumn"]) }}">
                                                     </div>
+                                                    @if($tableChoiceList["contentColumn"] != "")
                                                     <div class="block">
-                                                        <label class="control-label">Desc</label>
-                                                        <input type="text" class="form-control" name="{{ $tableChoiceList["contentColumn"] }}" value="{{old($tableChoiceList["contentColumn"])}}">
+                                                        <label class="control-label">{{ ucwords( str_replace('_', ' ', $tableChoiceList["contentColumn"])) }}</label>
+                                                        <input  id="newItemValue2" type="text" class="form-control" name="{{ $tableChoiceList["contentColumn"] }}" value="{{old($tableChoiceList["contentColumn"])}}">
                                                     </div>
+                                                    @endif
+
                                                     <span class="glyphicon glyphicon-ok-sign choiceList{{$tableIteration}}  sumbit-one action"></span>
                                                     <span class="glyphicon glyphicon-remove-sign choiceList{{$tableIteration}}  cancel-one action"></span>
                                                 </div>
-
-                                            </form>
                                             <span class="glyphicon glyphicon-plus-sign choiceList{{$tableIteration}}  add-one"></span>
                                         </a>
 
