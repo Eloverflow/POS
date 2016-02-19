@@ -262,8 +262,9 @@ class ScheduleController extends Controller
     {
         $scheduleId = \Input::get('scheduleId');
         $dayNumber = \Input::get('dayNumber');
+        $hour = \Input::get('hour');
 
-        $daySchedule = Schedule::GetDaySchedules($scheduleId, $dayNumber);
+        $daySchedule = Schedule::GetDaySchedulesHour($scheduleId, $dayNumber, $hour);
 
         return response()->json(json_encode($daySchedule));
     }
