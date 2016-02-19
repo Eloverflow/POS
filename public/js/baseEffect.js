@@ -31,6 +31,11 @@ while(document.getElementById('tableChoiceList'+tableItaration) !=null){
     currentTableChoiceList.css('visibility', 'visible');
     currentTableChoiceList.slideDown(500);
 
+    var currentTableChoiceFocus = $('.tableChoice.choiceList'+tableItaration+'.focus');
+
+    currentTableChoiceAdd(currentTableChoiceFocus, tableItaration);
+
+
     arrowClick(currentTableChoiceList, currentTableChoiceListArrow, tableItaration);
 
     choiceClick(allCurrentTableChoice, tableItaration);
@@ -39,6 +44,22 @@ while(document.getElementById('tableChoiceList'+tableItaration) !=null){
 
     tableItaration++;
 }
+
+function currentTableChoiceAdd(currentTableChoiceFocus, tableItaration){
+    currentTableChoiceFocus.click(function(){
+
+        var currentTableChoiceFocus = $('.tableChoice.choiceList'+tableItaration+'.focus');
+
+
+
+        currentTableChoiceFocus.removeClass("focus", 1000, "easeInBack" );
+
+
+
+    });
+
+}
+
 
 function choiceClick(allCurrentTableChoice, tableItaration){
     allCurrentTableChoice.click(function(){

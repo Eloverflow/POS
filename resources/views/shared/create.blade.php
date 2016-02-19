@@ -43,6 +43,12 @@
 
                                         </a>
                                     @endforeach
+                                        <a id="{{$oneChoice->id}}" class="list-group-item tableChoice focus choiceList{{$tableIteration}} active' ">
+
+                                            <span class="glyphicon glyphicon-plus-sign add-one"></span> New
+                                            {{--<svg class="glyph stroked plus sign"><use xlink:href="#stroked-plus-sign"/></svg>--}}
+                                        </a>
+
                                 </div>
                                 <a><div id="tableChoiceListArrow{{$tableIteration}}" class="alert alert-info tableChoiceListArrow" role="alert"><span class="glyphicon glyphicon-chevron-down"></span></div></a>
 
