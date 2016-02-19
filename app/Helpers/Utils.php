@@ -33,33 +33,12 @@ class Utils
                 $EndMin = $DTET->format('i');
                 $diff = $EndTime - $StartTime;
                 if (($Hour < $EndTime && $Hour > $StartTime) ) {
-                    $newInters = new Intersect($j, $Hour, $EndTime, $StartMin, $EndMin);
+                    $newInters = new Intersect("current", $j, $Hour, $EndTime, $StartMin, $EndMin);
                     $countIntersects = $countIntersects + 1;
                     $Intersects[] = $newInters;
                 }
-            }
-        }
-        return $Intersects ;
-    }
-
-
-    static public function CalculateStarts($Hour, $weekDispos)
-    {
-
-        $countIntersects = 0;
-        $Intersects = array();
-        for ($j = 0; $j < 7; $j++) {
-            $diposJour = $weekDispos[$j];
-            for ($k = 0; $k < count($diposJour); $k++) {
-                $DTST = new \DateTime($diposJour[$k]->startTime);
-                $StartTime = $DTST->format('H');
-                $StartMin = $DTST->format('i');
-                $DTET = new \DateTime($diposJour[$k]->endTime);
-                $EndTime = $DTET->format('H');
-                $EndMin = $DTET->format('i');
-                $diff = $EndTime - $StartTime;
                 if ($StartTime == $Hour) {
-                    $newInters = new Intersect($j, $Hour, $EndTime, $StartMin, $EndMin);
+                    $newInters = new Intersect("start", $j, $Hour, $EndTime, $StartMin, $EndMin);
                     $countIntersects = $countIntersects + 1;
                     $Intersects[] = $newInters;
                 }
@@ -67,6 +46,7 @@ class Utils
         }
         return $Intersects ;
     }
+
 
     static public function GenerateDisponibilityTable($id)
     {
@@ -118,6 +98,7 @@ class Utils
             6 => Schedule::GetDaySchedules($id, 6),
         );
 
+
         $BlankTable = Utils::GetBlankTable("");
         $arrangedTable = Utils::arrangeScheduleRows($BlankTable, $WeekDisponibilities);
 
@@ -164,47 +145,37 @@ class Utils
 
         for($i = 1; $i < 24; $i++)
         {
-            $starts = Utils::CalculateStarts($i,$weekDispos);
             $normalIntersects = Utils::CalculateIntersects($i,$weekDispos);
             $curRow = $rows[$i -1];
 
-            //var_dump($starts);
-            for($j = 0; $j < count($starts); $j++)
-            {
-                $start = $starts[$j];
+            for($j = 0; $j < count($normalIntersects); $j++) {
+                $intersect = $normalIntersects[$j];
+                if($intersect->GetType() == "start") {
+                    $rowspan = $intersect->GetEndTime() - $intersect->GetStartTime();
+                    $formattedStartTime = "";
+                    $formattedEndTime = "";
 
-                $rowspan = $start->GetEndTime() - $start->GetStartTime();
-                $formattedStartTime = "";
-                $formattedEndTime = "";
+                    if ($intersect->GetStartTime() < 10) {
+                        $formattedStartTime = "0" . $intersect->GetStartTime() . ":" . $intersect->GetStartMin();
+                    } else {
+                        $formattedStartTime = $intersect->GetStartTime() . ":" . $intersect->GetStartMin();
+                    }
+                    if ($intersect->GetEndTime() < 10) {
+                        $formattedEndTime = $intersect->GetEndTime() . ":" . $intersect->GetEndMin();
+                    } else {
+                        $formattedEndTime = $intersect->GetEndTime() . ":" . $intersect->GetEndMin();
+                    }
 
-                if($start->GetStartTime() < 10)
-                {
-                    $formattedStartTime = "0" . $start->GetStartTime() . ":" . $start->GetStartMin();
-                } else {
-                    $formattedStartTime = $start->GetStartTime() . ":" . $start->GetStartMin();
+                    $cellText = $formattedStartTime . " <br />To<br /> " . $formattedEndTime;
+                    $selluz = new Cell($cellText, $rowspan, "bluepalecell");
+                    $dayNumb = $intersect->GetDayNumber();
+
+                    $curRow->SetCell($dayNumb, $selluz);
+                } else if($intersect->GetType() == "current") {
+                    $dayNumb = $intersect->GetDayNumber();
+
+                    $curRow->RemoveCell($dayNumb);
                 }
-                if($start->GetEndTime() < 10)
-                {
-                    $formattedEndTime = $start->GetEndTime() . ":" . $start->GetEndMin();
-                } else {
-                    $formattedEndTime = $start->GetEndTime() . ":" . $start->GetEndMin();
-                }
-
-                $cellText = $formattedStartTime . " <br />To<br /> " . $formattedEndTime;
-                $selluz = new Cell($cellText, $rowspan, "bluepalecell");
-                $dayNumb = $start->GetDayNumber();
-
-                $curRow->SetCell($dayNumb, $selluz);
-            }
-            for($k = 0; $k < count($normalIntersects); $k++)
-            {
-                $nIntersect = $normalIntersects[$k];
-                //var_dump($nIntersect);
-                //var_dump($start->GetDayNumber());
-
-                $dayNumb = $nIntersect->GetDayNumber();
-
-                $curRow->RemoveCell($dayNumb);
             }
         }
 
@@ -214,10 +185,36 @@ class Utils
 
     static public function arrangeScheduleRows($rows, $weekDispos)
     {
+        for($i = 1; $i < 24; $i++)
+        {
+            $intersects = Utils::CalculateIntersects($i,$weekDispos);
+            $curRow = $rows[$i -1];
+
+            for($j = 0; $j < 7; $j++)
+            {
+
+                $areWorking = 0;
+                $areStarting = 0;
+                for($k = 0; $k < count($intersects); $k++) {
+                    if ($intersects[$k]->GetType() == "start" && $intersects[$k]->GetDayNumber() == $j) {
+                        $areStarting = $areStarting + 1;
+                        $areWorking = $areWorking + 1;
+                    } else if ($intersects[$k]->GetType() == "current" && $intersects[$k]->GetDayNumber() == $j) {
+                        $areWorking = $areWorking + 1;
+                    }
+                }
+
+                if($areWorking > 0 || $areStarting > 0) {
+                    $cellText = "Starts At: (" . $areStarting . ") <br />Working: (" . $areWorking . ")";
+                    $selluz = new Cell($cellText, 0, "bluepalecell");
+
+                    $curRow->SetCell($j, $selluz);
+                }
+            }
+        }
 
 
-
-        //return $rows;
+        return $rows;
     }
 
 }
