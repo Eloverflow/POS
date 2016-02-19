@@ -83,10 +83,9 @@
     <script>
         $('#Schedule').on("click", "td", function(e) {
             var col = $(this).parent().children().index($(this));
-            GetScheduledEmployees(col - 1);
+            var row = $(this).parent().parent().children().index($(this).parent());
 
-            //var row = $(this).parent().parent().children().index($(this).parent());
-
+            GetScheduledEmployees(col - 1, row + 1);
         });
     </script>
     <script src="{{ @URL::to('Framework/Bootstrap/js/bootbox.js') }}"></script>

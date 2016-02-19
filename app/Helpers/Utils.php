@@ -205,7 +205,7 @@ class Utils
                 }
 
                 if($areWorking > 0 || $areStarting > 0) {
-                    $cellText = "Starts At: (" . $areStarting . ") <br />Working: (" . $areWorking . ")";
+                    $cellText = "Starting: (" . $areStarting . ") <br />Working: (" . $areWorking . ")";
                     $selluz = new Cell($cellText, 0, "bluepalecell");
 
                     $curRow->SetCell($j, $selluz);

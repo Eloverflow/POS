@@ -1,7 +1,7 @@
 /**
  * Created by isaelblais on 2/19/2016.
  */
-function GetScheduledEmployees($dayNumber) {
+function GetScheduledEmployees($dayNumber, $hour) {
 
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
     var Schedule_ID = $('meta[name="schedule-id"]').attr('content');
@@ -12,7 +12,8 @@ function GetScheduledEmployees($dayNumber) {
         data: {
             _token: CSRF_TOKEN,
             scheduleId: Schedule_ID,
-            dayNumber: $dayNumber
+            dayNumber: $dayNumber,
+            hour: $hour
         },
         dataType: 'JSON',
         success: function (data) {
