@@ -31,6 +31,10 @@ while(document.getElementById('tableChoiceList'+tableItaration) !=null){
     currentTableChoiceList.css('visibility', 'visible');
     currentTableChoiceList.slideDown(500);
 
+
+    var currentTableChoiceAddNew = $('.choiceList'+tableItaration+'.add-new');
+    currentTableChoiceAddNew.hide(0);
+
     var currentTableChoiceFocus = $('.tableChoice.choiceList'+tableItaration+'.focus');
 
     currentTableChoiceAdd(currentTableChoiceFocus, tableItaration);
@@ -50,9 +54,16 @@ function currentTableChoiceAdd(currentTableChoiceFocus, tableItaration){
 
         var currentTableChoiceFocus = $('.tableChoice.choiceList'+tableItaration+'.focus');
 
+        var currentTableChoiceAddNew = $('.choiceList'+tableItaration+'.add-new');
 
+        currentTableChoiceFocus.children().fadeOut(200).promise().then(function() {
+            /*currentTableChoiceFocus.empty();*/
+            /*var currentTableChoiceAddOne = $('.choiceList'+tableItaration+'.add-one');
+            currentTableChoiceAddOne.remove();*/
 
-        currentTableChoiceFocus.removeClass("focus", 1000, "easeInBack" );
+            currentTableChoiceFocus.removeClass("focus");
+            currentTableChoiceAddNew.fadeIn(200);
+        });
 
 
 
