@@ -1,11 +1,5 @@
 @extends('master')
 @section('csrfToken')
-    <style>
-        #Schedule, td, th
-        {
-            border: 1px solid black;
-        }
-    </style>
     @stop
 @section('content')
     <div class="row">
@@ -43,6 +37,7 @@
                         <label>Updated At :</label>
                         <p>{{ $ViewBag['schedule']->updated_at }}</p>
                     </div>
+                    <p>Content here. <a class="alert" href=#>Alert!</a></p>
                 </div>
             </div>
         </div>
@@ -68,7 +63,13 @@
                         </tr>
                         </thead>
                         <tbody>
-
+                        <?php
+                        $rows = $ViewBag['Rows'];
+                        for($i = 0; $i < count($rows); $i++)
+                        {
+                            echo $rows[$i];
+                        }
+                        ?>
                         </tbody>
                     </table>
                 </div>
@@ -78,5 +79,37 @@
 @stop
 
 @section("myjsfile")
+    <script>
+        $('#Schedule').on("click", "td", function(e) {
+            $(this).css("background-color","red");
+            var mytable = "<table cellpadding=\"0\" cellspacing=\"0\"><tbody><tr>";
+
+            for (var i = 1; i < 31; i++) {
+                if (i % 3 == 1 && i != 1) {
+                    mytable += "</tr><tr>";
+                }
+                mytable += "<td>[" + i + "]</td>";
+            }
+
+            mytable += "</tr></tbody></table>";
+            var col = $(this).parent().children().index($(this));
+            var row = $(this).parent().parent().children().index($(this).parent());
+            alert('Row: ' + row + ', Column: ' + col);
+
+            bootbox.dialog({
+                message: mytable,
+                title: "Scheduled employees",
+                buttons: {
+                    main: {
+                        label: "Ok",
+                        className: "btn-primary",
+                        callback: function() {
+                            Example.show("Primary button");
+                        }
+                    }
+                }
+            });
+        });
+    </script>
     <script src="{{ @URL::to('Framework/Bootstrap/js/bootbox.js') }}"></script>
 @stop

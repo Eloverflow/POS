@@ -6,19 +6,26 @@ use Illuminate\Database\Eloquent\Model;
 
 class Intersect
 {
+    protected $_type;
     protected $_dayNumber;
     protected $_startTime;
     protected$_endTime;
     protected $_startMin;
     protected$_endMin;
 
-    public function __construct($dayNumber = 0, $startTime = 0, $endTime = 0, $startMin = 0, $endMin = 0)
+    public function __construct($type = "", $dayNumber = 0, $startTime = 0, $endTime = 0, $startMin = 0, $endMin = 0)
     {
+        $this->_type = $type;
         $this->_dayNumber = $dayNumber;
         $this->_startTime = $startTime;
         $this->_endTime = $endTime;
         $this->_startMin = $startMin;
         $this->_endMin = $endMin;
+    }
+
+    public function GetType()
+    {
+        return $this->_type;
     }
 
     public function GetDayNumber()

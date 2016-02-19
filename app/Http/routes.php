@@ -82,6 +82,8 @@ Route::delete('/schedule/deleteComp/{id}', 'POS\ScheduleController@deleteComp');
 Route::get('/schedule/view/{id}', 'POS\ScheduleController@details');
 
 Route::post('/schedule/AjaxFindDispos', 'POS\ScheduleController@AjaxFindDispos');
+Route::post('/schedule/AjaxGetEmployeeDaySchedules', 'POS\ScheduleController@AjaxGetEmployeeDaySchedules');
+
 /* End schedule */
 
 /* Start Punch */

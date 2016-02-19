@@ -33,7 +33,8 @@ class ScheduleController extends Controller
         $schedule = Schedule::GetById($id);
 
         $view = \View::make('POS.Schedule.details')->with('ViewBag', array(
-                'schedule' => $schedule
+                'schedule' => $schedule,
+                'Rows' => Utils::GenerateScheduleTable($id)
             )
         );
         return $view;
@@ -255,6 +256,16 @@ class ScheduleController extends Controller
         }
 
         return response()->json(json_encode($disponibilities));
+    }
+
+    public function AjaxGetEmployeeDaySchedules()
+    {
+        $scheduleId = \Input::get('scheduleId');
+        $dayNumber = \Input::get('dayNumber');
+
+        $daySchedule = Schedule::GetDaySchedules($scheduleId, $dayNumber);
+
+        return response()->json(json_encode($daySchedule));
     }
 
 }

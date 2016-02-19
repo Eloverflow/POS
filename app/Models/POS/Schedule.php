@@ -42,7 +42,10 @@ class Schedule extends Model
     {
         $matches = ['schedule_id' => $id, 'day_number' => $day_number];
         return \DB::table('day_schedules')
+            ->select(\DB::raw('day_schedules.*,
+            employees.firstName'))
             ->where($matches)
+            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
             ->get();
     }
 
