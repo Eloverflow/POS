@@ -6,7 +6,7 @@
     <div class="panel panel-default">
         <div class="panel-body">
                 <?php $path = Request::path();?>
-                <div class="panel-heading"><h2><a href="{{@URL::to($path)}}">{{ $title }}</a></h2></div>
+                {{--<div class="panel-heading"><h2><a href="{{@URL::to($path)}}">{{ $title }}</a></h2></div>--}}
                 <div class="panel-body">
                     <table class="table table-hover"  data-toggle="table" data-url="tables/data1.json"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
 
@@ -49,9 +49,10 @@
                                         @endforeach
                                 @endif
                                 <td class="table-options">
-                                    <a href="{{ @URL::to(Request::path().'/view/'.$tableRows[$i]->id)}}"><svg class="glyph stroked eye table-options-view"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-eye"></use></svg></a>
-                                    <a href="{{ @URL::to(Request::path().'/edit/'.$tableRows[$i]->id)}}"><svg class="glyph stroked pencil table-options-modify"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-pencil"></use></svg></a>
-                                    <a href="{{ @URL::to(Request::path().'/delete/'.$tableRows[$i]->id)}}"><svg class="glyph stroked cancel table-options-delete"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-cancel"></use></svg></a>
+                                    <?php !empty($tableRows[$i]->slug) ? $target = $tableRows[$i]->slug : $target = $tableRows[$i]->id ?>
+                                    <a href="{{ @URL::to(Request::path().'/view/'. $target)}}"><svg class="glyph stroked eye table-options-view"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-eye"></use></svg></a>
+                                    <a href="{{ @URL::to(Request::path().'/edit/'. $target)}}"><svg class="glyph stroked pencil table-options-modify"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-pencil"></use></svg></a>
+                                    <a href="{{ @URL::to(Request::path().'/delete/'. $target)}}"><svg class="glyph stroked cancel table-options-delete"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-cancel"></use></svg></a>
                                 </td>
 
                             </tr>

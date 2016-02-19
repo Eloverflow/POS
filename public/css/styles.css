@@ -457,7 +457,7 @@ li.addTable .glyphicon{
 .tableChoiceList{
 	visibility: hidden;
 	overflow-y: hidden;
-	height: 100px;
+	height: 80px;
 	margin-bottom: 0;
 }
 
@@ -467,7 +467,7 @@ li.addTable .glyphicon{
 }
 
 .tableChoiceList a.list-group-item{
-	height: 100px;
+	height: 80px;
 }
 
 /* Side panel scrollbar */
