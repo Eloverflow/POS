@@ -58,26 +58,71 @@ while(document.getElementById('tableChoiceList'+tableItaration) !=null){
 function sumbitOneActionClick(sumbitOneAction, tableItaration){
     sumbitOneAction.click(function(){
         var currentTableChoiceActive = $('.tableChoice.choiceList'+tableItaration+'.active');
-
         //We store inpout here
 
-        var newItem1 = $('#newItemValue1')
-        var newItem2 = $('#newItemValue2')
+        var newItem1 = $('.choiceList'+tableItaration+'#newItemValue1');
+        var newItem2 = $('.choiceList'+tableItaration+'#newItemValue2');
 
-        var newItemName1 = newItem1.getAttribute('name');
-        var newItemName2 = newItem2.getAttribute('name');;
+        var postAddr = sumbitOneAction.attr('id');
 
-        var newItemValue1 = newItem1.getAttribute('value');
-        var newItemValue2 = newItem2.getAttribute('value');;
+        var newItemName1 = newItem1.attr('name');
+        var newItemName2 = newItem2.attr('name');
+
+        var newItemValue1 = newItem1.val();
+        var newItemValue2 = newItem2.val();
+
+        newItem1.prop('disabled', true);
+        newItem2.prop('disabled', true);
 
 
-        currentTableChoiceActive.children().fadeOut(200).promise().then(function() {
-
-            currentTableChoiceActive.empty();
-        });
+        currentTableChoiceActive.fadeOut(200);
 /*
-        newItem2.ajax*/
+        newItem2.ajax*//*
+        $.ajax({
+            statusCode: {
+                404: function() {
+                    alert( "page not found" );
+                }
+            }
+        });*/
 
+        var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+
+        var values = { };
+        values['_token'] = CSRF_TOKEN;
+        values[newItemName1] =  newItemValue1;
+        values[newItemName2] =  newItemValue2;
+
+        var request = $.ajax({
+                url: postAddr,
+                method: "POST",
+                data: values
+            });
+
+        request.done(function( data ) {
+            $( "#log" ).html( data );
+
+            var currentTableChoiceAddNew = $('.choiceList'+tableItaration+'.add-new');
+
+            currentTableChoiceAddNew.remove();
+
+
+
+            currentTableChoiceActive.fadeIn(200);
+
+            currentTableChoiceActive.append('<h4 class="list-group-item-heading">' + data[newItemName1] +'</h4>')
+            currentTableChoiceActive.append('<p class="list-group-item-text">' + data[newItemName2] +'</p>')
+
+            currentTableChoiceActive.attr('id', data['id']);
+
+            $('.input'+tableItaration).attr("value", data['id']);
+
+        });
+
+        request.fail(function( jqXHR, textStatus ) {
+            alert( "Request failed: " + textStatus );
+        });
 
         //we display new input now, fadein
     });
@@ -89,6 +134,14 @@ function currentTableChoiceAdd(currentTableChoiceFocus, tableItaration){
     currentTableChoiceFocus.click(function(){
 
         var currentTableChoiceFocus = $('.tableChoice.choiceList'+tableItaration+'.focus');
+
+
+        var newItem1 = $('.choiceList'+tableItaration+'#newItemValue1');
+        var newItem2 = $('.choiceList'+tableItaration+'#newItemValue2');
+
+
+        newItem1.prop('disabled', false);
+        newItem2.prop('disabled', false);
 
 
         currentTableChoiceFocus.children().fadeOut(200).promise().then(function() {

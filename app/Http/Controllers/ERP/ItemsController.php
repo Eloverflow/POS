@@ -6,12 +6,14 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Beer;
 use App\Models\ERP\Item;
+use App\Models\ERP\ItemType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Input;
 use Intervention\Image\Facades\Image;
 use Redirect;
 use Session;
+use URL;
 use Validator;
 
 class ItemsController extends Controller
@@ -103,5 +105,80 @@ class ItemsController extends Controller
         Session::flash('flash_message', $slug.' successfully updated!');
 
         return Redirect::back();
+    }
+
+    public function create()
+    {
+        /*Page Title*/
+        $title = 'Items';
+
+        /*$formSections = array(
+            'section1' => array(
+                'title' => '',
+                'fields' => array(
+                    array(
+                        'label' => 'Quantity',
+                        'input' => 'quantity'
+                    ),
+                    array(
+                        'label' => 'Quantity',
+                        'input' => 'quantity'
+                    )
+                )
+            )
+        );*/
+
+        $tableColumns = array('name', 'description');
+
+
+        $tableChoiceListTable = ItemType::all();
+        /*select all where type = beer*/
+
+        $tableChoiceListTitle = "ItemType";
+        $tableChoiceListDBColumn = "item_type_id";
+        $tableChoiceListTitleColumn = "name";
+        $tableChoiceListContentColumn = "description";
+        $tableChoiceListCreateURL = @URL::to('/itemtypes/create');
+
+        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
+
+
+        $tableChoiceLists = array($tableChoiceList1);
+
+
+
+        return view('shared.create',compact('title', 'tableChoiceLists', 'tableColumns'));
+    }
+
+    public function postCreate()
+    {
+        $inputs = \Input::all();
+
+        $rules = array(
+            'name' => 'required',
+            'description' => 'required'
+        );
+
+        $message = array(
+            'required' => 'The :attribute is required !'
+        );
+
+        $validation = \Validator::make($inputs, $rules, $message);
+        if($validation -> fails())
+        {
+            return Redirect::action('ERP\ItemsController@create')->withErrors($validation)
+                ->withInput();
+        }
+        else
+        {
+
+            return Item::create([
+                'name' =>  Input::get('name'),
+                'description' => Input::get('description'),
+                'slug' => Input::get('name') . rand(10, 10000),
+                'item_type_id' => Input::get('item_type_id'),
+                'item_field_list_id' => Input::get('item_type_id')
+            ]);
+        }
     }
 }
