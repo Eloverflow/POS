@@ -559,13 +559,16 @@ li.addTable .glyphicon{
 	height:  30px!important;
 }
 
-.add-new div.block{
-	width: 50%;
-	float: left;
+.add-new div.block{float: right;
+	width: 80%;
+}
+
+.add-new div.block input{
+	width: 80%;
+	float: right;
 }
 
 .action{
-	float: right;
 	font-size: 60px;
 }
 

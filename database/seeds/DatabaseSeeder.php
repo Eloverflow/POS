@@ -4,6 +4,7 @@ use App\Models\Addons\Rfid\TableRfidBeer;
 use App\Models\ERP\Item;
 use App\Models\ERP\ItemFieldList;
 use App\Models\ERP\ItemType;
+use App\Models\ERP\OrderLine;
 use App\Models\ERP\Supplier;
 use App\Models\ERP\Order;
 use App\Models\ERP\Inventory;
@@ -31,10 +32,11 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserTableSeeder::class);
         $this->call(SuppliersTableSeeder::class);
-        $this->call(OrdersTableSeeder::class);
         $this->call(ItemTypesTableSeeder::class);
         $this->call(ItemFieldListsTableSeeder::class);
         $this->call(ItemsTableSeeder::class);
+        $this->call(OrdersTableSeeder::class);
+        $this->call(OrderLinesTableSeeder::class);
         //$this->call(ItemTypeBeersTableSeeder::class);
         //$this->call(ItemTypeDrinksTableSeeder::class);
         $this->call(InventoriesTableSeeder::class);
@@ -141,6 +143,19 @@ class OrdersTableSeeder extends Seeder {
 
 }
 
+class OrderLinesTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('order_lines')->delete();
+
+        OrderLine::create(['quantity' => '5', 'order_id' => '1', 'item_id' => '1']);
+        OrderLine::create(['quantity' => '3', 'order_id' => '1', 'item_id' => '2']);
+
+        $this->command->info('Order Line table seeded!');
+    }
+
+}
 
 class ItemTypesTableSeeder extends Seeder {
 
@@ -220,8 +235,8 @@ class InventoriesTableSeeder extends Seeder {
     {
         DB::table('inventories')->delete();
 
-        Inventory::create(['order_id' => '1', 'item_id' => '1', 'quantity' => '100', 'slug' => 'keith']);
-        Inventory::create(['order_id' => '1', 'item_id' => '2', 'quantity' => '50',  'slug' => 'blue']);
+        Inventory::create(['item_id' => '1', 'quantity' => '100', 'slug' => 'keith']);
+        Inventory::create(['item_id' => '2', 'quantity' => '50',  'slug' => 'blue']);
 
         $this->command->info('Inventories table seeded!');
     }

@@ -40,8 +40,12 @@ Route::get('/itemtypes/{slug}', 'ERP\ItemTypesController@edit');
 Route::post('/itemtypes/{slug}', 'ERP\ItemTypesController@update');
 
 Route::get('/items', 'ERP\ItemsController@index');
+Route::get('/items/create', 'ERP\ItemsController@create');
+Route::post('/items/create', 'ERP\ItemsController@postCreate');
 Route::get('/items/{slug}', 'ERP\ItemsController@edit');
-Route::post('/items/{slug}', 'ERP\ItemsController@update');
+Route::post('/items/edit/{slug}', 'ERP\ItemsController@update');
+
+
 
 
 /* Start employee */

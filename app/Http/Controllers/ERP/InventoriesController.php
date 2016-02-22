@@ -7,6 +7,7 @@ use App\Models\ERP\Inventory;
 use App\Models\ERP\Item;
 use App\Models\ERP\Order;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\URL;
 use Input;
 use Redirect;
 use Session;
@@ -146,8 +147,9 @@ class InventoriesController extends \App\Http\Controllers\Controller
         $tableChoiceListDBColumn = "item_id";
         $tableChoiceListTitleColumn = "name";
         $tableChoiceListContentColumn = "description";
+        $tableChoiceListCreateURL = @URL::to('/items/create');
 
-        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
+        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
 
 
         $tableChoiceListTable = Order::all();
@@ -156,8 +158,9 @@ class InventoriesController extends \App\Http\Controllers\Controller
         $tableChoiceListDBColumn = "order_id";
         $tableChoiceListTitleColumn = "command_number";
         $tableChoiceListContentColumn = "";
+        $tableChoiceListCreateURL = @URL::to('/orders/create');
 
-        $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
+        $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn , "postUrl" => $tableChoiceListCreateURL);
 
 
 
@@ -185,23 +188,33 @@ class InventoriesController extends \App\Http\Controllers\Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            return Redirect::action('InventoriesController@create')->withErrors($validation)
+            return Redirect::action('ERP\InventoriesController@create')->withErrors($validation)
                 ->withInput();
         }
         else
         {
-            $inventories = Inventory::findOrFail();
+            $inventories = Inventory::where('item_id', '=', Input::get('item_id'))->firstOrFail();;
 
-            $itemSlug = Item::whereId(Input::get('item_id'))->first()->slug;
+            if($inventories != null){
 
-            Inventory::create([
-                'quantity' =>  Input::get('quantity'),
-                'item_id' => Input::get('item_id'),
-                'order_id' => Input::get('order_id'),
-                'slug' => $itemSlug
-            ]);
+                $inventories->update(Input::all());
 
-            return $itemSlug;
+                Session::flash('flash_message', $inventories->slug.' successfully updated!');
+
+            }
+            else{
+                $itemSlug = Item::whereId(Input::get('item_id'))->first()->slug;
+
+                Inventory::create([
+                    'quantity' =>  Input::get('quantity'),
+                    'item_id' => Input::get('item_id'),
+                    'slug' => $itemSlug
+                ]);
+
+                Session::flash('flash_message', $inventories->slug.' successfully created!');
+            }
+
+            return Redirect::back();;
         }
     }
 }
