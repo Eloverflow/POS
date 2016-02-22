@@ -32,18 +32,44 @@ class Utils
                 $EndTime = $DTET->format('H');
                 $EndMin = $DTET->format('i');
                 $diff = $EndTime - $StartTime;
-                if (($Hour < $EndTime && $Hour > $StartTime) ) {
-                    $newInters = new Intersect("current", $j, $Hour, $EndTime, $StartMin, $EndMin);
+
+                //if ($EndTime > $StartTime) {
+                    if (($Hour < $EndTime && $Hour > $StartTime)) {
+                        if ($StartTime != 0) {
+                            $newInters = new Intersect("current", $j, $Hour, $EndTime, $StartMin, $EndMin);
+                        } else {
+                            //$newInters = new Intersect("current", $j, $Hour, $EndTime, $StartMin, $EndMin);
+                        }
+
+                        $countIntersects = $countIntersects + 1;
+                        $Intersects[] = $newInters;
+                    }
+                    if ($StartTime == $Hour) {
+                        if($EndTime == 0) {
+                            $correctEndTime = 24;
+                        }  else if($EndTime < $StartTime) {
+                            $correctEndTime = 25;
+                            if($EndTime > 1)
+                            {
+                                $newInters = new Intersect("start", $j + 1, 1, $EndTime, 0, 0);
+                                $Intersects[] = $newInters;
+                            }
+                        } else {
+                            $correctEndTime = $EndTime;
+                        }
+                        $newInters = new Intersect("start", $j, $Hour, $correctEndTime, $StartMin, $EndMin);
+                        $countIntersects = $countIntersects + 1;
+                        $Intersects[] = $newInters;
+                    }
+                //} else {
+
+                    /*$newInters = new Intersect("start", $j, 23, 24, $StartMin, $EndMin);
                     $countIntersects = $countIntersects + 1;
-                    $Intersects[] = $newInters;
-                }
-                if ($StartTime == $Hour) {
-                    $newInters = new Intersect("start", $j, $Hour, $EndTime, $StartMin, $EndMin);
-                    $countIntersects = $countIntersects + 1;
-                    $Intersects[] = $newInters;
-                }
+                    $Intersects[] = $newInters;*/
+                //}
             }
         }
+
         return $Intersects ;
     }
 
@@ -147,13 +173,18 @@ class Utils
         {
             $normalIntersects = Utils::CalculateIntersects($i,$weekDispos);
             $curRow = $rows[$i -1];
-
+            //var_dump($normalIntersects);
             for($j = 0; $j < count($normalIntersects); $j++) {
                 $intersect = $normalIntersects[$j];
+
+
                 if($intersect->GetType() == "start") {
-                    $rowspan = $intersect->GetEndTime() - $intersect->GetStartTime();
-                    $formattedStartTime = "";
-                    $formattedEndTime = "";
+                    if($intersect->GetEndTime() > $intersect->GetStartTime()) {
+                        $rowspan = $intersect->GetEndTime() - $intersect->GetStartTime();
+                    } else {
+                        $rowspan = 25 - $intersect->GetStartTime();
+                    }
+
 
                     if ($intersect->GetStartTime() < 10) {
                         $formattedStartTime = "0" . $intersect->GetStartTime() . ":" . $intersect->GetStartMin();

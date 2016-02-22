@@ -52,15 +52,16 @@ class Schedule extends Model
 
     public static function GetDaySchedulesHour($id, $day_number, $hour)
     {
+        $realHour = $hour . ":00:00";
         $matches = ['schedule_id' => $id, 'day_number' => $day_number];
         return \DB::table('day_schedules')
             ->select(\DB::raw('day_schedules.*,
             employees.firstName,
             employees.lastName'))
-            ->where($matches)
-            ->Where('startTime', '<=', $hour)
-            ->Where('endTime', '>=', $hour)
             ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
+            ->where($matches)
+            ->Where('startTime', '<=', $realHour)
+            ->Where('endTime', '>=', $realHour)
             ->get();
     }
 
