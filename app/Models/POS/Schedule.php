@@ -72,4 +72,22 @@ class Schedule extends Model
             ->where($matches)
             ->get();
     }
+
+    public static function GetScheduleEmployees($id)
+    {
+
+        return \DB::table('schedules')
+            ->select(\DB::raw('day_schedules.*,
+            employee_titles.name as emplTitle,
+            employees.firstName,
+            employees.lastName'))
+            ->join('day_schedules', 'schedules.id', '=', 'day_schedules.schedule_id')
+            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
+            ->join('employee_titles', 'employees.employeeTitle', '=', 'employee_titles.id')
+            ->where('schedules.id', '=', $id)
+            ->orderBy('employees.firstName', 'desc')
+            ->orderBy('employees.lastName', 'desc')
+            ->get();
+    }
+
 }

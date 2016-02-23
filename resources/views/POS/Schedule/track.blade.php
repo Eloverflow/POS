@@ -40,6 +40,41 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
+                    <?php
+                        $lastPerson = "";
+
+                        $current = '';
+                        $personCounter = 0;
+                    ?>
+
+                    @foreach ($ViewBag['scheduleInfos'] as $scheduleInfos)
+
+                        <?php
+
+                            $currentPerson = $scheduleInfos->firstName . " " . $scheduleInfos->lastName;
+
+                            if($lastPerson != $currentPerson ){
+                                if($personCounter > 0){
+                                    echo "</div>";
+                                } else {
+
+                                }
+                                $personCounter++;
+
+                               // echo $currentPerson;
+                        echo "<div class=\"emplTrackBlock\">
+                                <h2>" . $scheduleInfos->firstName . $scheduleInfos->lastName . "</h2><h4>" . $scheduleInfos->emplTitle . "</h4>";
+                                echo "<h2>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</h2>";
+                                //echo '<li><a href="#">' + $scheduleInfos->startTime + ' To ' + $scheduleInfos->endTime + '</a></li>';
+                            }
+                            else{
+                                echo "<h2>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</h2>";
+                            }
+
+                            $lastPerson = $currentPerson;
+                        ?>
+
+                    @endforeach
 
                 </div>
             </div>
