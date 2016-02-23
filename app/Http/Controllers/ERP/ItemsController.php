@@ -71,7 +71,7 @@ class ItemsController extends Controller
         /*Main table row to retrieve from DB*/
         $tableRow = Item::whereSlug($slug)->first();
         /*Main table desired column to display*/
-        $tableColumns = array('name', 'description' );
+        $tableColumns = array('name', 'description' ,'img_id');
 
 
         $tableChoiceListTable = ItemType::all();
@@ -107,18 +107,40 @@ class ItemsController extends Controller
         /*Child table rows*/
         $tableChildRows = $tableRow->$tableChild;
 
-        $input = $request->all();
 
-        $tableRow->update($input);
+
+        if( Input::file('image') != null ){
+            $image = Input::file('image');
+            $filename  = time() . '.' . $image->getClientOriginalExtension();
+            /*
+                    File::exists(storage_path('img/item/' . $filename)) or File::makeDirectory(storage_path('img/item/' . $filename));*/
+
+            $path = public_path('img/item/' . $filename);
+            Image::make($image->getRealPath())->resize(468, 249)->save($path);
+            /*$product->image = 'img/item/'.$filename;
+            $product->save();*/
+
+
+            Session::flash('flash_message', $slug.' image updated!');
+
+
+            Input::merge(array('img_id' =>  $filename));
+
+        }
+
+
+
+        $tableRow->update(Input::all());
+
 
         if(is_array($tableChildRows)){
             foreach($tableChildRows as $tableChildRow){
-                $tableChildRow->update($input);
+                $tableChildRow->update(Input::all());
             }
         }
         else
         {
-            $tableChildRows->update($input);
+            $tableChildRows->update(Input::all());
         }
 
         // resizing an uploaded file/*
@@ -132,18 +154,6 @@ class ItemsController extends Controller
 
 
 
-        $image = Input::file('image');
-        $filename  = time() . '.' . $image->getClientOriginalExtension();
-/*
-        File::exists(storage_path('img/item/' . $filename)) or File::makeDirectory(storage_path('img/item/' . $filename));*/
-
-        $path = public_path('img/item/' . $filename);
-        Image::make($image->getRealPath())->resize(468, 249)->save($path);
-        /*$product->image = 'img/item/'.$filename;
-        $product->save();*/
-
-
-        Session::flash('flash_message', $slug.' successfully updated!');
 
         return Redirect::back();
     }
