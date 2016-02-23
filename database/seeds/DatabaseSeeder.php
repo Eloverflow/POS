@@ -18,6 +18,8 @@ use App\Models\POS\Disponibility;
 use App\Models\Auth\User;
 use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
+use App\Models\POS\Schedule;
+use App\Models\POS\Day_Schedules;
 
 class DatabaseSeeder extends Seeder
 {
@@ -49,6 +51,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(DisponibilitiesTableSeeder::class);
         $this->call(Day_DisponibilitiesTableSeeder::class);
+
+        $this->call(SchedulesTableSeeder::class);
+        $this->call(Day_SchedulesTableSeeder::class);
 
         Model::reguard();
     }
@@ -84,14 +89,14 @@ class Day_DisponibilitiesTableSeeder extends Seeder {
             'day' => date('2016-01-01'),
             'day_number' => 0,
             'startTime' => date('18:00:00'),
-            'endTime' => date('16:55:00')
+            'endTime' => date('19:55:00')
         ]);
 
         Day_Disponibilities::create(['disponibility_id' => 1,
             'day' => date('2016-01-01'),
             'day_number' => 3,
-            'startTime' => date('14:00:00'),
-            'endTime' => date('16:00:00')
+            'startTime' => date('20:00:00'),
+            'endTime' => date('03:00:00')
         ]);
         $this->command->info('Day Disponibilities table seeded!');
     }
@@ -99,6 +104,48 @@ class Day_DisponibilitiesTableSeeder extends Seeder {
 }
 
 
+class SchedulesTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('schedules')->delete();
+        Schedule::create(['name' => 'Schedules 1', 'startDate' => '2016-02-07', 'endDate' => '2016-02-13']);
+
+        $this->command->info('Schedules table seeded!');
+    }
+
+}
+
+class Day_SchedulesTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('day_schedules')->delete();
+
+        Day_Schedules::create(['schedule_id' => 1,
+            'day_number' => 0,
+            'employee_id' => 1,
+            'startTime' => date('15:00:00'),
+            'endTime' => date('17:00:00')
+        ]);
+
+        Day_Schedules::create(['schedule_id' => 1,
+            'day_number' => 0,
+            'employee_id' => 1,
+            'startTime' => date('18:00:00'),
+            'endTime' => date('19:55:00')
+        ]);
+
+        Day_Schedules::create(['schedule_id' => 1,
+            'day_number' => 3,
+            'employee_id' => 1,
+            'startTime' => date('20:00:00'),
+            'endTime' => date('03:00:00')
+        ]);
+        $this->command->info('Day Schedules table seeded!');
+    }
+
+}
 
 
 

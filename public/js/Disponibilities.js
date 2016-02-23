@@ -10,7 +10,7 @@ function findDisponibilities($lethis) {
     $DayNumber  = $($lethis).data("day");
 
     $.ajax({
-        url: '/Schedule/AjaxFindDispos',
+        url: '/schedule/AjaxFindDispos',
         type: 'POST',
         data: {_token: CSRF_TOKEN, dayNumber:$DayNumber, idEmployee:idEmployee },
         dataType: 'JSON',
