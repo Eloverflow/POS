@@ -48,7 +48,8 @@
                                 <td>{{ $disponibility->updated_at }}</td>
                                 <td><a href="{{ URL::to('disponibility/view', $disponibility->idDisponibility) }}">View</a>
                                     <a href="{{ URL::to('disponibility/edit', $disponibility->idDisponibility) }}">Edit</a>
-                                    <a href="{{ URL::to('disponibility/delete', $disponibility->idDisponibility) }}">Delete</a></td>
+                                    <a href="{{ URL::to('disponibility/delete', $disponibility->idDisponibility) }}">Delete</a>
+                                    <a href="{{ URL::to('disponibility/download', $disponibility->idDisponibility) }}">Download</a></td>
                             </tr>
                         @endforeach
 

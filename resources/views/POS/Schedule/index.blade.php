@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-6">
             <div class="vcenter">
-                <a class="btn btn-primary pull-right" href="{{ @URL::to('Schedule/Create') }}"> Create New </a>
+                <a class="btn btn-primary pull-right" href="{{ @URL::to('schedule/create') }}"> Create New </a>
             </div>
         </div>
     </div>
@@ -40,11 +40,13 @@
                                 <td>{{ $schedule->startDate }}</td>
                                 <td>{{ $schedule->endDate }}</td>
                                 <td>{{ $schedule->nbEmployees }}</td>
+                                <td>{{ $schedule->status }}</td>
                                 <td>{{ $schedule->created_at }}</td>
                                 <td><a href="{{ URL::to('schedule/track', $schedule->idSchedule) }}">Track</a>
                                     <a href="{{ URL::to('schedule/view', $schedule->idSchedule) }}">View</a>
                                     <a href="{{ URL::to('schedule/edit', $schedule->idSchedule) }}">Edit</a>
-                                    <a href="{{ URL::to('schedule/delete', $schedule->idSchedule) }}">Delete</a></td>
+                                    <a href="{{ URL::to('schedule/delete', $schedule->idSchedule) }}">Delete</a>
+                                    <a href="{{ URL::to('schedule/download', $schedule->idSchedule) }}">Download</a></td>
                             </tr>
                         @endforeach
 

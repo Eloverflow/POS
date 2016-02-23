@@ -5,7 +5,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-6">
-            <h1 class="page-header">Disponibilities</h1>
+            <h1 class="page-header">Schedule Details</h1>
         </div>
         <div class="col-md-6">
             <div class="vcenter">

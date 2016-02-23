@@ -22,8 +22,21 @@ class ScheduleController extends Controller
     public function index()
     {
         $schedules = Schedule::GetAll();
+        if($schedules[0]->idSchedule == null){
+            unset($schedules);
+            $schedules = array();
+        }
         $view = \View::make('POS.Schedule.index')->with('ViewBag', array(
             'schedules' => $schedules
+        ));;
+        return $view;
+    }
+
+    public function track($id)
+    {
+        $schedule = Schedule::GetById($id);
+        $view = \View::make('POS.Schedule.track')->with('ViewBag', array(
+            'schedule' => $schedule
         ));;
         return $view;
     }

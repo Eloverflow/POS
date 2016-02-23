@@ -9,7 +9,7 @@ function punchEmployee($lethis) {
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
     $.ajax({
-        url: '/Employee/Punch',
+        url: '/employee/punch',
         type: 'POST',
         data: {
             _token: CSRF_TOKEN,
