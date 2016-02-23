@@ -13,7 +13,7 @@ class Inventory extends Model
      */
     protected $table = 'inventories';
 
-    protected $fillable = array('item_id' ,'order_id', 'quantity');
+    protected $fillable = array('quantity' ,'item_id', 'slug');
 
     public function item()
     {

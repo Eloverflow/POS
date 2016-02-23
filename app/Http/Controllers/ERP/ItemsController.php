@@ -22,13 +22,46 @@ class ItemsController extends Controller
     public  function index()
     {
         /*$items = Item::get();*/
-        $items = Item::with('itemtype')->get();
+        /*$items = Item::with('itemtype')->get();
 
         $title = "Items";
         $columns = array('id', 'name');
         $columnsWith = array('type');
         $withName = 'itemtype';
-        return view('erp.items.list',compact('items', 'columns', 'columnsWith', 'withName', 'title'));
+        return view('erp.items.list',compact('items', 'columns', 'columnsWith', 'withName', 'title'));*/
+
+        $title = 'Items';
+
+        /*Main table row to retrieve from DB*/
+        $tableRows = Item::all();
+        /*Main table desired column to display*/
+        $tableColumns = array('id', 'name');
+
+
+        /*Child table name*/
+        /* $tableChildName = "item";*/
+        /*Child table rows*/
+        /*$tableChildRows =  $tableRows->load($tableChildName);*/
+        /*Child table desired column to display*/
+        /*$tableChildColumns = array('name');*/
+
+        /*$tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);*/
+
+        /*--------*/
+
+        /*Child table name*/
+        $tableChildName = "itemtype";
+        /*Child table rows*/
+        $tableChildRows =  $tableRows->load($tableChildName);
+        /*Child table desired column to display*/
+        $tableChildColumns = array('type');
+
+        $tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);
+
+        $tableChildren = array($tableChild1);
+
+
+        return view('shared.list',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
     }
 
     public  function edit($slug)
@@ -40,18 +73,26 @@ class ItemsController extends Controller
         /*Main table desired column to display*/
         $tableColumns = array('name', 'description' );
 
-        /*Child table name*/
-        $tableChild = "itemtype";
-        /*Child table rows*/
-        $tableChildRows = $tableRow->$tableChild;
-        /*Child table desired column to display*/
-        $tableChildColumns = array('type');
+
+        $tableChoiceListTable = ItemType::all();
+        /*select all where type = beer*/
+
+        $tableChoiceListTitle = "Item Type";
+        $tableChoiceListDBColumn = "item_type_id";
+        $tableChoiceListTitleColumn = "type";
+        $tableChoiceListContentColumn = "";
+        $tableChoiceListCreateURL = @URL::to('/items/create');
+
+        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
+
+        $tableChoiceLists = array($tableChoiceList1/*, $tableChoiceList2*/);
+
 
         /*Previous and Next */
         $previousTableRow = Item::findOrNew(($tableRow->id)-1);
         $nextTableRow = Item::findOrNew(($tableRow->id)+1);
 
-        return view('erp.items.edit',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
+        return view('shared.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
     }
 
 

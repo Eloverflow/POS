@@ -35,6 +35,8 @@ Route::post('/inventory/edit/{slug}', 'ERP\InventoriesController@update');
 Route::get('/inventory/create', 'ERP\InventoriesController@create');
 Route::post('/inventory/create', 'ERP\InventoriesController@postCreate');
 
+
+
 Route::get('/itemtypes', 'ERP\ItemTypesController@index');
 Route::get('/itemtypes/{slug}', 'ERP\ItemTypesController@edit');
 Route::post('/itemtypes/{slug}', 'ERP\ItemTypesController@update');
@@ -42,7 +44,7 @@ Route::post('/itemtypes/{slug}', 'ERP\ItemTypesController@update');
 Route::get('/items', 'ERP\ItemsController@index');
 Route::get('/items/create', 'ERP\ItemsController@create');
 Route::post('/items/create', 'ERP\ItemsController@postCreate');
-Route::get('/items/{slug}', 'ERP\ItemsController@edit');
+Route::get('/items/edit/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/edit/{slug}', 'ERP\ItemsController@update');
 
 

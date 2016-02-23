@@ -23,17 +23,17 @@ class InventoriesController extends \App\Http\Controllers\Controller
         /*Main table row to retrieve from DB*/
         $tableRows = Inventory::all();
         /*Main table desired column to display*/
-        $tableColumns = array('id', 'item_id', 'order_id', 'quantity');
+        $tableColumns = array('id', 'quantity');
 
 
         /*Child table name*/
-        $tableChildName = "item";
+       /* $tableChildName = "item";*/
         /*Child table rows*/
-        $tableChildRows =  $tableRows->load($tableChildName);
+        /*$tableChildRows =  $tableRows->load($tableChildName);*/
         /*Child table desired column to display*/
-        $tableChildColumns = array('name');
+        /*$tableChildColumns = array('name');*/
 
-        $tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);
+        /*$tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);*/
 
         /*--------*/
 
@@ -60,7 +60,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
         /*Main table row to retrieve from DB*/
         $tableRow = Inventory::whereSlug($slug)->first();
         /*Main table desired column to display*/
-        $tableColumns = array('item_id', 'order_id', 'quantity');
+        $tableColumns = array('item_id', 'quantity');
 
         /*Child table name
         $tableChild = "";
@@ -84,7 +84,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
         /*Main table row to retrieve from DB*/
         $tableRow = Inventory::whereSlug($slug)->first();
         /*Main table desired column to display*/
-        $tableColumns = array('item_id', 'order_id', 'quantity');
+        $tableColumns = array('item_id', 'quantity');
 
         /*Child table name
         $tableChild = "";
@@ -151,20 +151,20 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
         $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
 
+        /*
+                $tableChoiceListTable = Order::all();
 
-        $tableChoiceListTable = Order::all();
+                $tableChoiceListTitle = "Order Number";
+                $tableChoiceListDBColumn = "order_id";
+                $tableChoiceListTitleColumn = "command_number";
+                $tableChoiceListContentColumn = "";
+                $tableChoiceListCreateURL = @URL::to('/orders/create');
 
-        $tableChoiceListTitle = "Order Number";
-        $tableChoiceListDBColumn = "order_id";
-        $tableChoiceListTitleColumn = "command_number";
-        $tableChoiceListContentColumn = "";
-        $tableChoiceListCreateURL = @URL::to('/orders/create');
-
-        $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn , "postUrl" => $tableChoiceListCreateURL);
-
+                $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn , "postUrl" => $tableChoiceListCreateURL);
+        */
 
 
-        $tableChoiceLists = array($tableChoiceList1, $tableChoiceList2);
+        $tableChoiceLists = array($tableChoiceList1/*, $tableChoiceList2*/);
 
 
 
@@ -177,8 +177,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
         $rules = array(
             'quantity' => 'required',
-            'item_id' => 'required',
-            'order_id' => 'required'
+            'item_id' => 'required'
         );
 
         $message = array(
@@ -193,16 +192,22 @@ class InventoriesController extends \App\Http\Controllers\Controller
         }
         else
         {
-            $inventories = Inventory::where('item_id', '=', Input::get('item_id'))->firstOrFail();;
+            $inventories = Inventory::where('item_id', '=', Input::get('item_id'))->first();;
 
+            var_dump($inventories);
             if($inventories != null){
+
+                Input::merge(array('quantity' =>  $inventories->quantity + Input::get('quantity')));
+
+                /*$inputs::set('quantity') = $inventories->quantity + $inputs->quantity*/
 
                 $inventories->update(Input::all());
 
-                Session::flash('flash_message', $inventories->slug.' successfully updated!');
+                Session::flash('flash_message', $inventories->slug.' quantity successfully updated!');
 
             }
             else{
+
                 $itemSlug = Item::whereId(Input::get('item_id'))->first()->slug;
 
                 Inventory::create([
@@ -211,10 +216,10 @@ class InventoriesController extends \App\Http\Controllers\Controller
                     'slug' => $itemSlug
                 ]);
 
-                Session::flash('flash_message', $inventories->slug.' successfully created!');
+                Session::flash('flash_message', $itemSlug . ' successfully created!');
             }
 
-            return Redirect::back();;
+            return Redirect::back();
         }
     }
 }

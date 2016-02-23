@@ -44,7 +44,11 @@
                                 @if( isset($tableChildren))
                                         @foreach($tableChildren as $tableChild)
                                             @foreach($tableChild['columns'] as $column)
-                                                <td>{{ $tableChildRows[$i]->$tableChild['name']->$column }}</td>
+                                                <td>
+                                                @if($tableChildRows[$i]->$tableChild['name'] != null)
+                                                    {{ $tableChildRows[$i]->$tableChild['name']->$column }}
+                                                @endif
+                                                </td>
                                             @endforeach
                                         @endforeach
                                 @endif

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Addons\Rfid;
 
 use App\Models\Addons\Rfid\TableRfidRequest;
+use App\Models\ERP\Inventory;
 use DateTime;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -64,6 +65,15 @@ class RfidRequestController extends Controller
             $result = $lastRequest;
 
             /*Here we do the request to unluck the beer*/
+
+
+            //Reducing inventory
+            $inventory = Inventory::where('item_id', '=', $input['item_id'])->first();
+
+            Input::replace(array('quantity' =>  $inventory->quantity - 1));
+
+            $inventory->update(Input::all());
+
         }
 
         return $result;
