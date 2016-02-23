@@ -32,7 +32,7 @@ class Utils
                 $EndTime = $DTET->format('H');
                 $EndMin = $DTET->format('i');
                 $diff = $EndTime - $StartTime;
-
+                $realEndTime = "";
                 //if ($EndTime > $StartTime) {
                     if (($Hour < $EndTime && $Hour > $StartTime)) {
                         if ($StartTime != 0) {
@@ -49,15 +49,20 @@ class Utils
                             $correctEndTime = 24;
                         }  else if($EndTime < $StartTime) {
                             $correctEndTime = 25;
+                            $realEndTime = $EndTime;
                             if($EndTime > 1)
                             {
-                                $newInters = new Intersect("start", $j + 1, 1, $EndTime, 0, 0);
+                                $newInters = new Intersect("overflow", $j + 1, 0, $EndTime, 0, 0);
+                                $newInters->SetRealStartTime($StartTime);
                                 $Intersects[] = $newInters;
                             }
                         } else {
                             $correctEndTime = $EndTime;
                         }
                         $newInters = new Intersect("start", $j, $Hour, $correctEndTime, $StartMin, $EndMin);
+                        if($realEndTime != ""){
+                            $newInters->SetRealEndTime($realEndTime);
+                        }
                         $countIntersects = $countIntersects + 1;
                         $Intersects[] = $newInters;
                     }
@@ -177,35 +182,55 @@ class Utils
             for($j = 0; $j < count($normalIntersects); $j++) {
                 $intersect = $normalIntersects[$j];
 
+                if ($intersect->GetStartTime() < 10) {
+                    $formattedStartTime = "0" . $intersect->GetStartTime() . ":" . $intersect->GetStartMin();
+                } else {
+                    $formattedStartTime = $intersect->GetStartTime() . ":" . $intersect->GetStartMin();
+                }
+                if ($intersect->GetEndTime() < 10) {
+                    $formattedEndTime = $intersect->GetEndTime() . ":" . $intersect->GetEndMin();
+                } else {
+                    $formattedEndTime = $intersect->GetEndTime() . ":" . $intersect->GetEndMin();
+                }
 
                 if($intersect->GetType() == "start") {
+                    $dayNumb = $intersect->GetDayNumber();
+
                     if($intersect->GetEndTime() > $intersect->GetStartTime()) {
                         $rowspan = $intersect->GetEndTime() - $intersect->GetStartTime();
                     } else {
                         $rowspan = 25 - $intersect->GetStartTime();
                     }
-
-
-                    if ($intersect->GetStartTime() < 10) {
-                        $formattedStartTime = "0" . $intersect->GetStartTime() . ":" . $intersect->GetStartMin();
+                    // Cela signifie que ce temps a un debordement
+                    if($intersect->GetRealEndTime() != ""){
+                        $cellText = $formattedStartTime . " <br />To<br /> " . $intersect->GetRealEndTime() . ":" . $intersect->GetEndMin();
+                        $calcul = 24 - $intersect->GetStartTime();
+                        for($k = 0; $k < $calcul; $k++){
+                            $terow = $rows[$i + $k];
+                            $terow->RemoveCell($dayNumb);
+                        }
                     } else {
-                        $formattedStartTime = $intersect->GetStartTime() . ":" . $intersect->GetStartMin();
+                        $cellText = $formattedStartTime . " <br />To<br /> " . $formattedEndTime;
                     }
-                    if ($intersect->GetEndTime() < 10) {
-                        $formattedEndTime = $intersect->GetEndTime() . ":" . $intersect->GetEndMin();
-                    } else {
-                        $formattedEndTime = $intersect->GetEndTime() . ":" . $intersect->GetEndMin();
-                    }
+                    // On efface les cellules de trop
 
-                    $cellText = $formattedStartTime . " <br />To<br /> " . $formattedEndTime;
                     $selluz = new Cell($cellText, $rowspan, "bluepalecell");
-                    $dayNumb = $intersect->GetDayNumber();
 
                     $curRow->SetCell($dayNumb, $selluz);
                 } else if($intersect->GetType() == "current") {
+                    $curRow = $rows[$i -1];
                     $dayNumb = $intersect->GetDayNumber();
 
                     $curRow->RemoveCell($dayNumb);
+                } else if($intersect->GetType() == "overflow") {
+                    $terow = $rows[$intersect->GetStartTime()];
+                    $dayNumb = $intersect->GetDayNumber();
+                    $rowspan = ($intersect->GetEndTime() - $intersect->GetStartTime()) - 1;
+
+                    $cellText = $intersect->GetRealStartTime() . ":00 <br />To<br /> " . $intersect->GetEndTime() . ":00";
+                    $selluz = new Cell($cellText, $rowspan, "bluepalecell");
+
+                    $terow->SetCell($dayNumb, $selluz);
                 }
             }
         }
