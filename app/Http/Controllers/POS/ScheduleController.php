@@ -32,6 +32,15 @@ class ScheduleController extends Controller
         return $view;
     }
 
+    public function track($id)
+    {
+        $schedule = Schedule::GetById($id);
+        $view = \View::make('POS.Schedule.track')->with('ViewBag', array(
+            'schedule' => $schedule
+        ));;
+        return $view;
+    }
+
     public function details($id)
     {
         $schedule = Schedule::GetById($id);
