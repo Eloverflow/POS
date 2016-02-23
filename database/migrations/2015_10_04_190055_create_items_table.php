@@ -18,6 +18,7 @@ class CreateItemsTable extends Migration
             $table->foreign('item_type_id')->references('id')->on('item_types')->nullable();
             $table->integer('item_field_list_id')->unsigned();
             $table->foreign('item_field_list_id')->references('id')->on('item_field_lists')->nullable();
+            $table->string('img_id');
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('slug')->unique();

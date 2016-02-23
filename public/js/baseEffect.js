@@ -16,6 +16,26 @@ $('.datepickerInput').datepicker({
     startDate: '-3d'
 });
 
+document.getElementById("uploadId").onchange = function () {
+    document.getElementById("uploadFile").value = this.value;
+};
+
+function readURL(input) {
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+            $('#img_display')
+                .attr('src', e.target.result)
+        };
+
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+/*
+$("input[type=file]").on('change',function(){
+    alert(this.files[0].name);
+});*/
 
 var tableItaration = 1;
 
