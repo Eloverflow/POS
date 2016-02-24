@@ -22,6 +22,7 @@ use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
 use App\Models\POS\Schedule;
 use App\Models\POS\Day_Schedules;
+use App\Models\POS\Punch;
 
 class DatabaseSeeder extends Seeder
 {
