@@ -53,7 +53,28 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    {{ $ViewBag["punches"] }}
+                    <table data-toggle="table" >
+                        <thead>
+                        <tr>
+                            <th class="col-md-1" data-field="inout">In/Out</th>
+                            <th data-field="time">Time</th>
+                            <th data-field="date">Date</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($ViewBag['punches'] as $punch)
+                            <tr>
+                                <?php  if($punch->inout == "in") {
+                                    echo "<td class=\"tagin\">IN</td>"; } else {
+                                    echo "<td class=\"tagout\">OUT</td>";
+                                }
+                                        ?>
+                                <td>{{ $punch->time }}</td>
+                                <td>{{ $punch->date }}</td>
+                            </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
