@@ -81,7 +81,7 @@ class ItemsController extends Controller
         $tableChoiceListDBColumn = "item_type_id";
         $tableChoiceListTitleColumn = "type";
         $tableChoiceListContentColumn = "";
-        $tableChoiceListCreateURL = @URL::to('/items/create');
+        $tableChoiceListCreateURL = @URL::to('/itemtypes');
 
         $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
 
@@ -163,6 +163,8 @@ class ItemsController extends Controller
         /*Page Title*/
         $title = 'Items';
 
+
+
         /*$formSections = array(
             'section1' => array(
                 'title' => '',
@@ -187,9 +189,9 @@ class ItemsController extends Controller
 
         $tableChoiceListTitle = "ItemType";
         $tableChoiceListDBColumn = "item_type_id";
-        $tableChoiceListTitleColumn = "name";
-        $tableChoiceListContentColumn = "description";
-        $tableChoiceListCreateURL = @URL::to('/itemtypes/create');
+        $tableChoiceListTitleColumn = "type";
+        $tableChoiceListContentColumn = "";
+        $tableChoiceListCreateURL = @URL::to('/itemtypes');
 
         $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
 

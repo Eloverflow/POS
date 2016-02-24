@@ -38,8 +38,8 @@ Route::post('/inventory/create', 'ERP\InventoriesController@postCreate');
 
 
 Route::get('/itemtypes', 'ERP\ItemTypesController@index');
-Route::get('/itemtypes/{slug}', 'ERP\ItemTypesController@edit');
-Route::post('/itemtypes/{slug}', 'ERP\ItemTypesController@update');
+Route::get('/itemtypes/edit/{slug}', 'ERP\ItemTypesController@edit');
+Route::post('/itemtypes/edit/{slug}', 'ERP\ItemTypesController@update');
 
 Route::get('/items', 'ERP\ItemsController@index');
 Route::get('/items/create', 'ERP\ItemsController@create');

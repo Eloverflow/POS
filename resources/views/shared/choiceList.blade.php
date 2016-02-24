@@ -9,22 +9,24 @@
     <input class="form-control input{{$tableIteration}}" type="hidden" id="{{ $tableChoiceList['dbColumn'] }}" name="{{ $tableChoiceList['dbColumn'] }}" value="@if(isset($tableRow)){{ $tableRow->$tableChoiceList['dbColumn'] }} @endif">
     <div id="tableChoiceList{{$tableIteration}}" class="list-group tableChoiceList">
         @foreach($tableChoiceList["table"] as $oneChoice)
-            <a id="{{$oneChoice->id}}" class="list-group-item tableChoice choiceList{{$tableIteration}} active' @if(isset($tableRow) && $oneChoice->id == $tableRow->$tableChoiceList['dbColumn']) active @endif ">
+            <span id="{{$oneChoice->id}}" class="list-group-item tableChoice choiceList{{$tableIteration}} active' @if(isset($tableRow) && $oneChoice->id == $tableRow->$tableChoiceList['dbColumn']) active @endif ">
                 @if($tableChoiceList["contentColumn"] != '' )
+                    <a class="view" href="{{ $tableChoiceList["postUrl"]}}/edit/{{$oneChoice->slug}}"><span class="glyphicon glyphicon-edit"></span></a>
                     <h4 class="list-group-item-heading">{{ $oneChoice->$tableChoiceList["titleColumn"] }}</h4>
                     <p class="list-group-item-text">{{ $oneChoice->$tableChoiceList["contentColumn"] }}</p>
                 @else
+                    <a class="view" href="{{ $tableChoiceList["postUrl"]}}/edit/{{$oneChoice->slug}}"><span class="glyphicon glyphicon-edit"></span></a>
                     <h2 class="list-group-item-heading">{{ $oneChoice->$tableChoiceList["titleColumn"] }}</h2>
                     <p class="list-group-item-text">{{ $oneChoice->created_at }}</p>
                 @endif
 
-                <?php if($oneChoice->id == $tableRow->$tableChoiceList['dbColumn']){
+                <?php if(isset($tableRow) && $oneChoice->id == $tableRow->$tableChoiceList['dbColumn']){
                         $savedChoice = $oneChoice;
                     }
                 ?>
-            </a>
+            </span>
         @endforeach
-        <a id="{{$oneChoice->id}}" class="list-group-item tableChoice focus choiceList{{$tableIteration}} active' ">
+        <span id="{{$oneChoice->id}}" class="list-group-item tableChoice focus choiceList{{$tableIteration}} active' ">
 
             <div class="form-group choiceList{{$tableIteration}} add-new">
 
@@ -39,11 +41,11 @@
                     </div>
                 @endif
 
-                <span id="{{ $tableChoiceList["postUrl"] }}" class="glyphicon glyphicon-ok-sign choiceList{{$tableIteration}}  sumbit-one action"></span>
+                <span id="{{ $tableChoiceList["postUrl"] }}/create" class="glyphicon glyphicon-ok-sign choiceList{{$tableIteration}}  sumbit-one action"></span>
                 <span class="glyphicon glyphicon-remove-sign choiceList{{$tableIteration}}  cancel-one action"></span>
             </div>
             <span class="glyphicon glyphicon-plus-sign choiceList{{$tableIteration}}  add-one"></span>
-        </a>
+        </span>
 
     </div>
     <a><div id="tableChoiceListArrow{{$tableIteration}}" class="alert alert-info tableChoiceListArrow" role="alert"><span class="glyphicon glyphicon-chevron-down"></span></div></a>

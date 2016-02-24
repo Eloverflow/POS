@@ -54,13 +54,38 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
     public function edit($slug)
     {
-        /*Page Title*/
-        $title = 'Inventory';
+        $title = "Inventory";
 
-        /*Main table row to retrieve from DB*/
         $tableRow = Inventory::whereSlug($slug)->first();
-        /*Main table desired column to display*/
-        $tableColumns = array('item_id', 'quantity');
+
+        $tableColumns = array('quantity');
+
+
+        $tableChoiceListTable = Item::all();
+        /*select all where type = beer*/
+
+        $tableChoiceListTitle = "Item ID";
+        $tableChoiceListDBColumn = "item_id";
+        $tableChoiceListTitleColumn = "name";
+        $tableChoiceListContentColumn = "description";
+        $tableChoiceListCreateURL = @URL::to('/items');
+
+        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
+
+        /*
+                $tableChoiceListTable = Order::all();
+
+                $tableChoiceListTitle = "Order Number";
+                $tableChoiceListDBColumn = "order_id";
+                $tableChoiceListTitleColumn = "command_number";
+                $tableChoiceListContentColumn = "";
+                $tableChoiceListCreateURL = @URL::to('/orders/create');
+
+                $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn , "postUrl" => $tableChoiceListCreateURL);
+        */
+
+
+        $tableChoiceLists = array($tableChoiceList1/*, $tableChoiceList2*/);
 
         /*Child table name
         $tableChild = "";
@@ -73,7 +98,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
         $previousTableRow = Inventory::findOrNew(($tableRow->id)-1);
         $nextTableRow = Inventory::findOrNew(($tableRow->id)+1);
 
-        return view('shared.edit',compact('title','tableRow', 'tableColumns', 'previousTableRow', 'nextTableRow'));
+        return view('shared.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'previousTableRow', 'nextTableRow'));
     }
 
     public function details($slug)
@@ -147,7 +172,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
         $tableChoiceListDBColumn = "item_id";
         $tableChoiceListTitleColumn = "name";
         $tableChoiceListContentColumn = "description";
-        $tableChoiceListCreateURL = @URL::to('/items/create');
+        $tableChoiceListCreateURL = @URL::to('/items');
 
         $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
 

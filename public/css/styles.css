@@ -461,7 +461,18 @@ li.addTable .glyphicon{
 	margin-bottom: 0;
 }
 
+.tableChoiceList .tableChoice a.view{
+	position: relative;
+	float: right;
+	color: #fff;
+	font-size: 30px;
+	margin-bottom: 8px;
+	/*display: inline-block;
+	float: right;*/
+}
+
 .tableChoice{
+	height: 80px;
 	transition: color 0.5s, background-color 0.5s;
 	cursor: pointer;
 }
@@ -567,10 +578,6 @@ li.addTable .glyphicon{
 	width: 80%;
 	float: right;
 }
-/*
-.tableChoice h2, .tableChoice p{
-	width: 30%;
-}*/
 
 .custom-field div input.form-control{
 	height:  20px!important;
@@ -580,6 +587,7 @@ li.addTable .glyphicon{
 	margin-top: 0;
 	width: 60%;
 }
+
 
 .custom-field div.block input{
 	width: 60%;
