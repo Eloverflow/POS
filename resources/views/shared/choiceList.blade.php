@@ -3,6 +3,8 @@
 
 @foreach($tableChoiceLists as $tableChoiceList)
 
+
+
     <label for="{{ $tableChoiceList['dbColumn'] }}">{{ $tableChoiceList["title"] }}</label>
     <input class="form-control input{{$tableIteration}}" type="hidden" id="{{ $tableChoiceList['dbColumn'] }}" name="{{ $tableChoiceList['dbColumn'] }}" value="@if(isset($tableRow)){{ $tableRow->$tableChoiceList['dbColumn'] }} @endif">
     <div id="tableChoiceList{{$tableIteration}}" class="list-group tableChoiceList">
@@ -16,6 +18,10 @@
                     <p class="list-group-item-text">{{ $oneChoice->created_at }}</p>
                 @endif
 
+                <?php if($oneChoice->id == $tableRow->$tableChoiceList['dbColumn']){
+                        $savedChoice = $oneChoice;
+                    }
+                ?>
             </a>
         @endforeach
         <a id="{{$oneChoice->id}}" class="list-group-item tableChoice focus choiceList{{$tableIteration}} active' ">
@@ -41,6 +47,15 @@
 
     </div>
     <a><div id="tableChoiceListArrow{{$tableIteration}}" class="alert alert-info tableChoiceListArrow" role="alert"><span class="glyphicon glyphicon-chevron-down"></span></div></a>
+
+    @if(isset($savedChoice) && $savedChoice->fields_names != null)
+        <?php $fields_name_array = explode (',' , $savedChoice->fields_names)  ?>
+            @for($i = 0; $i < count($fields_name_array); $i++)
+                <?php $currentCustomField = 'customField' . ($i + 1) ?>
+                    <label class="control-label" for="customField{{$i+1}}" >{{ ucwords( str_replace('_', ' ', $fields_name_array[$i] )) }}</label>
+                    <input class="form-control" type="text" id="customField{{$i+1}}" name="customField{{$i+1}}" value="@if($tableRow->$currentCustomField != null){{ $tableRow->$currentCustomField }}@endif">
+            @endfor
+    @endif
 
     <?php $tableIteration++ ?>
 @endforeach
