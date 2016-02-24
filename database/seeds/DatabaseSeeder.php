@@ -384,7 +384,7 @@ class ClientSeeder extends Seeder {
     {
         DB::table('clients')->delete();
 
-        Client::create(['id' => '1', 'rfid_card_code' => '2784390787']);
+        Client::create(['id' => '1', 'credit' => 10, 'rfid_card_code' => '2784390787']);
 
         $this->command->info('clients table seeded!');
     }

@@ -48,7 +48,11 @@ Route::get('/items/edit/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/edit/{slug}', 'ERP\ItemsController@update');
 
 
-
+Route::get('/clients', 'POS\ClientController@index');
+Route::get('/clients/create', 'POS\ClientController@create');
+Route::post('/clients/create', 'POS\ClientController@postCreate');
+Route::get('/clients/edit/{slug}', 'POS\ClientController@edit');
+Route::post('/clients/edit/{slug}', 'POS\ClientController@update');
 
 /* Start employee */
 Route::get('/employee', 'POS\EmployeeController@index');
