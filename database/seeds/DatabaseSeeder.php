@@ -60,8 +60,23 @@ class DatabaseSeeder extends Seeder
         $this->call(ClientSeeder::class);
         $this->call(SaleSeeder::class);
 
+        $this->call(PunchesTableSeeder::class);
+
         Model::reguard();
     }
+}
+
+class PunchesTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('punches')->delete();
+
+        Punch::create(['inout' => 'Dispo 1', 'employee_id' => 1, 'created_at' => '2016-02-24 15:00:00']);
+
+        $this->command->info('Disponibilities table seeded!');
+    }
+
 }
 
 class DisponibilitiesTableSeeder extends Seeder {
