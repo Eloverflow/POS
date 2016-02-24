@@ -404,3 +404,4 @@ class SaleSeeder extends Seeder {
     }
 
 }
+}

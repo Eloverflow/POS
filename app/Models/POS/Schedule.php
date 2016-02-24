@@ -80,10 +80,13 @@ class Schedule extends Model
             ->select(\DB::raw('day_schedules.*,
             employee_titles.name as emplTitle,
             employees.firstName,
-            employees.lastName'))
+            employees.lastName,
+            punches.inout,
+            punches.created_at'))
             ->join('day_schedules', 'schedules.id', '=', 'day_schedules.schedule_id')
             ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
             ->join('employee_titles', 'employees.employeeTitle', '=', 'employee_titles.id')
+            ->join('punches', 'employees.id', '=', 'punches.employee_id')
             ->where('schedules.id', '=', $id)
             ->orderBy('employees.firstName', 'desc')
             ->orderBy('employees.lastName', 'desc')
