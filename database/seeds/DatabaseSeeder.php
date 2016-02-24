@@ -10,6 +10,8 @@ use App\Models\ERP\Order;
 use App\Models\ERP\Inventory;
 use App\Models\Addons\Rfid\TableRfid;
 use App\Models\Addons\Rfid\TableRfidRequest;
+use App\Models\POS\Client;
+use App\Models\POS\Sale;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Beer;
@@ -56,23 +58,10 @@ class DatabaseSeeder extends Seeder
         $this->call(SchedulesTableSeeder::class);
         $this->call(Day_SchedulesTableSeeder::class);
 
-        $this->call(PunchesTableSeeder::class);
         Model::reguard();
     }
 }
 
-class PunchesTableSeeder extends Seeder {
-
-    public function run()
-    {
-        DB::table('punches')->delete();
-
-        Punch::create(['inout' => 'Dispo 1', 'employee_id' => 1, 'created_at' => '2016-02-24 15:00:00']);
-
-        $this->command->info('Disponibilities table seeded!');
-    }
-
-}
 class DisponibilitiesTableSeeder extends Seeder {
 
     public function run()
@@ -123,7 +112,7 @@ class SchedulesTableSeeder extends Seeder {
     public function run()
     {
         DB::table('schedules')->delete();
-        Schedule::create(['name' => 'Schedules 1', 'startDate' => '2016-02-21', 'endDate' => '2016-02-27']);
+        Schedule::create(['name' => 'Schedules 1', 'startDate' => '2016-02-07', 'endDate' => '2016-02-13']);
 
         $this->command->info('Schedules table seeded!');
     }
@@ -152,7 +141,7 @@ class Day_SchedulesTableSeeder extends Seeder {
 
         Day_Schedules::create(['schedule_id' => 1,
             'day_number' => 3,
-            'employee_id' => 2,
+            'employee_id' => 1,
             'startTime' => date('20:00:00'),
             'endTime' => date('03:00:00')
         ]);

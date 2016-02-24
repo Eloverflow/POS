@@ -34,6 +34,34 @@ class ItemTypesController extends \App\Http\Controllers\Controller
 
     public  function edit($slug)
     {
+        $title = 'ItemTypes';
+
+        /*Main table row to retrieve from DB*/
+        $tableRow = ItemType::whereSlug($slug)->first();
+        /*Main table desired column to display*/
+        $tableColumns = array('type', 'fields_names');
+
+
+        /*$tableChoiceListTable = ItemType::all();*/
+        /*select all where type = beer*/
+
+        /*$tableChoiceListTitle = "Item Type";
+        $tableChoiceListDBColumn = "item_type_id";
+        $tableChoiceListTitleColumn = "type";
+        $tableChoiceListContentColumn = "";
+        $tableChoiceListCreateURL = @URL::to('/itemtypes');
+
+        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
+
+        $tableChoiceLists = array($tableChoiceList1, $tableChoiceList2);*/
+
+
+        /*Previous and Next */
+        $previousTableRow = ItemType::findOrNew(($tableRow->id)-1);
+        $nextTableRow = ItemType::findOrNew(($tableRow->id)+1);
+
+        return view('shared.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
+
         $item = ItemType::whereSlug($slug)->first();
         $title = 'itemtypes';
         $next_item = ItemType::findOrNew(($item->id)+1);

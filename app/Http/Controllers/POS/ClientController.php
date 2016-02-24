@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\ERP;
+namespace App\Http\Controllers\POS;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests;
 use App\Models\Beer;
 use App\Models\ERP\Item;
 use App\Models\ERP\ItemType;
+use App\Models\POS\Client;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Input;
@@ -16,7 +17,7 @@ use Session;
 use URL;
 use Validator;
 
-class ItemsController extends Controller
+class ClientController extends Controller
 {
 
     public  function index()
@@ -30,62 +31,24 @@ class ItemsController extends Controller
         $withName = 'itemtype';
         return view('erp.items.list',compact('items', 'columns', 'columnsWith', 'withName', 'title'));*/
 
-        $title = 'Items';
+        $title = 'Clients';
 
         /*Main table row to retrieve from DB*/
-        $tableRows = Item::all();
+        $tableRows = Client::all();
         /*Main table desired column to display*/
-        $tableColumns = array('id', 'name');
-
-
-        /*Child table name*/
-        /* $tableChildName = "item";*/
-        /*Child table rows*/
-        /*$tableChildRows =  $tableRows->load($tableChildName);*/
-        /*Child table desired column to display*/
-        /*$tableChildColumns = array('name');*/
-
-        /*$tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);*/
-
-        /*--------*/
-
-        /*Child table name*/
-        $tableChildName = "itemtype";
-        /*Child table rows*/
-        $tableChildRows =  $tableRows->load($tableChildName);
-        /*Child table desired column to display*/
-        $tableChildColumns = array('type');
-
-        $tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);
-
-        $tableChildren = array($tableChild1);
-
+        $tableColumns = array('id', 'credit', 'rfid_card_code');
 
         return view('shared.list',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
     }
 
     public  function edit($slug)
     {
-        $title = 'Items';
+        $title = 'Client';
 
         /*Main table row to retrieve from DB*/
-        $tableRow = Item::whereSlug($slug)->first();
+        $tableRow = Client::whereSlug($slug)->first();
         /*Main table desired column to display*/
-        $tableColumns = array('name', 'description' ,'img_id');
-
-
-        $tableChoiceListTable = ItemType::all();
-        /*select all where type = beer*/
-
-        $tableChoiceListTitle = "Item Type";
-        $tableChoiceListDBColumn = "item_type_id";
-        $tableChoiceListTitleColumn = "type";
-        $tableChoiceListContentColumn = "";
-        $tableChoiceListCreateURL = @URL::to('/itemtypes');
-
-        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
-
-        $tableChoiceLists = array($tableChoiceList1/*, $tableChoiceList2*/);
+        $tableColumns = array('credit', 'rfid_card_code');
 
 
         /*Previous and Next */
@@ -100,12 +63,12 @@ class ItemsController extends Controller
     public  function update($slug, Request $request)
     {
         /*Main table row to retrieve from DB*/
-        $tableRow = Item::whereSlug($slug)->first();
+        $tableRow = Client::whereSlug($slug)->first();
 
-        /*Child table name*/
-        $tableChild = "itemtype";
-        /*Child table rows*/
-        $tableChildRows = $tableRow->$tableChild;
+        /*Child table name*//*
+        $tableChild = "itemtype";*/
+        /*Child table rows*//*
+        $tableChildRows = $tableRow->$tableChild;*/
 
 
 
@@ -133,7 +96,7 @@ class ItemsController extends Controller
         $tableRow->update(Input::all());
 
 
-        if(is_array($tableChildRows)){
+        /*if(is_array($tableChildRows)){
             foreach($tableChildRows as $tableChildRow){
                 $tableChildRow->update(Input::all());
             }
@@ -141,7 +104,7 @@ class ItemsController extends Controller
         else
         {
             $tableChildRows->update(Input::all());
-        }
+        }*/
 
         // resizing an uploaded file/*
 
@@ -161,25 +124,9 @@ class ItemsController extends Controller
     public function create()
     {
         /*Page Title*/
-        $title = 'Items';
+        $title = 'Clients';
 
-        $tableColumns = array('name', 'description');
-
-
-        $tableChoiceListTable = ItemType::all();
-        /*select all where type = beer*/
-
-        $tableChoiceListTitle = "ItemType";
-        $tableChoiceListDBColumn = "item_type_id";
-        $tableChoiceListTitleColumn = "type";
-        $tableChoiceListContentColumn = "";
-        $tableChoiceListCreateURL = @URL::to('/itemtypes');
-
-        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
-
-
-        $tableChoiceLists = array($tableChoiceList1);
-
+        $tableColumns = array('credit', 'rfid_card_code');
 
 
         return view('shared.create',compact('title', 'tableChoiceLists', 'tableColumns'));
@@ -190,12 +137,10 @@ class ItemsController extends Controller
         $inputs = \Input::all();
 
         $rules = array(
-            'name' => 'required',
-            'description' => 'required'
+            'credit' => 'required',
+            'rfid_card_code' => 'required'
         );
 
-        if(!Input::get('item_type_id'))
-        Input::merge(array('item_type_id' =>  1));
 
         $message = array(
             'required' => 'The :attribute is required !'
@@ -210,12 +155,10 @@ class ItemsController extends Controller
         else
         {
 
-            Item::create([
-                'name' =>  Input::get('name'),
-                'description' => Input::get('description'),
-                'slug' => Input::get('name') . rand(10, 10000),
-                'item_type_id' => Input::get('item_type_id'),
-                'item_field_list_id' => Input::get('item_type_id')
+            Client::create([
+                'credit' =>  Input::get('credit'),
+                'rfid_card_code' => Input::get('rfid_card_code'),
+                'slug' => Input::get('rfid_card_code') . '-' . rand(10, 10000)
             ]);
 
 
