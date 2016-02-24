@@ -63,12 +63,12 @@
 
                                // echo $currentPerson;
                         echo "<div class=\"emplTrackBlock\">
-                                <h2>" . $scheduleInfos->firstName . $scheduleInfos->lastName . "</h2><h4>" . $scheduleInfos->emplTitle . "</h4>";
-                                echo "<h2>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</h2>";
+                                <h2>" . $scheduleInfos->firstName . " " . $scheduleInfos->lastName . "</h2><h4>" . $scheduleInfos->emplTitle . "</h4>";
+                                echo "<p>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</p>";
                                 //echo '<li><a href="#">' + $scheduleInfos->startTime + ' To ' + $scheduleInfos->endTime + '</a></li>';
                             }
                             else{
-                                echo "<h2>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</h2>";
+                                echo "<p>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</p>";
                             }
 
                             $lastPerson = $currentPerson;
