@@ -54,7 +54,9 @@ class RfidTableController extends Controller
         $tableColumns = array('name');
 
 
-        $tableChoiceListTable = Item::all();
+        $tableChoiceListTable = Item::where('item_type_id', '1')->get();
+/*
+        var_dump($tableChoiceListTable);*/
         /*select all where type = beer*/
 
         $tableChoiceListTitle = "Beer 1";
@@ -128,9 +130,11 @@ class RfidTableController extends Controller
     public function getBeers(Request $request)
     {
         $input = $request->all();
-
+/*
+        $typeBeer = Item::where('type' , '=', 'beer');*/
+/*
+        $table = TableRfid::where('flash_card_hw_code', '=', $input['flash_card_hw_code'])->where('item_type_id' , '=', $typeBeer->id )->first();*/
         $table = TableRfid::where('flash_card_hw_code', '=', $input['flash_card_hw_code'])->first();
-
         $beers = array('beer1' => $table->beer1, 'beer2' => $table->beer2);
 
         Return $beers;

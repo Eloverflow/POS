@@ -116,7 +116,7 @@ class ItemsController extends Controller
                     File::exists(storage_path('img/item/' . $filename)) or File::makeDirectory(storage_path('img/item/' . $filename));*/
 
             $path = public_path('img/item/' . $filename);
-            Image::make($image->getRealPath())->resize(468, 249)->save($path);
+            Image::make($image->getRealPath())/*->resize(400, 550)*/->save($path);
             /*$product->image = 'img/item/'.$filename;
             $product->save();*/
 

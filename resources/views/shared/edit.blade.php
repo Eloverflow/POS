@@ -13,16 +13,31 @@
                     <div class="form-group">
                         @foreach($tableColumns as $column)
                             @if($column == "img_id")
-                                <label for="image" class="secure">Upload form</label>
-                                <div class="fileUpload input-group">
-                                    <span>Upload</span>
-                                    {{--{!! Form::file('image')  !!}--}}
-                                    <input id="uploadId" class="upload form-control" type='file' name="image" onchange="readURL(this);" />
-                                </div>
-                                <p class="errors">{!!$errors->first('image')!!}</p>
+
+                                <label for="uploadId" >{{ ucwords( str_replace('_', ' ', $column)) }} </label>
+                                <div class="row">
+                                    <div class="col-sm-6 col-md-4">
+
                                 @if($tableRow->$column != null)
-                                    <img id="img_display" src="{{ @URL::to('img/item/' . $tableRow->$column) }}" alt="Smiley face"  width="200">
+                                            <div id="uploadImg" class="thumbnail">
+                                                <img id="img_display" src="{{ @URL::to('img/item/' . $tableRow->$column) }}" alt="Smiley face"  width="300">
+                                            </div>
                                 @endif
+                                    <input id="uploadFile" class="form-control" placeholder="Choose File" disabled="disabled" />
+                                    <div class="fileUpload btn btn-primary input-group">
+                                        <span>Change Image</span>
+                                        {{--{!! Form::file('image')  !!}--}}
+                                        <input id="uploadId" class="upload" type='file' name="image" onchange="readURL(this);" />
+
+                                    </div>
+                                    <p class="errors">{!!$errors->first('image')!!}</p>
+
+                                    {{--
+                                    <label for="image" class="secure">Upload form</label>--}}
+
+
+                                    </div>
+                                </div>
                             @else
                                 <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
                                 <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $tableRow->$column }}">
@@ -32,6 +47,8 @@
                         @if(!empty($tableChildRows))
                             @if(is_array($tableChildRows))
                                 @foreach($tableChildRows as $tableChildRow)
+
+
 
                                     @foreach($tableChildColumns as $column)
 

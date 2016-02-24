@@ -15,10 +15,22 @@ $('.datepickerInput').datepicker({
     format: 'yyyy-mm-dd',
     startDate: '-3d'
 });
-
+/*
 document.getElementById("uploadId").onchange = function () {
     document.getElementById("uploadFile").value = this.value;
 };
+*/
+
+/*
+$("#uploadId").on('change',function(){
+    $("#uploadFile").val = this.value;
+});*/
+
+$('#img_display').click(function(){
+
+    $('#uploadId').click()
+});
+
 
 function readURL(input) {
     if (input.files && input.files[0]) {
@@ -27,6 +39,8 @@ function readURL(input) {
         reader.onload = function (e) {
             $('#img_display')
                 .attr('src', e.target.result)
+
+            $("#uploadFile").attr('value', input.value);
         };
 
         reader.readAsDataURL(input.files[0]);

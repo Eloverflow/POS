@@ -567,6 +567,24 @@ li.addTable .glyphicon{
 	width: 80%;
 	float: right;
 }
+/*
+.tableChoice h2, .tableChoice p{
+	width: 30%;
+}*/
+
+.custom-field div input.form-control{
+	height:  20px!important;
+}
+
+.custom-field div.block{float: right;
+	margin-top: 0;
+	width: 60%;
+}
+
+.custom-field div.block input{
+	width: 60%;
+	float: right;
+}
 
 .action{
 	font-size: 60px;
@@ -634,7 +652,8 @@ li.addTable .glyphicon{
 .fileUpload {
 	position: relative;
 	overflow: hidden;
-	margin: 10px;
+	margin: 0;
+	display: block;
 }
 .fileUpload input.upload {
 	position: absolute;
@@ -646,4 +665,14 @@ li.addTable .glyphicon{
 	cursor: pointer;
 	opacity: 0;
 	filter: alpha(opacity=0);
+}
+
+#uploadFile{
+	display: block;
+	float: right;
+}
+
+#uploadImg{
+	cursor: pointer;
+	margin-bottom: 0;
 }

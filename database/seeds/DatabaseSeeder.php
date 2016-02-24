@@ -34,8 +34,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(UserTableSeeder::class);
         $this->call(SuppliersTableSeeder::class);
-        $this->call(ItemTypesTableSeeder::class);
-        $this->call(ItemFieldListsTableSeeder::class);
+        $this->call(ItemTypesTableSeeder::class);/*
+        $this->call(ItemFieldListsTableSeeder::class);*/
         $this->call(ItemsTableSeeder::class);
         $this->call(OrdersTableSeeder::class);
         $this->call(OrderLinesTableSeeder::class);
@@ -219,24 +219,6 @@ class ItemTypesTableSeeder extends Seeder {
 }
 
 
-class ItemFieldListsTableSeeder extends Seeder {
-
-    public function run()
-    {
-        DB::table('item_field_lists')->delete();
-
-        /*One for each item | this is an extention to have custum field for every type of item*/
-        /*Every fiel could lead to a list of sugguestion by doing a select with the ItemType fields_names*/
-        ItemFieldList::create(['field1' => 'Alexander Keith', 'field2' => 'Red', 'field3' => '5']);
-        ItemFieldList::create(['field1' => 'Labatt', 'field2' => 'Dry', 'field3' => '5.6']);
-        ItemFieldList::create(['field1' => 'Coors', 'field2' => 'Light', 'field3' => '4.5']);
-        ItemFieldList::create(['field1' => 'Sour', 'field2' => 'green', 'field3' => 'Jino', 'field4' => '20']);
-
-        $this->command->info('ItemFieldLists table seeded!');
-    }
-
-}
-
 
 class ItemsTableSeeder extends Seeder {
 
@@ -247,29 +229,38 @@ class ItemsTableSeeder extends Seeder {
         /* The item type will define their item_field_name  */
         Item::create([
             'item_type_id' => '1',
-            'item_field_list_id' => '1',
             'name' => 'Keith',
             'description' => 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
-            'slug' => 'keith']);
+            'slug' => 'keith',
+            'customField1' => 'Alexander Keith',
+            'customField2' => 'Red',
+            'customField3' => '5']);
 
         Item::create([
             'item_type_id' => '1',
-            'item_field_list_id' => '2',
             'name' => 'Blue', 'description' => 'Tous mes sens sont émus d\'une volupté douce et pure, comme l\'haleine du matin dans cette saison délicieuse. Seul, au milieu d\'une contrée qui semble fait exprès pour un coeur tel que mien.',
-            'slug' => 'blue']);
+            'slug' => 'blue',
+            'customField1' => 'Labatt',
+            'customField2' => 'Dry',
+            'customField3' => '5.6']);
 
         Item::create(['item_type_id' => '1',
-            'item_field_list_id' => '3',
             'name' => 'Coorslight',
             'description' => 'Voyez ce jeu exquis wallon, de graphie en kit mais bref. Portez ce vieux whisky au juge blond qui fume sur son île intérieure, à côté de l\'alcôve ovoïde, où les bûches se consument dans l\'âtre.',
-            'slug' => 'coorslight']);
+            'slug' => 'coorslight',
+            'customField1' => 'Coors',
+            'customField2' => 'Light',
+            'customField3' => '4.5']);
 
         Item::create([
             'item_type_id' => '2',
-            'item_field_list_id' => '4',
             'name' => 'MyDrinkName',
             'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ',
-            'slug' => 'mydrinkname']);
+            'slug' => 'mydrinkname',
+            'customField1' => 'Sour',
+            'customField2' => 'green',
+            'customField3' => 'Jino',
+            'customField4' => '20']);
 
         $this->command->info('Items table seeded!');
     }
