@@ -384,7 +384,7 @@ class ClientSeeder extends Seeder {
     {
         DB::table('clients')->delete();
 
-        Client::create(['id' => '1', 'credit' => 10, 'rfid_card_code' => '2784390787']);
+        Client::create(['id' => '1', 'credit' => 10, 'rfid_card_code' => '2784390787',  'slug' => '2784390787']);
 
         $this->command->info('clients table seeded!');
     }
@@ -395,9 +395,9 @@ class SaleSeeder extends Seeder {
 
     public function run()
     {
-        DB::table('sales')->delete();
+        /*DB::table('sales')->delete();
 
-        Sale::create(['id' => '1']);
+        Sale::create(['id' => '1', 'slug' => '1']);*/
 
         $this->command->info('sales table seeded!');
     }

@@ -16,6 +16,7 @@ class CreateClientsTable extends Migration
             $table->increments('id');
             $table->integer('credit');
             $table->string('rfid_card_code')->nullable();
+            $table->string('slug')->unique();
             $table->timestamps();
         });
     }

@@ -145,8 +145,8 @@ function sumbitOneActionClick(sumbitOneAction, tableItaration){
 
             currentTableChoiceActive.fadeIn(200);
 
-            currentTableChoiceActive.append('<h4 class="list-group-item-heading">' + data[newItemName1] +'</h4>')
-            currentTableChoiceActive.append('<p class="list-group-item-text">' + data[newItemName2] +'</p>')
+            currentTableChoiceActive.append('<h4 class="list-group-item-heading">' + values[newItemName1] +'</h4>')
+            currentTableChoiceActive.append('<p class="list-group-item-text">' + values[newItemName2] +'</p>')
 
             currentTableChoiceActive.attr('id', data['id']);
 

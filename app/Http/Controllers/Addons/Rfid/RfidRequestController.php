@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Addons\Rfid;
 
 use App\Models\Addons\Rfid\TableRfidRequest;
 use App\Models\ERP\Inventory;
+use App\Models\POS\Client;
+use App\Models\POS\Sale;
 use DateTime;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -62,17 +64,37 @@ class RfidRequestController extends Controller
        /* echo $interval->format('%Y%M%D%H%I%S');*/
 
         if($interval->format('%Y%M%D%H%I%S') < 10){
-            $result = $lastRequest;
 
             /*Here we do the request to unluck the beer*/
 
 
             //Reducing inventory
-            $inventory = Inventory::where('item_id', '=', $input['item_id'])->first();
+            $inventory = Inventory::where('item_id', $input['item_id'])->first();
 
             Input::replace(array('quantity' =>  $inventory->quantity - 1));
 
             $inventory->update(Input::all());
+
+
+            $client = Client::where('rfid_card_code', $lastRequest[0]->rfid_card_code )->first();
+
+
+            if($client->credit > 1)
+            {
+
+                $result = $lastRequest;
+
+                //Creating Sales
+                $sales = Sale::create(['slug' => $inventory->slug, 'item_id' => $input['item_id'], 'client_id' => $client->id, 'quantity' => 1, 'cost' => 1]);
+
+
+                //Reducing credit
+
+
+                Input::replace(array('credit' =>  $client->credit - 1));
+
+                $client->update(Input::all());
+            }
 
         }
 

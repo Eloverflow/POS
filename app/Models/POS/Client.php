@@ -6,8 +6,8 @@ use Illuminate\Database\Eloquent\Model;
 
 class Client extends Model
 {
-    protected $table = 'client';
+    protected $table = 'clients';
 
-    protected $fillable = array('credit' , 'rfid_card_code');
+    protected $fillable = array('credit' , 'rfid_card_code', 'slug');
 
 }

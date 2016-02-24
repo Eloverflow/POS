@@ -210,13 +210,16 @@ class ItemsController extends Controller
         else
         {
 
-            return Item::create([
+            Item::create([
                 'name' =>  Input::get('name'),
                 'description' => Input::get('description'),
                 'slug' => Input::get('name') . rand(10, 10000),
                 'item_type_id' => Input::get('item_type_id'),
                 'item_field_list_id' => Input::get('item_type_id')
             ]);
+
+
+            return Redirect::back();
         }
     }
 }
