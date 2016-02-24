@@ -41,40 +41,55 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <?php
+                    for($i = 0; $i < 7; $i++) {
+                        echo "<h2>$i</h2>";
                         $lastPerson = "";
 
                         $current = '';
                         $personCounter = 0;
-                    ?>
 
-                    @foreach ($ViewBag['scheduleInfos'] as $scheduleInfos)
 
-                        <?php
+                        foreach ($ViewBag['scheduleInfos'] as $scheduleInfos) {
 
-                            $currentPerson = $scheduleInfos->firstName . " " . $scheduleInfos->lastName;
 
-                            if($lastPerson != $currentPerson ){
-                                if($personCounter > 0){
-                                    echo "</div>";
-                                } else {
+                                $currentPerson = $scheduleInfos->firstName . " " . $scheduleInfos->lastName;
+
+                                if($lastPerson != $currentPerson ){
+                                    if($personCounter > 0){
+                                        echo "</div>";
+                                    } else {
+
+                                    }
+
+
+                                    // echo $currentPerson;
+                                    if($scheduleInfos->day_number == $i) {
+                                        $personCounter++;
+                                        echo "<div class=\"emplTrackBlock\">
+                                        <h2>" . $scheduleInfos->firstName . " " . $scheduleInfos->lastName . "</h2><h4>" . $scheduleInfos->emplTitle . "</h4>";
+                                        echo "<p>Latest Punch: " . $scheduleInfos->inout . " - " . $scheduleInfos->created_at . "</p>" .
+                                                "<p>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</p>";
+                                    }else {
+                                        //echo "<div class=\"emplTrackBlock\"></div>";
+                                    }
 
                                 }
-                                $personCounter++;
+                                else{
+                                    if($scheduleInfos->day_number == $i) {
+                                        echo "<p>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</p>";
+                                    }
+                                }
 
-                               // echo $currentPerson;
-                        echo "<div class=\"emplTrackBlock\">
-                                <h2>" . $scheduleInfos->firstName . " " . $scheduleInfos->lastName . "</h2><h4>" . $scheduleInfos->emplTitle . "</h4>";
-                                echo "<p>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</p>";
-                                //echo '<li><a href="#">' + $scheduleInfos->startTime + ' To ' + $scheduleInfos->endTime + '</a></li>';
+                                $lastPerson = $currentPerson;
                             }
-                            else{
-                                echo "<p>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</p>";
+                            if($personCounter > 0){
+                                echo "</div>" . $personCounter;
                             }
 
-                            $lastPerson = $currentPerson;
-                        ?>
+                        }
+                    ?>
 
-                    @endforeach
+
 
                 </div>
             </div>

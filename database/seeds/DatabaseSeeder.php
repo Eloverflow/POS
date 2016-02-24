@@ -20,6 +20,7 @@ use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
 use App\Models\POS\Schedule;
 use App\Models\POS\Day_Schedules;
+use App\Models\POS\Punch;
 
 class DatabaseSeeder extends Seeder
 {
@@ -55,10 +56,23 @@ class DatabaseSeeder extends Seeder
         $this->call(SchedulesTableSeeder::class);
         $this->call(Day_SchedulesTableSeeder::class);
 
+        $this->call(PunchesTableSeeder::class);
         Model::reguard();
     }
 }
 
+class PunchesTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('punches')->delete();
+
+        Punch::create(['inout' => 'Dispo 1', 'employee_id' => 1, 'created_at' => '2016-02-24 15:00:00']);
+
+        $this->command->info('Disponibilities table seeded!');
+    }
+
+}
 class DisponibilitiesTableSeeder extends Seeder {
 
     public function run()
@@ -109,7 +123,7 @@ class SchedulesTableSeeder extends Seeder {
     public function run()
     {
         DB::table('schedules')->delete();
-        Schedule::create(['name' => 'Schedules 1', 'startDate' => '2016-02-07', 'endDate' => '2016-02-13']);
+        Schedule::create(['name' => 'Schedules 1', 'startDate' => '2016-02-21', 'endDate' => '2016-02-27']);
 
         $this->command->info('Schedules table seeded!');
     }
@@ -138,7 +152,7 @@ class Day_SchedulesTableSeeder extends Seeder {
 
         Day_Schedules::create(['schedule_id' => 1,
             'day_number' => 3,
-            'employee_id' => 1,
+            'employee_id' => 2,
             'startTime' => date('20:00:00'),
             'endTime' => date('03:00:00')
         ]);
