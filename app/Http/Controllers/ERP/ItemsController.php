@@ -163,24 +163,6 @@ class ItemsController extends Controller
         /*Page Title*/
         $title = 'Items';
 
-
-
-        /*$formSections = array(
-            'section1' => array(
-                'title' => '',
-                'fields' => array(
-                    array(
-                        'label' => 'Quantity',
-                        'input' => 'quantity'
-                    ),
-                    array(
-                        'label' => 'Quantity',
-                        'input' => 'quantity'
-                    )
-                )
-            )
-        );*/
-
         $tableColumns = array('name', 'description');
 
 
@@ -211,6 +193,9 @@ class ItemsController extends Controller
             'name' => 'required',
             'description' => 'required'
         );
+
+        if(!Input::get('item_type_id'))
+        Input::merge(array('item_type_id' =>  1));
 
         $message = array(
             'required' => 'The :attribute is required !'

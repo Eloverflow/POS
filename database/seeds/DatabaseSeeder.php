@@ -10,6 +10,8 @@ use App\Models\ERP\Order;
 use App\Models\ERP\Inventory;
 use App\Models\Addons\Rfid\TableRfid;
 use App\Models\Addons\Rfid\TableRfidRequest;
+use App\Models\POS\Client;
+use App\Models\POS\Sale;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Beer;
@@ -54,6 +56,9 @@ class DatabaseSeeder extends Seeder
 
         $this->call(SchedulesTableSeeder::class);
         $this->call(Day_SchedulesTableSeeder::class);
+
+        $this->call(ClientSeeder::class);
+        $this->call(SaleSeeder::class);
 
         Model::reguard();
     }
@@ -311,19 +316,6 @@ class RfidTableRequestSeeder extends Seeder {
 
 }
 
-class RfidTableBeerSeeder extends Seeder {
-
-    public function run()
-    {
-        DB::table('rfid_table_beers')->delete();
-
-        TableRfidBeer::create(['id' => '1', 'table_flash_card_hw_code' => '1', 'img_url' => 'ad1213213']);
-
-        $this->command->info('rfid_table_beers table seeded!');
-    }
-
-}
-
 class EmployeeSeeder extends Seeder {
 
     public function run()
@@ -383,4 +375,31 @@ class EmployeeTitleSeeder extends Seeder {
             'name' => 'Cuisinier'
         ]);
     }
+}
+
+
+class ClientSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('clients')->delete();
+
+        Client::create(['id' => '1', 'rfid_card_code' => '2784390787']);
+
+        $this->command->info('clients table seeded!');
+    }
+
+}
+
+class SaleSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('sales')->delete();
+
+        Sale::create(['id' => '1']);
+
+        $this->command->info('sales table seeded!');
+    }
+
 }

@@ -2,6 +2,11 @@
 
 @section('title', $title)
 
+@section('csrfToken')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+@stop
+
+
 @section('content')
     <div class="panel panel-default">
         <div class="panel-body">
