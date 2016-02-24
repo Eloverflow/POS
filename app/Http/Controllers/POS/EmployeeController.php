@@ -5,6 +5,7 @@ namespace App\Http\Controllers\POS;
 use App\Http\Controllers\Controller;
 use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
+use App\Models\POS\Punch;
 use App\Models\Project;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\DB;
@@ -20,6 +21,18 @@ class EmployeeController extends Controller
     {
         $employees = Employee::getAll();
         $view = \View::make('POS.Employee.index')->with('employees', $employees);
+        return $view;
+    }
+
+    public function track($id)
+    {
+        $employee = Employee::GetById($id);
+        $punches  = Punch::GetByEmployeeId($id);
+        //DB::table('users')->get();
+        $view = \View::make('POS.Employee.track')->with('ViewBag', array (
+            "employee" => $employee,
+            "punches" => $punches
+        ));
         return $view;
     }
 

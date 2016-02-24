@@ -18,4 +18,13 @@ class Punch extends Model
             ->orderBy('punches.created_at', 'desc')
             ->first();
     }
+
+
+    public static function GetByEmployeeId($id){
+        \DB::table('punches')
+            ->where('punches.employee_id', '=', $id)
+            ->select(\DB::raw('punches.inout, punches.created_at'))
+            ->orderBy('punches.created_at', 'desc')
+            ->get();
+    }
 }

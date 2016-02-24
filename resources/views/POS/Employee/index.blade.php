@@ -40,7 +40,8 @@
                                 <td>{{ $employee->email }}</td>
                                 <td>{{ $employee->name }}</td>
                                 <td>{{ $employee->hireDate }}</td>
-                                <td><a href="{{ URL::to('employee/details', $employee->idEmployee) }}">Details</a>
+                                <td><a href="{{ URL::to('employee/track', $employee->idEmployee) }}">Track</a>
+                                    <a href="{{ URL::to('employee/details', $employee->idEmployee) }}">Details</a>
                                     <a href="{{ URL::to('employee/edit', $employee->idEmployee) }}">Edit</a>
                                     <a href="{{ URL::to('employee/delete', $employee->idEmployee) }}">Delete</a></td>
                             </tr>
