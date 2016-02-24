@@ -392,6 +392,7 @@ class ClientSeeder extends Seeder {
 }
 
 
+
 class SaleSeeder extends Seeder {
 
     public function run()
