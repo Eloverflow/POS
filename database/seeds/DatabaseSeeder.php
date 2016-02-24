@@ -62,6 +62,8 @@ class DatabaseSeeder extends Seeder
     }
 }
 
+
+
 class DisponibilitiesTableSeeder extends Seeder {
 
     public function run()
