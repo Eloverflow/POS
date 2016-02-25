@@ -23,11 +23,13 @@
                                 <div class="row">
                                     <div class="col-sm-6 col-md-4">
 
-                                @if($tableRow->$column != null)
-                                            <div id="uploadImg" class="thumbnail">
-                                                <img id="img_display" src="{{ @URL::to('img/item/' . $tableRow->$column) }}" alt="Smiley face"  width="300">
-                                            </div>
-                                @endif
+                                        <div id="uploadImg" class="thumbnail">
+                                            <img id="img_display" src="
+                                                @if($tableRow->$column != null)
+                                                {{ @URL::to('img/item/' . $tableRow->$column) }}
+                                                @endif
+                                            " alt=""  width="300">
+                                        </div>
                                     <input id="uploadFile" class="form-control" placeholder="Choose File" disabled="disabled" />
                                     <div class="fileUpload btn btn-primary input-group">
                                         <span>Change Image</span>

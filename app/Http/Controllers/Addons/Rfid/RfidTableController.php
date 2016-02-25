@@ -24,7 +24,7 @@ class RfidTableController extends Controller
 
         $title = "Table";
 
-        $columns = array('flash_card_hw_code', 'name');
+        $columns = array('name','flash_card_hw_code', 'phone_hw_code');
 
         return view('addins.rfid.table.list', compact('title', 'items', 'columns'));
     }
@@ -142,9 +142,11 @@ class RfidTableController extends Controller
                 'name' => $input['phone_hw_code'],
                 'slug' => $input['phone_hw_code']
             ]);
+
+            //Avec une default beer peut-être ?
         }
 
-        $beers = array('beer1' => $table->beer1, 'beer2' => $table->beer2);
+        $beers = array('beer1' => $table->beer1, 'beer2' => $table->beer2, 'table' => $table);
         Return $beers;
 
         /*return Response::make($content)->withCookie($cookie);*/

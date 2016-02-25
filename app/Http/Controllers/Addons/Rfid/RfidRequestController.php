@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Addons\Rfid;
 
+use App\Models\Addons\Rfid\TableRfid;
 use App\Models\Addons\Rfid\TableRfidRequest;
 use App\Models\ERP\Inventory;
 use App\Models\ERP\Item;
@@ -51,68 +52,101 @@ class RfidRequestController extends Controller
 
         /*var_dump($input);*/
 
-        $lastRequest = TableRfidRequest::where('phone_hw_code', $input['phone_hw_code'])
-            ->orderBy('created_at', 'desc')
-            ->take(1)
-            ->get();
-
-        if($lastRequest != ""){
-            $currentDate = new DateTime(date('Y-m-d H:i:s'));
-
-            $requestDate = new DateTime($lastRequest[0]['created_at']);
-
-            $interval =  $currentDate->diff($requestDate);
-            /* We also need to verify the time since the last request at this table to avoid double order*/
-
-            /* echo $interval->format('%Y%M%D%H%I%S');*/
-
-            if($interval->format('%Y%M%D%H%I%S') < 10){
-
-                /*Here we do the request to unluck the beer*/
+        $tableRfid = TableRfid::where('phone_hw_code', $input['phone_hw_code'])->first();
 
 
-                $inventory = Inventory::where('item_id', $input['item_id'])->first();
+        if($tableRfid != ""){
+            if($tableRfid->flash_card_hw_code != null){
+                $lastRequest = TableRfidRequest::where('flash_card_hw_code', $tableRfid->flash_card_hw_code)
+                    ->orderBy('created_at', 'desc')
+                    ->take(1)
+                    ->get();
+
+
+                if($lastRequest != ""){
+
+                    $currentDate = new DateTime(date('Y-m-d H:i:s'));
+
+                    $result['currentTime'] = $currentDate->format('YmdHIs');
+
+                    $requestDate = new DateTime($lastRequest[0]['created_at']);
+
+
+                    $result['requestDate'] = $requestDate->format('YmdHIs');
+
+                    $interval =  $requestDate->diff($currentDate);
+
+
+                    $result['interval'] = $interval->format('%Y%M%D%H%I%S');
+                    /* We also need to verify the time since the last request at this table to avoid double order*/
+
+                    /* echo $interval->format('%Y%M%D%H%I%S');*/
+/*
+                    var_dump($currentDate);
+                    var_dump($requestDate);*/
+
+
+                    //Maybe
+                    if($interval->format('%Y%M%D%H%I%S') < 10){
+
+                        /*Here we do the request to unluck the beer*/
+
+
+                        $inventory = Inventory::where('item_id', $input['item_id'])->first();
 
 
 
-                $client = Client::where('rfid_card_code', $lastRequest[0]->rfid_card_code )->first();
+                        $client = Client::where('rfid_card_code', $lastRequest[0]->rfid_card_code )->first();
 
 
-                if($client->credit > 0)
-                {
+                        if($client != ""){
+                            if($client->credit > 0)
+                            {
 
-                    $result['request'] = $lastRequest;
+                                $result['request'] = $lastRequest;
 
-                    if($inventory != ""){
+                                if($inventory != ""){
 
-                        //Reducing inventory
-                        Input::replace(array('quantity' =>  $inventory->quantity - 1));
-                        $inventory->update(Input::all());
+                                    //Reducing inventory
+                                    Input::replace(array('quantity' =>  $inventory->quantity - 1));
+                                    $inventory->update(Input::all());
+                                }
+
+
+                                $item = Item::where('id',  $input['item_id'])->first();
+
+                                //Creating Sales
+                                $sales = Sale::create(['slug' => $item->slug . rand(10,1000), 'item_id' => $input['item_id'], 'client_id' => $client->id, 'quantity' => 1, 'cost' => 1]);
+
+                                $result['msg'] = "Sale successfull";
+
+                                //Reducing credit
+
+                                Input::replace(array('credit' =>  $client->credit - 1));
+
+                                $client->update(Input::all());
+                            }
+                            else{
+                                $result['msg'] = "No credit on the card";
+                            }
+                        }
+                        else{
+                            $result['msg'] = "Card not associated";
+                        }
+
+
+
                     }
-
-
-                    $item = Item::where('id',  $input['item_id'])->first();
-
-                    //Creating Sales
-                    $sales = Sale::create(['slug' => $item->slug . rand(10,1000), 'item_id' => $input['item_id'], 'client_id' => $client->id, 'quantity' => 1, 'cost' => 1]);
-
-                    $result['msg'] = "Sale successfull";
-
-                    //Reducing credit
-
-                    Input::replace(array('credit' =>  $client->credit - 1));
-
-                    $client->update(Input::all());
                 }
-                else{
-                    $result['msg'] = "No credit on the card";
-                }
-
+            }else
+            {
+                $result['msg'] = "Phone not associated with any scanner";
             }
-        }else{
-
+        }else
+        {
             $result['msg'] = "Cellphone not associated with any table";
         }
+
 
 
 
