@@ -42,6 +42,32 @@ class ScheduleController extends Controller
         ));
         return $view;
     }
+    // Attention a employee et employees ci-dessous.
+    // Employees sort plus la liste des employeee pour un schedule
+    public function employeesSchedule($scheduleid)
+    {
+        $schedule = Schedule::GetById($scheduleid);
+        $employees = Schedule::getAllScheduleEmployees($scheduleid);
+        $view = \View::make('POS.Schedule.employees')->with('ViewBag', array(
+                'schedule' => $schedule,
+                'employees' => $employees
+            )
+        );
+        return $view;
+    }
+
+    public function employeeSchedule($scheduleid, $employeeId)
+    {
+        $employee = Employee::GetById($employeeId);
+        $schedule = Schedule::GetById($scheduleid);
+        $view = \View::make('POS.Schedule.employee')->with('ViewBag', array(
+                'schedule' => $schedule,
+                'employee' => $employee,
+                'Rows' => Utils::GenerateDisponibilityTable($employeeId)
+            )
+        );
+        return $view;
+    }
 
     public function details($id)
     {

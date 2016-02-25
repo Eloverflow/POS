@@ -39,7 +39,7 @@
                                 <td>{{ $schedule->name }}</td>
                                 <td>{{ $schedule->startDate }}</td>
                                 <td>{{ $schedule->endDate }}</td>
-                                <td>{{ $schedule->nbEmployees }}</td>
+                                <td><a href='{{ URL::to('schedule', $schedule->idSchedule) . '/employees' }}'>{{ $schedule->nbEmployees }}</a></td>
                                 <td>{{ $schedule->status }}</td>
                                 <td>{{ $schedule->created_at }}</td>
                                 <td><a href="{{ URL::to('schedule/track', $schedule->idSchedule) }}">Track</a>

@@ -91,6 +91,9 @@ Route::post('/schedule/create', 'POS\ScheduleController@postcreate');
 Route::get('/schedule/edit/{id}', 'POS\ScheduleController@edit');
 Route::post('/schedule/edit', 'POS\ScheduleController@postedit');
 
+Route::get('/schedule/{scheduleid}/employees', 'POS\ScheduleController@employeesSchedule');
+Route::get('/schedule/{scheduleid}/employee/{employeeid}', 'POS\ScheduleController@employeeSchedule');
+
 Route::get('/schedule/delete/{id}', 'POS\ScheduleController@delete');
 Route::delete('/schedule/deleteArch/{id}', 'POS\ScheduleController@deleteArch');
 Route::delete('/schedule/deleteComp/{id}', 'POS\ScheduleController@deleteComp');
