@@ -46,7 +46,7 @@
                                     <a href="{{ URL::to('schedule/view', $schedule->idSchedule) }}">View</a>
                                     <a href="{{ URL::to('schedule/edit', $schedule->idSchedule) }}">Edit</a>
                                     <a href="{{ URL::to('schedule/delete', $schedule->idSchedule) }}">Delete</a>
-                                    <a href="{{ URL::to('schedule/download', $schedule->idSchedule) }}">Download</a></td>
+                                    <a href="{{ URL::to('schedule', $schedule->idSchedule) . "/pdf" }}">Download</a></td>
                             </tr>
                         @endforeach
 

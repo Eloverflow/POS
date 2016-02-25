@@ -54,7 +54,8 @@
                                     <td>{{ $employee->firstName . "-" . $employee->lastName }}</td>
                                     <td>{{ $employee->phone }}</td>
                                     <td>{{ $employee->shifts }}</td>
-                                    <td><a href="{{ URL::to('schedule', $ViewBag['schedule']->id) . '/employee/'. $employee->id }}">View Schedule</a></td>
+                                    <td><a href="{{ URL::to('schedule', $ViewBag['schedule']->id) . '/employee/'. $employee->idEmployee }}">View</a>
+                                        <a href="{{ URL::to('schedule', $ViewBag['schedule']->id) . '/employee/'. $employee->idEmployee. '/pdf' }}">Download</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
