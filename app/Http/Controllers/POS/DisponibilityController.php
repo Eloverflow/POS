@@ -35,18 +35,6 @@ class DisponibilityController extends Controller
         $disponibility = Disponibility::GetById($id);
 
 
-        $weekDispos = array (
-            0 => Disponibility::GetDayDisponibilities($id, 0),
-            1 => Disponibility::GetDayDisponibilities($id, 1),
-            2 => Disponibility::GetDayDisponibilities($id, 2),
-            3 => Disponibility::GetDayDisponibilities($id, 3),
-            4 => Disponibility::GetDayDisponibilities($id, 4),
-            5 => Disponibility::GetDayDisponibilities($id, 5),
-            6 => Disponibility::GetDayDisponibilities($id, 6)
-        );
-
-
-
         $view = \View::make('POS.Disponibility.details')->with('ViewBag', array(
             'disponibility' => $disponibility,
             'Rows' => Utils::GenerateDisponibilityTable($id)

@@ -31,10 +31,20 @@ class Schedule extends Model
             startDate,
             endDate,
             schedules.created_at,
-            count(day_schedules.employee_id) as "nbEmployees",
+            count(distinct day_schedules.employee_id) as "nbEmployees",
             "fakestatus" as status
             '))
             ->leftJoin('day_schedules', 'schedules.id', '=', 'day_schedules.schedule_id')
+            ->get();
+    }
+
+    public static function getAllScheduleEmployees($id)
+    {
+        return  \DB::table('day_schedules')
+            ->select(\DB::raw('day_schedules.id, day_schedules.employee_id, employees.firstName, employees.phone, employees.lastName, count(day_schedules.id) as shifts'))
+            ->where('day_schedules.schedule_id', '=', $id)
+            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
+            ->groupBy('day_schedules.employee_id')
             ->get();
     }
 
@@ -80,13 +90,10 @@ class Schedule extends Model
             ->select(\DB::raw('day_schedules.*,
             employee_titles.name as emplTitle,
             employees.firstName,
-            employees.lastName,
-            punches.inout,
-            punches.created_at'))
+            employees.lastName'))
             ->join('day_schedules', 'schedules.id', '=', 'day_schedules.schedule_id')
             ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
             ->join('employee_titles', 'employees.employeeTitle', '=', 'employee_titles.id')
-            ->join('punches', 'employees.id', '=', 'punches.employee_id')
             ->where('schedules.id', '=', $id)
             ->orderBy('employees.firstName', 'desc')
             ->orderBy('employees.lastName', 'desc')
