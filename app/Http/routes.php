@@ -98,6 +98,9 @@ Route::get('/schedule/delete/{id}', 'POS\ScheduleController@delete');
 Route::delete('/schedule/deleteArch/{id}', 'POS\ScheduleController@deleteArch');
 Route::delete('/schedule/deleteComp/{id}', 'POS\ScheduleController@deleteComp');
 
+Route::get('/schedule/{scheduleid}/pdf', 'POS\ScheduleController@GetSchedulePDF');
+Route::get('/schedule/{scheduleid}/employee/{employeeid}/pdf', 'POS\ScheduleController@GetScheduleForEmployeePDF');
+
 Route::get('/schedule/view/{id}', 'POS\ScheduleController@details');
 Route::get('/schedule/track/{id}', 'POS\ScheduleController@track');
 

@@ -41,7 +41,7 @@ class Schedule extends Model
     public static function getAllScheduleEmployees($id)
     {
         return  \DB::table('day_schedules')
-            ->select(\DB::raw('day_schedules.id, day_schedules.employee_id, employees.firstName, employees.phone, employees.lastName, count(day_schedules.id) as shifts'))
+            ->select(\DB::raw('day_schedules.id as idSchedule, employees.id as idEmployee, day_schedules.employee_id, employees.firstName, employees.phone, employees.lastName, count(day_schedules.id) as shifts'))
             ->where('day_schedules.schedule_id', '=', $id)
             ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
             ->groupBy('day_schedules.employee_id')
@@ -51,6 +51,18 @@ class Schedule extends Model
     public static function GetDaySchedules($id, $day_number)
     {
         $matches = ['schedule_id' => $id, 'day_number' => $day_number];
+        return \DB::table('day_schedules')
+            ->select(\DB::raw('day_schedules.*,
+            employees.firstName,
+            employees.lastName'))
+            ->where($matches)
+            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
+            ->get();
+    }
+
+    public static function GetDaySchedulesForEmployee($id, $day_number, $employeeId)
+    {
+        $matches = ['schedule_id' => $id, 'day_number' => $day_number, 'employees.id' => $employeeId];
         return \DB::table('day_schedules')
             ->select(\DB::raw('day_schedules.*,
             employees.firstName,
@@ -75,14 +87,6 @@ class Schedule extends Model
             ->get();
     }
 
-    public static function GetDaySchedulesForEmployee($id, $day_number, $employeeId)
-    {
-        $matches = ['schedule_id' => $id, 'employee_id' => $employeeId, 'day_number' => $day_number];
-        return \DB::table('day_schedules')
-            ->where($matches)
-            ->get();
-    }
-
     public static function GetScheduleEmployees($id)
     {
 
@@ -99,5 +103,4 @@ class Schedule extends Model
             ->orderBy('employees.lastName', 'desc')
             ->get();
     }
-
 }

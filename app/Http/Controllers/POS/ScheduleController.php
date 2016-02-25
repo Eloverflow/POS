@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\POS;
 
+use App;
 use App\Http\Controllers\Controller;
 use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
@@ -10,6 +11,8 @@ use App\Helpers\Utils;
 use App\Models\POS\Schedule;
 use App\Models\POS\Day_Schedules;
 use App\Models\POS\Disponibility;
+
+use Barryvdh\DomPDF\PDF;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -63,7 +66,7 @@ class ScheduleController extends Controller
         $view = \View::make('POS.Schedule.employee')->with('ViewBag', array(
                 'schedule' => $schedule,
                 'employee' => $employee,
-                'Rows' => Utils::GenerateDisponibilityTable($employeeId)
+                'Rows' => Utils::GenerateScheduleTableForEmployee($scheduleid, $employeeId)
             )
         );
         return $view;
@@ -91,6 +94,77 @@ class ScheduleController extends Controller
             'employeeTitles' => $employeeTitles
         ));
         return $view;
+    }
+
+    public static function GetSchedulePDF($scheduleid)
+    {
+        $schedule = Schedule::GetById($scheduleid);
+        $scheduleInfos = Schedule::GetScheduleEmployees($scheduleid);
+
+        $pdf = App::make('dompdf.wrapper');
+        $pdf->loadHTML("<html>
+                        <head>
+                        <style>
+                        h2, h4, h5 {
+                            margin: 0px;
+                        }
+                        .emplTrackBlock
+                        {
+                            border-bottom: 1px solid #c4e3f3;
+                            margin-top: 10px;
+                            margin-left: 12px;
+                        }
+                        .trackBloc
+                        {
+                            margin-top: 10px;
+                            background-color:rgba(192,192,192,0.3);;
+                        }
+                        </style>
+                        </head>
+                        <body>" .
+                        Utils::getDaySchedulesHtml($schedule, $scheduleInfos) . "</body></html>");
+        return $pdf->stream();
+    }
+
+    public static function GetScheduleForEmployeePDF($scheduleid, $employeeId)
+    {
+        $pdf = App::make('dompdf.wrapper');
+        $rows = Utils::GenerateScheduleTableForEmployee($scheduleid, $employeeId);
+        $htmlstring = "<html>
+                        <head>
+                        <style>
+                        table {
+                          border-collapse: collapse;
+                          width: 100%;
+                        }
+
+                        td, th {
+                          border: 1px solid #999;
+                          padding: 0.5rem;
+                          text-align: left;
+                        }
+                        </style>
+                        </head>
+                        <body>
+                        <table class=\"collapse\" >
+                        <thead>
+                        <tr>
+                        <th></th>
+                        <th>Sunday</th>
+                        <th>Monday</th>
+                        <th>Tuesday</th>
+                        <th>Wednesday</th>
+                        <th>Thursday</th>
+                        <th>Friday</th>
+                        <th>Saturday</th></tr></thead><tbody>";
+        for($k = 0; $k < count($rows); $k++)
+        {
+            $htmlstring = $htmlstring . $rows[$k];
+        }
+        $htmlstring = $htmlstring . "</tbody></table></body></html>";
+
+        $pdf->loadHTML($htmlstring);
+        return $pdf->stream();
     }
 
     public function postEdit()
