@@ -9,7 +9,7 @@ class TableRfid extends Model
     protected $table = 'rfid_tables';
 
 
-    protected $fillable = array('flash_card_hw_code','name','description','beer1_item_id', 'beer2_item_id');
+    protected $fillable = array('flash_card_hw_code', 'phone_hw_code','name','description','beer1_item_id', 'beer2_item_id', 'slug');
 
 
     public function beer1()

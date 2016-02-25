@@ -51,7 +51,7 @@ class RfidTableController extends Controller
         /*Main table row to retrieve from DB*/
         $tableRow = TableRfid::whereSlug($slug)->first();
         /*Main table desired column to display*/
-        $tableColumns = array('name');
+        $tableColumns = array('name', 'phone_hw_code', 'flash_card_hw_code');
 
 
         $tableChoiceListTable = Item::where('item_type_id', '1')->get();
@@ -134,9 +134,17 @@ class RfidTableController extends Controller
         $typeBeer = Item::where('type' , '=', 'beer');*/
 /*
         $table = TableRfid::where('flash_card_hw_code', '=', $input['flash_card_hw_code'])->where('item_type_id' , '=', $typeBeer->id )->first();*/
-        $table = TableRfid::where('flash_card_hw_code', '=', $input['flash_card_hw_code'])->first();
-        $beers = array('beer1' => $table->beer1, 'beer2' => $table->beer2);
+        $table = TableRfid::where('phone_hw_code', $input['phone_hw_code'])->first();
 
+        if($table == null){
+            $table = TableRfid::create([
+                'phone_hw_code' => $input['phone_hw_code'],
+                'name' => $input['phone_hw_code'],
+                'slug' => $input['phone_hw_code']
+            ]);
+        }
+
+        $beers = array('beer1' => $table->beer1, 'beer2' => $table->beer2);
         Return $beers;
 
         /*return Response::make($content)->withCookie($cookie);*/
