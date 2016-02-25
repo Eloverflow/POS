@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Addons\Rfid;
 
 use App\Models\Addons\Rfid\TableRfidRequest;
 use App\Models\ERP\Inventory;
+use App\Models\ERP\Item;
 use App\Models\POS\Client;
 use App\Models\POS\Sale;
 use DateTime;
@@ -43,8 +44,9 @@ class RfidRequestController extends Controller
 
     protected function checkTableRequest(Request $request)
     {
+        $result = array('msg' => '', 'request' => '');
 
-        $result = "No scan request found in the last 10 sec for this rfid table";
+        $result['msg'] = "No scan request found in the last 10 sec for this rfid table";
         $input = $request->all();
 
         /*var_dump($input);*/
@@ -68,32 +70,41 @@ class RfidRequestController extends Controller
             /*Here we do the request to unluck the beer*/
 
 
-            //Reducing inventory
             $inventory = Inventory::where('item_id', $input['item_id'])->first();
 
-            Input::replace(array('quantity' =>  $inventory->quantity - 1));
-
-            $inventory->update(Input::all());
 
 
             $client = Client::where('rfid_card_code', $lastRequest[0]->rfid_card_code )->first();
 
 
-            if($client->credit > 1)
+            if($client->credit > 0)
             {
 
-                $result = $lastRequest;
+                $result['request'] = $lastRequest;
+
+                if($inventory != ""){
+
+                    //Reducing inventory
+                    Input::replace(array('quantity' =>  $inventory->quantity - 1));
+                    $inventory->update(Input::all());
+                }
+
+
+                $item = Item::where('id',  $input['item_id'])->first();
 
                 //Creating Sales
-                $sales = Sale::create(['slug' => $inventory->slug, 'item_id' => $input['item_id'], 'client_id' => $client->id, 'quantity' => 1, 'cost' => 1]);
+                $sales = Sale::create(['slug' => $item->slug . rand(10,1000), 'item_id' => $input['item_id'], 'client_id' => $client->id, 'quantity' => 1, 'cost' => 1]);
 
+                $result['msg'] = "Sale successfull";
 
                 //Reducing credit
-
 
                 Input::replace(array('credit' =>  $client->credit - 1));
 
                 $client->update(Input::all());
+            }
+            else{
+                $result['msg'] = "No credit on the card";
             }
 
         }
