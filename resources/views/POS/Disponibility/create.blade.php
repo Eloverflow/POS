@@ -29,10 +29,10 @@
                                     {!! Form::label('name', "Name" ) !!}
                                     @if($errors->has('name'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('name', null, array('class' => 'form-control')) !!}
+                                            {!! Form::text('name', old('name'), array('class' => 'form-control')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('name', null, array('class' => 'form-control')) !!}
+                                        {!! Form::text('name', old('name'), array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
 
@@ -40,7 +40,12 @@
                                     {!! Form::label('employee', "Employee" ) !!}
                                     <select id="employeeSelect" name="employeeSelect" class="form-control">
                                         @foreach ($ViewBag['employees'] as $employee)
-                                            <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+
+                                            <option value="{{ $employee->idEmployee }}" @if(old('employeeSelect'))
+                                                @if(old('employeeSelect') == $employee->idEmployee)
+                                                    {{ "selected" }}
+                                                        @endif
+                                                    @endif >{{ $employee->firstName }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -74,7 +79,14 @@
                     <label>Sunday Disponibilities</label>
 
                     <select id="sunMultiSelect" name="sunDispos[]" multiple class="form-control">
-
+                        @if(old('sunDispos'))
+                            @foreach(old('sunDispos') as $sunDispo)
+                                <option selected="" value="{{ $sunDispo }}">
+                                    <?php $jsonData = json_decode($sunDispo, true);?>
+                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -100,7 +112,14 @@
                     <label>Monday Disponibilities</label>
 
                     <select id="monMultiSelect" name="monDispos[]" multiple class="form-control">
-
+                        @if(old('monDispos'))
+                            @foreach(old('monDispos') as $monDispo)
+                                <option selected="" value="{{ $monDispo }}">
+                                    <?php $jsonData = json_decode($monDispo, true);?>
+                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -125,7 +144,14 @@
 
                     <label>Tuesday Disponibilities</label>
                     <select id="tueMultiSelect" name="tueDispos[]" multiple class="form-control">
-
+                        @if(old('tueDispos'))
+                            @foreach(old('tueDispos') as $tueDispo)
+                                <option selected="" value="{{ $tueDispo }}">
+                                    <?php $jsonData = json_decode($tueDispo, true);?>
+                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -152,7 +178,14 @@
 
                     <label>Wednesday Disponibilities</label>
                     <select id="wedMultiSelect" name="wedDispos[]" multiple class="form-control">
-
+                        @if(old('wedDispos'))
+                            @foreach(old('wedDispos') as $wedDispos)
+                                <option selected="" value="{{ $wedDispos }}">
+                                    <?php $jsonData = json_decode($wedDispos, true);?>
+                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -177,7 +210,14 @@
 
                     <label>Thursday Disponibilities</label>
                     <select id="thuMultiSelect" name="thuDispos[]" multiple class="form-control">
-
+                        @if(old('thuDispos'))
+                            @foreach(old('thuDispos') as $thuDispo)
+                                <option selected="" value="{{ $thuDispo }}">
+                                    <?php $jsonData = json_decode($thuDispo, true);?>
+                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -202,7 +242,14 @@
 
                     <label>Friday Disponibilities</label>
                     <select id="friMultiSelect" name="friDispos[]" multiple class="form-control">
-
+                        @if(old('friDispos'))
+                            @foreach(old('friDispos') as $friDispo)
+                                <option selected="" value="{{ $friDispo }}">
+                                    <?php $jsonData = json_decode($friDispo, true);?>
+                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
@@ -229,7 +276,14 @@
 
                     <label>Saturday Disponibilities</label>
                     <select id="satMultiSelect" name="satDispos[]" multiple class="form-control">
-
+                        @if(old('satDispos'))
+                            @foreach(old('satDispos') as $satDispo)
+                                <option selected="" value="{{ $satDispo }}">
+                                    <?php $jsonData = json_decode($satDispo, true);?>
+                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
+                                </option>
+                            @endforeach
+                        @endif
                     </select>
                 </div>
             </div>
