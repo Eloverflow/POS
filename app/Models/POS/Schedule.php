@@ -23,6 +23,12 @@ class Schedule extends Model
             ->first();
     }
 
+    public static function DeleteDaySchedules($scheduleId)
+    {
+        return \DB::table('day_schedules')
+            ->where('schedule_id', '=', $scheduleId)
+            ->delete();
+    }
     public static function getAll()
     {
         return  \DB::table('schedules')

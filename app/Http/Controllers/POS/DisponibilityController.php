@@ -45,12 +45,23 @@ class DisponibilityController extends Controller
 
     public function edit($id)
     {
-        $employee = Employee::GetById($id);
+        $employees = Employee::getAll();
+        $disponibility = Disponibility::GetById($id);
         $employeeTitles = EmployeeTitle::All();
+        $WeekDisponibilities = array(
+            0 => Disponibility::GetDayDisponibilities($id, 0),
+            1 => Disponibility::GetDayDisponibilities($id, 1),
+            2 => Disponibility::GetDayDisponibilities($id, 2),
+            3 => Disponibility::GetDayDisponibilities($id, 3),
+            4 => Disponibility::GetDayDisponibilities($id, 4),
+            5 => Disponibility::GetDayDisponibilities($id, 5),
+            6 => Disponibility::GetDayDisponibilities($id, 6),
+        );
         //DB::table('users')->get();
-        $view = \View::make('POS.Employee.edit')->with('ViewBag', array(
-            'employee' => $employee,
-            'employeeTitles' => $employeeTitles
+        $view = \View::make('POS.Disponibility.edit')->with('ViewBag', array(
+            'employees' => $employees,
+            'disponibility' => $disponibility,
+            'weekDispos' => $WeekDisponibilities,
         ));
         return $view;
     }
@@ -60,8 +71,7 @@ class DisponibilityController extends Controller
         $inputs = \Input::all();
 
         $rules = array(
-            'firstName' => 'required',
-            'lastName' => 'required'
+            'name' => 'required'
         );
 
         $message = array(
@@ -71,31 +81,110 @@ class DisponibilityController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            if (\Input::has('id')) {
-                return \Redirect::action('POS\EmployeeController@edit', array(\Input::get('idEmployee')))->withErrors($validation)
-                    ->withInput();
-            }
+            return \Redirect::action('POS\DisponibilityController@edit')->withErrors($validation)
+                ->withInput();
+
         }
         else
         {
-            $employee = Employee::where('id', \Input::get('idEmployee'))
-                ->update([
-                'firstName' => \Input::get('firstName'),
-                'lastName' => \Input::get('lastName'),
-                'streetAddress' => \Input::get('streetAddress'),
-                'phone' => \Input::get('phone'),
-                'city' => \Input::get('city'),
-                'state' => \Input::get('state'),
-                'pc' => \Input::get('pc'),
-                'nas' => \Input::get('nas'),
-                'employeeTitle' => \Input::get('employeeTitle'),
-                'userId' => \Input::get('idUser'),
-                'salary' => \Input::get('salary'),
-                'birthDate' => \Input::get('birthDate'),
-                'hireDate' => \Input::get('hireDate')
+            $idDisponibility = \Input::get('idDisponibility');
+
+            // On commence par supprimer tous les jour de disponiblite associer a une disponibilite.
+            Disponibility::DeleteDayDisponibilities($idDisponibility);
+
+            Disponibility::where('id', $idDisponibility)
+            ->update([
+                'name' => \Input::get('name'),
+                'employee_id' => \Input::get('employeeSelect'),
             ]);
 
-            return \Redirect::action('POS\EmployeeController@index');
+            for($i = 0; $i < count(\Input::get('sunDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('sunDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $idDisponibility,
+                    "day_number" => 0,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('monDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('monDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $idDisponibility,
+                    "day_number" => 1,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('tueDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('tueDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $idDisponibility,
+                    "day_number" => 2,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('wedDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('wedDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $idDisponibility,
+                    "day_number" => 3,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('thuDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('thuDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $idDisponibility,
+                    "day_number" => 4,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('friDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('friDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $idDisponibility,
+                    "day_number" => 5,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+
+            for($i = 0; $i < count(\Input::get('satDispos')); $i++)
+            {
+                $jsonObj = json_decode(\Input::get('satDispos')[$i], true);
+                //var_dump($jsonObj["StartTime"]);
+                Day_Disponibilities::create([
+                    "disponibility_id" => $idDisponibility,
+                    "day_number" => 6,
+                    "startTime" => $jsonObj["StartTime"] . ":00",
+                    "endTime" => $jsonObj["EndTime"] . ":00"
+                ]);
+            }
+            //var_dump(\Input::get('name'));
+            //var_dump(\Input::get('sunDispos'));
+
+            return \Redirect::action('POS\DisponibilityController@index')->withSuccess('The disponibility has been successfully edited !');
         }
     }
 

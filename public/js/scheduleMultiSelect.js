@@ -11,7 +11,7 @@ function addSchedule($lethis) {
 
     if($inptUserSelected.val() > 0) {
         $optionText = $inptUserSelected.text() + " - " + $inptStartVal + " To " + $inptEndVal;
-        $optionJsonValue = "{\"EmployeeId\":" + $inptUserSelected.val() + ", \"StartTime\":" + $inptStartVal + ", \"EndTime\":" + $inptEndVal + "}"
+        $optionJsonValue = "{\"EmployeeName\":\"" + $inptUserSelected.text() + "\", \"EmployeeId\":" + $inptUserSelected.val() + ", \"StartTime\":" + $inptStartVal + ", \"EndTime\":" + $inptEndVal + "}"
         console.log($optionJsonValue);
         switch ($lethis.data("day")) {
             case 0:

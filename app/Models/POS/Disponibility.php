@@ -95,5 +95,12 @@ class Disponibility extends Model
             ->orderBy('firstName', 'desc')
             ->get();
     }
+
+    public static function DeleteDayDisponibilities($disponibilityId)
+    {
+        return \DB::table('day_disponibilities')
+            ->where('disponibility_id', '=', $disponibilityId)
+            ->delete();
+    }
     //
 }
