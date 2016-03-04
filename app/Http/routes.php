@@ -21,10 +21,11 @@ Route::controllers([
 /* End Authentication */
 
 
-
 Route::get('/', 'PagesController@index');
 Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
+
+Route::get('/menu', 'POS\SalesController@menu');
 
 Route::get('/inventory', 'ERP\InventoriesController@index');
 Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});

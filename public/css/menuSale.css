@@ -1,0 +1,192 @@
+.sidebar{
+
+	background-color: #333;
+}
+
+.sidebar h1{
+	margin-top: 10px;
+	padding-left: 5px;
+	color: #fff;
+}
+
+.menu-sale{
+	font-size: 28px;
+}
+
+.menu-sale li.sale-item{
+	background-color: #333;
+	box-shadow: 0 0 4px rgba(0,0,0,0.5);
+	padding: 10px;
+	border-top: 1px solid rgba(44,44,44,0.5);
+	color: #fff;
+}
+
+.menu-sale li.sale-item.last{
+	border-bottom: 1px solid rgba(44,44,44,0.5);
+}
+
+.menu-sale li.sale-item .sale-item-name{
+	font-weight: bold;
+}
+
+
+/*svg.glyph{
+	width: 10%!important;
+	height: 25px!important;
+	stroke-width: 4px!important;
+}*/
+
+.sidebar span.glyphicon{
+	transition: font-size 0.1s;
+	font-size: 28px;
+	cursor: pointer;
+}
+
+.sidebar span.glyphicon.glyphicon-minus{
+	color: #30a5ff;
+	margin-right: 0;
+	margin-bottom: 6px;
+}
+
+.sidebar span.glyphicon.glyphicon-plus{
+	color: #30a5ff;
+	margin-right: 0;
+	margin-bottom: 6px;
+}
+.sidebar span.glyphicon.glyphicon-remove{
+	margin-top: 10px;
+	color: red;
+}
+
+.sidebar span.glyphicon.right{
+	float: right;
+}
+
+.sidebar span.glyphicon:hover{
+	font-size: 38px;
+}
+
+div.saleTextZone{
+	display: inline;
+	top: 40px!important;
+}
+
+
+div.saleTextZone input{
+	color: #333;
+	transition: border-color 0.3s;
+	width: 10%;
+	text-align: center;
+	border: solid #30a5ff 4px;
+	border-radius: 2px;
+}
+
+
+div.saleTextZone input:focus{
+	border: solid #333 5px;
+}
+
+#contentPanel{
+	margin-top: 85px!important;
+	background-color: #fff;
+	font-size: 28px;
+
+}
+
+.menu-filter button{
+	margin: 2px;
+	padding: 18px;
+	font-size: 28px;
+	transition: background-color 0.2s, color 0.2s, opacity 0.2s;
+	border: 1px solid rgba(44,44,44,0.5);
+	box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+}
+
+.menu-filter button.active{
+	border-color: black;
+	border-width: 2px;
+	background-color: #333;
+}
+
+
+.menu-filter button:hover{
+	border-color: black;
+	opacity: 1;
+	background-color: #222;
+	color: #fff;
+}
+/*
+
+#contentPanel .menu-title{
+	background-color: #fff;
+}
+*/
+
+.fixed{/*
+	width: 0;*/
+	margin-left: 0;
+	margin-right: 1px;
+}
+
+.menu-filter{
+	background-color: rgba(0,0,0,0.8);
+	/*border-radius: 4px!important;*//*
+	margin-top: 2px;*//*
+	border: 1px solid rgba(44,44,44,0.5);
+	border-radius: 10px;*//*
+	box-shadow: 0 3px 6px rgba(0,0,0,0.5);
+	background-color: #333;*/
+	/*padding-left: 15px;*/
+	/*box-shadow: 0 4px 8px rgba(0,0,0,0.8);*/
+}
+
+
+#contentPanel .beer-items{
+
+	border: 1px solid rgba(44,44,44,0.5);
+	background-color: #333;
+	margin-top: 0;/*
+	border-radius: 4px;*/
+}
+
+#contentPanel .beerItem{
+	transition: border 0.1s, margin 0.1s;
+	margin-top: 8px;
+	margin-bottom: 4px;
+	margin-left: 4px;
+	margin-right: 4px;
+	text-align: center;/*
+	border-width: 3px;*/
+	box-shadow: 0 4px 8px rgba(0,0,0,1);
+	border: 10px solid #333;
+}
+
+
+#contentPanel .beerItem:hover{/*
+	margin: 0;*/
+	border: 10px solid #30a5ff;
+}
+#contentPanel .beerItem:active{/*
+	margin: 0;*/
+	border: 10px solid #49d100;
+}
+
+/*@media (min-width: 768px) {
+	.sidebar{
+
+		border: solid #eee 5px;
+		border-left: 30px;
+		border-top: 0;
+		border-bottom: 0;
+	}
+
+}*/
+
+.beerItem{
+	cursor: pointer;
+}
+
+/*.beer-items .col-sm-6.col-md-4{
+	display: inline;
+}*/
+
