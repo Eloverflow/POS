@@ -20,16 +20,8 @@ class CreateItemsTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('slug')->unique();
-            $table->string('customField1')->nullable();
-            $table->string('customField2')->nullable();
-            $table->string('customField3')->nullable();
-            $table->string('customField4')->nullable();
-            $table->string('customField5')->nullable();
-            $table->string('customField6')->nullable();
-            $table->string('customField7')->nullable();
-            $table->string('customField8')->nullable();
-            $table->string('customField9')->nullable();
-            $table->string('customField10')->nullable();
+            $table->string('custom_fields_array')->nullable();
+            $table->string('size_prices_array')->nullable();
             $table->timestamps();
         });
     }

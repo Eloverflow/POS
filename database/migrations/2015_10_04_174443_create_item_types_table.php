@@ -13,7 +13,7 @@ class CreateItemTypesTable extends Migration
 
     /**
      *Lead to a type beer, or drink for example
-     * À vérifier
+     * ï¿½ vï¿½rifier
      *
      * Model name based on field type
     */
@@ -21,7 +21,8 @@ class CreateItemTypesTable extends Migration
     {
         Schema::create('item_types', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('fields_names')->nullable();
+            $table->string('field_names')->nullable();
+            $table->string('size_names')->nullable();
             $table->string('type');
             $table->string('slug')->unique();
             $table->timestamps();

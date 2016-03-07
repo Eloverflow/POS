@@ -17,6 +17,12 @@
     <!--Icons-->
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/lumino.glyphs.js') }}"></script>
 
+
+    <script src="{{ @URL::to('Framework/Angular/angular.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
+    <script src="{{ @URL::to('js/unserialize.js') }}"></script>
+    <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
+
     <!--[if lt IE 9]>
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/html5shiv.js') }}"></script>
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/respond.min.js') }}"></script>
@@ -24,7 +30,7 @@
     @yield('csrfToken')
 </head>
 
-<body>
+<body ng-app="menu" ng-controller="menuController">
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -39,31 +45,22 @@
     </div><!-- /.container-fluid -->
 </nav>
 
+
+
 <div id="sidebar-collapse" class="col-sm-3 col-lg-5 sidebar">
     <ul class="nav menu menu-sale">
         <li><h1>Facture</h1></li>
-        <li class="sale-item">
-            <span class="glyphicon glyphicon-plus"></span>
-            <span class="glyphicon glyphicon-minus"></span>
-            <div class="saleTextZone"><input value="3"> X <span class="sale-item-name">Alexander Keith</span></div>
-            <span class="glyphicon glyphicon-remove right"></span>
-        </li>
-        <li class="sale-item">
-            <span class="glyphicon glyphicon-plus"></span>
-            <span class="glyphicon glyphicon-minus"></span>
-            <div class="saleTextZone"><input value="3"> X <span class="sale-item-name">Labatt Blue</span></div>
-            <span class="glyphicon glyphicon-remove right"></span>
-        </li>
-        <li class="sale-item last">
-            <span class="glyphicon glyphicon-plus"></span>
-            <span class="glyphicon glyphicon-minus"></span>
-            <div class="saleTextZone"><input value="3"> X <span class="sale-item-name">Molsen Dry</span></div>
-            <span class="glyphicon glyphicon-remove right"></span>
+        <li ng-repeat="factureItem in factureItems"  id="factureItem<% factureItem.id %>" class="sale-item">
+            <span ng-click="increase(factureItem)" class="glyphicon glyphicon-plus"></span>
+            <span ng-click="decrease(factureItem)" class="glyphicon glyphicon-minus"></span>
+            <div class="saleTextZone"><input id="" ng-model="factureItem.quantity" value=""> X <span class="sale-item-name"><% factureItem.name %></span></div>
+            <span ng-click="delete2(factureItem)" class="glyphicon glyphicon-remove right"></span>
         </li>
     </ul>
 
 
 </div><!--/.sidebar-->
+
 <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 main">
     <div class="row fixed">
         <div class="row menu-filter">
@@ -81,8 +78,10 @@
 <div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 main">
 
     @yield('content')
-
 </div>
+
+
+
 
 {{--Script call--}}
 <script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>

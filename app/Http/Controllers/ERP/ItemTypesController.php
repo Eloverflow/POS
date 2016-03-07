@@ -18,7 +18,7 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         $items = ItemType::get();
         $type = 'All';
         $title = 'ItemTypes';
-        $columns = array('id', 'type', 'fields_names');
+        $columns = array('id', 'type', 'field_names');
         return view('erp.items.types.list',compact('items', 'columns', 'type', 'title'));
     }
 
@@ -39,7 +39,7 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         /*Main table row to retrieve from DB*/
         $tableRow = ItemType::whereSlug($slug)->first();
         /*Main table desired column to display*/
-        $tableColumns = array('type', 'fields_names');
+        $tableColumns = array('type', 'field_names');
 
 
         /*$tableChoiceListTable = ItemType::all();*/

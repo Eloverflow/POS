@@ -231,8 +231,8 @@ class ItemTypesTableSeeder extends Seeder {
     {
         DB::table('item_types')->delete();
 
-        ItemType::create(['type' => 'Beer', 'fields_names' => 'brand,style,percent ', 'slug' => 'beer']);
-        ItemType::create(['type' => 'Drink', 'fields_names' => 'flavour,color,author,percent', 'slug' => 'drink']);
+        ItemType::create(['type' => 'Beer', 'field_names' => 'brand,style,percent ', 'size_names' => 'Verre,Pinte,Pichet,Baril', 'slug' => 'beer']);
+        ItemType::create(['type' => 'Drink', 'field_names' => 'flavour,color,author,percent', 'size_names' => 'Petit,Moyen,Gros', 'slug' => 'drink']);
 
         $this->command->info('ItemTypes table seeded!');
     }
@@ -253,17 +253,18 @@ class ItemsTableSeeder extends Seeder {
             'name' => 'Keith',
             'description' => 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
             'slug' => 'keith',
-            'customField1' => 'Alexander Keith',
-            'customField2' => 'Red',
-            'customField3' => '5']);
+            'img_id' => 'Alexander Keith.jpg',
+            'custom_fields_array' => serialize(array('Alexander Keith','Red','5')),
+            'size_prices_array' => serialize(array('6.25','8.12','16.75','175.99' ))]);
 
         Item::create([
             'item_type_id' => '1',
             'name' => 'Blue', 'description' => 'Tous mes sens sont émus d\'une volupté douce et pure, comme l\'haleine du matin dans cette saison délicieuse. Seul, au milieu d\'une contrée qui semble fait exprès pour un coeur tel que mien.',
             'slug' => 'blue',
-            'customField1' => 'Labatt',
-            'customField2' => 'Dry',
-            'customField3' => '5.6']);
+            'img_id' => 'Labatt Blue.jpg',
+            'custom_fields_array' => serialize(array('Labatt','Dry','5.6')),
+            'size_prices_array' => serialize(array('5.25','7.15','14.95','135.98' ))]);
+        /*
 
         Item::create(['item_type_id' => '1',
             'name' => 'Coorslight',
@@ -281,7 +282,7 @@ class ItemsTableSeeder extends Seeder {
             'customField1' => 'Sour',
             'customField2' => 'green',
             'customField3' => 'Jino',
-            'customField4' => '20']);
+            'customField4' => '20']);*/
 
         $this->command->info('Items table seeded!');
     }

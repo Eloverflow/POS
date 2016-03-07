@@ -50,13 +50,22 @@
     </div>
     <a><div id="tableChoiceListArrow{{$tableIteration}}" class="alert alert-info tableChoiceListArrow" role="alert"><span class="glyphicon glyphicon-chevron-down"></span></div></a>
 
-    @if(isset($savedChoice) && $savedChoice->fields_names != null)
-        <?php $fields_name_array = explode (',' , $savedChoice->fields_names)  ?>
+    @if(isset($savedChoice) && $savedChoice->field_names != null)
+        <h1>Fields</h1>
+        <?php $fields_name_array = explode (',' , $savedChoice->field_names)  ?>
             @for($i = 0; $i < count($fields_name_array); $i++)
-                <?php $currentCustomField = 'customField' . ($i + 1) ?>
-                    <label class="control-label" for="customField{{$i+1}}" >{{ ucwords( str_replace('_', ' ', $fields_name_array[$i] )) }}</label>
-                    <input class="form-control" type="text" id="customField{{$i+1}}" name="customField{{$i+1}}" value="@if($tableRow->$currentCustomField != null){{ $tableRow->$currentCustomField }}@endif">
+                <?php $unserialized_fields = unserialize($tableRow->custom_fields_array); ?>
+                    <label class="control-label" for="custom_fields_array[]" >{{ ucwords( str_replace('_', ' ', $fields_name_array[$i] )) }}</label>
+                    <input class="form-control" type="text" id="custom_fields_array[]" name="custom_fields_array[]" value="@if(!empty($unserialized_fields[$i])){{ $unserialized_fields[$i] }}@endif">
             @endfor
+
+        <h1>Sizes price</h1>
+        <?php $size_name_array = explode (',' , $savedChoice->size_names)  ?>
+        @for($i = 0; $i < count($size_name_array); $i++)
+            <?php $unserialized_sizes = unserialize($tableRow->size_prices_array); ?>
+            <label class="control-label" for="size_prices_array[]" >{{ ucwords( str_replace('_', ' ', $size_name_array[$i] )) }}</label>
+            <input class="form-control" type="text" id="size_prices_array[]" name="size_prices_array[]" value="@if(!empty($unserialized_sizes[$i])){{ $unserialized_sizes[$i] }}@endif">
+        @endfor
     @endif
 
     <?php $tableIteration++ ?>

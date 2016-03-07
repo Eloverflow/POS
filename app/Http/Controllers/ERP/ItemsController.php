@@ -64,6 +64,25 @@ class ItemsController extends Controller
         return view('shared.list',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
     }
 
+    public function liste()
+    {
+
+
+        $title = 'Items';
+
+        /*Main table row to retrieve from DB*/
+        $tableRows = Item::all();
+        /*Main table desired column to display*/
+
+        /*Child table name*/
+        $tableChildName = "itemtype";
+        /*Child table rows*/
+        $tableRows->load($tableChildName);
+
+        return $tableRows;
+    }
+
+
     public  function edit($slug)
     {
         $title = 'Items';
@@ -107,6 +126,17 @@ class ItemsController extends Controller
         /*Child table rows*/
         $tableChildRows = $tableRow->$tableChild;
 
+        if(Input::get('custom_fields_array') != null){
+
+            Input::merge(array('custom_fields_array' =>  serialize(Input::get('custom_fields_array'))));
+
+        }
+
+        if(Input::get('size_prices_array') != null){
+
+            Input::merge(array('size_prices_array' =>  serialize(Input::get('size_prices_array'))));
+
+        }
 
 
         if( Input::file('image') != null ){
@@ -156,6 +186,7 @@ class ItemsController extends Controller
 
 
         return Redirect::back();
+
     }
 
     public function create()

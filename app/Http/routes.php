@@ -47,6 +47,7 @@ Route::get('/items/create', 'ERP\ItemsController@create');
 Route::post('/items/create', 'ERP\ItemsController@postCreate');
 Route::get('/items/edit/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/edit/{slug}', 'ERP\ItemsController@update');
+Route::get('/items/liste', 'ERP\ItemsController@liste');
 
 
 Route::get('/clients', 'POS\ClientController@index');

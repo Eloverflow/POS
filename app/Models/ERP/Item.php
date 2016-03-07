@@ -13,7 +13,7 @@ class Item extends Model
      */
     protected $table = 'items';
 
-    protected $fillable = array('name' ,'description', 'item_type_id', 'img_id', 'slug', 'customField1', 'customField2', 'customField3', 'customField4', 'customField5', 'customField6', 'customField7', 'customField8', 'customField9', 'customField10');
+    protected $fillable = array('name' ,'description', 'item_type_id', 'img_id', 'slug', 'custom_fields_array', 'size_prices_array');
 
     public function itemtype()
     {
