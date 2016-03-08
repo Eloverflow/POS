@@ -5,6 +5,7 @@ use App\Models\POS\Schedule;
 use App\Models\POS\Shared\Cell;
 use App\Models\POS\Shared\Row;
 use App\Models\POS\Shared\Intersect;
+use App\Models\POS\Shared\ScheduleCell;
 
 /**
  * Created by PhpStorm.
@@ -37,19 +38,18 @@ class Utils
                     if (($Hour < $EndTime && $Hour > $StartTime)) {
                         if ($StartTime != 0) {
                             $newInters = new Intersect("current", $j, $Hour, $EndTime, $StartMin, $EndMin);
-                        } else {
-                            //$newInters = new Intersect("current", $j, $Hour, $EndTime, $StartMin, $EndMin);
                         }
 
                         $countIntersects = $countIntersects + 1;
                         $Intersects[] = $newInters;
-                    }
-                    if ($StartTime == $Hour) {
+                    } else if ($StartTime == $Hour) {
                         if($EndTime == 0) {
                             $correctEndTime = 24;
                         }  else if($EndTime < $StartTime) {
                             $correctEndTime = 25;
                             $realEndTime = $EndTime;
+                            // On ajoute des current pour l<overflow des chedules
+
                             if($EndTime > 1)
                             {
                                 $newInters = new Intersect("overflow", $j + 1, 0, $EndTime, 0, 0);
@@ -60,9 +60,14 @@ class Utils
                             $correctEndTime = $EndTime;
                         }
                         $newInters = new Intersect("start", $j, $Hour, $correctEndTime, $StartMin, $EndMin);
+
+
                         if($realEndTime != ""){
                             $newInters->SetRealEndTime($realEndTime);
                         }
+
+                        //$newInters = new Intersect("start", $j, $Hour, $correctEndTime, $StartMin, $EndMin);
+
                         $countIntersects = $countIntersects + 1;
                         $Intersects[] = $newInters;
                     }
@@ -167,7 +172,7 @@ class Utils
 
 
         $BlankTable = Utils::GetBlankTable("");
-        $arrangedTable = Utils::arrangeScheduleRows($BlankTable, $WeekDisponibilities);
+        $arrangedTable = Utils::arrangeScheduleRows($id, $BlankTable, $WeekDisponibilities);
 
         $count = 0;
         $rows = null;
@@ -275,32 +280,70 @@ class Utils
     }
 
 
-    static public function arrangeScheduleRows($rows, $weekDispos)
+    static public function arrangeScheduleRows($idSchedule, $rows, $weekDispos)
     {
-        for($i = 1; $i < 24; $i++)
+        for($i = 1; $i < 25; $i++)
         {
             $intersects = Utils::CalculateIntersects($i,$weekDispos);
+           // var_dump($intersects);
+            //var_dump($intersects);
             $curRow = $rows[$i -1];
-
+            //var_dump($intersects);
             for($j = 0; $j < 7; $j++)
             {
 
                 $areWorking = 0;
                 $areStarting = 0;
+
                 for($k = 0; $k < count($intersects); $k++) {
                     if ($intersects[$k]->GetType() == "start" && $intersects[$k]->GetDayNumber() == $j) {
+                        //var_dump($intersects[$k]);
                         $areStarting = $areStarting + 1;
                         $areWorking = $areWorking + 1;
+                       //$cellText = "Startingt: (" . $areStarting . ") <br />Working: (" . $areWorking . ")";
+
+                        // On trouve les employees qui travaillent
+                        $employeesStarting =  Schedule::GetDaySchedulesHourStart($idSchedule, $j, $i);
+                        $employeesWorking =  Schedule::GetDaySchedulesHour($idSchedule, $j, $i);
+
+                        $array = array_merge($employeesStarting, $employeesWorking);
+                        //var_dump($array);
+
+                        $scheduleCell = new Cell("AHAH", 0, "bluepalecell", $array);
+                        //$selluz = new Cell($cellText, 0, "bluepalecell");
+
+                        $tehCell = $curRow->GetCell($j);
+                        $tehCell->AddEmployee($employeesStarting);
+                        $tehCell->setTxt("HOLO");
+
+                        //var_dump($tehCell);
+                        $curRow->SetCell($j, $tehCell);
                     } else if ($intersects[$k]->GetType() == "current" && $intersects[$k]->GetDayNumber() == $j) {
+                        //var_dump($intersects[$k]);
                         $areWorking = $areWorking + 1;
+                        $cellText = "Startingk: (" . $areStarting . ") <br />Working: (" . $areWorking . ")";
+                        $selluz = new Cell($cellText, 0, "bluepalecell");
+
+                        $curRow->SetCell($j, $selluz);
+                    } else if ($intersects[$k]->GetType() == "overflow" && $intersects[$k]->GetDayNumber() == $j) {
+
+                        //$areWorking = $areWorking + 1;
+                        //$areStarting = $areStarting + 1;
+                        //$cellText = "Starting: (" . $areStarting . ") <br />Working: (" . $areWorking . ")";
+                        //$selluz = new Cell($cellText, 0, "bluepalecell");
+
+                        //$curRow->SetCell($j, $selluz);
+                        // On place l'overflow a la bonne place
+                        $desiredRow = $rows[$intersects[$k]->GetStartTime()];
+                        $cellText = "Starting: (" . $areStarting . ") <br />Working: (" . $areWorking . ")";
+                        $selluz = new Cell($cellText, 0, "bluepalecell");
+
+                        $desiredRow->SetCell($j, $selluz);
                     }
                 }
 
                 if($areWorking > 0 || $areStarting > 0) {
-                    $cellText = "Starting: (" . $areStarting . ") <br />Working: (" . $areWorking . ")";
-                    $selluz = new Cell($cellText, 0, "bluepalecell");
 
-                    $curRow->SetCell($j, $selluz);
                 }
             }
         }
