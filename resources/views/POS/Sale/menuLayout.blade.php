@@ -53,25 +53,21 @@
         <li ng-repeat="factureItem in factureItems"  id="factureItem<% factureItem.id %>" class="sale-item">
             <span ng-click="increase(factureItem)" class="glyphicon glyphicon-plus"></span>
             <span ng-click="decrease(factureItem)" class="glyphicon glyphicon-minus"></span>
-            <div class="saleTextZone"><input id="" ng-model="factureItem.quantity" value=""> X <span class="sale-item-name"><% factureItem.name %></span></div>
+            <div class="saleTextZone"><input id="" ng-change="updateBill()" ng-model="factureItem.quantity" value=""> X <span class="sale-item-name"><% factureItem.size.name + " de " + factureItem.name + " = " + (factureItem.size.price*factureItem.quantity | number:2) %></span></div>
             <span ng-click="delete2(factureItem)" class="glyphicon glyphicon-remove right"></span>
         </li>
     </ul>
 
+    <h1 class="bill-total">Total = <% totalBill | number:2 %></h1>
+    <button ng-click="payNow()" type="button" class="btn btn-success btn-payer">Payer</button>
 
 </div><!--/.sidebar-->
 
 <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 main">
     <div class="row fixed">
         <div class="row menu-filter">
-            <button type="button" class="btn btn-default btn-primary" ><span class="glyphicon glyphicon-star"></span> Favorie</button>
-            <button type="button" class="btn btn-primary active">Beer</button>
-            <button type="button" class="btn btn-primary">Drink</button>
-            <button type="button" class="btn btn-primary">Food</button>
-            <button type="button" class="btn btn-primary">Food</button>
-            <button type="button" class="btn btn-primary">Food</button>
-            <button type="button" class="btn btn-primary">Food</button>
-            <button type="button" class="btn btn-primary">Food</button>
+            <button  ng-click="filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary" ><span class="glyphicon glyphicon-star"></span> Favorie</button>
+            <button ng-repeat="itemType in menuItemTypes" ng-click="filters.itemtype.type = itemType.type" type="button" class="btn btn-primary"><% itemType.type %></button>
         </div>
     </div>
 </div>

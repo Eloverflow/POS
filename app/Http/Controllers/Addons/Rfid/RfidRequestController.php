@@ -116,7 +116,7 @@ class RfidRequestController extends Controller
                                 $item = Item::where('id',  $input['item_id'])->first();
 
                                 //Creating Sales
-                                $sales = Sale::create(['slug' => $item->slug . rand(10,1000), 'item_id' => $input['item_id'], 'client_id' => $client->id, 'quantity' => 1, 'cost' => 1]);
+                                //$sales = Sale::create(['slug' => $item->slug . rand(10,1000), 'item_id' => $input['item_id'], 'client_id' => $client->id, 'quantity' => 1, 'cost' => 1]);
 
                                 $result['msg'] = "Sale successfull";
 

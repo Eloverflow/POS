@@ -3,10 +3,12 @@
 @section('content')
 
     <div class="row beer-items">
-        <div ng-repeat="menuItem in menuItems"  class="col-sm-6 col-md-3" >
+        <div ng-repeat="menuItem in menuItems | filter:filters"  class="col-sm-6 col-md-3" >
             <div ng-click="selectedItem(menuItem)" class="thumbnail beerItem">
-                <img class="beerImage" src="{{ @URL::to('/img/item/')}}/<% menuItem.img_id %>"><div class="caption">
+                <img class="beerImage" ng-src="{{ @URL::to('/img/item/')}}/<% menuItem.img_id %>">
+                <div class="caption">
                     <h3><span class="beerName"><% menuItem.name %></span></h3>
+                </div>
             </div>
         </div>
 
@@ -25,20 +27,33 @@
                     <div class="beerItem">
                         <div class="thumbnail">
                             <h3><span class="beerName"><% selectedItemForSize.name %></span></h3>
-                            <img class="beerImage"  src="{{ @URL::to('/img/item/')}}/<% selectedItemForSize.img_id %>">
+                            <img class="beerImage"  ng-src="{{ @URL::to('/img/item/')}}/<% selectedItemForSize.img_id %>">
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                     <div class="beerItem">
-                            <select size="3" ng-options="size.name for size in selectedItemForSize.size" ng-model="selectedSize" ng-update="selectSize()">
-                            </select>
+                        {{--<select size="3"  ng-model="selectedSize">
+                            <option
+                                    ng-repeat="size in selectedItemForSize.size"
+                                    ng-selected="selectedSizeOption(size)"
+                                    value="<% size %>"
+                                    >
+                                <%size.name%>
+                            </option>
+                        </select>--}}
+
+                           {{-- <select size="3" ng-options="size as size.name for size in selectedItemForSize.size track by size.name" ng-model="selectedSize" --}}{{--ng-update="selectSize(size)"--}}{{-->
+                            </select>--}}
+
+
+                        <select size="3" ng-model="sizeProp.value" ng-options="o.name for o in sizeProp.values" ng-change="selectSize(sizeProp.value)"></select>
 
                     </div>
                 </div>
                 <div class="col-sm-6 col-md-3">
                     <div class="beerItem">
-                        <div class="priceBox"><label {{--ng-model="selectedSize"--}} class="amount"><% selectedSize.price %></label><span class="glyphicon glyphicon-usd"></span></div>
+                        <div class="priceBox"><label {{--ng-model="selectedSize"--}} class="amount"><% sizeProp.value.price %></label><span class="glyphicon glyphicon-usd"></span></div>
                     </div>
                 </div>
 

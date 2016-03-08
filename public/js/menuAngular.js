@@ -29,190 +29,74 @@ var app = angular.module('menu', [], function($interpolateProvider) {
     }
 })
 
-.controller('menuController', function($scope, getReq)
+.factory('postReq', function ($http, $location) {
+
+    return {
+        send: function($url, $data, $callbackPath, $callbackFunction) {
+            $http({
+                url: $url,
+                method: "POST",
+                data: $data
+            }).success(function (data) {
+                console.log(data);
+
+                if($callbackPath)
+                    $location.path($callbackPath);
+
+                if($callbackFunction)
+                    $callbackFunction(data);
+
+            })
+                .error(function (data) {
+                    console.log('Error: ' + data);
+                });
+        }
+    }
+})
+
+
+.controller('menuController', function($scope, getReq, postReq)
 {
-    var facture1 = [{
-            id: 1,
-            name: 'Alexander Keith',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1},
-        {
-            id: 2,
-            name: 'Labatt Blue',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        },
-        {
-            id: 3,
-            name: 'Molsen Dry',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        },
-        {
-            id: 4,
-            name: 'Blue Ribbon',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        }];
 
     $scope.factureItems = [];
-
-
     $scope.delete2 = function (item) {
             $factureItem = $('#factureItem'+item.id);
 
-            $factureItem.slideUp('slow', function(){
+            /*$factureItem.slideUp('slow', function(){*/
                 $scope.factureItems.splice($scope.factureItems.indexOf(item), 1);
-            });
+                /*
+                $scope.updateBill();*/
+            /*});*/
+
+
+        $scope.updateBill();
     };
 
-    $scope.delete = function(id){
-        $factureItem = $('#factureItem'+id);
-
-        $factureItem.slideUp('slow', function(){
-            $factureItem.remove();
-        })
-    };
 
     $scope.increase = function(item){
 
-        item.quantity = item.quantity+1
+        item.quantity = item.quantity+1;
+
+
+        $scope.updateBill();
 
     };
 
     $scope.decrease = function(item){
         if(item.quantity  > 0){
             item.quantity = item.quantity-1
+
+
+            $scope.updateBill();
         }
     }
 
-    var menu = [{
-            id: 1,
-            name: 'Alexander Keith',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1,
-            size:[{
-                name: 'Baril',
-                price: 345.34
-            },{
-                name: 'Pichet',
-                price: 15.18
-            },{
-                name: 'Pinte',
-                price: 8.42
-            }
-        ]},
-        {
-            id: 2,
-            name: 'Labatt Blue',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1,
-            size:[{
-                name: 'Baril',
-                price: 345.34
-            },{
-                name: 'Pichet',
-                price: 15.18
-            },{
-                name: 'Pinte',
-                price: 8.42
-            }
-            ]
-        },
-        {
-            id: 3,
-            name: 'Molson Dry',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1,
-            size:[{
-                name: 'Baril',
-                price: 345.34
-            },{
-                name: 'Pichet',
-                price: 15.18
-            },{
-                name: 'Pinte',
-                price: 8.42
-            }
-            ]
-        },
-        {
-            id: 4,
-            name: 'Blue Ribbon',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1,
-            size:[{
-                name: 'Baril',
-                price: 345.34
-            },{
-                name: 'Pichet',
-                price: 15.18
-            },{
-                name: 'Pinte',
-                price: 8.42
-            }
-            ]
-        },
-        {
-            id: 5,
-            name: 'beer1',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1,
-            size:[{
-                name: 'big',
-                price: 345
-            },{
-                name: 'normal',
-                price: 125
-            }
-            ]
-        },
-        {
-            id: 6,
-            name: 'beer2',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        },
-        {
-            id: 7,
-            name: 'beer3',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        },
-        {
-            id: 8,
-            name: 'beer4',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        },
-        {
-            id: 9,
-            name: 'beer4',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        },
-        {
-            id: 10,
-            name: 'beer4',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        },
-        {
-            id: 11,
-            name: 'beer4',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        },
-        {
-            id: 12,
-            name: 'beer4',
-            description: "Some gems have hidden qualities beyond their luster, beyond their shine... Azurite is one of those gems.",
-            quantity: 1
-        }];
 
     $url = 'http://pos.mirageflow.com/items/liste';
     var $callbackFunction = function(response){
 
+
+            console.log("Item list received inside response");
 
             $scope.menuItems = response;
     };
@@ -220,8 +104,24 @@ var app = angular.module('menu', [], function($interpolateProvider) {
     getReq.send($url, null ,$callbackFunction);
 
 
-/*
-    $scope.menuItems = menu;*/
+
+
+
+    $scope.filters = { };
+
+    $scope.menuItemTypes = [];
+
+    $url = 'http://pos.mirageflow.com/itemtypes/list';
+    var $callbackFunction = function(response){
+
+        console.log("Itemtype list received inside response");
+
+        $scope.menuItemTypes = response;
+    };
+
+    getReq.send($url, null ,$callbackFunction);
+
+
 
     Array.prototype.filterObjects = function(key, value) {
         return this.filter(function(x) { return x[key] === value; })
@@ -234,24 +134,56 @@ var app = angular.module('menu', [], function($interpolateProvider) {
         $('#footPanel').css('border-width', '0');
     };
 
-/*
 
-    $scope.updateSize = function(size) {
-        $scope.selectedSize = size
-    }
-*/
-    /*$scope.selectSize = function(item) {
-        $scope.selectedSize = item.size[0];
-    };*/
+    $scope.totalBill = 0;
+
+    $scope.selectSize = function(size) {
+        $scope.sizeProp.value = size;
+    };
+
 
     $scope.addItem = function() {
 
         $scope.selectedItemForSize['quantity'] = 1;
 
         //Eventually selected size
-        $scope.selectedItemForSize['size'] = 1;
+        $scope.selectedItemForSize['size'] = angular.copy($scope.sizeProp.value);
 
-        $scope.factureItems.push($scope.selectedItemForSize);
+
+
+        var result = $.grep($scope.factureItems, function(e){return e.id == $scope.selectedItemForSize.id && e.size.value == $scope.selectedItemForSize.size.value; });
+
+        if(result != ""){
+            result[0]['quantity'] = result[0]['quantity']+1;
+        }
+        else
+        {
+            $scope.factureItems.push(angular.copy($scope.selectedItemForSize));
+        }
+
+
+
+
+
+        $scope.updateBill();
+    };
+
+    $scope.updateBill = function(){
+
+        var total = 0;
+
+        if($scope.factureItems.length > 0){
+            for(i = 0; i < $scope.factureItems.length; i++){
+                total +=  $scope.factureItems[i].quantity *  $scope.factureItems[i].size.price
+            }
+
+            $scope.totalBill = total;
+        }
+        else
+        {
+            $scope.totalBill = 0
+        }
+
     };
 
 
@@ -275,37 +207,49 @@ var app = angular.module('menu', [], function($interpolateProvider) {
 
         var sizes = [];
 
+        var size_value = Math.floor((Math.random() * 100) + 1);
+
         for (var i = 0, len = size_name_array.length; i < len; i++) {
+
             sizes.push(
                 {
                     name: size_name_array[i],
-                    price: size_prices_array[i]
+                    price: size_prices_array[i],
+                    value: i + size_prices_array[i]
                 }
             )
         }
+/*
+        item['size'] = sizes;*/
 
-        item['size'] = sizes;
+
+        $scope.sizeProp = {
+            "name": size_name_array[0],
+            price: size_prices_array[0],
+            "value": sizes[0],
+            "values": sizes
+        };
 
         $scope.selectedItemForSize = item;
 
-        /*$scope.selectedSize = item.size[0];*/
 
 
+    };
 
-        /*var result = $scope.factureItems.filterObjects("id", item.id);*/
+    $scope.payNow = function () {
 
+        $url = 'http://pos.mirageflow.com/menu/payer';
+        $data = $scope.factureItems;
 
-     /*   if(result != "")
-        {
-            result[0].quantity = result[0].quantity +1;
+        var $callbackFunction = function(response){
 
-            console.log(result);
-        }
-*/
+            console.log("Paying confirmation received inside response");
 
-/*
-        var result = $.grep($scope.factureItems, function(e){ return e.id == item.id; });*/
-/*
-        $scope.factureItems.splice($scope.factureItems.indexOf(result), 1);*/
+            $scope.factureItems = [];
+            $scope.updateBill();
+        };
+
+        postReq.send($url, $data, null, $callbackFunction);
+
     }
 });

@@ -16,6 +16,7 @@ class VerifyCsrfToken extends BaseVerifier
         'addon/*',
         'schedule/*',
         'items/*',
-        'inventory/*'
+        'inventory/*',
+        'menu/*'
     ];
 }

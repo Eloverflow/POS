@@ -23,6 +23,21 @@ class ItemTypesController extends \App\Http\Controllers\Controller
     }
 
 
+    public function liste()
+    {
+
+
+        $title = 'Items';
+
+        /*Main table row to retrieve from DB*/
+        $tableRows = ItemType::all();
+        /*Main table desired column to display*/
+
+        return $tableRows;
+    }
+
+
+
     /*public  function type($type)
     {
         $title = ucfirst($type);

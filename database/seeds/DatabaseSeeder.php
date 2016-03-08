@@ -12,6 +12,7 @@ use App\Models\Addons\Rfid\TableRfid;
 use App\Models\Addons\Rfid\TableRfidRequest;
 use App\Models\POS\Client;
 use App\Models\POS\Sale;
+use App\Models\POS\SaleLine;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Beer;
@@ -60,6 +61,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(ClientSeeder::class);
         $this->call(SaleSeeder::class);
+        $this->call(SaleLineSeeder::class);
 
         $this->call(PunchesTableSeeder::class);
 
@@ -251,7 +253,7 @@ class ItemsTableSeeder extends Seeder {
         Item::create([
             'item_type_id' => '1',
             'name' => 'Keith',
-            'description' => 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
+            'description' => 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem.',
             'slug' => 'keith',
             'img_id' => 'Alexander Keith.jpg',
             'custom_fields_array' => serialize(array('Alexander Keith','Red','5')),
@@ -259,30 +261,30 @@ class ItemsTableSeeder extends Seeder {
 
         Item::create([
             'item_type_id' => '1',
-            'name' => 'Blue', 'description' => 'Tous mes sens sont émus d\'une volupté douce et pure, comme l\'haleine du matin dans cette saison délicieuse. Seul, au milieu d\'une contrée qui semble fait exprès pour un coeur tel que mien.',
+            'name' => 'Blue', 'description' => 'Tous mes sens sont émus d\'une volupté douce et pure.',
             'slug' => 'blue',
             'img_id' => 'Labatt Blue.jpg',
             'custom_fields_array' => serialize(array('Labatt','Dry','5.6')),
             'size_prices_array' => serialize(array('5.25','7.15','14.95','135.98' ))]);
-        /*
+
 
         Item::create(['item_type_id' => '1',
             'name' => 'Coorslight',
-            'description' => 'Voyez ce jeu exquis wallon, de graphie en kit mais bref. Portez ce vieux whisky au juge blond qui fume sur son île intérieure, à côté de l\'alcôve ovoïde, où les bûches se consument dans l\'âtre.',
+            'description' => 'Voyez ce jeu exquis wallon, de graphie en kit mais bref.',
             'slug' => 'coorslight',
-            'customField1' => 'Coors',
-            'customField2' => 'Light',
-            'customField3' => '4.5']);
+            'img_id' => 'Labatt Blue.jpg',
+            'custom_fields_array' => serialize(array('Coors','Light','4.5')),
+            'size_prices_array' => serialize(array('5.25','7.15','14.95','135.98' ))]);
+
 
         Item::create([
             'item_type_id' => '2',
             'name' => 'MyDrinkName',
             'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ',
             'slug' => 'mydrinkname',
-            'customField1' => 'Sour',
-            'customField2' => 'green',
-            'customField3' => 'Jino',
-            'customField4' => '20']);*/
+            'img_id' => 'drink.jpg',
+            'custom_fields_array' => serialize(array('Sour','green','Jino', '20')),
+            'size_prices_array' => serialize(array('2.25','5.00','7.95' ))]);
 
         $this->command->info('Items table seeded!');
     }
@@ -414,11 +416,26 @@ class SaleSeeder extends Seeder {
 
     public function run()
     {
-        /*DB::table('sales')->delete();
+        DB::table('sales')->delete();
 
-        Sale::create(['id' => '1', 'slug' => '1']);*/
+        Sale::create(['id' => '1', 'client_id' => '1' , 'sale_number' => '1', 'total' => 25.8]);
 
         $this->command->info('sales table seeded!');
+    }
+
+}
+
+
+class SaleLineSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('sale_lines')->delete();
+
+        SaleLine::create(['id' => '1', 'sale_id' => '1', 'item_id' => '1' , 'cost' => 3.78, 'quantity' => 5]);
+        SaleLine::create(['id' => '2', 'sale_id' => '1', 'item_id' => '2' , 'cost' => 3.45, 'quantity' => 2]);
+
+        $this->command->info('sale lines table seeded!');
     }
 
 }

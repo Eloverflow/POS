@@ -13,9 +13,42 @@
                         <!-- Table Header --->
                         <thead>
                         <tr>
-                            @foreach($tableColumns as $column)
-                                <th data-field="{{ $column }}" @if($column == 'id')data-checkbox="true"@else  data-sortable="true" @endif >{{ucwords( str_replace('_', ' ', $column))}}</th>
-                            @endforeach
+                            @if(!empty($tableColumns ))
+                                @foreach($tableColumns as $column)
+                                    <th data-field="{{ $column }}" @if($column == 'id')data-checkbox="true"@else  data-sortable="true" @endif >{{ucwords( str_replace('_', ' ', $column))}}</th>
+                                @endforeach
+                            @else
+
+
+                                @if(!empty($tableRows[0]))
+
+                                    <th data-field="id" data-checkbox="true">ID</th>
+
+                                    @foreach($tableRows[0]['attributes'] as $column=>$value)
+                                        @if($column != "id" && $column != "created_at" && $column != "updated_at" && $column != "slug" && !strpos($column, 'id'))
+                                            <th data-field="{{ $column }}" @if($column == 'id')data-checkbox="true"@else  data-sortable="true" @endif >{{ucwords( str_replace('_', ' ', $column))}}</th>
+                                        @endif
+                                    @endforeach
+
+                                    @foreach($tableRows[0]['relations'] as $column=>$value)
+
+                                            @if(is_array($value['relations']))
+
+                                                @foreach($value['attributes'] as $subColumn=>$subValue)
+                                                    @if($subColumn != "id" && $subColumn != "created_at" && $subColumn != "updated_at" && $subColumn != "slug" && !strpos($subColumn, 'id'))
+                                                        <th data-field="{{ $subColumn }}" @if($subColumn == 'id')data-checkbox="true"@else  data-sortable="true" @endif >{{ucwords( str_replace('_', ' ', $subColumn))}}</th>
+                                                    @endif
+                                                @endforeach
+
+                                            @else
+
+                                                <th data-field="{{ $column }}" @if($column == 'id')data-checkbox="true"@else  data-sortable="true" @endif >{{ucwords( str_replace('_', ' ', $column))}}</th>
+
+                                            @endif
+                                    @endforeach
+                                @endif
+
+                            @endif
 
                             @if( isset($tableChildren))
                                 @foreach($tableChildren as $tableChild)
@@ -37,9 +70,62 @@
 
                             <tr>
 
-                                @foreach($tableColumns as $column)
-                                    <td>{{ $tableRows[$i]->$column }}</td>
-                                @endforeach
+                                @if(!empty($tableColumns ))
+                                    @foreach($tableColumns as $column)
+                                        <td>{{ $tableRows[$i]->$column }}</td>
+                                    @endforeach
+                                @else
+                                    <td>{{ $tableRows[$i]->id }}</td>
+
+                                    @foreach($tableRows[$i]['attributes'] as $column=>$value)
+                                        @if($column != "id" && $column != "created_at" && $column != "updated_at" && $column != "slug" && !strpos($column, 'id'))
+                                            <td>
+
+                                            @if(strpos($column, 'array'))
+                                                {{ implode(",",unserialize($tableRows[$i]->$column)) }}
+                                            @else
+                                                {{ $tableRows[$i]->$column }}
+                                            @endif
+
+                                            </td>
+
+                                        @endif
+                                    @endforeach
+
+
+                                    @foreach($tableRows[$i]['relations'] as $column=>$value)
+
+                                        @if(is_array($value['relations']))
+
+                                            @foreach($value['attributes'] as $subColumn=>$subValue)
+                                                @if($subColumn != "id" && $subColumn != "created_at" && $subColumn != "updated_at" && $subColumn != "slug" && !strpos($subColumn, 'id'))
+
+                                                    <td>
+
+                                                        @if(strpos($subColumn, 'array'))
+                                                            {{ implode(",",unserialize($tableRows[$i]->$column->$subColumn)) }}
+                                                        @else
+                                                            {{ $tableRows[$i]->$column->$subColumn }}
+                                                        @endif
+
+
+                                                    </td>
+                                                @endif
+                                            @endforeach
+
+                                        @else
+                                            <td>
+                                                @if(strpos($column, 'array'))
+                                                    {{ implode(",",unserialize($tableRows[$i]->$column)) }}
+                                                @else
+                                                {{ $tableRows[$i]->$column }}
+                                                @endif
+
+
+                                            </td>
+                                        @endif
+                                    @endforeach
+                                @endif
 
                                 @if( isset($tableChildren))
                                         @foreach($tableChildren as $tableChild)

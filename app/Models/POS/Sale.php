@@ -8,16 +8,16 @@ class Sale extends Model
 {
     protected $table = 'sales';
 
-    protected $fillable = array('item_id', 'client_id' , 'sale_number', 'cost', 'quantity', 'slug');
+    protected $fillable = array('client_id' , 'sale_number', 'total', 'cancelled', 'slug');
 
-
-    public function item()
-    {
-        return $this->hasOne('App\Models\ERP\Item', 'id', 'item_id');
-    }
 
     public function client()
     {
         return $this->hasOne('App\Models\POS\Client', 'id', 'client_id');
+    }
+
+    public function saleline()
+    {
+        return $this->hasMany('App\Models\POS\SaleLine');
     }
 }
