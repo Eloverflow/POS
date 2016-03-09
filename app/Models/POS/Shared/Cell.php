@@ -19,6 +19,7 @@ class Cell
         $this->_dataEmployees = $dataEmployees;
     }
 
+
     public function ToString()
     {
         return "<td rowspan=" . $this->_rowspan . " class=\"" . $this->_classname . "\" data-Employees=\"" . json_encode($this->_dataEmployees) . "\">" . $this->_text . "</td>";

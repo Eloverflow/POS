@@ -13,6 +13,8 @@ use App\Models\POS\Day_Schedules;
 use App\Models\POS\Disponibility;
 
 use Barryvdh\DomPDF\PDF;
+use DateInterval;
+use DateTime;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -145,14 +147,76 @@ class ScheduleController extends Controller
 
     public function details($id)
     {
-        $schedule = Schedule::GetById($id);
+        /*$schedule = Schedule::GetById($id);
 
         $view = \View::make('POS.Schedule.details')->with('ViewBag', array(
                 'schedule' => $schedule,
                 'Rows' => Utils::GenerateScheduleTable($id)
             )
         );
-        return $view;
+        return $view;*/
+
+        $weekDispos = array(
+            0 => Schedule::GetDaySchedules($id, 0),
+            1 => Schedule::GetDaySchedules($id, 1),
+            2 => Schedule::GetDaySchedules($id, 2),
+            3 => Schedule::GetDaySchedules($id, 3),
+            4 => Schedule::GetDaySchedules($id, 4),
+            5 => Schedule::GetDaySchedules($id, 5),
+            6 => Schedule::GetDaySchedules($id, 6),
+        );
+
+
+
+        $events = [];
+
+        /*For each day of disponibility*/
+        for($i = 0; $i < count($weekDispos); $i++) {
+
+
+            /*If there are disponibility today */
+            if (count($weekDispos[$i])) {
+
+
+                /*For each disponibility*/
+                for ($j = 0; $j < count($weekDispos[$i]); $j++) {
+                    $startTime = $weekDispos[$i][$j]->startTime;
+                    $endTime = $weekDispos[$i][$j]->endTime;
+
+
+
+                    $date = new DateTime(Schedule::all()->first()->startDate);
+                    $date->add(new DateInterval('P' . $i .'D'));
+
+/*
+                    $currentDay = date('Y-m-d', strtotime('+' . $i . ' day', Schedule::all()->first()->startDate));*/
+
+
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+
+                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
+                        $dispoEnd->add(new DateInterval('P1D'));
+                    }
+
+                    $events[] = \Calendar::event(
+                        $weekDispos[$i][$j]->firstName . " - " . $startTime . " to " . $endTime, //event title
+                        false, //full day event?
+                        $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                        $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+                        1, //optional event ID
+                        [
+                            'url' => 'http://pos.mirageflow.com',
+                            //any other full-calendar supported parameters
+                        ]
+                    );
+                }
+            }
+        }
+
+        $calendar = \Calendar::addEvents($events);
+
+        return view('calendar', compact('calendar'));
     }
 
     public function edit($id)
