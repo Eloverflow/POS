@@ -2,6 +2,7 @@
 
 <?php
 
+use App\Models\EventCustom;
 /*
 |--------------------------------------------------------------------------
 | Application Routes
@@ -12,6 +13,9 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
+
+
 
 /* Start Authentication */
 Route::controllers([
@@ -54,6 +58,26 @@ Route::get('/items/edit/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/edit/{slug}', 'ERP\ItemsController@update');
 Route::get('/items/liste', 'ERP\ItemsController@liste');
 
+Route::get('/calendar',  function() {
+    /*
+        $events = [];*/
+
+    $event = \Calendar::event(
+        "Jean - 2016-03-09 to 2016-03-11 ", //event title
+        false, //full day event?
+        '21:30', //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+        '23:40', //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+        1, //optional event ID
+        [
+            'url' => 'http://full-calendar.io',
+            //any other full-calendar supported parameters
+        ]
+    );
+
+    $calendar = \Calendar::addEvent($event);
+
+    return view('calendar', compact('calendar'));
+});
 
 Route::get('/clients', 'POS\ClientController@index');
 Route::get('/clients/create', 'POS\ClientController@create');
