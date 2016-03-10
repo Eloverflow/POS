@@ -78,35 +78,6 @@ class Schedule extends Model
             ->get();
     }
 
-    public static function GetDaySchedulesHour($id, $day_number, $hour)
-    {
-        $realHour = $hour . ":00:00";
-        $matches = ['schedule_id' => $id, 'day_number' => $day_number];
-        return \DB::table('day_schedules')
-            ->select(\DB::raw('day_schedules.*,
-            employees.firstName,
-            employees.lastName'))
-            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
-            ->where($matches)
-            ->Where('startTime', '<', $realHour)
-            ->Where('endTime', '>=', $realHour)
-            ->get();
-    }
-
-
-    public static function GetDaySchedulesHourStart($id, $day_number, $hour)
-    {
-        $realHour = $hour . ":00:00";
-        $matches = ['schedule_id' => $id, 'day_number' => $day_number];
-        return \DB::table('day_schedules')
-            ->select(\DB::raw('day_schedules.*,
-            employees.firstName,
-            employees.lastName'))
-            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
-            ->where($matches)
-            ->Where('startTime', '=', $realHour)
-            ->get();
-    }
 
     public static function GetScheduleEmployees($id)
     {

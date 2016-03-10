@@ -5,6 +5,11 @@
 
 var pageScroll = false;
 setTimeout(function() { pageScroll.resize(); }, 500);
+/*
+
+setTimeout(function() { $('.fc-day-grid-container.fc-scroller').css('height', 'auto'); }, 100);
+*/
+
 
 $('#contentPanel').hide(0);
 $('#contentPanel').css('visibility', 'visible');

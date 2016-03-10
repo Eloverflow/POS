@@ -9,7 +9,10 @@
     <div class="panel panel-default calendar-fix">
         <div class="panel-body">
             {!! $calendar->calendar() !!}
-            {!! $calendar->script() !!}
+            {!! $calendar->script('gotoDate', new DateTime("2016-02-07")) !!}
+            <script>
+                $(`calendar-yk8Jet3l).fullCalendar( 'gotoDate', date )
+                </script>
         </div>
     </div>
 @stop

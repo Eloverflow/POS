@@ -4,7 +4,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Mirageflow @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
-
+{{--
+    <script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>--}}
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    @yield('csrfToken')
     {{--Stylesheet call--}}
     <link href="{{ @URL::to('Framework/Bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/datepicker3.css')}}" rel="stylesheet">
@@ -20,7 +23,6 @@
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/html5shiv.js') }}"></script>
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/respond.min.js') }}"></script>
     <![endif]-->
-    @yield('csrfToken')
 </head>
 
 <body>
@@ -142,14 +144,15 @@
 
 </div>
 
+@yield('patate')
+
 {{--Script call--}}
-<script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>
 <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
-<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.js') }}"></script>
+<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.js') }}"></script>{{--
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/chart.min.js') }}"></script>
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/chart-data.js') }}"></script>
+<script src="{{ @URL::to('Framework/LuminoAdmin/js/chart-data.js') }}"></script>--}}{{--
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart.js') }}"></script>
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>
+<script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>--}}
 <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.js') }}"></script>
 <script src="{{ @URL::asset('js/jquery.nicescroll.min.js') }}"></script>
 <script src="{{ @URL::to('js/baseEffect.js') }}"></script>

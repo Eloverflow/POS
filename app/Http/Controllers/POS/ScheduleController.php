@@ -63,15 +63,67 @@ class ScheduleController extends Controller
 
     public function employeeSchedule($scheduleid, $employeeId)
     {
-        $employee = Employee::GetById($employeeId);
-        $schedule = Schedule::GetById($scheduleid);
-        $view = \View::make('POS.Schedule.employee')->with('ViewBag', array(
-                'schedule' => $schedule,
-                'employee' => $employee,
-                'Rows' => Utils::GenerateScheduleTableForEmployee($scheduleid, $employeeId)
-            )
+        $weekDispos = array(
+            0 => Schedule::GetDaySchedulesForEmployee($scheduleid, 0, $employeeId),
+            1 => Schedule::GetDaySchedulesForEmployee($scheduleid, 1, $employeeId),
+            2 => Schedule::GetDaySchedulesForEmployee($scheduleid, 2, $employeeId),
+            3 => Schedule::GetDaySchedulesForEmployee($scheduleid, 3, $employeeId),
+            4 => Schedule::GetDaySchedulesForEmployee($scheduleid, 4, $employeeId),
+            5 => Schedule::GetDaySchedulesForEmployee($scheduleid, 5, $employeeId),
+            6 => Schedule::GetDaySchedulesForEmployee($scheduleid, 6, $employeeId),
         );
-        return $view;
+
+
+
+        $events = [];
+
+        /*For each day of disponibility*/
+        for($i = 0; $i < count($weekDispos); $i++) {
+
+
+            /*If there are disponibility today */
+            if (count($weekDispos[$i])) {
+
+
+                /*For each disponibility*/
+                for ($j = 0; $j < count($weekDispos[$i]); $j++) {
+                    $startTime = $weekDispos[$i][$j]->startTime;
+                    $endTime = $weekDispos[$i][$j]->endTime;
+
+
+
+                    $date = new DateTime(Schedule::all()->first()->startDate);
+                    $date->add(new DateInterval('P' . $i .'D'));
+
+                    /*
+                                        $currentDay = date('Y-m-d', strtotime('+' . $i . ' day', Schedule::all()->first()->startDate));*/
+
+
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+
+                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
+                        $dispoEnd->add(new DateInterval('P1D'));
+                    }
+
+                    $events[] = \Calendar::event(
+                        $weekDispos[$i][$j]->firstName . " - " . $startTime . " to " . $endTime, //event title
+                        false, //full day event?
+                        $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                        $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+                        1, //optional event ID
+                        [
+                            'url' => 'http://pos.mirageflow.com',
+                            //any other full-calendar supported parameters
+                        ]
+                    );
+                }
+            }
+        }
+
+        $calendar = \Calendar::addEvents($events);
+
+        return view('POS.Schedule.employee', compact('calendar'));
     }
 
     public static function GetSchedulePDF($scheduleid)
@@ -216,7 +268,7 @@ class ScheduleController extends Controller
 
         $calendar = \Calendar::addEvents($events);
 
-        return view('calendar', compact('calendar'));
+        return view('POS.Schedule.calendar', compact('calendar'));
     }
 
     public function edit($id)

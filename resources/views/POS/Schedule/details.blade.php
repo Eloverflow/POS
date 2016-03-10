@@ -79,14 +79,5 @@
 @stop
 
 @section("myjsfile")
-    <script src="{{ @URL::to('js/getScheduledEmployees.js') }}"></script>
-    <script>
-        $('#Schedule').on("click", "td", function(e) {
-            var col = $(this).parent().children().index($(this));
-            var row = $(this).parent().parent().children().index($(this).parent());
 
-            GetScheduledEmployees(col - 1, row + 1);
-        });
-    </script>
-    <script src="{{ @URL::to('Framework/Bootstrap/js/bootbox.js') }}"></script>
 @stop
