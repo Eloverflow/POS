@@ -132,8 +132,7 @@ Route::delete('/schedule/deleteComp/{id}', 'POS\ScheduleController@deleteComp');
 Route::get('/schedule/{scheduleid}/pdf', 'POS\ScheduleController@GetSchedulePDF');
 Route::get('/schedule/{scheduleid}/employee/{employeeid}/pdf', 'POS\ScheduleController@GetScheduleForEmployeePDF');
 
-Route::get('/schedule/view/{id}', 'POS\ScheduleController@details');
-Route::get('/schedule/track/{id}', 'POS\ScheduleController@track');
+Route::get('/schedule/details/{id}', 'POS\ScheduleController@details');
 
 Route::post('/schedule/AjaxFindDispos', 'POS\ScheduleController@AjaxFindDispos');
 Route::post('/schedule/AjaxGetEmployeeDaySchedules', 'POS\ScheduleController@AjaxGetEmployeeDaySchedules');
@@ -157,7 +156,7 @@ Route::get('/disponibility/delete/{id}', 'POS\DisponibilityController@delete');
 Route::delete('/disponibility/deleteArch/{id}', 'POS\DisponibilityController@deleteArch');
 Route::delete('/disponibility/deleteComp/{id}', 'POS\DisponibilityController@deleteComp');
 
-Route::get('/disponibility/view/{id}', 'POS\DisponibilityController@details');
+Route::get('/disponibility/details/{id}', 'POS\DisponibilityController@details');
 /* End disponibility */
 
 /* Start Punch */

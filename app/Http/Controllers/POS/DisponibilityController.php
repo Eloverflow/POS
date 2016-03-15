@@ -17,6 +17,9 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+use DateInterval;
+use DateTime;
+
 class DisponibilityController extends Controller
 {
     public function index()
@@ -32,12 +35,77 @@ class DisponibilityController extends Controller
 
     public function details($id)
     {
+
         $disponibility = Disponibility::GetById($id);
 
+        $weekDispos = array(
+            0 => Disponibility::GetDayDisponibilities($id, 0),
+            1 => Disponibility::GetDayDisponibilities($id, 1),
+            2 => Disponibility::GetDayDisponibilities($id, 2),
+            3 => Disponibility::GetDayDisponibilities($id, 3),
+            4 => Disponibility::GetDayDisponibilities($id, 4),
+            5 => Disponibility::GetDayDisponibilities($id, 5),
+            6 => Disponibility::GetDayDisponibilities($id, 6),
+        );
+
+
+
+        $events = [];
+
+        /*For each day of disponibility*/
+        for($i = 0; $i < count($weekDispos); $i++) {
+
+
+            /*If there are disponibility today */
+            if (count($weekDispos[$i])) {
+
+
+                /*For each disponibility*/
+                for ($j = 0; $j < count($weekDispos[$i]); $j++) {
+                    $startTime = $weekDispos[$i][$j]->startTime;
+                    $endTime = $weekDispos[$i][$j]->endTime;
+
+
+
+                    $date = new DateTime(Disponibility::all()->first()->startDate);
+                    $date->add(new DateInterval('P' . $i .'D'));
+
+                    /*
+                                        $currentDay = date('Y-m-d', strtotime('+' . $i . ' day', Schedule::all()->first()->startDate));*/
+
+
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+
+                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
+                        $dispoEnd->add(new DateInterval('P1D'));
+                    }
+
+                    $events[] = \Calendar::event(
+                        $startTime . " to " . $endTime, //event title
+                        false, //full day event?
+                        $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                        $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+                        1, //optional event ID
+                        [
+                            'url' => 'http://pos.mirageflow.com',
+                            //any other full-calendar supported parameters
+                        ]
+                    );
+                }
+            }
+        }
+
+        $colSettings = array('columnFormat' => 'ddd');
+        $calendar = \Calendar::addEvents($events)->setOptions([
+            'defaultView' => 'agendaWeek',
+            'header' => false,
+            'views' => array('agenda' => $colSettings)
+        ]);
 
         $view = \View::make('POS.Disponibility.details')->with('ViewBag', array(
             'disponibility' => $disponibility,
-            'Rows' => Utils::GenerateDisponibilityTable($id)
+            'calendar' => $calendar
                 )
             );
         return $view;

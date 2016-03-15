@@ -63,6 +63,7 @@ class ScheduleController extends Controller
 
     public function employeeSchedule($scheduleid, $employeeId)
     {
+        $schedule = Schedule::getById($scheduleid);
         $weekDispos = array(
             0 => Schedule::GetDaySchedulesForEmployee($scheduleid, 0, $employeeId),
             1 => Schedule::GetDaySchedulesForEmployee($scheduleid, 1, $employeeId),
@@ -121,7 +122,11 @@ class ScheduleController extends Controller
             }
         }
 
-        $calendar = \Calendar::addEvents($events);
+        $calendarSettings = array('left' => '',
+            'center' => 'title',
+            'right' => '');
+
+        $calendar = \Calendar::addEvents($events)->setOptions([ 'defaultDate' => $schedule->startDate,'defaultView' => 'agendaWeek', 'header' => $calendarSettings]);
 
         return view('POS.Schedule.employee', compact('calendar'));
     }
@@ -199,14 +204,7 @@ class ScheduleController extends Controller
 
     public function details($id)
     {
-        /*$schedule = Schedule::GetById($id);
-
-        $view = \View::make('POS.Schedule.details')->with('ViewBag', array(
-                'schedule' => $schedule,
-                'Rows' => Utils::GenerateScheduleTable($id)
-            )
-        );
-        return $view;*/
+        $schedule = Schedule::GetById($id);
 
         $weekDispos = array(
             0 => Schedule::GetDaySchedules($id, 0),
@@ -266,9 +264,23 @@ class ScheduleController extends Controller
             }
         }
 
-        $calendar = \Calendar::addEvents($events);
+        $calendarSettings = array('left' => '',
+            'center' => 'title',
+            'right' => '');
 
-        return view('POS.Schedule.calendar', compact('calendar'));
+
+
+        $calendar = \Calendar::addEvents($events)->setOptions([
+            'defaultDate' => $schedule->startDate,
+            'defaultView' => 'agendaWeek',
+            'header' => $calendarSettings
+        ]);
+
+        $view = \View::make('POS.Schedule.details')->with('ViewBag', array(
+            'calendar' => $calendar,
+            'schedule' => $schedule
+        ));
+        return $view;
     }
 
     public function edit($id)

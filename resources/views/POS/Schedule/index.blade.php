@@ -42,8 +42,8 @@
                                 <td>({{ $schedule->nbEmployees }})&nbsp;<a href='{{ URL::to('schedule', $schedule->idSchedule) . '/employees' }}'>List</a></td>
                                 <td>{{ $schedule->status }}</td>
                                 <td>{{ $schedule->created_at }}</td>
-                                <td><a href="{{ URL::to('schedule/track', $schedule->idSchedule) }}">Track</a>
-                                    <a href="{{ URL::to('schedule/view', $schedule->idSchedule) }}">View</a>
+                                <td>
+                                    <a href="{{ URL::to('schedule/details', $schedule->idSchedule) }}">Details</a>
                                     <a href="{{ URL::to('schedule/edit', $schedule->idSchedule) }}">Edit</a>
                                     <a href="{{ URL::to('schedule/delete', $schedule->idSchedule) }}">Delete</a>
                                     <a href="{{ URL::to('schedule', $schedule->idSchedule) . "/pdf" }}">Download</a></td>
