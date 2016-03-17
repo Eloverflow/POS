@@ -85,22 +85,23 @@ class DisponibilityController extends Controller
                         $startTime . " to " . $endTime, //event title
                         false, //full day event?
                         $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
-                        $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                        1, //optional event ID
-                        [
-                            'url' => 'http://pos.mirageflow.com',
-                            //any other full-calendar supported parameters
-                        ]
+                        $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                        1
                     );
+
+                    //var_dump($events);
                 }
             }
         }
 
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'defaultView' => 'agendaWeek',
+            'editable' => true,
             'header' => false,
+            'defaultView' => 'agendaWeek',
             'views' => array('agenda' => $colSettings)
+        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+            'eventClick' => 'function() {alert("Callbacks!");}'
         ]);
 
         $view = \View::make('POS.Disponibility.details')->with('ViewBag', array(
@@ -258,11 +259,26 @@ class DisponibilityController extends Controller
 
     public function create()
     {
+        $events = [];
         $employees = Employee::getAll();
+        $colSettings = array('columnFormat' => 'ddd');
+        $calendar = \Calendar::addEvents($events)->setOptions([
+            'editable' => true,
+            'header' => false,
+            'defaultView' => 'agendaWeek',
+            'views' => array('agenda' => $colSettings)
+        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+            'eventClick' => "function (xEvent, jsEvent, view){ dispoClick(xEvent);}",
+            'eventAfterAllRender' => "function () { writeAllEvents(); }"
+        ]);
+
         $view = \View::make('POS.Disponibility.create')->with('ViewBag', array(
-            'employees' => $employees
-        ));
+                'employees' => $employees,
+                'calendar' => $calendar
+            )
+        );
         return $view;
+
     }
 
     public function postCreate()

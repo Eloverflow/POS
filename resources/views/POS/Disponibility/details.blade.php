@@ -57,5 +57,8 @@
     </div>
 @stop
 
+@section("myjsfile")
+
+@stop
 
 
