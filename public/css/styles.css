@@ -730,7 +730,7 @@ li.addTable .glyphicon{
 @media(min-width:768px){
 	.calendar-fix {
 		margin-left: 25%;
-		margin-top: 3.5%;
+		margin-top: 0%;
 	}
 }
 /*@media(min-width:992px){
@@ -742,6 +742,6 @@ li.addTable .glyphicon{
 @media(min-width:1200px){
 	.calendar-fix {
 		margin-left: 17%;
-		margin-top: 3%;
+		margin-top: 0;
 	}
 }

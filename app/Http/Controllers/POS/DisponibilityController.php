@@ -64,22 +64,19 @@ class DisponibilityController extends Controller
                 for ($j = 0; $j < count($weekDispos[$i]); $j++) {
                     $startTime = $weekDispos[$i][$j]->startTime;
                     $endTime = $weekDispos[$i][$j]->endTime;
+                    $dayNumber = $weekDispos[$i][$j]->day_number;
 
 
-
-                    $date = new DateTime(Disponibility::all()->first()->startDate);
-                    $date->add(new DateInterval('P' . $i .'D'));
-
-                    /*
-                                        $currentDay = date('Y-m-d', strtotime('+' . $i . ' day', Schedule::all()->first()->startDate));*/
-
+                    $date = new DateTime();
+                    $date->modify('Sunday last week +' . $dayNumber . ' days');
+                    //$date->add(new DateInterval('P' . $i .'D'));
 
                     $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
                     $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
 
-                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
+                   /* if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));
-                    }
+                    }*/
 
                     $events[] = \Calendar::event(
                         $startTime . " to " . $endTime, //event title
@@ -263,13 +260,15 @@ class DisponibilityController extends Controller
         $employees = Employee::getAll();
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
+            //'firstDay' => 1,
             'editable' => true,
             'header' => false,
             'defaultView' => 'agendaWeek',
             'views' => array('agenda' => $colSettings)
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
             'eventClick' => "function (xEvent, jsEvent, view){ dispoClick(xEvent);}",
-            'eventAfterAllRender' => "function () { writeAllEvents(); }"
+            'eventAfterAllRender' => "function () { writeAllEvents(); }",
+            'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 
         $view = \View::make('POS.Disponibility.create')->with('ViewBag', array(
@@ -284,9 +283,10 @@ class DisponibilityController extends Controller
     public function postCreate()
     {
         $inputs = \Input::all();
-
+        //return json_encode("ahahahah");
         $rules = array(
-            'name' => 'required'
+            'name' => 'required',
+            'employeeSelect' => 'required'
         );
 
         $message = array(
@@ -296,8 +296,7 @@ class DisponibilityController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            return \Redirect::action('POS\DisponibilityController@create')->withErrors($validation)
-                ->withInput();
+            return json_encode('Validation Error');
 
         }
         else
@@ -307,93 +306,32 @@ class DisponibilityController extends Controller
                 'employee_id' => \Input::get('employeeSelect'),
                 'name' => \Input::get('name')
             ]);
-            for($i = 0; $i < count(\Input::get('sunDispos')); $i++)
+
+            $jsonArray = json_decode(\Input::get('events'), true);
+            for($i = 0; $i < count($jsonArray); $i++)
             {
-                $jsonObj = json_decode(\Input::get('sunDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
+                //$jsonObj = json_decode(\Input::get('events')[$i], true);
+                $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
+                $resStart = $dateStart->format('H:i:s');
+                $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
+                $resStop = $dateStop->format('H:i:s');
+
+                //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
                 Day_Disponibilities::create([
                     "disponibility_id" => $disponiblity->id,
-                    "day_number" => 0,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
+                    "day_number" => $jsonArray[$i]["dayIndex"],
+                    "startTime" => $resStart,
+                    "endTime" => $resStop
                 ]);
+
             }
 
-            for($i = 0; $i < count(\Input::get('monDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('monDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $disponiblity->id,
-                    "day_number" => 1,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('tueDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('tueDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $disponiblity->id,
-                    "day_number" => 2,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('wedDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('wedDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $disponiblity->id,
-                    "day_number" => 3,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('thuDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('thuDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $disponiblity->id,
-                    "day_number" => 4,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('friDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('friDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $disponiblity->id,
-                    "day_number" => 5,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('satDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('satDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $disponiblity->id,
-                    "day_number" => 6,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
             //var_dump(\Input::get('name'));
-            //var_dump(\Input::get('sunDispos'));
+            //var_dump();
+            //$jsonObj = json_decode(\Input::get('events'));
+            //$jsonObj = json_encode(\Input::get('events'));
 
-            return \Redirect::action('POS\DisponibilityController@index')->withSuccess('The disponibility has been successfully created !');
+            return json_encode($jsonArray[0]['StartTime']);
         }
     }
 
