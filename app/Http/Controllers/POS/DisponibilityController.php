@@ -31,8 +31,6 @@ class DisponibilityController extends Controller
         return $view;
     }
 
-
-
     public function details($id)
     {
 
@@ -79,26 +77,24 @@ class DisponibilityController extends Controller
                     }*/
 
                     $events[] = \Calendar::event(
-                        $startTime . " to " . $endTime, //event title
-                        false, //full day event?
-                        $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
-                        $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
-                        1
+                        "Dispo",
+                        false,
+                        $dispoBegin,
+                        $dispoEnd,
+                        $weekDispos[$i][$j]->id
                     );
-
-                    //var_dump($events);
                 }
             }
         }
 
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'editable' => true,
+            'timezone' => 'local', 'EST', 'America/Montreal',
+            'editable' => false,
             'header' => false,
             'defaultView' => 'agendaWeek',
             'views' => array('agenda' => $colSettings)
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            'eventClick' => 'function() {alert("Callbacks!");}'
         ]);
 
         $view = \View::make('POS.Disponibility.details')->with('ViewBag', array(
@@ -111,10 +107,10 @@ class DisponibilityController extends Controller
 
     public function edit($id)
     {
-        $employees = Employee::getAll();
         $disponibility = Disponibility::GetById($id);
-        $employeeTitles = EmployeeTitle::All();
-        $WeekDisponibilities = array(
+        $employees = Employee::getAll();
+
+        $weekDispos = array(
             0 => Disponibility::GetDayDisponibilities($id, 0),
             1 => Disponibility::GetDayDisponibilities($id, 1),
             2 => Disponibility::GetDayDisponibilities($id, 2),
@@ -123,21 +119,73 @@ class DisponibilityController extends Controller
             5 => Disponibility::GetDayDisponibilities($id, 5),
             6 => Disponibility::GetDayDisponibilities($id, 6),
         );
-        //DB::table('users')->get();
+
+
+        $events = [];
+
+        /*For each day of disponibility*/
+        for($i = 0; $i < count($weekDispos); $i++) {
+
+
+            /*If there are disponibility today */
+            if (count($weekDispos[$i])) {
+
+
+                /*For each disponibility*/
+                for ($j = 0; $j < count($weekDispos[$i]); $j++) {
+                    $startTime = $weekDispos[$i][$j]->startTime;
+                    $endTime = $weekDispos[$i][$j]->endTime;
+                    $dayNumber = $weekDispos[$i][$j]->day_number;
+
+
+                    $date = new DateTime();
+                    $date->modify('Sunday last week +' . $dayNumber . ' days');
+                    //$date->add(new DateInterval('P' . $i .'D'));
+
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+
+                    $events[] = \Calendar::event(
+                        "Dispo",
+                        false,
+                        $dispoBegin,
+                        $dispoEnd,
+                        $weekDispos[$i][$j]->id
+                    );
+
+                }
+            }
+        }
+
+        $colSettings = array('columnFormat' => 'ddd');
+        $calendar = \Calendar::addEvents($events)->setOptions([
+            'timezone' => 'local', 'EST', 'America/Montreal',
+            'editable' => true,
+            'header' => false,
+            'defaultView' => 'agendaWeek',
+            'views' => array('agenda' => $colSettings)
+        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+            'eventClick' => "function (xEvent, jsEvent, view){ dispoClick(jsEvent, xEvent);}",
+            'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
+        ]);
+
         $view = \View::make('POS.Disponibility.edit')->with('ViewBag', array(
-            'employees' => $employees,
-            'disponibility' => $disponibility,
-            'weekDispos' => $WeekDisponibilities,
-        ));
+                'disponibility' => $disponibility,
+                'calendar' => $calendar,
+                'employees' => $employees
+            )
+        );
         return $view;
     }
 
     public function postEdit()
     {
         $inputs = \Input::all();
-
+        //return json_encode("ahahahah");
         $rules = array(
-            'name' => 'required'
+            'name' => 'required',
+            'employeeSelect' => 'required',
+            'dispoId' => 'required'
         );
 
         $message = array(
@@ -147,110 +195,37 @@ class DisponibilityController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            return \Redirect::action('POS\DisponibilityController@edit')->withErrors($validation)
-                ->withInput();
+            return json_encode('Validation Error');
 
         }
-        else
-        {
-            $idDisponibility = \Input::get('idDisponibility');
+        else {
 
-            // On commence par supprimer tous les jour de disponiblite associer a une disponibilite.
-            Disponibility::DeleteDayDisponibilities($idDisponibility);
 
-            Disponibility::where('id', $idDisponibility)
+            Disponibility::where('id',\Input::get('dispoId'))
             ->update([
-                'name' => \Input::get('name'),
                 'employee_id' => \Input::get('employeeSelect'),
+                'name' => \Input::get('name')
             ]);
 
-            for($i = 0; $i < count(\Input::get('sunDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('sunDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $idDisponibility,
-                    "day_number" => 0,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
+            Disponibility::DeleteDayDisponibilities(\Input::get('dispoId'));
 
-            for($i = 0; $i < count(\Input::get('monDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('monDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $idDisponibility,
-                    "day_number" => 1,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
+            $jsonArray = json_decode(\Input::get('events'), true);
+            for ($i = 0; $i < count($jsonArray); $i++) {
+                //$jsonObj = json_decode(\Input::get('events')[$i], true);
+                $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
+                $resStart = $dateStart->format('H:i:s');
+                $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
+                $resStop = $dateStop->format('H:i:s');
 
-            for($i = 0; $i < count(\Input::get('tueDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('tueDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
+                //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
                 Day_Disponibilities::create([
-                    "disponibility_id" => $idDisponibility,
-                    "day_number" => 2,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
+                    "disponibility_id" => \Input::get('dispoId'),
+                    "day_number" => $jsonArray[$i]["dayIndex"],
+                    "startTime" => $resStart,
+                    "endTime" => $resStop
                 ]);
-            }
 
-            for($i = 0; $i < count(\Input::get('wedDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('wedDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $idDisponibility,
-                    "day_number" => 3,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
             }
-
-            for($i = 0; $i < count(\Input::get('thuDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('thuDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $idDisponibility,
-                    "day_number" => 4,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('friDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('friDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $idDisponibility,
-                    "day_number" => 5,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('satDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('satDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Disponibilities::create([
-                    "disponibility_id" => $idDisponibility,
-                    "day_number" => 6,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-            //var_dump(\Input::get('name'));
-            //var_dump(\Input::get('sunDispos'));
-
-            return \Redirect::action('POS\DisponibilityController@index')->withSuccess('The disponibility has been successfully edited !');
         }
     }
 
@@ -261,13 +236,13 @@ class DisponibilityController extends Controller
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
             //'firstDay' => 1,
+            'timezone' => 'local', 'EST', 'America/Montreal',
             'editable' => true,
             'header' => false,
             'defaultView' => 'agendaWeek',
             'views' => array('agenda' => $colSettings)
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            'eventClick' => "function (xEvent, jsEvent, view){ dispoClick(xEvent);}",
-            'eventAfterAllRender' => "function () { writeAllEvents(); }",
+            'eventClick' => "function (xEvent, jsEvent, view){ dispoClick(jsEvent, xEvent);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 

@@ -33,7 +33,7 @@ class ScheduleController extends Controller
         }
         $view = \View::make('POS.Schedule.index')->with('ViewBag', array(
             'schedules' => $schedules
-        ));;
+        ));
         return $view;
     }
 
@@ -91,14 +91,8 @@ class ScheduleController extends Controller
                     $startTime = $weekDispos[$i][$j]->startTime;
                     $endTime = $weekDispos[$i][$j]->endTime;
 
-
-
                     $date = new DateTime(Schedule::all()->first()->startDate);
                     $date->add(new DateInterval('P' . $i .'D'));
-
-                    /*
-                                        $currentDay = date('Y-m-d', strtotime('+' . $i . ' day', Schedule::all()->first()->startDate));*/
-
 
                     $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
                     $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
@@ -112,11 +106,7 @@ class ScheduleController extends Controller
                         false, //full day event?
                         $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
                         $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                        1, //optional event ID
-                        [
-                            'url' => 'http://pos.mirageflow.com',
-                            //any other full-calendar supported parameters
-                        ]
+                        $scheduleid
                     );
                 }
             }
@@ -250,15 +240,11 @@ class ScheduleController extends Controller
                     }
 
                     $events[] = \Calendar::event(
-                        $weekDispos[$i][$j]->firstName . " - " . $startTime . " to " . $endTime, //event title
+                        $weekDispos[$i][$j]->firstName,
                         false, //full day event?
                         $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
                         $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                        1, //optional event ID
-                        [
-                            'url' => 'http://pos.mirageflow.com',
-                            //any other full-calendar supported parameters
-                        ]
+                        $id
                     );
                 }
             }
@@ -269,8 +255,8 @@ class ScheduleController extends Controller
             'right' => '');
 
 
-
         $calendar = \Calendar::addEvents($events)->setOptions([
+            'timezone' => 'local', 'EST', 'America/Montreal',
             'defaultDate' => $schedule->startDate,
             'defaultView' => 'agendaWeek',
             'header' => $calendarSettings
@@ -289,7 +275,9 @@ class ScheduleController extends Controller
         $employeeTitles = EmployeeTitle::All();
         $employees = Employee::getAll();
 
-        $WeekDisponibilities = array(
+        $schedule = Schedule::GetById($id);
+
+        $weekDispos = array(
             0 => Schedule::GetDaySchedules($id, 0),
             1 => Schedule::GetDaySchedules($id, 1),
             2 => Schedule::GetDaySchedules($id, 2),
@@ -300,150 +288,103 @@ class ScheduleController extends Controller
         );
 
 
-        //DB::table('users')->get();
+
+        $events = [];
+
+        /*For each day of disponibility*/
+        for($i = 0; $i < count($weekDispos); $i++) {
+
+
+            /*If there are disponibility today */
+            if (count($weekDispos[$i])) {
+
+
+                /*For each disponibility*/
+                for ($j = 0; $j < count($weekDispos[$i]); $j++) {
+                    $startTime = $weekDispos[$i][$j]->startTime;
+                    $endTime = $weekDispos[$i][$j]->endTime;
+
+
+
+                    $date = new DateTime(Schedule::all()->first()->startDate);
+                    $date->add(new DateInterval('P' . $i .'D'));
+
+                    /*
+                                        $currentDay = date('Y-m-d', strtotime('+' . $i . ' day', Schedule::all()->first()->startDate));*/
+
+
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+
+                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
+                        $dispoEnd->add(new DateInterval('P1D'));
+                    }
+
+                    $events[] = \Calendar::event(
+                        $weekDispos[$i][$j]->firstName,
+                        false,
+                        $dispoBegin,
+                        $dispoEnd,
+                        $id
+                    );
+                }
+            }
+        }
+
+        $calendarSettings = array('left' => 'prev,next today',
+            'center' => 'title',
+            'right' => 'month,agendaWeek,agendaDay');
+
+        $calendar = \Calendar::addEvents($events)->setOptions([
+            'timezone' => 'local', 'EST', 'America/Montreal',
+            'defaultDate' => $schedule->startDate,
+            'editable' => true,
+            'defaultView' => 'agendaWeek',
+            'header' => $calendarSettings
+        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+            'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(jsEvent, xEvent);}",
+            'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
+        ]);
+
         $view = \View::make('POS.Schedule.edit')->with('ViewBag', array(
-            'schedule' => $schedule,
-            'weekSchedules' => $WeekDisponibilities,
-            'employees' => $employees
+            'calendar' => $calendar,
+            'employees' => $employees,
+            'schedule' => $schedule
         ));
         return $view;
     }
 
     public function postEdit()
     {
-        $inputs = \Input::all();
 
-        $rules = array(
-            'name' => 'required'
-        );
 
-        $message = array(
-            'required' => 'The :attribute is required !'
-        );
-
-        $validation = \Validator::make($inputs, $rules, $message);
-        if($validation -> fails())
-        {
-            return \Redirect::action('POS\ScheduleController@edit')->withErrors($validation)
-                ->withInput();
-
-        }
-        else
-        {
-
-            $idSchedule = \Input::get('idSchedule');
-
-            // On commence par supprimer tous les jour de disponiblite associer a une disponibilite.
-            Schedule::DeleteDaySchedules($idSchedule);
-
-            Schedule::where('id', $idSchedule)
-                ->update([
-                    'name' => \Input::get('name'),
-                    'startDate' => \Input::get('startDate'),
-                    'endDate' => \Input::get('endDate'),
-                ]);
-
-            for($i = 0; $i < count(\Input::get('sunDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('sunDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $idSchedule,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 0,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('monDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('monDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $idSchedule,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 1,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('tueDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('tueDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $idSchedule,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 2,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('wedDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('wedDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $idSchedule,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 3,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('thuDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('thuDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $idSchedule,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 4,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('friDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('friDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $idSchedule,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 5,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('satDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('satDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $idSchedule,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 6,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            return \Redirect::action('POS\ScheduleController@index')->withSuccess('The schedule has been successfully edited !');
-        }
     }
 
     public function create()
     {
+
+        $events = [];
+        $calendarSettings = array('left' => 'prev,next today',
+            'center' => 'title',
+            'right' => 'month,agendaWeek,agendaDay');
+
         $employees = Employee::getAll();
+        $calendar = \Calendar::addEvents($events)->setOptions([
+            //'firstDay' => 1,
+            'timezone' => 'local', 'EST', 'America/Montreal',
+            'editable' => true,
+            'header' => $calendarSettings,
+            'defaultView' => 'agendaWeek'
+        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
+            'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(jsEvent, xEvent);}",
+            'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
+        ]);
+
         $view = \View::make('POS.Schedule.create')->with('ViewBag', array(
-            'employees' => $employees
-        ));
+                'employees' => $employees,
+                'calendar' => $calendar
+            )
+        );
         return $view;
     }
 
@@ -452,7 +393,9 @@ class ScheduleController extends Controller
         $inputs = \Input::all();
 
         $rules = array(
-            'name' => 'required'
+            'name' => 'required',
+            'startDate' => 'required',
+            'endDate' => 'required'
         );
 
         $message = array(
@@ -462,111 +405,38 @@ class ScheduleController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            return \Redirect::action('POS\ScheduleController@create')->withErrors($validation)
-                ->withInput();
-
+            //\Redirect::action('POS\ScheduleController@create')->withErrors($validation)->withInput();
+            return "valid Errors";
         }
         else
         {
 
-            $Schedule = Schedule::create([
+            $schedule = Schedule::create([
                 'name' => \Input::get('name'),
                 'startDate' => \Input::get('startDate'),
                 'endDate' => \Input::get('endDate')
             ]);
 
-            for($i = 0; $i < count(\Input::get('sunDispos')); $i++)
+            $jsonArray = json_decode(\Input::get('events'), true);
+            for($i = 0; $i < count($jsonArray); $i++)
             {
-                $jsonObj = json_decode(\Input::get('sunDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $Schedule->id,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 0,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
+                //$jsonObj = json_decode(\Input::get('events')[$i], true);
+                $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
+                $resStart = $dateStart->format('H:i:s');
+                $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
+                $resStop = $dateStop->format('H:i:s');
 
-            for($i = 0; $i < count(\Input::get('monDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('monDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
+                $employeeId = $jsonArray[$i]["employeeId"];
+                //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
                 Day_Schedules::create([
-                    "schedule_id" => $Schedule->id,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 1,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
+                    "schedule_id" => $schedule->id,
+                    'employee_id' => $employeeId,
+                    "day_number" => $jsonArray[$i]["dayIndex"],
+                    "startTime" => $resStart,
+                    "endTime" => $resStop
                 ]);
-            }
 
-            for($i = 0; $i < count(\Input::get('tueDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('tueDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $Schedule->id,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 2,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
             }
-
-            for($i = 0; $i < count(\Input::get('wedDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('wedDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $Schedule->id,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 3,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('thuDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('thuDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $Schedule->id,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 4,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('friDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('friDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $Schedule->id,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 5,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            for($i = 0; $i < count(\Input::get('satDispos')); $i++)
-            {
-                $jsonObj = json_decode(\Input::get('satDispos')[$i], true);
-                //var_dump($jsonObj["StartTime"]);
-                Day_Schedules::create([
-                    "schedule_id" => $Schedule->id,
-                    "employee_id" => $jsonObj["EmployeeId"],
-                    "day_number" => 6,
-                    "startTime" => $jsonObj["StartTime"] . ":00",
-                    "endTime" => $jsonObj["EndTime"] . ":00"
-                ]);
-            }
-
-            return \Redirect::action('POS\ScheduleController@index')->withSuccess('The schedule has been successfully created !');
         }
     }
 

@@ -1,348 +1,274 @@
 @extends('master')
+@section('csrfToken')
+    <link rel="stylesheet" href="{{ @URL::to('css/fullcalendar.min.css') }}"/>
+    <script src="{{ @URL::to('js/moment.min.js') }}"></script>
+    <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+@stop
 
 @section('content')
+
     <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Edit</h1>
+        <div class="col-md-6">
+            <h1 class="page-header">Disponibility Edit</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="col-md-6">
-                        {!! Form::open(array('url' => 'disponibility/edit', 'role' => 'form')) !!}
-                        {!! Form::text('idDisponibility', $ViewBag['disponibility']->idDisponibility, array('style' => 'display:none;visibility:hidden;')) !!}
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
+                    {{--'style' => 'display:none;visibility:hidden;'--}}
+                    {!! Form::open(array('url' => 'disponibility/create', 'role' => 'form', 'id' => 'frmDispoCreate')) !!}
+                    {!! Form::text('dispoId', $ViewBag['disponibility']->idDisponibility, array('class' => 'form-control', 'id' => 'dispoId')) !!}
+                    @if (count($errors) > 0)
+                        <div class="alert alert-danger">
+                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                    <fieldset>
+                        <legend>Disponibility Informations</legend>
+                        <div class="mfs">
+                            <div class="form-group">
+                                {!! Form::label('name', "Name" ) !!}
+                                @if($errors->has('name'))
+                                    <div class="form-group has-error">
+                                        {!! Form::text('name', old('name'), array('class' => 'form-control', 'id' => 'name')) !!}
+                                    </div>
+                                @else
+                                    {!! Form::text('name', $ViewBag['disponibility']->name, array('class' => 'form-control', 'id' => 'name')) !!}
+                                @endif
+                            </div>
+
+                            <div class="form-group">
+                                {!! Form::label('employee', "Employee" ) !!}
+                                <select id="employeeSelect" name="employeeSelect" class="form-control">
+                                    @foreach ($ViewBag['employees'] as $employee)
+
+                                        <option value="{{ $employee->idEmployee }}" @if(old('employeeSelect'))
+                                            @if($ViewBag['disponibility']->employee_id == $employee->idEmployee)
+                                                {{ "selected" }}
+                                                    @endif
+                                                @endif >{{ $employee->firstName }}</option>
                                     @endforeach
-                                </ul>
+                                </select>
                             </div>
-                        @endif
-                        <fieldset>
-                            <legend>Disponibility Informations</legend>
-                            <div class="mfs">
-                                <div class="form-group">
-                                    {!! Form::label('name', "Name" ) !!}
-                                    @if($errors->has('name'))
-                                        <div class="form-group has-error">
-                                            {!! Form::text('name', old('name'), array('class' => 'form-control')) !!}
-                                        </div>
-                                    @else
-                                        {!! Form::text('name', $ViewBag['disponibility']->name, array('class' => 'form-control')) !!}
-                                    @endif
-                                </div>
 
-                                <div class="form-group">
-                                    {!! Form::label('employee', "Employee" ) !!}
-                                    {{ old('employeeSelect') }}
-                                    <select id="employeeSelect" name="employeeSelect" class="form-control">
-                                        @foreach ($ViewBag['employees'] as $employee)
-                                            <option value="{{ $employee->idEmployee }}" <?php if($employee->idEmployee == $ViewBag['disponibility']->idEmployee) { echo "selected"; } ?>>{{ $employee->firstName }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
+                        </div>
+                    </fieldset>
 
+                    {!! Form::close() !!}
+                </div>
+            </div>
+        </div>
+    </div>
+    {{--<div class="row" id="calendarCtrls">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <h3>Start Time</h3>
+                            <div class="col-md-6">
+                                {!! Form::label('sHour', "Hour" ) !!}
+                                {!! Form::text('sHour', old('sHour'), array('class' => 'form-control', 'id' => 'sHour')) !!}
                             </div>
-                        </fieldset>
+                            <div class="col-md-6">
+                                {!! Form::label('sMin', "Min" ) !!}
+                                {!! Form::text('sMin', old('sMin'), array('class' => 'form-control', 'id' => 'sMin')) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <h3>End Time</h3>
+                            <div class="col-md-6">
+                                {!! Form::label('eHour', "Hour" ) !!}
+                                {!! Form::text('eHour', old('eHour'), array('class' => 'form-control', 'id' => 'eHour')) !!}
+                            </div>
+                            <div class="col-md-6">
+                                {!! Form::label('eMin', "Min" ) !!}
+                                {!! Form::text('eMin', old('eMin'), array('class' => 'form-control', 'id' => 'eMin')) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <h3>Day</h3>
+                            {!! Form::label('', "" ) !!}
+                            <select id="dayNumber" class="form-control">
+                                <option value="0">Sunday</option>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <h3>#</h3>
+                            <a class="btn btn-primary" id="btnAddEvent" href="#"> Add Dispo </a>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-
+    </div>--}}
     <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Sunday
-                </div>
-                <div class="panel-body">
-                    {!! Form::label('startTime', "Start Time" ) !!}
-                    {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
+        <div class="col-lg-12">
 
-                    {!! Form::label('endTime', "End Time" ) !!}
-                    {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
+            <a class="btn btn-success pull-right" id="btnFinish" href="#"> Finish </a>
 
-                    <br />
-                    <a class="bdel btn btn-default pull-right" data-Day="0">Delete -</a>
-                    <a class="badd btn btn-primary pull-right" data-Day="0">Add +</a>
-                    <br />
-
-                    <label>Sunday Disponibilities</label>
-
-                    <select id="sunMultiSelect" name="sunDispos[]" multiple class="form-control">
-                        @if($ViewBag['weekDispos'][0] != null)
-                            @foreach($ViewBag['weekDispos'][0] as $sunDispo)
-                                <option selected="" value="{{ json_encode(array("StartTime" => $sunDispo->startTime, "EndTime" => $sunDispo->endTime)) }}">
-                                    {{ $sunDispo->startTime . " To " . $sunDispo->endTime }}
-                                </option>
-                            @endforeach
-                        @elseif(old('sunDispos'))
-                            @foreach(old('sunDispos') as $sunDispo)
-                                <option selected="" value="{{ $sunDispo }}">
-                                    <?php $jsonData = json_decode($sunDispo, true);?>
-                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Monday
-                </div>
-                <div class="panel-body">
-                    {!! Form::label('startTime', "Start Time" ) !!}
-                    {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
-
-                    {!! Form::label('endTime', "End Time" ) !!}
-                    {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
-
-                    <br />
-                    <a class="bdel btn btn-default pull-right" data-Day="1">Delete -</a>
-                    <a class="badd btn btn-primary pull-right" data-Day="1">Add +</a>
-                    <br />
-
-                    <label>Monday Disponibilities</label>
-
-                    <select id="monMultiSelect" name="monDispos[]" multiple class="form-control">
-                        @if($ViewBag['weekDispos'][1] != null)
-                            @foreach($ViewBag['weekDispos'][1] as $monDispo)
-                                <option selected="" value="{{ json_encode($monDispo) }}">
-                                    {{ $monDispo->startTime . " To " . $monDispo->endTime }}
-                                </option>
-                            @endforeach
-                        @elseif(old('monDispos'))
-                            @foreach(old('monDispos') as $monDispo)
-                                <option selected="" value="{{ $monDispo }}">
-                                    <?php $jsonData = json_decode($monDispo, true);?>
-                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Tuesday
-                </div>
-                <div class="panel-body">
-                    {!! Form::label('startTime', "Start Time" ) !!}
-                    {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
-
-                    {!! Form::label('endTime', "End Time" ) !!}
-                    {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
-
-                    <br />
-                    <a class="bdel btn btn-default pull-right" data-Day="2">Delete -</a>
-                    <a class="badd btn btn-primary pull-right" data-Day="2">Add +</a>
-                    <br />
-
-                    <label>Tuesday Disponibilities</label>
-                    <select id="tueMultiSelect" name="tueDispos[]" multiple class="form-control">
-                        @if($ViewBag['weekDispos'][2] != null)
-                            @foreach($ViewBag['weekDispos'][2] as $tueDispo)
-                                <option selected="" value="{{ json_encode($tueDispo) }}">
-                                    {{ $tueDispo->startTime . " To " . $tueDispo->endTime }}
-                                </option>
-                            @endforeach
-                        @elseif(old('tueDispos'))
-                            @foreach(old('tueDispos') as $tueDispo)
-                                <option selected="" value="{{ $tueDispo }}">
-                                    <?php $jsonData = json_decode($tueDispo, true);?>
-                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
-            </div>
         </div>
     </div>
+@stop
 
+@section('patate')
     <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Wednesday
-                </div>
+        <div class="col-lg-12">
+            <div class="panel panel-default calendar-fix">
                 <div class="panel-body">
-                    {!! Form::label('startTime', "Start Time" ) !!}
-                    {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
-
-                    {!! Form::label('endTime', "End Time" ) !!}
-                    {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
-
-                    <br />
-                    <a class="bdel btn btn-default pull-right" data-Day="3">Delete -</a>
-                    <a class="badd btn btn-primary pull-right" data-Day="3">Add +</a>
-                    <br />
-
-                    <label>Wednesday Disponibilities</label>
-                    <select id="wedMultiSelect" name="wedDispos[]" multiple class="form-control">
-                        @if($ViewBag['weekDispos'][3] != null)
-                            @foreach($ViewBag['weekDispos'][3] as $wedDispo)
-                                <option selected="" value="{{ json_encode($wedDispo) }}">
-                                    {{ $wedDispo->startTime . " To " . $wedDispo->endTime }}
-                                </option>
-                            @endforeach
-                        @elseif(old('wedDispos'))
-                            @foreach(old('wedDispos') as $wedDispo)
-                                <option selected="" value="{{ $wedDispo }}">
-                                    <?php $jsonData = json_decode($wedDispo, true);?>
-                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Thursday
-                </div>
-                <div class="panel-body">
-                    {!! Form::label('startTime', "Start Time" ) !!}
-                    {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
-
-                    {!! Form::label('endTime', "End Time" ) !!}
-                    {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
-
-                    <br />
-                    <a class="bdel btn btn-default pull-right" data-Day="4">Delete -</a>
-                    <a class="badd btn btn-primary pull-right" data-Day="4">Add +</a>
-                    <br />
-
-                    <label>Thursday Disponibilities</label>
-                    <select id="thuMultiSelect" name="thuDispos[]" multiple class="form-control">
-                        @if($ViewBag['weekDispos'][4] != null)
-                            @foreach($ViewBag['weekDispos'][4] as $thuDispo)
-                                <option selected="" value="{{ json_encode($thuDispo) }}">
-                                    {{ $thuDispo->startTime . " To " . $thuDispo->endTime }}
-                                </option>
-                            @endforeach
-                        @elseif(old('thuDispos'))
-                            @foreach(old('thuDispos') as $thuDispo)
-                                <option selected="" value="{{ $thuDispo }}">
-                                    <?php $jsonData = json_decode($thuDispo, true);?>
-                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Friday
-                </div>
-                <div class="panel-body">
-                    {!! Form::label('startTime', "Start Time" ) !!}
-                    {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
-
-                    {!! Form::label('endTime', "End Time" ) !!}
-                    {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
-
-                    <br />
-                    <a class="bdel btn btn-default pull-right" data-Day="5">Delete -</a>
-                    <a class="badd btn btn-primary pull-right" data-Day="5">Add +</a>
-                    <br />
-
-                    <label>Friday Disponibilities</label>
-                    <select id="friMultiSelect" name="friDispos[]" multiple class="form-control">
-                        @if($ViewBag['weekDispos'][5] != null)
-                            @foreach($ViewBag['weekDispos'][5] as $friDispo)
-                                <option selected="" value="{{ json_encode($friDispo) }}">
-                                    {{ $friDispo->startTime . " To " . $friDispo->endTime }}
-                                </option>
-                            @endforeach
-                        @elseif(old('friDispos'))
-                            @foreach(old('friDispos') as $friDispo)
-                                <option selected="" value="{{ $friDispo }}">
-                                    <?php $jsonData = json_decode($friDispo, true);?>
-                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select>
+                    {!! $ViewBag['calendar']->calendar() !!}
+                    {!! $ViewBag['calendar']->script() !!}
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-md-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading">
-                    Saturday
+    <div id="addModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- dialog body -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h3>Start Time</h3>
+                            <div class="col-md-6">
+                                {!! Form::label('sHour', "Hour" ) !!}
+                                {!! Form::text('sHour', old('sHour'), array('class' => 'form-control', 'id' => 'sHour')) !!}
+                            </div>
+                            <div class="col-md-6">
+                                {!! Form::label('sMin', "Min" ) !!}
+                                {!! Form::text('sMin', old('sMin'), array('class' => 'form-control', 'id' => 'sMin')) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h3>End Time</h3>
+                            <div class="col-md-6">
+                                {!! Form::label('eHour', "Hour" ) !!}
+                                {!! Form::text('eHour', old('eHour'), array('class' => 'form-control', 'id' => 'eHour')) !!}
+                            </div>
+                            <div class="col-md-6">
+                                {!! Form::label('eMin', "Min" ) !!}
+                                {!! Form::text('eMin', old('eMin'), array('class' => 'form-control', 'id' => 'eMin')) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h3>Day</h3>
+                            {!! Form::label('', "" ) !!}
+                            <select id="dayNumber" class="form-control">
+                                <option value="0">Sunday</option>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                            </select>
+                        </div>
+                    </div>
                 </div>
-                <div class="panel-body">
-                    {!! Form::label('startTime', "Start Time" ) !!}
-                    {!! Form::text('startTime', null, array('class' => 'form-control')) !!}
 
-                    {!! Form::label('endTime', "End Time" ) !!}
-                    {!! Form::text('endTime', null, array('class' => 'form-control')) !!}
-
-                    <br />
-                    <a class="bdel btn btn-default pull-right" data-Day="6">Delete -</a>
-                    <a class="badd btn btn-primary pull-right" data-Day="6">Add +</a>
-                    <br />
-
-                    <label>Saturday Disponibilities</label>
-                    <select id="satMultiSelect" name="satDispos[]" multiple class="form-control">
-                        @if($ViewBag['weekDispos'][6] != null)
-                            @foreach($ViewBag['weekDispos'][6] as $satDispo)
-                                <option selected="" value="{{ json_encode($satDispo) }}">
-                                    {{ $satDispo->startTime . " To " . $satDispo->endTime }}
-                                </option>
-                            @endforeach
-                        @elseif(old('satDispos'))
-                            @foreach(old('satDispos') as $satDispo)
-                                <option selected="" value="{{ $satDispo }}">
-                                    <?php $jsonData = json_decode($satDispo, true);?>
-                                    {{ $jsonData['StartTime'] . " To " . $jsonData['EndTime'] }}
-                                </option>
-                            @endforeach
-                        @endif
-                    </select>
-                </div>
+                <!-- dialog buttons -->
+                <div class="modal-footer"><button id="btnAddEvent" type="button" class="btn btn-primary">Add</button></div>
             </div>
         </div>
     </div>
+    <div id="editModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- dialog body -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h3>Start Time</h3>
+                            <div class="col-md-6">
+                                {!! Form::label('sHour', "Hour" ) !!}
+                                {!! Form::text('sHour', old('sHour'), array('class' => 'form-control', 'id' => 'sHour')) !!}
+                            </div>
+                            <div class="col-md-6">
+                                {!! Form::label('sMin', "Min" ) !!}
+                                {!! Form::text('sMin', old('sMin'), array('class' => 'form-control', 'id' => 'sMin')) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h3>End Time</h3>
+                            <div class="col-md-6">
+                                {!! Form::label('eHour', "Hour" ) !!}
+                                {!! Form::text('eHour', old('eHour'), array('class' => 'form-control', 'id' => 'eHour')) !!}
+                            </div>
+                            <div class="col-md-6">
+                                {!! Form::label('eMin', "Min" ) !!}
+                                {!! Form::text('eMin', old('eMin'), array('class' => 'form-control', 'id' => 'eMin')) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h3>Day</h3>
+                            {!! Form::label('', "" ) !!}
+                            <select id="dayNumber" class="form-control">
+                                <option value="0">Sunday</option>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
 
-    {!! Form::submit('Edit', array('class' => 'btn btn-primary pull-right')) !!}
-    {!! Form::close() !!}
-
-
+                <!-- dialog buttons -->
+                <div class="modal-footer"><button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button></div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section("myjsfile")
-    <script src="{{ @URL::to('js/disponibilityMultiSelect.js') }}"></script>
-    <script>
-        $('.badd').click(function (e) {
-            addDisponibility($(this));
+    <script src="{{ @URL::to('js/disponibilitiesManage.js') }}"></script>
+    <script type="text/javascript">
+        // var for edit Event
+        var globStoredEvent = null;
+        $('#btnFinish').click(function(e) {
+            e.preventDefault();
+            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
+            postEditDisponibilities($storedCalendar);
+
         });
-        $('.bdel').click(function (e) {
-            remDisponibility($(this));
+        $("#btnEditEvent").click(function(){
+            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
+            editEvent($storedCalendar);
+        });
+        $("#btnAddEvent").click(function() {
+            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
+            addEvent($storedCalendar);
         });
     </script>
 @stop
