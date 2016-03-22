@@ -12,6 +12,7 @@ use App\Models\POS\Schedule;
 use App\Models\POS\Day_Schedules;
 use App\Models\POS\Disponibility;
 
+use App\Models\POS\Shared\CalendarEvent;
 use Barryvdh\DomPDF\PDF;
 use DateInterval;
 use DateTime;
@@ -223,14 +224,8 @@ class ScheduleController extends Controller
                     $startTime = $weekDispos[$i][$j]->startTime;
                     $endTime = $weekDispos[$i][$j]->endTime;
 
-
-
-                    $date = new DateTime(Schedule::all()->first()->startDate);
+                    $date = new DateTime($schedule->startDate);
                     $date->add(new DateInterval('P' . $i .'D'));
-
-/*
-                    $currentDay = date('Y-m-d', strtotime('+' . $i . ' day', Schedule::all()->first()->startDate));*/
-
 
                     $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
                     $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
@@ -244,7 +239,7 @@ class ScheduleController extends Controller
                         false, //full day event?
                         $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
                         $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                        $id
+                        $weekDispos[$i][$j]->id
                     );
                 }
             }
@@ -303,15 +298,12 @@ class ScheduleController extends Controller
                 for ($j = 0; $j < count($weekDispos[$i]); $j++) {
                     $startTime = $weekDispos[$i][$j]->startTime;
                     $endTime = $weekDispos[$i][$j]->endTime;
-
+                    $dayNumber = $weekDispos[$i][$j]->day_number;
+                    $employeeID = $weekDispos[$i][$j]->employee_id;
 
 
                     $date = new DateTime(Schedule::all()->first()->startDate);
                     $date->add(new DateInterval('P' . $i .'D'));
-
-                    /*
-                                        $currentDay = date('Y-m-d', strtotime('+' . $i . ' day', Schedule::all()->first()->startDate));*/
-
 
                     $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
                     $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
@@ -325,15 +317,18 @@ class ScheduleController extends Controller
                         false,
                         $dispoBegin,
                         $dispoEnd,
-                        $id
+                        $weekDispos[$i][$j]->id,
+                        [
+                            'employeeId' => $employeeID
+                        ]
                     );
                 }
             }
         }
 
-        $calendarSettings = array('left' => 'prev,next today',
+        $calendarSettings = array('left' => '',
             'center' => 'title',
-            'right' => 'month,agendaWeek,agendaDay');
+            'right' => '');
 
         $calendar = \Calendar::addEvents($events)->setOptions([
             'timezone' => 'local', 'EST', 'America/Montreal',
@@ -364,9 +359,9 @@ class ScheduleController extends Controller
     {
 
         $events = [];
-        $calendarSettings = array('left' => 'prev,next today',
+        $calendarSettings = array('left' => '',
             'center' => 'title',
-            'right' => 'month,agendaWeek,agendaDay');
+            'right' => '');
 
         $employees = Employee::getAll();
         $calendar = \Calendar::addEvents($events)->setOptions([

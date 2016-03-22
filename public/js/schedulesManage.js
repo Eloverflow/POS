@@ -93,6 +93,8 @@ function editEvent($storedCalendar){
 
 
     $dDayNumber = $( "#editModal #dayNumber option:selected" ).val();
+    $employeeText = $( "#editModal #employeeSelect option:selected" ).text();
+    $employeeId = $( "#editModal #employeeSelect option:selected" ).val();
 
     var date = new Date();
     var day = date.getDate();
@@ -107,8 +109,10 @@ function editEvent($storedCalendar){
     var sHM = $shour + ":" + $smin;
     var eHM = $ehour + ":" + $emin;
 
+    globStoredEvent.title = $employeeText;
     globStoredEvent.start = new Date(ymd + ' ' + sHM + ':00');
     globStoredEvent.end = new Date(ymd + ' ' + eHM + ':00');
+    globStoredEvent.employeeId = $employeeId;
 
     $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
 }
@@ -119,32 +123,23 @@ function addEvent($storedCalendar){
 
     $ehour = $('#addModal #eHour').val();
     $emin = $('#addModal #eMin').val();
+    $dateClicked = $('#addModal #dateClicked').val();
 
     $dDayNumber = $("#addModal #dayNumber option:selected" ).val();
     $employeeId = $("#addModal #employeeSelect option:selected" ).val()
     $employeeName = $("#addModal #employeeSelect option:selected" ).text()
 
-    var date = new Date();
-    var day = date.getDate();
-    var dayNum = date.getDay();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
-
-    var dayToSubstract = day - (dayNum - $dDayNumber);
-    monthIndex = monthIndex + 1;
-
-    var ymd = year +  "-" + monthIndex + "-" + dayToSubstract;
     var sHM = $shour + ":" + $smin;
     var eHM = $ehour + ":" + $emin;
 
-    console.log(ymd);
     var newEvent = {
         title: $employeeName,
         isAllDay: false,
-        start: new Date(ymd + ' ' + sHM + ':00'),
-        end: new Date(ymd + ' ' + eHM + ':00'),
+        start: new Date($dateClicked + ' ' + sHM + ':00'),
+        end: new Date($dateClicked + ' ' + eHM + ':00'),
         description: '',
-        resourceId: 4
+        resourceId: 4,
+        employeeId: $employeeId
     };
 
 
@@ -160,7 +155,7 @@ function dayClick(xDate, xEvent)
 
     $('#addModal #eHour').val("");
     $('#addModal #eMin').val("");
-    console.log(datet.getDay());
+
     // Week beginning sunday: 0
     if(datet.getDay() == 6)
     {
@@ -171,6 +166,15 @@ function dayClick(xDate, xEvent)
         $('#addModal #dayNumber').val($gDay);
     }
 
+
+    var day = datet.getDate();
+    var dayNum = datet.getDay();
+    var monthIndex = datet.getMonth() + 1;
+    var year = datet.getFullYear();
+
+
+    var ymd = year +  "-0" + monthIndex + "-" + day;
+    $('#addModal #dateClicked').val(ymd);
     $("#addModal").modal('show');
 }
 
@@ -190,7 +194,8 @@ function scheduleClick(xDate, xEvent)
 
     // Week beginning sunday: 0
     $('#editModal #dayNumber').val(sDate.getDay());
-    $('#editModal #employeeSelect').val(xEvent);
+    $('#editModal #employeeSelect').val(xEvent.employeeId);
+    //alert(xEvent.employeeId);
     // Set global var so we can get it when we edit.
     globStoredEvent = xEvent;
     $("#editModal").modal('show');

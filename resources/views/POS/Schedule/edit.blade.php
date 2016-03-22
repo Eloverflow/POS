@@ -17,6 +17,7 @@
                 <div class="panel-body">
                     <div class="col-md-6">
                         {!! Form::open(array('url' => 'schedule/create', 'role' => 'form')) !!}
+
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -52,17 +53,6 @@
                                     @endif
                                 </div>
 
-                                <div class="form-group">
-                                    {!! Form::label('endDate', "End Date" ) !!}
-                                    @if($errors->has('endDate'))
-                                        <div class="form-group has-error">
-                                            {!! Form::text('endDate', old('endDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
-                                        </div>
-                                    @else
-                                        {!! Form::text('endDate', $ViewBag['schedule']->endDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
-                                    @endif
-                                </div>
-
                             </div>
                         </fieldset>
                     </div>
@@ -95,6 +85,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
+                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">

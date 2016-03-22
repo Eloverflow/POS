@@ -45,21 +45,10 @@
                                     {!! Form::label('startDate', "Start Date" ) !!}
                                     @if($errors->has('startDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('startDate', old('startDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                            {!! Form::text('startDate', old('startDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'startDate')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('startDate', old('startDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
-                                    @endif
-                                </div>
-
-                                <div class="form-group">
-                                    {!! Form::label('endDate', "End Date" ) !!}
-                                    @if($errors->has('endDate'))
-                                        <div class="form-group has-error">
-                                            {!! Form::text('endDate', old('endDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
-                                        </div>
-                                    @else
-                                        {!! Form::text('endDate', old('endDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                        {!! Form::text('startDate', old('startDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'startDate')) !!}
                                     @endif
                                 </div>
 
@@ -95,6 +84,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
+                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -138,11 +128,7 @@
                             <select id="employeeSelect" name="employeeSelect" class="form-control">
                                 @foreach ($ViewBag['employees'] as $employee)
 
-                                    <option value="{{ $employee->idEmployee }}" @if(old('employeeSelect'))
-                                        @if(old('employeeSelect') == $employee->idEmployee)
-                                            {{ "selected" }}
-                                                @endif
-                                            @endif >{{ $employee->firstName }}</option>
+                                    <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -203,11 +189,7 @@
                             <h3>Employee</h3>
                             <select id="employeeSelect" name="employeeSelect" class="form-control">
                                 @foreach ($ViewBag['employees'] as $employee)
-                                <option value="{{ $employee->idEmployee }}" @if(old('employeeSelect'))
-                                    @if(old('employeeSelect') == $employee->idEmployee)
-                                        {{ "selected" }}
-                                        @endif
-                                    @endif >{{ $employee->firstName }}</option>
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -239,6 +221,12 @@
         $("#btnAddEvent").click(function() {
             $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
             addEvent($storedCalendar);
+        });
+
+        $( "#startDate" ).change(function() {
+            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
+            $storedCalendar.fullCalendar('gotoDate', $('#startDate').val());
+            //var $startDate = $('#startDate').val();
         });
     </script>
 @stop
