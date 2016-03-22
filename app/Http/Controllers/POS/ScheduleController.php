@@ -389,8 +389,7 @@ class ScheduleController extends Controller
 
         $rules = array(
             'name' => 'required',
-            'startDate' => 'required',
-            'endDate' => 'required'
+            'startDate' => 'required'
         );
 
         $message = array(
@@ -422,6 +421,7 @@ class ScheduleController extends Controller
                 $resStop = $dateStop->format('H:i:s');
 
                 $employeeId = $jsonArray[$i]["employeeId"];
+
                 //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
                 Day_Schedules::create([
                     "schedule_id" => $schedule->id,

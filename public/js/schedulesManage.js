@@ -6,13 +6,19 @@ var globStoredEvent = null;
 
 function postAddSchedules($storedCalendar) {
 
+
     var allEvents = $storedCalendar.fullCalendar('clientEvents');
 
     var arr = [];
 
     for (var i = 0; i < allEvents.length; i++){
         var dDate  = new Date(allEvents[i].start.toString());
-        var myArray = {StartTime: allEvents[i].start.toString(), EndTime: allEvents[i].end.toString(), dayIndex: dDate.getDay(), employeeId:allEvents[i].employeeId};
+        var myArray = {
+            StartTime: allEvents[i].start.toString(),
+            EndTime: allEvents[i].end.toString(),
+            dayIndex: dDate.getDay(),
+            employeeId:allEvents[i].employeeId
+        };
         arr.push(myArray)
     }
 
@@ -96,22 +102,14 @@ function editEvent($storedCalendar){
     $employeeText = $( "#editModal #employeeSelect option:selected" ).text();
     $employeeId = $( "#editModal #employeeSelect option:selected" ).val();
 
-    var date = new Date();
-    var day = date.getDate();
-    var dayNum = date.getDay();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
+    $dateClicked = $('#editModal #dateClicked').val();
 
-    var dayToSubstract = day - (dayNum - $dDayNumber);
-    monthIndex = monthIndex + 1;
-
-    var ymd = year +  "-" + monthIndex + "-" + dayToSubstract;
     var sHM = $shour + ":" + $smin;
     var eHM = $ehour + ":" + $emin;
 
     globStoredEvent.title = $employeeText;
-    globStoredEvent.start = new Date(ymd + ' ' + sHM + ':00');
-    globStoredEvent.end = new Date(ymd + ' ' + eHM + ':00');
+    globStoredEvent.start = new Date($dateClicked + ' ' + sHM + ':00');
+    globStoredEvent.end = new Date($dateClicked + ' ' + eHM + ':00');
     globStoredEvent.employeeId = $employeeId;
 
     $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
@@ -173,7 +171,7 @@ function dayClick(xDate, xEvent)
     var year = datet.getFullYear();
 
 
-    var ymd = year +  "-0" + monthIndex + "-" + day;
+    var ymd = year +  "-" + monthIndex + "-" + day;
     $('#addModal #dateClicked').val(ymd);
     $("#addModal").modal('show');
 }
@@ -181,10 +179,12 @@ function dayClick(xDate, xEvent)
 function scheduleClick(xDate, xEvent)
 {
 
+
     console.log(xEvent.start.toString());
     var sDate = new Date(xEvent.start.toString());
     var eDate = new Date(xEvent.end.toString());
 
+    $('#editModal #dateClicked').val(sDate.getFullYear() +"-" + (sDate.getMonth() +1) + "-" + sDate.getDate()) ;
     console.log(sDate);
     $('#editModal #sHour').val(sDate.getHours());
     $('#editModal #sMin').val(sDate.getMinutes());

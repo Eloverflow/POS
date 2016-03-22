@@ -53,6 +53,17 @@
                                     @endif
                                 </div>
 
+                                <div class="form-group">
+                                    {!! Form::label('endDate', "End Date" ) !!}
+                                    @if($errors->has('endDate'))
+                                        <div class="form-group has-error">
+                                            {!! Form::text('endDate', old('endDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'endDate')) !!}
+                                        </div>
+                                    @else
+                                        {!! Form::text('endDate', $ViewBag['schedule']->endDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'endDate')) !!}
+                                    @endif
+                                </div>
+
                             </div>
                         </fieldset>
                     </div>
@@ -152,6 +163,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
+                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">

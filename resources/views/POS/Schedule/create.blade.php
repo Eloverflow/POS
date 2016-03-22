@@ -52,6 +52,17 @@
                                     @endif
                                 </div>
 
+                                <div class="form-group">
+                                    {!! Form::label('endDate', "End Date" ) !!}
+                                    @if($errors->has('endDate'))
+                                        <div class="form-group has-error">
+                                            {!! Form::text('endDate', old('endDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'endDate')) !!}
+                                        </div>
+                                    @else
+                                        {!! Form::text('endDate', old('endDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'endDate')) !!}
+                                    @endif
+                                </div>
+
                             </div>
                         </fieldset>
                     </div>
@@ -226,6 +237,10 @@
         $( "#startDate" ).change(function() {
             $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
             $storedCalendar.fullCalendar('gotoDate', $('#startDate').val());
+
+            var nDate = new Date($('#startDate').val());
+            nDate.setDate(nDate.getDate() + 7);
+            $( "#endDate").val(nDate.getFullYear() + "-" + (nDate.getMonth() + 1) + "-" + nDate.getDate());
             //var $startDate = $('#startDate').val();
         });
     </script>

@@ -117,10 +117,10 @@ Route::post('/addon/rfid/beers', 'Addons\Rfid\RfidTableController@getBeers');
 Route::get('/schedule', 'POS\ScheduleController@index');
 
 Route::get('/schedule/create', 'POS\ScheduleController@create');
-Route::post('/schedule/create', 'POS\ScheduleController@postcreate');
+Route::post('/schedule/create', 'POS\ScheduleController@postCreate');
 
 Route::get('/schedule/edit/{id}', 'POS\ScheduleController@edit');
-Route::post('/schedule/edit', 'POS\ScheduleController@postedit');
+Route::post('/schedule/edit', 'POS\ScheduleController@postEdit');
 
 Route::get('/schedule/{scheduleid}/employees', 'POS\ScheduleController@employeesSchedule');
 Route::get('/schedule/{scheduleid}/employee/{employeeid}', 'POS\ScheduleController@employeeSchedule');
