@@ -89,7 +89,7 @@ class DisponibilityController extends Controller
 
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => 'local', 'EST', 'America/Montreal',
+            'timezone' => false, 'local', 'EST', 'America/Montreal',
             'editable' => false,
             'header' => false,
             'defaultView' => 'agendaWeek',
@@ -159,7 +159,7 @@ class DisponibilityController extends Controller
 
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => 'local', 'EST', 'America/Montreal',
+            'timezone' => 'America/Montreal',
             'editable' => true,
             'header' => false,
             'defaultView' => 'agendaWeek',
@@ -236,7 +236,7 @@ class DisponibilityController extends Controller
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
             //'firstDay' => 1,
-            'timezone' => 'local', 'EST', 'America/Montreal',
+            'timezone' => false, 'local', 'EST', 'America/Montreal',
             'editable' => true,
             'header' => false,
             'defaultView' => 'agendaWeek',

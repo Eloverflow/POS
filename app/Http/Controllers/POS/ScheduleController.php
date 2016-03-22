@@ -251,7 +251,7 @@ class ScheduleController extends Controller
 
 
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => 'local', 'EST', 'America/Montreal',
+            'timezone' => false, 'local', 'EST', 'America/Montreal',
             'defaultDate' => $schedule->startDate,
             'defaultView' => 'agendaWeek',
             'header' => $calendarSettings
@@ -298,11 +298,9 @@ class ScheduleController extends Controller
                 for ($j = 0; $j < count($weekDispos[$i]); $j++) {
                     $startTime = $weekDispos[$i][$j]->startTime;
                     $endTime = $weekDispos[$i][$j]->endTime;
-                    $dayNumber = $weekDispos[$i][$j]->day_number;
-                    $employeeID = $weekDispos[$i][$j]->employee_id;
+                    $employeeId = $weekDispos[$i][$j]->employee_id;
 
-
-                    $date = new DateTime(Schedule::all()->first()->startDate);
+                    $date = new DateTime($schedule->startDate);
                     $date->add(new DateInterval('P' . $i .'D'));
 
                     $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
@@ -319,7 +317,7 @@ class ScheduleController extends Controller
                         $dispoEnd,
                         $weekDispos[$i][$j]->id,
                         [
-                            'employeeId' => $employeeID
+                            'employeeId' => $employeeId
                         ]
                     );
                 }
@@ -331,7 +329,7 @@ class ScheduleController extends Controller
             'right' => '');
 
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => 'local', 'EST', 'America/Montreal',
+            'timezone' => false, 'local', 'EST', 'America/Montreal',
             'defaultDate' => $schedule->startDate,
             'editable' => true,
             'defaultView' => 'agendaWeek',
@@ -366,7 +364,7 @@ class ScheduleController extends Controller
         $employees = Employee::getAll();
         $calendar = \Calendar::addEvents($events)->setOptions([
             //'firstDay' => 1,
-            'timezone' => 'local', 'EST', 'America/Montreal',
+            'timezone' => false, 'local', 'EST', 'America/Montreal',
             'editable' => true,
             'header' => $calendarSettings,
             'defaultView' => 'agendaWeek'
