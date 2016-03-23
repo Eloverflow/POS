@@ -10,6 +10,7 @@ use App\Helpers\Utils;
 use App\Models\POS\EmployeeTitle;
 use App\Models\Project;
 use App\Models\Auth\User;
+use DateTimeZone;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -89,7 +90,7 @@ class DisponibilityController extends Controller
 
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => false, 'local', 'EST', 'America/Montreal',
+            'timezone' => 'UTC',
             'editable' => false,
             'header' => false,
             'defaultView' => 'agendaWeek',
@@ -142,8 +143,13 @@ class DisponibilityController extends Controller
                     $date->modify('Sunday last week +' . $dayNumber . ' days');
                     //$date->add(new DateInterval('P' . $i .'D'));
 
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+                    $dateForTimeZone = new DateTime();
+                    $timezone = $dateForTimeZone->getTimezone();
+
+
+                    /*For now Timezone is kinda hard coded, we know this is wrong but, well... you know..*/
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime . '-04:00' );
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime . '-04:00');
 
                     $events[] = \Calendar::event(
                         "Dispo",
