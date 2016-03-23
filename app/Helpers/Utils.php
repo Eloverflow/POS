@@ -31,59 +31,19 @@ class Utils
             5 => "Friday",
             6 => "Saturday"
         );
-        //var_dump($ViewBag['scheduleInfos']);
+        $htmlString = $htmlString . "<table><thead>";
         for($i = 0; $i < 7; $i++) {
-            $htmlString = $htmlString . "<div class=\"trackBloc\">";
+            $htmlString = $htmlString . "<th>";
             if($i == 0){
                 $htmlString = $htmlString . "<h2>" . $monthArray[$i] . "</h2><h4>" . $schedule->startDate . "</h4>";
             } else {
                 $htmlString = $htmlString . "<h2>" . $monthArray[$i] . "</h2><h4>" . date('Y-m-d', strtotime($schedule->startDate. ' + ' . $i .' days')) . "</h4>";
             }
-
-            $lastPerson = "";
-
-            $current = "";
-            $personCounter = 0;
-
-
-
-            foreach ($scheduleInfosarr as $scheduleInfos) {
-
-                $currentDay = $i;
-                $currentPerson = $scheduleInfos->firstName . " " . $scheduleInfos->lastName;
-
-
-                if($lastPerson != $currentPerson || $personCounter == 0){
-
-                    if($personCounter > 0){
-                        $htmlString = $htmlString . "</div>";
-                    }
-
-                    if($scheduleInfos->day_number == $i) {
-                        $personCounter++;
-                        $htmlString = $htmlString . "<div class=\"emplTrackBlock\">
-                                        <h4>" . $scheduleInfos->firstName . " " . $scheduleInfos->lastName . "</h4><h5>" . $scheduleInfos->emplTitle . "</h4>" .
-                            "<p>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</p>";
-
-                    }
-
-                }
-                else{
-
-                    if($scheduleInfos->day_number == $i) {
-                        $htmlString = $htmlString . "<p>" . $scheduleInfos->startTime . " To " . $scheduleInfos->endTime . "</p>";
-                    }
-                }
-
-                $lastPerson = $currentPerson;
-            }
-            if($personCounter > 0){
-                $htmlString = $htmlString . "</div>";
-            }
-
-            $lastDay = $currentDay;
-            $htmlString = $htmlString . "</div>";
+            $htmlString = $htmlString . "</th>";
         }
-        return $htmlString;
+        $htmlString = $htmlString . "</thead>";
+        $htmlString = $htmlString . "</table>";
+        var_dump($scheduleInfosarr);
+        return $scheduleInfosarr;
     }
 }

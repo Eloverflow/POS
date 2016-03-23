@@ -159,7 +159,7 @@ class DisponibilityController extends Controller
 
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => 'America/Montreal',
+            'timezone' => ('America/Montreal'),
             'editable' => true,
             'header' => false,
             'defaultView' => 'agendaWeek',

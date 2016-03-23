@@ -39,8 +39,8 @@
                                 <td>{{ $schedule->name }}</td>
                                 <td>{{ $schedule->startDate }}</td>
                                 <td>{{ $schedule->endDate }}</td>
-                                <td>({{ $schedule->nbEmployees }})&nbsp;<a href='{{ URL::to('schedule', $schedule->idSchedule) . '/employees' }}'>List</a></td>
-                                <td>{{ $schedule->status }}</td>
+                                {{--<td>({{ $schedule->nbEmployees }})&nbsp;<a href='{{ URL::to('schedule', $schedule->idSchedule) . '/employees' }}'>List</a></td>--}}
+                                {{--<td>{{ $schedule->status }}</td>--}}
                                 <td>{{ $schedule->created_at }}</td>
                                 <td>
                                     <a href="{{ URL::to('schedule/details', $schedule->idSchedule) }}">Details</a>

@@ -172,11 +172,10 @@ function dayClick(xDate, xEvent)
 function dispoClick(xDate, xEvent)
 {
 
-    console.log(xEvent.start.toString());
     var sDate = new Date(xEvent.start.toString());
     var eDate = new Date(xEvent.end.toString());
 
-    console.log(sDate);
+    console.log(xEvent.start);
     $('#editModal #sHour').val(sDate.getHours());
     $('#editModal #sMin').val(sDate.getMinutes());
 

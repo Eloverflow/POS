@@ -17,7 +17,7 @@
                 <div class="panel-body">
                     <div class="col-md-6">
                         {!! Form::open(array('url' => 'schedule/create', 'role' => 'form')) !!}
-
+                        {!! Form::text('scheduleId', $ViewBag['disponibility']->idSchedule, array('class' => 'form-control', 'id' => 'scheduleId')) !!}
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <strong>Whoops!</strong> There were some problems with your input.<br><br>

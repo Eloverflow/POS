@@ -36,11 +36,8 @@ class Schedule extends Model
             name,
             startDate,
             endDate,
-            schedules.created_at,
-            count(distinct day_schedules.employee_id) as "nbEmployees",
-            "fakestatus" as status
+            schedules.created_at
             '))
-            ->leftJoin('day_schedules', 'schedules.id', '=', 'day_schedules.schedule_id')
             ->get();
     }
 
