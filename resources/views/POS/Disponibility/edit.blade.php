@@ -19,7 +19,7 @@
                 <div class="panel-body">
                     {{--'style' => 'display:none;visibility:hidden;'--}}
                     {!! Form::open(array('url' => 'disponibility/create', 'role' => 'form', 'id' => 'frmDispoCreate')) !!}
-                    {!! Form::text('dispoId', $ViewBag['disponibility']->idDisponibility, array('class' => 'form-control', 'id' => 'dispoId')) !!}
+                    {!! Form::text('dispoId', $ViewBag['disponibility']->idDisponibility, array('class' => 'form-control', 'id' => 'dispoId', 'style' => 'display:none;visibility:hidden;')) !!}
                     @if (count($errors) > 0)
                         <div class="alert alert-danger">
                             <strong>Whoops!</strong> There were some problems with your input.<br><br>

@@ -61,9 +61,10 @@ function postEditSchedules($storedCalendar) {
         arr.push(myArray)
     }
 
-    var $dispoId = $('#dispoId').val();
-    var $dispoName = $('#name').val();
-    var $dispoEmployee = $('#employeeSelect').val();
+    var $scheduleId = $('#scheduleId').val();
+    var $scheduleName = $('#name').val();
+    var $startDate  = $('#startDate').val();
+    var $endDate  = $('#endDate').val();
 
     //$('#frmDispoCreate').submit();
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -74,9 +75,10 @@ function postEditSchedules($storedCalendar) {
         async: true,
         data: {
             _token: CSRF_TOKEN,
-            name: $dispoName,
-            dispoId: $dispoId,
-            employeeSelect: $dispoEmployee,
+            name: $scheduleName,
+            scheduleId: $scheduleId,
+            startDate: $startDate,
+            endDate: $endDate,
             events: JSON.stringify(arr)
 
         },
@@ -108,8 +110,8 @@ function editEvent($storedCalendar){
     var eHM = $ehour + ":" + $emin;
 
     globStoredEvent.title = $employeeText;
-    globStoredEvent.start = new Date($dateClicked + ' ' + sHM + ':00');
-    globStoredEvent.end = new Date($dateClicked + ' ' + eHM + ':00');
+    globStoredEvent.start = new Date($dateClicked + ' ' + sHM + ':00'+ '-04:00');
+    globStoredEvent.end = new Date($dateClicked + ' ' + eHM + ':00'+ '-04:00');
     globStoredEvent.employeeId = $employeeId;
 
     $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
@@ -133,8 +135,8 @@ function addEvent($storedCalendar){
     var newEvent = {
         title: $employeeName,
         isAllDay: false,
-        start: new Date($dateClicked + ' ' + sHM + ':00'),
-        end: new Date($dateClicked + ' ' + eHM + ':00'),
+        start: new Date($dateClicked + ' ' + sHM + ':00' + '-04:00'),
+        end: new Date($dateClicked + ' ' + eHM + ':00' + '-04:00'),
         description: '',
         resourceId: 4,
         employeeId: $employeeId
@@ -180,12 +182,12 @@ function scheduleClick(xDate, xEvent)
 {
 
 
-    console.log(xEvent.start.toString());
+    //console.log(xEvent.start.toString());
     var sDate = new Date(xEvent.start.toString());
     var eDate = new Date(xEvent.end.toString());
 
     $('#editModal #dateClicked').val(sDate.getFullYear() +"-" + (sDate.getMonth() +1) + "-" + sDate.getDate()) ;
-    console.log(sDate);
+    //console.log(sDate);
     $('#editModal #sHour').val(sDate.getHours());
     $('#editModal #sMin').val(sDate.getMinutes());
 

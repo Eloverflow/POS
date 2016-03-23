@@ -28,10 +28,10 @@ class ScheduleController extends Controller
     public function index()
     {
         $schedules = Schedule::GetAll();
-        if($schedules[0]->idSchedule == null){
+        /*if($schedules[0]->idSchedule == null){
             unset($schedules);
             $schedules = array();
-        }
+        }*/
         $view = \View::make('POS.Schedule.index')->with('ViewBag', array(
             'schedules' => $schedules
         ));
@@ -251,10 +251,11 @@ class ScheduleController extends Controller
 
 
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => false, 'local', 'EST', 'America/Montreal',
+            'timezone' => 'local', 'EDT', ('America/Montreal'),
             'defaultDate' => $schedule->startDate,
             'defaultView' => 'agendaWeek',
-            'header' => $calendarSettings
+            'header' => $calendarSettings,
+            'lang' => 'fr-ca'
         ]);
 
         $view = \View::make('POS.Schedule.details')->with('ViewBag', array(
@@ -303,8 +304,8 @@ class ScheduleController extends Controller
                     $date = new DateTime($schedule->startDate);
                     $date->add(new DateInterval('P' . $i .'D'));
 
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
 
                     if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));
@@ -324,16 +325,20 @@ class ScheduleController extends Controller
             }
         }
 
+        $strCalendar = "[Semaine du " . $schedule->startDate . " au " . $schedule->endDate . "]";
+
         $calendarSettings = array('left' => '',
             'center' => 'title',
             'right' => '');
 
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => false, 'local', 'EST', 'America/Montreal',
+            'timezone' => 'local', 'EDT', ('America/Montreal'),
             'defaultDate' => $schedule->startDate,
             'editable' => true,
             'defaultView' => 'agendaWeek',
-            'header' => $calendarSettings
+            'header' => $calendarSettings,
+            'lang' => 'fr-ca',
+            'titleFormat' => $strCalendar
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
             'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(jsEvent, xEvent);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
@@ -349,7 +354,55 @@ class ScheduleController extends Controller
 
     public function postEdit()
     {
+        $inputs = \Input::all();
+        $rules = array(
+            'name' => 'required',
+            'scheduleId' => 'required',
+            'startDate' => 'required',
+            'endDate' => 'required'
+        );
 
+        $message = array(
+            'required' => 'The :attribute is required !'
+        );
+
+        $validation = \Validator::make($inputs, $rules, $message);
+        if($validation -> fails())
+        {
+            return json_encode('Validation Error');
+
+        }
+        else {
+
+
+            Schedule::where('id',\Input::get('scheduleId'))
+                ->update([
+                    'startDate' => \Input::get('startDate'),
+                    'endDate' => \Input::get('endDate'),
+                    'name' => \Input::get('name')
+                ]);
+
+            Schedule::DeleteDaySchedules(\Input::get('scheduleId'));
+
+            $jsonArray = json_decode(\Input::get('events'), true);
+            for ($i = 0; $i < count($jsonArray); $i++) {
+                //$jsonObj = json_decode(\Input::get('events')[$i], true);
+                $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
+                $resStart = $dateStart->format('H:i:s');
+                $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
+                $resStop = $dateStop->format('H:i:s');
+
+                //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
+                Day_Schedules::create([
+                    "schedule_id" => \Input::get('scheduleId'),
+                    'employee_id' => $jsonArray[$i]["employeeId"],
+                    "day_number" => $jsonArray[$i]["dayIndex"],
+                    "startTime" => $resStart,
+                    "endTime" => $resStop
+                ]);
+
+            }
+        }
 
     }
 
@@ -364,10 +417,11 @@ class ScheduleController extends Controller
         $employees = Employee::getAll();
         $calendar = \Calendar::addEvents($events)->setOptions([
             //'firstDay' => 1,
-            'timezone' => false, 'local', 'EST', 'America/Montreal',
+            'timezone' => 'local', 'EDT', ('America/Montreal'),
             'editable' => true,
             'header' => $calendarSettings,
-            'defaultView' => 'agendaWeek'
+            'defaultView' => 'agendaWeek',
+            'lang' => 'fr-ca'
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
             'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(jsEvent, xEvent);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
@@ -387,7 +441,8 @@ class ScheduleController extends Controller
 
         $rules = array(
             'name' => 'required',
-            'startDate' => 'required'
+            'startDate' => 'required',
+            'endDate' => 'required'
         );
 
         $message = array(

@@ -90,7 +90,7 @@ class DisponibilityController extends Controller
 
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => 'UTC',
+            'timezone' => 'local', 'EDT', ('America/Montreal'),
             'editable' => false,
             'header' => false,
             'defaultView' => 'agendaWeek',
@@ -165,7 +165,7 @@ class DisponibilityController extends Controller
 
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
-            'timezone' => ('America/Montreal'),
+            'timezone' => 'local', 'EDT', ('America/Montreal'),
             'editable' => true,
             'header' => false,
             'defaultView' => 'agendaWeek',
@@ -187,7 +187,7 @@ class DisponibilityController extends Controller
     public function postEdit()
     {
         $inputs = \Input::all();
-        //return json_encode("ahahahah");
+
         $rules = array(
             'name' => 'required',
             'employeeSelect' => 'required',
@@ -242,7 +242,7 @@ class DisponibilityController extends Controller
         $colSettings = array('columnFormat' => 'ddd');
         $calendar = \Calendar::addEvents($events)->setOptions([
             //'firstDay' => 1,
-            'timezone' => false, 'local', 'EST', 'America/Montreal',
+            'timezone' => 'local', 'EDT', ('America/Montreal'),
             'editable' => true,
             'header' => false,
             'defaultView' => 'agendaWeek',
@@ -264,7 +264,7 @@ class DisponibilityController extends Controller
     public function postCreate()
     {
         $inputs = \Input::all();
-        //return json_encode("ahahahah");
+
         $rules = array(
             'name' => 'required',
             'employeeSelect' => 'required'
@@ -306,11 +306,6 @@ class DisponibilityController extends Controller
                 ]);
 
             }
-
-            //var_dump(\Input::get('name'));
-            //var_dump();
-            //$jsonObj = json_decode(\Input::get('events'));
-            //$jsonObj = json_encode(\Input::get('events'));
 
             return json_encode($jsonArray[0]['StartTime']);
         }

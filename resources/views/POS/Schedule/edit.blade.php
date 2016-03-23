@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{ @URL::to('css/fullcalendar.min.css') }}"/>
     <script src="{{ @URL::to('js/moment.min.js') }}"></script>
     <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>
+    <script src="{{ @URL::to('js/fr-ca.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
 @section('content')
@@ -17,7 +18,7 @@
                 <div class="panel-body">
                     <div class="col-md-6">
                         {!! Form::open(array('url' => 'schedule/create', 'role' => 'form')) !!}
-                        {!! Form::text('scheduleId', $ViewBag['disponibility']->idSchedule, array('class' => 'form-control', 'id' => 'scheduleId')) !!}
+                        {!! Form::text('scheduleId', $ViewBag['schedule']->id, array('class' => 'form-control', 'id' => 'scheduleId', 'style' => 'display:none;visibility:hidden;')) !!}
                         @if (count($errors) > 0)
                             <div class="alert alert-danger">
                                 <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -96,7 +97,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
-                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked')) !!}
+                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -163,7 +164,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
-                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked')) !!}
+                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">

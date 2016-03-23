@@ -104,8 +104,8 @@ function editEvent($storedCalendar){
     var sHM = $shour + ":" + $smin;
     var eHM = $ehour + ":" + $emin;
 
-    globStoredEvent.start = new Date(ymd + ' ' + sHM + ':00');
-    globStoredEvent.end = new Date(ymd + ' ' + eHM + ':00');
+    globStoredEvent.start = new Date(ymd + ' ' + sHM + ':00' + '-04:00');
+    globStoredEvent.end = new Date(ymd + ' ' + eHM + ':00' + '-04:00');
 
     $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
 }
@@ -136,8 +136,8 @@ function addEvent($storedCalendar){
     var newEvent = {
         title: "dispo",
         isAllDay: false,
-        start: new Date(ymd + ' ' + sHM + ':00'),
-        end: new Date(ymd + ' ' + eHM + ':00'),
+        start: new Date(ymd + ' ' + sHM + ':00'+ '-04:00'),
+        end: new Date(ymd + ' ' + eHM + ':00'+ '-04:00'),
         description: '',
         resourceId: 4
     };
