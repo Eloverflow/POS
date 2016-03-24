@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{ @URL::to('css/fullcalendar.min.css') }}"/>
     <script src="{{ @URL::to('js/moment.min.js') }}"></script>
     <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>
+    <script src="{{ @URL::to('js/fr-ca.js') }}"></script>
 @stop
 
 @section('patate')

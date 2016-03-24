@@ -3,6 +3,7 @@
     <link rel="stylesheet" href="{{ @URL::to('css/fullcalendar.min.css') }}"/>
     <script src="{{ @URL::to('js/moment.min.js') }}"></script>
     <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>
+    <script src="{{ @URL::to('js/fr-ca.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
 @section('content')
@@ -32,35 +33,17 @@
                             <div class="mfs">
                                 <div class="form-group">
                                     {!! Form::label('name', "Name" ) !!}
-                                    @if($errors->has('name'))
-                                        <div class="form-group has-error">
-                                            {!! Form::text('name', old('name'), array('class' => 'form-control')) !!}
-                                        </div>
-                                    @else
-                                        {!! Form::text('name', old('name'), array('class' => 'form-control')) !!}
-                                    @endif
+                                    {!! Form::text('name', old('name'), array('class' => 'form-control')) !!}
                                 </div>
 
                                 <div class="form-group">
                                     {!! Form::label('startDate', "Start Date" ) !!}
-                                    @if($errors->has('startDate'))
-                                        <div class="form-group has-error">
-                                            {!! Form::text('startDate', old('startDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'startDate')) !!}
-                                        </div>
-                                    @else
-                                        {!! Form::text('startDate', old('startDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'startDate')) !!}
-                                    @endif
+                                    {!! Form::text('startDate', $ViewBag['startDate'], array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'startDate')) !!}
                                 </div>
 
                                 <div class="form-group">
                                     {!! Form::label('endDate', "End Date" ) !!}
-                                    @if($errors->has('endDate'))
-                                        <div class="form-group has-error">
-                                            {!! Form::text('endDate', old('endDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'endDate')) !!}
-                                        </div>
-                                    @else
-                                        {!! Form::text('endDate', old('endDate'), array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'endDate')) !!}
-                                    @endif
+                                    {!! Form::text('endDate', $ViewBag['endDate'], array('class' => ' form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'endDate', 'disabled ')) !!}
                                 </div>
 
                             </div>
@@ -96,7 +79,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
-                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked')) !!}
+                        {!! Form::text('dateClicked', $ViewBag['startDate'], array('class' => 'form-control', 'id' => 'dateClicked')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -216,10 +199,12 @@
 @stop
 
 @section("myjsfile")
+    <script src="{{ @URL::to('js/utils.js') }}"></script>
     <script src="{{ @URL::to('js/schedulesManage.js') }}"></script>
     <script type="text/javascript">
         // var for edit Event
         var globStoredEvent = null;
+        var globStoredCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
         $('#btnAdd').click(function(e) {
             $('#addModal #sHour').val("");
             $('#addModal #sMin').val("");
@@ -230,26 +215,31 @@
         });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
-            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
-            postAddSchedules($storedCalendar);
+            postAddSchedules(globStoredCalendar);
 
         });
         $("#btnEditEvent").click(function(){
-            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
-            editEvent($storedCalendar);
+            editEvent(globStoredCalendar);
         });
         $("#btnAddEvent").click(function() {
-            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
-            addEvent($storedCalendar);
+            addEvent(globStoredCalendar);
         });
 
         $( "#startDate" ).change(function() {
-            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
-            $storedCalendar.fullCalendar('gotoDate', $('#startDate').val());
+            if($( "#startDate").val()  != ""){
+                globStoredCalendar.fullCalendar('gotoDate', $('#startDate').val());
 
-            var nDate = new Date($('#startDate').val());
-            nDate.setDate(nDate.getDate() + 7);
-            $( "#endDate").val(nDate.getFullYear() + "-" + (nDate.getMonth() + 1) + "-" + nDate.getDate());
+
+                var nDate = new Date($('#startDate').val());
+                nDate.setDate(nDate.getDate() + 7);
+                $( "#endDate").val(formatDate(nDate));
+
+                globStoredCalendar.find('.fc-toolbar > div > h2').empty().append(
+                        "Semaine du "+ $('#startDate').val() + " au "+
+                        formatDate(nDate)
+                );
+            }
+            //$( "#endDate").val(nDate.getFullYear() + "-" + (nDate.getMonth() + 1) + "-" + nDate.getDate());
             //var $startDate = $('#startDate').val();
         });
     </script>

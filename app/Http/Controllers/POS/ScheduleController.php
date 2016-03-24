@@ -28,10 +28,6 @@ class ScheduleController extends Controller
     public function index()
     {
         $schedules = Schedule::GetAll();
-        /*if($schedules[0]->idSchedule == null){
-            unset($schedules);
-            $schedules = array();
-        }*/
         $view = \View::make('POS.Schedule.index')->with('ViewBag', array(
             'schedules' => $schedules
         ));
@@ -95,15 +91,15 @@ class ScheduleController extends Controller
                     $date = new DateTime(Schedule::all()->first()->startDate);
                     $date->add(new DateInterval('P' . $i .'D'));
 
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
 
                     if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));
                     }
 
                     $events[] = \Calendar::event(
-                        $weekDispos[$i][$j]->firstName . " - " . $startTime . " to " . $endTime, //event title
+                        $weekDispos[$i][$j]->firstName,
                         false, //full day event?
                         $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
                         $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
@@ -117,7 +113,17 @@ class ScheduleController extends Controller
             'center' => 'title',
             'right' => '');
 
-        $calendar = \Calendar::addEvents($events)->setOptions([ 'defaultDate' => $schedule->startDate,'defaultView' => 'agendaWeek', 'header' => $calendarSettings]);
+        $strCalendar = "[Semaine du " . $schedule->startDate . " au " . $schedule->endDate . "]";
+
+
+        $calendar = \Calendar::addEvents($events)->setOptions([
+            'defaultDate' => $schedule->startDate,
+            'defaultView' => 'agendaWeek',
+            'header' => $calendarSettings,
+            'lang' => 'fr-ca',
+            'titleFormat' => $strCalendar,
+            'timezone' => 'local', 'EDT', ('America/Montreal')
+        ]);
 
         return view('POS.Schedule.employee', compact('calendar'));
     }
@@ -227,8 +233,8 @@ class ScheduleController extends Controller
                     $date = new DateTime($schedule->startDate);
                     $date->add(new DateInterval('P' . $i .'D'));
 
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
 
                     if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));
@@ -245,6 +251,8 @@ class ScheduleController extends Controller
             }
         }
 
+        $strCalendar = "[Semaine du " . $schedule->startDate . " au " . $schedule->endDate . "]";
+
         $calendarSettings = array('left' => '',
             'center' => 'title',
             'right' => '');
@@ -255,7 +263,8 @@ class ScheduleController extends Controller
             'defaultDate' => $schedule->startDate,
             'defaultView' => 'agendaWeek',
             'header' => $calendarSettings,
-            'lang' => 'fr-ca'
+            'lang' => 'fr-ca',
+            'titleFormat' => $strCalendar
         ]);
 
         $view = \View::make('POS.Schedule.details')->with('ViewBag', array(
@@ -410,6 +419,15 @@ class ScheduleController extends Controller
     {
 
         $events = [];
+
+        $date = new DateTime();
+        $date->modify('Sunday last week');
+        $lastSundayStr = $date->format('Y-m-d');
+
+        $lastDay = $date->add(new DateInterval('P6D'));
+
+        $strCalendar = "[Semaine du " . $lastSundayStr . " au " . $lastDay->format('Y-m-d') . "]";
+
         $calendarSettings = array('left' => '',
             'center' => 'title',
             'right' => '');
@@ -421,6 +439,7 @@ class ScheduleController extends Controller
             'editable' => true,
             'header' => $calendarSettings,
             'defaultView' => 'agendaWeek',
+            'titleFormat' => $strCalendar,
             'lang' => 'fr-ca'
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
             'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(jsEvent, xEvent);}",
@@ -429,7 +448,9 @@ class ScheduleController extends Controller
 
         $view = \View::make('POS.Schedule.create')->with('ViewBag', array(
                 'employees' => $employees,
-                'calendar' => $calendar
+                'calendar' => $calendar,
+                'startDate' => $lastSundayStr,
+                'endDate' => $lastDay->format('Y-m-d')
             )
         );
         return $view;
@@ -493,40 +514,6 @@ class ScheduleController extends Controller
         $employee = Employee::GetById($id);
         $view = \View::make('POS.Employee.delete')->with('employee', $employee);
         return $view;
-    }
-
-    public function AjaxFindDispos()
-    {
-
-        $dayNumber = \Input::get('dayNumber');
-        $idEmployee = \Input::get('idEmployee');
-
-        if($idEmployee != -2) // -2 represente le "Select" de la Select Option
-        {
-            if($idEmployee == -1) // -1 represente le "All" de la Select Option
-            {
-                $disponibilities = Disponibility::GetDayDisponibilitiesForAll($dayNumber);
-
-            }
-            else
-            {
-                // Evidemment, un employee a ete selectionne
-                $disponibilities = Disponibility::GetDayDisponibilitiesForEmployee($dayNumber, $idEmployee);
-            }
-        }
-
-        return response()->json(json_encode($disponibilities));
-    }
-
-    public function AjaxGetEmployeeDaySchedules()
-    {
-        $scheduleId = \Input::get('scheduleId');
-        $dayNumber = \Input::get('dayNumber');
-        $hour = \Input::get('hour');
-
-        $daySchedule = Schedule::GetDaySchedulesHour($scheduleId, $dayNumber, $hour);
-
-        return response()->json(json_encode($daySchedule));
     }
 
 }

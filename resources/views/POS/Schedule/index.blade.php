@@ -1,4 +1,10 @@
 @extends('master')
+@section('csrfToken')
+    <link rel="stylesheet" href="{{ @URL::to('css/fullcalendar.min.css') }}"/>
+    <script src="{{ @URL::to('js/moment.min.js') }}"></script>
+    <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>
+    <script src="{{ @URL::to('js/fr-ca.js') }}"></script>
+@stop
 
 @section('content')
     <div class="row">
@@ -25,7 +31,7 @@
                             <th data-field="name" data-sortable="true">Name</th>
                             <th data-field="startDate"  data-sortable="true">Start Date</th>
                             <th data-field="endDate" data-sortable="true">End Date</th>
-                            <th data-field="nbEmployees"  data-sortable="true">Nb Employees</th>
+                            <th data-field="nbEmployees"  data-sortable="true">Employees</th>
                             <th data-field="status"  data-sortable="true">Status</th>
                             <th data-field="createdAt" data-sortable="true">Created At</th>
                             <th data-field="actions" data-sortable="true"></th>
@@ -39,7 +45,7 @@
                                 <td>{{ $schedule->name }}</td>
                                 <td>{{ $schedule->startDate }}</td>
                                 <td>{{ $schedule->endDate }}</td>
-                                {{--<td>({{ $schedule->nbEmployees }})&nbsp;<a href='{{ URL::to('schedule', $schedule->idSchedule) . '/employees' }}'>List</a></td>--}}
+                                <td><a href='{{ URL::to('schedule', $schedule->idSchedule) . '/employees' }}'>View</a></td>
                                 {{--<td>{{ $schedule->status }}</td>--}}
                                 <td>{{ $schedule->created_at }}</td>
                                 <td>

@@ -30,3 +30,13 @@ function getErrorMessage($message)
         '</a>' +
         '</div>';
 }
+
+function formatDate(date) {
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
+    var month = (date.getMonth() + 1)
+    var formMonth = month < 10 ? ("0" + month) : month;
+    var day = date.getDate();
+    var formDay = day < 10 ? ("0" + day) : day;
+    return date.getFullYear() + "-" + formMonth + "-" + formDay;
+}

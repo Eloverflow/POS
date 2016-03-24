@@ -70,8 +70,8 @@ class DisponibilityController extends Controller
                     $date->modify('Sunday last week +' . $dayNumber . ' days');
                     //$date->add(new DateInterval('P' . $i .'D'));
 
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime);
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime);
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
 
                    /* if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));
