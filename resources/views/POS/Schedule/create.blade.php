@@ -228,7 +228,7 @@
         $( "#startDate" ).change(function() {
             if($( "#startDate").val()  != ""){
                 globStoredCalendar.fullCalendar('gotoDate', $('#startDate').val());
-
+                $( "#dateClicked").val($('#startDate').val())
 
                 var nDate = new Date($('#startDate').val());
                 nDate.setDate(nDate.getDate() + 7);

@@ -244,6 +244,7 @@
 
             if($( "#startDate").val()  != "") {
                 globStoredCalendar.fullCalendar('gotoDate', $('#startDate').val());
+                $( "#dateClicked").val($('#startDate').val())
 
                 //Semaine du 2016-04-03 au 2016-04-09
                 var nDate = new Date($('#startDate').val());
