@@ -66,66 +66,10 @@
             </div>
         </div>
     </div>
-    {{--<div class="row" id="calendarCtrls">
-        <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <h3>Start Time</h3>
-                            <div class="col-md-6">
-                                {!! Form::label('sHour', "Hour" ) !!}
-                                {!! Form::text('sHour', old('sHour'), array('class' => 'form-control', 'id' => 'sHour')) !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! Form::label('sMin', "Min" ) !!}
-                                {!! Form::text('sMin', old('sMin'), array('class' => 'form-control', 'id' => 'sMin')) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <h3>End Time</h3>
-                            <div class="col-md-6">
-                                {!! Form::label('eHour', "Hour" ) !!}
-                                {!! Form::text('eHour', old('eHour'), array('class' => 'form-control', 'id' => 'eHour')) !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! Form::label('eMin', "Min" ) !!}
-                                {!! Form::text('eMin', old('eMin'), array('class' => 'form-control', 'id' => 'eMin')) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <h3>Day</h3>
-                            {!! Form::label('', "" ) !!}
-                            <select id="dayNumber" class="form-control">
-                                <option value="0">Sunday</option>
-                                <option value="1">Monday</option>
-                                <option value="2">Tuesday</option>
-                                <option value="3">Wednesday</option>
-                                <option value="4">Thursday</option>
-                                <option value="5">Friday</option>
-                                <option value="6">Saturday</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <h3>#</h3>
-                            <a class="btn btn-primary" id="btnAddEvent" href="#"> Add Dispo </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>--}}
     <div class="row">
         <div class="col-lg-12">
-
+            <a class="btn btn-primary pull-left" id="btnAdd" href="#"> Add+ </a>
             <a class="btn btn-success pull-right" id="btnFinish" href="#"> Finish </a>
-
         </div>
     </div>
 @stop
@@ -256,6 +200,14 @@
     <script type="text/javascript">
         // var for edit Event
         var globStoredEvent = null;
+        $('#btnAdd').click(function(e) {
+            $('#addModal #sHour').val("");
+            $('#addModal #sMin').val("");
+
+            $('#addModal #eHour').val("");
+            $('#addModal #eMin').val("");
+            $("#addModal").modal('show');
+        });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
             $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");

@@ -9,7 +9,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Create</h1>
+            <h1 class="page-header">Schedule Edit</h1>
         </div>
     </div>
     <div class="row">
@@ -74,6 +74,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <a class="btn btn-primary pull-left" id="btnAdd" href="#"> Add+ </a>
             <a class="btn btn-success pull-right" id="btnFinish" href="#"> Finish </a>
         </div>
     </div>
@@ -230,6 +231,20 @@
     <script type="text/javascript">
         // var for edit Event
         var globStoredEvent = null;
+        $('#btnAdd').click(function(e) {
+            $('#addModal #sHour').val("");
+            $('#addModal #sMin').val("");
+
+            $('#addModal #eHour').val("");
+            $('#addModal #eMin').val("");
+            $("#addModal").modal('show');
+        });
+        $('#btnAdd').click(function(e) {
+            e.preventDefault();
+            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
+            postEditSchedules($storedCalendar);
+
+        });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
             $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
@@ -243,6 +258,15 @@
         $("#btnAddEvent").click(function() {
             $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
             addEvent($storedCalendar);
+        });
+        $( "#startDate" ).change(function() {
+            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
+            $storedCalendar.fullCalendar('gotoDate', $('#startDate').val());
+
+            var nDate = new Date($('#startDate').val());
+            nDate.setDate(nDate.getDate() + 7);
+            $( "#endDate").val(nDate.getFullYear() + "-" + (nDate.getMonth() + 1) + "-" + nDate.getDate());
+            //var $startDate = $('#startDate').val();
         });
     </script>
 @stop

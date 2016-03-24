@@ -72,6 +72,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
+            <a class="btn btn-primary pull-left" id="btnAdd" href="#"> Add+ </a>
             <a class="btn btn-success pull-right" id="btnFinish" href="#"> Finish </a>
         </div>
     </div>
@@ -219,6 +220,14 @@
     <script type="text/javascript">
         // var for edit Event
         var globStoredEvent = null;
+        $('#btnAdd').click(function(e) {
+            $('#addModal #sHour').val("");
+            $('#addModal #sMin').val("");
+
+            $('#addModal #eHour').val("");
+            $('#addModal #eMin').val("");
+            $("#addModal").modal('show');
+        });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
             $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
