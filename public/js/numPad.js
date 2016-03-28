@@ -72,7 +72,7 @@ var app = angular.module('myApp', [], function($interpolateProvider) {
                 alert("Punch");
                 break;
             case 'ent':
-                alert("Enter");
+                window.location.replace("menu");
                 break;
             case 'pt':
                 $scope.mainText = $scope.mainText + ".";
