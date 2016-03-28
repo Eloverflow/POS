@@ -32,8 +32,6 @@ function getErrorMessage($message)
 }
 
 function formatDate(date) {
-    var hours = date.getHours();
-    var minutes = date.getMinutes();
     var month = (date.getMonth() + 1)
     var formMonth = month < 10 ? ("0" + month) : month;
     var day = date.getDate();

@@ -92,7 +92,6 @@ function postEditSchedules($storedCalendar) {
 
 function editEvent($storedCalendar){
 
-
     $shour = $('#editModal #sHour').val();
     $smin = $('#editModal #sMin').val();
 
