@@ -11,7 +11,6 @@
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/styles.css') }}" rel="stylesheet">
-    <link href="{{ @URL::to('css/menuSale.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/mainSale.css') }}" rel="stylesheet">
     {{--End of Stylesheet call--}}
 
@@ -22,7 +21,7 @@
     <script src="{{ @URL::to('Framework/Angular/angular.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
     <script src="{{ @URL::to('js/unserialize.js') }}"></script>
-    <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
+    <script src="{{ @URL::to('js/numPad.js') }}"></script>
 
     <!--[if lt IE 9]>
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/html5shiv.js') }}"></script>
@@ -45,8 +44,14 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-<div id="contentPanel" class="col-lg-6">
-    @yield('content')
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                @yield('content')
+            </div>
+        </div>
+    </div>
 </div>
 
 
