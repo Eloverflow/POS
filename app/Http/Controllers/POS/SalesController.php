@@ -88,11 +88,6 @@ class SalesController extends Controller
         return view('POS.Sale.menu');
     }
 
-    public function keyboard()
-    {
-        return view('POS.Sale.vKeyboard');
-    }
-
     public function payer(){
 
         $inputs = Input::except('_token');

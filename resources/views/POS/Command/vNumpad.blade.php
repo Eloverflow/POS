@@ -1,4 +1,4 @@
-@extends('POS.Sale.mainLayout')
+@extends('POS.Command.mainLayout')
 
 @section('content')
 

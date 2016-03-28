@@ -30,7 +30,8 @@ Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 
 
-Route::get('/keyboard', 'POS\SalesController@keyboard');
+Route::get('/keyboard', 'POS\CommandController@keyboard');
+Route::get('/mainmenu', 'POS\CommandController@mainmenu');
 
 
 Route::get('/sales', 'POS\SalesController@index');
