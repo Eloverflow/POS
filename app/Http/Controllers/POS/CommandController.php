@@ -21,6 +21,6 @@ class CommandController extends Controller
 
     public function mainmenu()
     {
-        return view('POS.Command.vKeyboard');
+        return view('POS.Command.main');
     }
 }
