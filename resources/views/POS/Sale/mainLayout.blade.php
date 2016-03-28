@@ -12,6 +12,7 @@
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/menuSale.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('css/mainSale.css') }}" rel="stylesheet">
     {{--End of Stylesheet call--}}
 
     <!--Icons-->
@@ -30,7 +31,6 @@
     @yield('csrfToken')
 </head>
 
-<body ng-app="menu" ng-controller="menuController">
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -45,34 +45,7 @@
     </div><!-- /.container-fluid -->
 </nav>
 
-
-
-<div id="sidebar-collapse" class="col-sm-3 col-lg-5 sidebar">
-    <ul class="nav menu menu-sale">
-        <li><h1>Facture</h1></li>
-        <li ng-repeat="factureItem in factureItems"  id="factureItem<% factureItem.id %>" class="sale-item">
-            <span ng-click="increase(factureItem)" class="glyphicon glyphicon-plus"></span>
-            <span ng-click="decrease(factureItem)" class="glyphicon glyphicon-minus"></span>
-            <div class="saleTextZone"><input id="" ng-change="updateBill()" ng-model="factureItem.quantity" value=""> X <span class="sale-item-name"><% factureItem.size.name + " de " + factureItem.name + " = " + (factureItem.size.price*factureItem.quantity | number:2) %></span></div>
-            <span ng-click="delete2(factureItem)" class="glyphicon glyphicon-remove right"></span>
-        </li>
-    </ul>
-
-    <h1 class="bill-total">Total = <% totalBill | number:2 %></h1>
-    <button ng-click="payNow()" type="button" class="btn btn-success btn-payer">Payer</button>
-
-</div><!--/.sidebar-->
-
-<div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 main">
-    <div class="row fixed">
-        <div class="row menu-filter">
-            <button  ng-click="filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary" ><span class="glyphicon glyphicon-star"></span> Favorites</button>
-            <button ng-repeat="itemType in menuItemTypes" ng-click="filters.itemtype.type = itemType.type" type="button" class="btn btn-primary"><% itemType.type %></button>
-        </div>
-    </div>
-</div>
-<div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 main">
-
+<div id="contentPanel" class="col-lg-6">
     @yield('content')
 </div>
 
