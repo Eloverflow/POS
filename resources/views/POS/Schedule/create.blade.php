@@ -242,5 +242,18 @@
             //$( "#endDate").val(nDate.getFullYear() + "-" + (nDate.getMonth() + 1) + "-" + nDate.getDate());
             //var $startDate = $('#startDate').val();
         });
+
+
+
+
+        $( "#dayNumber" ).change(function() {
+            //var nDate = new Date();
+            //nDate.setDate(nDate.getFullYear() + "-" +  nDate.getMonth() + "-" + (nDate.getDate() + this.value));
+            var realVal = parseInt(this.value);
+            realVal += 1;
+            console.log(realVal);
+            var myDate = new Date(new Date($('#startDate').val()).getTime()+(realVal*24*60*60*1000));
+            $('#dateClicked').val(formatDate(myDate));
+        });
     </script>
 @stop
