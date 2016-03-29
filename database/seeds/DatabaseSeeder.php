@@ -410,7 +410,7 @@ class ClientSeeder extends Seeder {
 
 }
 
-
+/*
 
 class SaleSeeder extends Seeder {
 
@@ -438,4 +438,4 @@ class SaleLineSeeder extends Seeder {
         $this->command->info('sale lines table seeded!');
     }
 
-}
+}*/

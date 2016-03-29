@@ -15,8 +15,8 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('cancelled');
-            $table->integer('client_id')->unsigned();
-            $table->foreign('client_id')->references('id')->on('clients')->nullable();
+            $table->integer('command_id')->unsigned();
+            $table->foreign('command_id')->references('id')->on('commands')->nullable();
             $table->integer('sale_number')->nullable();
             $table->float('total')->nullable();
             $table->timestamps();
