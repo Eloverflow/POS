@@ -20,6 +20,7 @@
 
     <script src="{{ @URL::to('Framework/Angular/angular.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
     <script src="{{ @URL::to('js/unserialize.js') }}"></script>
     <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
 
