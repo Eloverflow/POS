@@ -19,8 +19,13 @@
 
 
     <script src="{{ @URL::to('Framework/Angular/angular.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-route.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-ui-router.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/js/ui-bootstrap-tpls-1.2.5.min.js') }}"></script>
+    <script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
     <script src="{{ @URL::to('js/unserialize.js') }}"></script>
     <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
 
@@ -48,49 +53,18 @@
 
 
 
-<div id="sidebar-collapse" class="col-sm-3 col-lg-5 sidebar">
-    <ul class="nav menu menu-sale">
-        <li><h1>Facture</h1></li>
-        <li ng-repeat="factureItem in factureItems"  id="factureItem<% factureItem.id %>" class="sale-item">
-            <span ng-click="increase(factureItem)" class="glyphicon glyphicon-plus"></span>
-            <span ng-click="decrease(factureItem)" class="glyphicon glyphicon-minus"></span>
-            <div class="saleTextZone"><input id="" ng-change="updateBill()" ng-model="factureItem.quantity" value=""> X <span class="sale-item-name"><% factureItem.size.name + " de " + factureItem.name + " = " + (factureItem.size.price*factureItem.quantity | number:2) %></span></div>
-            <span ng-click="delete2(factureItem)" class="glyphicon glyphicon-remove right"></span>
-        </li>
-    </ul>
-
-    <h1 class="bill-total">Total = <% totalBill | number:2 %></h1>
-    <button ng-click="payNow()" type="button" class="btn btn-success btn-payer">Payer</button>
-
-</div><!--/.sidebar-->
-
-<div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 main">
-    <div class="row fixed">
-        <div class="row menu-filter">
-            <button  ng-click="filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary" ><span class="glyphicon glyphicon-star"></span> Favorites</button>
-            <button ng-repeat="itemType in menuItemTypes" ng-click="filters.itemtype.type = itemType.type" type="button" class="btn btn-primary"><% itemType.type %></button>
-        </div>
-    </div>
-</div>
-<div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 main">
-
-    @yield('content')
-</div>
-
-
+@yield('content')
 
 
 {{--Script call--}}
-<script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>
-<script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
 <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.js') }}"></script>
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/chart.min.js') }}"></script>
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/chart-data.js') }}"></script>
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart.js') }}"></script>
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>
-<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.js') }}"></script>
-<script src="{{ @URL::asset('js/jquery.nicescroll.min.js') }}"></script>
-<script src="{{ @URL::to('js/baseEffect.js') }}"></script>
+<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.js') }}"></script>{{--
+<script src="{{ @URL::asset('js/jquery.nicescroll.min.js') }}"></script>--}}{{--
+<script src="{{ @URL::to('js/baseEffect.js') }}"></script>--}}
 @if(Request::path() == "addon/rfid/table")
     <script src="{{ @URL::asset('js/jquery.sortable.js') }}"></script>
     <script src="{{ @URL::asset('js/listener.js') }}"></script>

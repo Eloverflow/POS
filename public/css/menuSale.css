@@ -3,13 +3,14 @@
 	background-color: #333;
 }
 
-.sidebar h1{
+.sidebar h1,.sidebar h2, .sidebar h3{
 	margin-top: 10px;
 	padding-left: 5px;
 	color: #fff;
 }
 
 .menu-sale{
+	border-top: 2px solid #222;
 	font-size: 1.4vw;
 }
 
@@ -175,7 +176,7 @@ div.saleTextZone input:focus{
 	overflow: hidden;/*
 	white-space: nowrap;*/
 	text-overflow: ellipsis;
-	height: 50px;
+	height: 75px;
 }
 
 
@@ -342,4 +343,108 @@ div.saleTextZone input:focus{
 
 .sidebar{
 	padding-bottom: 140px;
+}
+
+
+
+.pagination-sm.pagination.ng-isolate-scope.ng-valid{
+	margin-top: 0;
+	margin-bottom: 0;
+}
+
+.pagination>li>a, .pagination>li>span{
+
+/*
+	width: auto;*/
+	background: none;
+	font-size: 21px;/*
+	padding: 0 auto 0 auto;*/
+	font-weight: bold;
+}
+
+.pagination-next.ng-scope a{
+	float: right;/*
+	margin-right: 0;
+	margin-left: auto;*/
+}
+
+/*
+.pagination-prev.ng-scope a{
+	margin-right: auto;
+}*/
+
+.pagination-prev.ng-scope.disabled a,
+.pagination-next.ng-scope.disabled a{
+	color: #337ab7;
+	background: none;
+}
+
+.pagination{/*
+margin-left: 5px;
+margin-right: 5px;*/
+	width: 100%;
+	height: 44px;
+
+/*
+	margin-left: 10px;*//*
+width: 100%;*/
+}
+
+.row.beer-items{
+
+}
+
+#contentPanel{
+	visibility: visible!important;
+}
+
+pre{
+	color: #fff;
+	background-color: #333;
+	border: none;
+	border-bottom: 2px solid #222;
+}
+
+.note{
+	transition: color 0.1s, font-size 0.3s;
+	position: absolute;
+	/*float: right;*/
+	right: 0;
+	top: 0;
+
+}
+
+
+.note:hover{
+	color: red;
+	font-size: 32px;
+}
+
+
+.note span:hover {
+	color: red!important;
+}
+
+.note span{/*
+	line-height: 10;*/
+	width: 15%!important;
+	font-size: 28px!important;
+	padding: 5px;
+}
+
+
+
+.popover span.glyphicon.glyphicon-plus{
+	color: #30a5ff!important;
+	width: auto!important;
+	font-size: 15px!important;
+	margin-bottom: 0!important;
+}
+
+.popover .btn.btn-default{
+	background-color: #333;
+}
+
+.itemNote{
+	margin-top: 10px;
 }
