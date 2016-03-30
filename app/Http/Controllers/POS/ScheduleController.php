@@ -88,7 +88,7 @@ class ScheduleController extends Controller
                     $startTime = $weekDispos[$i][$j]->startTime;
                     $endTime = $weekDispos[$i][$j]->endTime;
 
-                    $date = new DateTime(Schedule::all()->first()->startDate);
+                    $date = new DateTime($schedule->startDate);
                     $date->add(new DateInterval('P' . $i .'D'));
 
                     $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
@@ -103,7 +103,7 @@ class ScheduleController extends Controller
                         false, //full day event?
                         $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
                         $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                        $scheduleid
+                        $weekDispos[$i][$j]->id
                     );
                 }
             }
@@ -140,21 +140,22 @@ class ScheduleController extends Controller
                         h2, h4, h5 {
                             margin: 0px;
                         }
-                        .emplTrackBlock
+                        table
                         {
-                            border-bottom: 1px solid #c4e3f3;
-                            margin-top: 10px;
-                            margin-left: 12px;
+                            border: 1px solid black;
+                            border-collapse: collapse;
                         }
-                        .trackBloc
-                        {
-                            margin-top: 10px;
-                            background-color:rgba(192,192,192,0.3);;
+                        table, th, td {
+                           text-align: center;
+                           border: 1px solid black;
+                        }
+                        table .dayCol {
+                            width: 120px;
                         }
                         </style>
                         </head>
-                        <body>" .
-            Utils::getDaySchedulesHtml($schedule, $scheduleInfos) . "</body></html>");
+                        <body>" . Utils::getDaySchedulesHtml($schedule, $scheduleInfos) . "</body></html>");
+        $pdf->setPaper('A4', 'landscape');
         return $pdf->stream();
     }
 
