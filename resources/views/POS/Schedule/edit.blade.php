@@ -57,7 +57,7 @@
     <div class="row">
         <div class="col-lg-12">
             <a class="btn btn-primary pull-left" id="btnAdd" href="#"> Add+ </a>
-            <a class="btn btn-success pull-right" id="btnFinish" href="#"> Finish </a>
+            <a class="btn btn-success pull-right" id="btnFinish" href="#"> Edit </a>
         </div>
     </div>
 @stop
@@ -80,7 +80,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
-                        {!! Form::text('dateClicked', $ViewBag['schedule']->startDate, array('class' => 'form-control', 'id' => 'dateClicked')) !!}
+                        {!! Form::text('dateClicked', $ViewBag['schedule']->startDate, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -110,6 +110,7 @@
                         <div class="form-group">
                             <h3>Day</h3>
                             <select id="dayNumber" class="form-control">
+                                <option value="-1">All Week</option>
                                 <option value="0">Sunday</option>
                                 <option value="1">Monday</option>
                                 <option value="2">Tuesday</option>
@@ -202,7 +203,10 @@
                 </div>
 
                 <!-- dialog buttons -->
-                <div class="modal-footer"><button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button></div>
+                <div class="modal-footer">
+                    <button id="btnDelEvent" type="button" class="btn btn-danger">Delete</button>
+                    <button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button>
+                </div>
             </div>
         </div>
     </div>

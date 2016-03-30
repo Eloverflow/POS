@@ -3,7 +3,7 @@
  */
 // var for edit Event
 var globStoredEvent = null;
-
+var globRefEventId = null;
 function postAddSchedules($storedCalendar) {
 
 
@@ -115,6 +115,11 @@ function editEvent($storedCalendar){
 
     $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
 }
+
+function deleteEvent($storedCalendar){
+    $storedCalendar.fullCalendar('removeEvents', globStoredEvent.id);
+}
+
 function addEvent($storedCalendar){
 
     $shour = $('#addModal #sHour').val();
@@ -138,12 +143,12 @@ function addEvent($storedCalendar){
 
             $dateFormated = formatDate(myDate);
             var newEvent = {
+                id: guid(),
                 title: $employeeName,
                 isAllDay: false,
                 start: new Date($dateFormated + ' ' + sHM + ':00' + '-04:00'),
                 end: new Date($dateFormated + ' ' + eHM + ':00' + '-04:00'),
                 description: '',
-                resourceId: 4,
                 employeeId: $employeeId
             };
             $storedCalendar.fullCalendar('addEventSource', [newEvent]);
@@ -152,12 +157,12 @@ function addEvent($storedCalendar){
 
     } else {
         var newEvent = {
+            id: guid(),
             title: $employeeName,
             isAllDay: false,
             start: new Date($dateClicked + ' ' + sHM + ':00' + '-04:00'),
             end: new Date($dateClicked + ' ' + eHM + ':00' + '-04:00'),
             description: '',
-            resourceId: 4,
             employeeId: $employeeId
         };
         $storedCalendar.fullCalendar('addEventSource', [newEvent]);
