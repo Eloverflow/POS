@@ -6,18 +6,37 @@
     <uib-pagination ng-change="pageChanged()" total-items="bigTotalItems" ng ng-model="bigCurrentPage" max-size="maxSize" class="pagination-sm" boundary-link-numbers="true" rotate="false"></uib-pagination>
 
         <ul class="ng-binding nav menu menu-sale">
-            <li><h2>Commande - Client: #<% bigCurrentPage %></h2> <div  uib-popover-template="dynamicPopover.templateUrl" popover-title="Title" popover-placement="<%placement.selected%>"   class="note"><span class="">Note</span><span class=" glyphicon glyphicon-comment"></span></div></li>
+            <li><h2>Commande - Client: #<% bigCurrentPage %></h2>
+                <div  uib-popover-template="dynamicPopover.templateUrl" popover-title="<% dynamicPopover.title %>" popover-placement="<%placement.selected%>" popover-trigger="outsideClick"   class="note"><span class="">Note</span><span class=" glyphicon glyphicon-comment"></span>
+                    <span style="position: absolute; right: 6px; top:6px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandClient[bigCurrentPage].notes.length %></span>
+                </div>
+            </li>
+            <div ng-show="commandClient[bigCurrentPage].notes.length != 0" class="itemNoteSeparation">
+                <p ng-repeat="currentNote in commandClient[bigCurrentPage].notes" ><% currentNote.note %>  <span ng-click="deleteItemNote(currentNote)" class="glyphicon glyphicon-remove right"></span></p>
+            </div>
             <script type="text/ng-template" id="myPopoverTemplate.html">
               {{--  <div><%dynamicPopover.content%></div>--}}
+
+              {{--<div ng-repeat="currentNote in commandClient[bigCurrentPage].notes">
+                  <p><% currentNote.note %> <span ng-click="deleteItemNote(currentNote)" class="glyphicon glyphicon-remove right"></span></p>
+              </div>
+
+              <div ng-show="commandItem.notes != undefined"><p><b>Note sur l'item</b></p></div>
+              <div ng-repeat="item in commandItem.notes">
+                  <p><% item.note %> <span ng-click="deleteItemNote(item, commandItem.notes)" class="glyphicon glyphicon-remove right"></span></p>
+              </div>--}}
+
                 <div class="form-group">
                     <label>Ajouter un note :</label>
-
                     <div class="input-group">
                         <input type="text" ng-model="dynamicPopover.note" placeholder="Note" class="form-control">
                         <div class="input-group-btn">
-                            <button type="button" class="btn btn-default" aria-label="Help"><span class="glyphicon glyphicon-plus"></span></button>
+                            <button  ng-click="addNote(dynamicPopover.note, commandItem)" type="button" class="btn btn-default" aria-label="Help"><span class="glyphicon glyphicon-plus"></span></button>
                         </div>
                     </div>
+                </div>
+                <div ng-repeat="suggestion in noteSuggestions">
+                <button type="button" class="btn btn-success" ng-click="addNote(suggestion, commandItem)" ><% suggestion %></button>
                 </div>
             </script>
 
@@ -25,9 +44,11 @@
                  <span ng-click="increase(commandItem)" class="glyphicon glyphicon-plus"></span>
                  <span ng-click="decrease(commandItem)" class="glyphicon glyphicon-minus"></span>
                  <div class="saleTextZone"><input id="" ng-change="updateBill()" ng-model="commandItem.quantity" value=""> X <span class="sale-item-name"><% commandItem.size.name + " de " + commandItem.name + " = " + (commandItem.size.price*commandItem.quantity | number:2) %></span></div>
-                 <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right"></span>
-                 <span uib-popover-template="dynamicPopover.templateUrl" popover-title="Title" popover-placement="<%placement.selected%>"  class="glyphicon glyphicon-comment itemNote right"><span style="position: absolute; right: 10px; color: #30a5ff; background-color: #333; border-radius: 50%; width: 15px; height: 15px; font-size: 12px; margin: 1px; padding-left: 1px">1</span></span>
-
+                 <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right special"></span>
+                <span uib-popover-template="dynamicPopover.templateUrl" popover-title="<% dynamicPopover.title %>" popover-placement="<%placement.selected%>" popover-trigger="outsideClick" class="glyphicon glyphicon-comment itemNote right"> <span style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
+                 <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
+                     <p ng-repeat="item in commandItem.notes" ><% item.note %><span ng-click="deleteItemNote(item, commandItem.notes)" class="glyphicon glyphicon-remove right"></span></p>
+                 </div>
              </li>
 
             {{--<li ng-repeat="commandItem in commandItems"  id="commandItem<% commandItem.id %>" class="sale-item">
@@ -56,12 +77,12 @@
     {{--Content--}}
     <div class="row beer-items">
         <div ng-repeat="menuItems in menuItemsExtended | filter:filters"  >
-            <div ng-repeat="menuItemSize in menuItems.sizes" >
+            <div ng-repeat="menuItemSize in menuItems.sizes" class="sizeBlock" >
                 <div ng-repeat="menuItem in menuItems" class="col-sm-6 col-md-3" >
-                    <div ng-click="selectedItem(menuItem)" class="thumbnail beerItem">{{--
+                    <div{{-- ng-click="selectedItem(menuItem)" --}} ng-click="selectedItem(menuItem,menuItemSize.name);addItem()" class="thumbnail beerItem" style="background-color: <% menuItemSize.color.boxColor %>; ">{{--
                         <img class="beerImage" ng-src="{{ @URL::to('/img/item/')}}/<% menuItem.img_id %>">--}}
                         <div class="caption">
-                            <h3><span class="beerName"><% menuItemSize %> de <% menuItem.name %></span></h3>
+                            <h3 style="color: <% menuItemSize.color.textColor %>"><span class="beerName"><% menuItemSize.name %> de <% menuItem.name %></span></h3>
                         </div>
                     </div>
                 </div>

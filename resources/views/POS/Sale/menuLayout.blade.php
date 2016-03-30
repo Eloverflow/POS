@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mirageflow @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
+    <title>PUBALEX @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
 
     {{--Stylesheet call--}}
     <link href="{{ @URL::to('Framework/Bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -45,7 +45,31 @@
                 <span>Facture</span> <span class="glyphicon glyphicon-barcode"></span>
             </button>
             <a class="navbar-brand" href="{{@URL::to('/')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pub</span>Alex</a>
+            <ul class="user-menu">
 
+                <li class="dropdown pull-right">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg>
+                        Employé #<% currentEmploye %>
+                        <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+
+
+                        <li><a href="#"><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
+
+                        <li><a href="#"><svg class="glyph stroked gear"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-gear"></use></svg> Settings</a></li>
+
+                        <li><a href="http://mirageflow.com/auth/logout"><svg class="glyph stroked cancel"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+            <ul class="user-menu tableNumber">
+
+                <li >
+                    <a href="#" ><span class="glyphicon glyphicon-unchecked"></span>
+                        Table #<% currentTable %>
+                       </a>
+                </li>
+            </ul>
         </div>
 
     </div><!-- /.container-fluid -->
