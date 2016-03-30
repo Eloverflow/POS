@@ -109,6 +109,7 @@
                         <div class="form-group">
                             <h3>Day</h3>
                             <select id="dayNumber" class="form-control">
+                                <option value="-1">All Week</option>
                                 <option value="0">Sunday</option>
                                 <option value="1">Monday</option>
                                 <option value="2">Tuesday</option>
@@ -228,7 +229,7 @@
         $( "#startDate" ).change(function() {
             if($( "#startDate").val()  != ""){
                 globStoredCalendar.fullCalendar('gotoDate', $('#startDate').val());
-                $( "#dateClicked").val($('#startDate').val())
+                $( "#dateClicked").val($('#startDate').val());
 
                 var nDate = new Date($('#startDate').val());
                 nDate.setDate(nDate.getDate() + 7);
@@ -250,10 +251,12 @@
             //var nDate = new Date();
             //nDate.setDate(nDate.getFullYear() + "-" +  nDate.getMonth() + "-" + (nDate.getDate() + this.value));
             var realVal = parseInt(this.value);
-            realVal += 1;
-            console.log(realVal);
-            var myDate = new Date(new Date($('#startDate').val()).getTime()+(realVal*24*60*60*1000));
-            $('#dateClicked').val(formatDate(myDate));
+            if(realVal != -1) {
+                realVal += 1;
+                console.log(realVal);
+                var myDate = new Date(new Date($('#startDate').val()).getTime() + (realVal * 24 * 60 * 60 * 1000));
+                $('#dateClicked').val(formatDate(myDate));
+            }
         });
     </script>
 @stop

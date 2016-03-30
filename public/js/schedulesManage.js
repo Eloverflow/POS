@@ -131,18 +131,38 @@ function addEvent($storedCalendar){
     var sHM = $shour + ":" + $smin;
     var eHM = $ehour + ":" + $emin;
 
-    var newEvent = {
-        title: $employeeName,
-        isAllDay: false,
-        start: new Date($dateClicked + ' ' + sHM + ':00' + '-04:00'),
-        end: new Date($dateClicked + ' ' + eHM + ':00' + '-04:00'),
-        description: '',
-        resourceId: 4,
-        employeeId: $employeeId
-    };
+    if($dDayNumber == -1)
+    {
+        for(var i = 1; i <= 7; i++){
+            var myDate = new Date(new Date($('#startDate').val()).getTime() + (i * 24 * 60 * 60 * 1000));
 
+            $dateFormated = formatDate(myDate);
+            var newEvent = {
+                title: $employeeName,
+                isAllDay: false,
+                start: new Date($dateFormated + ' ' + sHM + ':00' + '-04:00'),
+                end: new Date($dateFormated + ' ' + eHM + ':00' + '-04:00'),
+                description: '',
+                resourceId: 4,
+                employeeId: $employeeId
+            };
+            $storedCalendar.fullCalendar('addEventSource', [newEvent]);
 
-    $storedCalendar.fullCalendar('addEventSource', [newEvent]);
+        }
+
+    } else {
+        var newEvent = {
+            title: $employeeName,
+            isAllDay: false,
+            start: new Date($dateClicked + ' ' + sHM + ':00' + '-04:00'),
+            end: new Date($dateClicked + ' ' + eHM + ':00' + '-04:00'),
+            description: '',
+            resourceId: 4,
+            employeeId: $employeeId
+        };
+        $storedCalendar.fullCalendar('addEventSource', [newEvent]);
+    }
+
 }
 
 function dayClick(xDate, xEvent)
