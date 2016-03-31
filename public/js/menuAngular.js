@@ -1,9 +1,10 @@
-var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider) {
+var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider, uibPaginationConfig) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
+    uibPaginationConfig.previousText='Précédent';
+    uibPaginationConfig.nextText='Suivant';
 
 })
-
 
 
 .factory('getReq', function ($http, $location) {
@@ -128,7 +129,117 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
 
                 var size_name_array_now = $scope.menuItemTypes[i].size_names.split(",");
 
-                $scope.menuItemsExtended[i].sizes = size_name_array_now;
+                var size_array = []
+
+
+
+                var sizeMainColor = [];
+
+
+                for(var x = 0; x < size_name_array_now.length; x++){
+
+                    size_array[x] = {};
+
+
+
+                    var sizeColorForName = [15,15,15,15,15,15];
+
+
+                    var sizeColorText = [0,0,0,0,0,0];
+
+
+                    function getRandomColor(string) {
+                        var letters = '0123456789ABCDEF'.split('');
+                        var color = '#';
+                        var textColor = '#';
+
+                        var name = string.split('');
+
+                        var count = 0;
+                        for(var k = 0; k < name.length; k++){
+
+                            if(count > 6)
+                            {
+                                count = 0
+                            }
+
+                            var currentColor = name[k].charCodeAt(0);
+
+                            while(currentColor > 15){
+                                currentColor = currentColor - 16;
+                            }
+
+
+                            var invertedColor = 15 - currentColor;
+
+
+                            while(invertedColor > 7){
+                                invertedColor = invertedColor - 2;
+                            }
+
+
+                            console.log(currentColor + " - Inverted to : " + invertedColor);
+
+                            sizeColorForName[count] = currentColor;
+                            sizeColorText[count] = invertedColor;
+
+
+
+                            count++
+                        }
+
+
+                        for(var o = 0; o < sizeColorForName.length; o++){
+                            color += letters[sizeColorForName[o]];
+                            textColor += letters[sizeColorText[o]];
+                        }
+
+/*
+
+                        if(x == 0){
+                            var currentColor
+                            for (var h = 0; h < 4; h++ ) {
+                                currentColor = letters[Math.floor(Math.random() * 16)];
+
+                                if(currentColor >)
+
+                                color += currentColor;
+                                sizeMainColor[h] = currentColor;
+                            }
+                        }else{
+                            for (h = 0; h < 4; h++ ) {
+                                color += sizeMainColor[h];
+                            }
+                        }
+
+                        for (h = 4; h < 6; h++ ) {
+                            color += letters[Math.floor(Math.random() * 16)];
+                        }
+
+*/
+
+                        var object = {
+                            boxColor: color,
+                            textColor: textColor
+                        }
+
+
+                        return object;
+                    }
+
+
+
+
+                    size_array[x].name = size_name_array_now[x];
+
+
+                    size_array[x].color = getRandomColor(size_name_array_now[x]);
+
+                    console.log(size_array[x].color);
+                }
+
+
+                $scope.menuItemsExtended[i].sizes = size_array;
 
             }
 
@@ -139,6 +250,8 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
         getReq.send($url, null ,$callbackFunction);
 
     };
+
+
 
     getReq.send($url, null ,$callbackFunction);
 
@@ -163,9 +276,49 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
     };
 
 
+
+    $scope.noteSuggestions = ['Sans gluten', 'Ne pas faire', 'OPC'];
+
+    $scope.addNote = function (note, item) {
+
+        if(note != "" && note != undefined){
+            if(typeof item != 'undefined' && item != null){
+                item.notes.push({note: note});
+            }
+            else{
+                if(typeof $scope.commandClient[$scope.bigCurrentPage].notes === 'undefined' || $scope.commandClient[$scope.bigCurrentPage].notes === null )
+                    $scope.commandClient[$scope.bigCurrentPage].notes = [];
+
+                $scope.commandClient[$scope.bigCurrentPage].notes.push({note: note})
+            }
+
+            $scope.dynamicPopover.note = '';
+        }
+
+        console.log(note);
+    }
+
+    $scope.deleteItemNote = function(note, item) {
+        var index
+        if(typeof item != 'undefined' && item != null){
+            index = item.indexOf(note);
+            item.splice(index, 1);
+        }
+        else
+        {
+            index = $scope.commandClient[$scope.bigCurrentPage].notes.indexOf(note);
+            $scope.commandClient[$scope.bigCurrentPage].notes.splice(index, 1);
+        }
+
+    }
+
+
+
     $scope.addItem = function() {
 
         $scope.selectedItemForSize['quantity'] = 1;
+
+        $scope.selectedItemForSize['notes'] = [];
 
         //Eventually selected size
         $scope.selectedItemForSize['size'] = angular.copy($scope.sizeProp.value);
@@ -207,6 +360,13 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
 
         var total = 0;
 
+        if(typeof $scope.commandClient[$scope.bigCurrentPage] === 'undefined' || $scope.commandClient[$scope.bigCurrentPage] === null ){
+
+            $scope.commandClient[$scope.bigCurrentPage] = [];
+            $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
+
+        }
+
         if($scope.commandClient[$scope.bigCurrentPage].commandItems.length > 0){
             for(i = 0; i < $scope.commandClient[$scope.bigCurrentPage].commandItems.length; i++){
                 total +=  $scope.commandClient[$scope.bigCurrentPage].commandItems[i].quantity *  $scope.commandClient[$scope.bigCurrentPage].commandItems[i].size.price
@@ -222,12 +382,12 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
     };
 
 
-    $scope.selectedItem = function(item) {
+    $scope.selectedItem = function(item, sizeSelected) {
 
-
+/*
         $('#footPanel').css('padding', '20');
         $('#footPanel').css('height', '300');
-        $('#footPanel').css('border-width', '8');
+        $('#footPanel').css('border-width', '8');*/
      /*   $('#footPanel').height(300);*/
 
 
@@ -258,10 +418,12 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
         item['size'] = sizes;*/
 
 
+        console.log($.grep(sizes, function(e){ return e.name == sizeSelected; })[0].name)
+
         $scope.sizeProp = {
             "name": size_name_array[0],
             price: size_prices_array[0],
-            "value": sizes[0],
+            "value": $.grep(sizes, function(e){ return e.name == sizeSelected; })[0],
             "values": sizes
         };
 
@@ -302,15 +464,26 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
     $scope.bigCurrentPage = 1;
 
 
+    $scope.commandClient[$scope.bigCurrentPage] = [];
+    $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
 
 
-
+    $scope.currentTable = 22;
+    $scope.currentEmploye = 2;
 
     $scope.dynamicPopover = {
-        content: 'Hello, World!',
+        content: '',
         templateUrl: 'myPopoverTemplate.html',
-        note: ''
+        title: 'Notes sur la commande'
     };
+
+/*
+    $scope.dynamicPopoverItems = {
+        content: '',
+        templateUrl: 'myPopoverTemplate.html',
+        title: 'Notes sur l\'item'
+    };
+*/
 
     $scope.placement = {
         options: [
@@ -337,7 +510,9 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
 
 })
 
+
  /*   .controller('PaginationDemoCtrl', function ($scope, $log) {
 
     });
 */
+
