@@ -50,12 +50,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Employee Title :</label>
-                        <p>{{ $employee->employeeTitle }}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Salary :</label>
-                        <p>{{ $employee->salary }}</p>
+                        <label>Bonus Salary :</label>
+                        <p>{{ $employee->bonusSalary }}</p>
                     </div>
                     <div class="form-group">
                         <label>Birth Date :</label>

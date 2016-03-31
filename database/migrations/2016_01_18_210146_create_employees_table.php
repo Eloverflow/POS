@@ -22,11 +22,9 @@ class CreateEmployeesTable extends Migration
             $table->string('state');
             $table->string('pc');
             $table->string('nas');
-            $table->integer('employeeTitle')->unsigned();
-            $table->foreign('employeeTitle')->references('id')->on('employee_titles');
             $table->integer('userId')->unsigned();
             $table->foreign('userId')->references('id')->on('users');
-            $table->decimal('salary');
+            $table->decimal('bonusSalary');
             $table->date('birthDate');
             $table->date('hireDate');
             $table->timestamps();

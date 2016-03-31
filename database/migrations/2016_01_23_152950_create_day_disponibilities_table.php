@@ -16,7 +16,6 @@ class CreateDayDisponibilitiesTable extends Migration
             $table->increments('id');
             $table->integer('disponibility_id')->unsigned();
             $table->foreign('disponibility_id')->references('id')->on('disponibilities');
-            $table->date('day');
             $table->integer('day_number')->unsigned();
             $table->time('startTime');
             $table->time('endTime');

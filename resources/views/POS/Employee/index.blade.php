@@ -25,7 +25,6 @@
                             <th data-field="firstName" data-sortable="true">First Name</th>
                             <th data-field="lastName"  data-sortable="true">Last Name</th>
                             <th data-field="email" data-sortable="true">Email</th>
-                            <th data-field="title"  data-sortable="true">Title</th>
                             <th data-field="hireDate" data-sortable="true">Hire Date</th>
                             <th data-field="actions" data-sortable="true"></th>
                         </tr>
@@ -38,7 +37,6 @@
                                 <td>{{ $employee->firstName }}</td>
                                 <td>{{ $employee->lastName }}</td>
                                 <td>{{ $employee->email }}</td>
-                                <td>{{ $employee->name }}</td>
                                 <td>{{ $employee->hireDate }}</td>
                                 <td><a href="{{ URL::to('employee/track', $employee->idEmployee) }}">Track</a>
                                     <a href="{{ URL::to('employee/details', $employee->idEmployee) }}">Details</a>

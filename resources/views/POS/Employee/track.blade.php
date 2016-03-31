@@ -30,12 +30,8 @@
                     </div>
 
                     <div class="form-group">
-                        <label>Employee Title :</label>
-                        <p>{{ $ViewBag["employee"]->employeeTitle }}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Salary :</label>
-                        <p>{{ $ViewBag["employee"]->salary }}</p>
+                        <label>Bonus Salary :</label>
+                        <p>{{ $ViewBag["employee"]->bonusSalary }}</p>
                     </div>
                     <div class="form-group">
                         <label>Birth Date :</label>

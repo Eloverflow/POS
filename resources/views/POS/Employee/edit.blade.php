@@ -120,22 +120,23 @@
                             <legend>Employee Informations</legend>
                             <div class="mfs">
                                 <div class="form-group">
-                                    {!! Form::label('title', "Job Title" ) !!}
-                                    <select name="employeeTitle" class="form-control">
+                                    <p class="text-warning">* Press shift while selecting for multiple select.</p>
+                                    {!! Form::label('title', "Employee Titles" ) !!}
+                                    <select multiple name="employeeTitles" class="form-control">
                                         @foreach ($ViewBag['employeeTitles'] as $employeeTitle)
-                                            <option value="{{ $employeeTitle->id }}" <?php if ($ViewBag['employee']->employeeTitle == $employeeTitle->name){ echo "selected"; }?>>{{ $employeeTitle->name }}</option>
+                                            <option value="{{ $employeeTitle->id }}">{{ $employeeTitle->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('salary', "Salary" ) !!}
-                                    @if($errors->has('salary'))
+                                    {!! Form::label('bonusSalary', "Bonus Salary" ) !!}
+                                    @if($errors->has('bonusSalary'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('salary', $ViewBag['employee']->salary, array('class' => 'form-control')) !!}
+                                            {!! Form::text('bonusSalary', $ViewBag['employee']->bonusSalary, array('class' => 'form-control')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('salary', $ViewBag['employee']->salary, array('class' => 'form-control')) !!}
+                                        {!! Form::text('bonusSalary', $ViewBag['employee']->bonusSalary, array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
 

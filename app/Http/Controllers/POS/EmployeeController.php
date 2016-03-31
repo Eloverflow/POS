@@ -7,6 +7,7 @@ use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
 use App\Models\POS\Punch;
 use App\Models\Project;
+use App\Models\POS\Title_Employees;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
@@ -89,12 +90,13 @@ class EmployeeController extends Controller
                 'state' => \Input::get('state'),
                 'pc' => \Input::get('pc'),
                 'nas' => \Input::get('nas'),
-                'employeeTitle' => \Input::get('employeeTitle'),
                 'userId' => \Input::get('idUser'),
-                'salary' => \Input::get('salary'),
+                'bonusSalary' => \Input::get('bonusSalary'),
                 'birthDate' => \Input::get('birthDate'),
                 'hireDate' => \Input::get('hireDate')
             ]);
+
+
 
             return \Redirect::action('POS\EmployeeController@index');
         }
@@ -145,14 +147,19 @@ class EmployeeController extends Controller
                 'state' => \Input::get('state'),
                 'pc' => \Input::get('pc'),
                 'nas' => \Input::get('nas'),
-                'employeeTitle' => \Input::get('employeeTitle'),
                 'userId' => $user->id,
-                'salary' => \Input::get('salary'),
+                'bonusSalary' => \Input::get('bonusSalary'),
                 'birthDate' => \Input::get('birthDate'),
                 'hireDate' => \Input::get('hireDate')
             ]);
 
-
+//            $employeeTitlesInpt = \Input::get('employeeTitles');
+//            for($i = 0; $i < count($employeeTitlesInpt); $i++){
+                Title_Employees::create([
+                    'employee_id' => $employee->id,
+                    'employee_titles_id' => 1
+                ]);
+            //}
             return \Redirect::action('POS\EmployeeController@index')->withSuccess('The employee has been successfully created !');
         }
     }
