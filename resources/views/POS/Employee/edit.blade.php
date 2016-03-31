@@ -122,10 +122,23 @@
                                 <div class="form-group">
                                     <p class="text-warning">* Press shift while selecting for multiple select.</p>
                                     {!! Form::label('title', "Employee Titles" ) !!}
-                                    <select multiple name="employeeTitles" class="form-control">
-                                        @foreach ($ViewBag['employeeTitles'] as $employeeTitle)
-                                            <option value="{{ $employeeTitle->id }}">{{ $employeeTitle->name }}</option>
-                                        @endforeach
+                                    <select multiple name="employeeTitles[]" class="form-control">
+                                        <?php $found = false;
+                                        foreach ($ViewBag['employeeTitles'] as $employeeTitle){
+                                            $found = false;
+                                            for($i = 0; $i < count($ViewBag['employeeTitlesInUse']); $i++){
+                                                if($employeeTitle->id == $ViewBag['employeeTitlesInUse'][$i]->idEmployeeTitles){
+                                                $found = true;
+                                                    ?>
+                                                        <option value="{{ $employeeTitle->id }}" selected>{{ $employeeTitle->name }}</option>
+                                                    <?php
+                                                }
+                                            }
+                                            if($found == false){ ?>
+                                                <option value="{{ $employeeTitle->id }}">{{ $employeeTitle->name }}</option>
+                                            <?php }
+                                        }
+                                        ?>
                                     </select>
                                 </div>
 

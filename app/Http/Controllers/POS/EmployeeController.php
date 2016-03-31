@@ -49,10 +49,13 @@ class EmployeeController extends Controller
     {
         $employee = Employee::GetById($id);
         $employeeTitles = EmployeeTitle::All();
+
+        $employeeTitlesInUse = Title_Employees::getByEmployeeId($id);
         //DB::table('users')->get();
         $view = \View::make('POS.Employee.edit')->with('ViewBag', array(
             'employee' => $employee,
-            'employeeTitles' => $employeeTitles
+            'employeeTitles' => $employeeTitles,
+            'employeeTitlesInUse' => $employeeTitlesInUse
         ));
         return $view;
     }
@@ -96,6 +99,16 @@ class EmployeeController extends Controller
                 'hireDate' => \Input::get('hireDate')
             ]);
 
+            // We delete so we can re-insert properly.
+            Title_Employees::DeleteByEmployeeId(\Input::get('idEmployee'));
+
+            $employeeTitlesInpt = \Input::get('employeeTitles');
+            for($i = 0; $i < count($employeeTitlesInpt); $i++){
+                Title_Employees::create([
+                    'employee_id' => \Input::get('idEmployee'),
+                    'employee_titles_id' => $employeeTitlesInpt[$i]
+                ]);
+            }
 
 
             return \Redirect::action('POS\EmployeeController@index');
@@ -153,13 +166,13 @@ class EmployeeController extends Controller
                 'hireDate' => \Input::get('hireDate')
             ]);
 
-//            $employeeTitlesInpt = \Input::get('employeeTitles');
-//            for($i = 0; $i < count($employeeTitlesInpt); $i++){
+            $employeeTitlesInpt = \Input::get('employeeTitles');
+            for($i = 0; $i < count($employeeTitlesInpt); $i++){
                 Title_Employees::create([
                     'employee_id' => $employee->id,
-                    'employee_titles_id' => 1
+                    'employee_titles_id' => $employeeTitlesInpt[$i]
                 ]);
-            //}
+            }
             return \Redirect::action('POS\EmployeeController@index')->withSuccess('The employee has been successfully created !');
         }
     }
