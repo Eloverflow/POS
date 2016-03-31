@@ -399,10 +399,14 @@ pre{
 	margin-top: 10px;
 }
 
+/*This make the menu of item more classified by changing of line after the end of the size
+
+
 .sizeBlock{
 	float: left;
 	width: 100%;
 }
+*/
 
 .popover-title{
 	color: #333!important;
