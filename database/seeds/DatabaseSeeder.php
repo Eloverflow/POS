@@ -61,8 +61,8 @@ class DatabaseSeeder extends Seeder
         $this->call(Day_SchedulesTableSeeder::class);
 
         $this->call(ClientSeeder::class);
-        $this->call(SaleSeeder::class);
-        $this->call(SaleLineSeeder::class);
+        //$this->call(SaleSeeder::class);
+        //$this->call(SaleLineSeeder::class);
 
         $this->call(PunchesTableSeeder::class);
 
@@ -103,21 +103,18 @@ class Day_DisponibilitiesTableSeeder extends Seeder {
         DB::table('day_disponibilities')->delete();
 
         Day_Disponibilities::create(['disponibility_id' => 1,
-            'day' => date('2016-01-01'),
             'day_number' => 0,
             'startTime' => date('15:00:00'),
             'endTime' => date('17:00:00')
         ]);
 
         Day_Disponibilities::create(['disponibility_id' => 1,
-            'day' => date('2016-01-01'),
             'day_number' => 0,
             'startTime' => date('18:00:00'),
             'endTime' => date('19:55:00')
         ]);
 
         Day_Disponibilities::create(['disponibility_id' => 1,
-            'day' => date('2016-01-01'),
             'day_number' => 3,
             'startTime' => date('20:00:00'),
             'endTime' => date('03:00:00')
@@ -351,9 +348,8 @@ class EmployeeSeeder extends Seeder {
             'state' => 'Quebec',
             'pc' => 'g0r3a0',
             'nas' => '123456789',
-            'employeeTitle' => 1,
             'userId' => 1,
-            'salary' => 12.2,
+            'bonusSalary' => 1,
             'birthDate' => date('2016-01-01'),
             'hireDate' => date('2016-01-01')
         ]);
@@ -366,9 +362,8 @@ class EmployeeSeeder extends Seeder {
             'state' => 'Quebec',
             'pc' => 'g0w0w3',
             'nas' => '123456789',
-            'employeeTitle' => 1,
             'userId' => 1,
-            'salary' => 12.2,
+            'bonusSalary' => 1,
             'birthDate' => date('2016-01-01'),
             'hireDate' => date('2016-01-01')
         ]);
@@ -377,22 +372,27 @@ class EmployeeSeeder extends Seeder {
 
 }
 
+
 class EmployeeTitleSeeder extends Seeder {
     public function run()
     {
         DB::table('employee_titles')->delete();
 
         EmployeeTitle::create([
-            'name' => 'Barmaid'
+            'name' => 'Barmaid',
+            'baseSalary' => 12,
         ]);
         EmployeeTitle::create([
-            'name' => 'Livreur'
+            'name' => 'Livreur',
+            'baseSalary' => 12,
         ]);
         EmployeeTitle::create([
-            'name' => 'Plongeur'
+            'name' => 'Plongeur',
+            'baseSalary' => 12,
         ]);
         EmployeeTitle::create([
-            'name' => 'Cuisinier'
+            'name' => 'Cuisinier',
+            'baseSalary' => 12,
         ]);
     }
 }

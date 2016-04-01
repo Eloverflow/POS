@@ -13,18 +13,16 @@ class Disponibility extends Model
     {
         return \DB::table('disponibilities')
             ->join('employees', 'disponibilities.employee_id', '=', 'employees.id')
-            ->join('employee_titles', 'employees.employeeTitle', '=', 'employee_titles.id')
             ->select(\DB::raw('employees.id as idEmployee,
             disponibilities.id as idDisponibility,
             disponibilities.created_at,
             disponibilities.updated_at,
             disponibilities.name,
-            employees.salary,
+            employees.bonusSalary,
             streetAddress,
             phone,
             firstName,
             lastName,
-            employee_titles.name as employeeTitle,
             city,
             nas,
             pc,
@@ -40,18 +38,16 @@ class Disponibility extends Model
     {
         return \DB::table('disponibilities')
             ->join('employees', 'disponibilities.employee_id', '=', 'employees.id')
-            ->join('employee_titles', 'employees.employeeTitle', '=', 'employee_titles.id')
             ->select(\DB::raw('employees.id as idEmployee,
             disponibilities.id as idDisponibility,
             disponibilities.created_at,
             disponibilities.updated_at,
             disponibilities.name,
-            employees.salary,
+            employees.bonusSalary,
             streetAddress,
             phone,
             firstName,
             lastName,
-            employee_titles.name as employeeTitle,
             city,
             nas,
             pc,

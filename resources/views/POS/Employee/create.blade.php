@@ -155,8 +155,9 @@
                             <legend>Employee Informations</legend>
                             <div class="mfs">
                                 <div class="form-group">
-                                    {!! Form::label('title', "Job Title" ) !!}
-                                    <select name="employeeTitle" class="form-control">
+                                    <p class="text-warning">* Press shift while selecting for multiple select.</p>
+                                    {!! Form::label('title', "Employee Title(s)" ) !!}
+                                    <select multiple name="employeeTitles[]" class="form-control">
                                         @foreach ($employeeTitles as $employeeTitle)
                                             <option value="{{ $employeeTitle->id }}">{{ $employeeTitle->name }}</option>
                                         @endforeach
@@ -164,13 +165,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('salary', "Salary" ) !!}
-                                    @if($errors->has('salary'))
+                                    {!! Form::label('bonusSalary', "Bonus Salary" ) !!}
+                                    @if($errors->has('bonusSalary'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('salary', null, array('class' => 'form-control')) !!}
+                                            {!! Form::text('bonusSalary', null, array('class' => 'form-control')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('salary', null, array('class' => 'form-control')) !!}
+                                        {!! Form::text('bonusSalary', null, array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
 
