@@ -18,6 +18,7 @@ class CreateCommandLinesTable extends Migration
             $table->foreign('command_id')->references('id')->on('commands')->nullable();
             $table->integer('item_id')->unsigned();
             $table->foreign('item_id')->references('id')->on('items')->nullable();
+            $table->string('size');
             $table->integer('quantity');
             $table->string('note');
             $table->float('cost');

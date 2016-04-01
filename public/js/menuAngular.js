@@ -1,4 +1,4 @@
-var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider, uibPaginationConfig) {
+var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpolateProvider, uibPaginationConfig) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
     uibPaginationConfig.previousText='Précédent';
@@ -58,7 +58,7 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
 })
 
 
-.controller('menuController', function($scope, getReq, postReq, $log, $filter)
+.controller('menuController', function($scope, getReq, postReq, $log, $filter, $timeout)
 {
 
     $scope.commandItems = [];
@@ -358,6 +358,8 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
 
     $scope.updateBill = function(){
 
+        $scope.delayedUpdateTable();
+
         var total = 0;
 
         if(typeof $scope.commandClient[$scope.bigCurrentPage] === 'undefined' || $scope.commandClient[$scope.bigCurrentPage] === null ){
@@ -451,6 +453,40 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
 
     }
 */
+
+    var timeoutHandle;
+
+    $scope.delayedUpdateTable = function(){
+
+       /* $timeout(function(){
+            $scope.progressValue = 0;
+        }, 200);*/
+        $scope.savingMessage = "Sauvegarde automatique.."
+
+        $timeout(function(){
+            $scope.progressValue = 50;
+
+            $('.progress-bar').removeClass('progress-bar-success');/*
+            $('#progressBar').addClass('progress-bar-info');*/
+
+        }, 0);
+
+  /*      // in the example above, assign the result
+                timeoutHandle = window.setTimeout(function() {
+                    $scope.savingMessage = "Updating "
+                    $scope.updateTable();
+                }, 5000);*/
+
+        // in your click function, call clearTimeout
+                window.clearTimeout(timeoutHandle);
+
+        // then call setTimeout again to reset the timer
+                timeoutHandle = window.setTimeout(function() {
+                    $scope.updateTable();
+
+                }, 5000);
+    }
+
     $scope.updateTable = function () {
 
         $url = 'http://pos.mirageflow.com/menu/command';/*
@@ -470,6 +506,13 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
                 $scope.commandClient[f+1].command_number = response.commands[f].command_number;
                 console.log($scope.commandClient[f+1]);
             }
+
+
+            $timeout(function(){
+                $scope.progressValue = 100;
+                $('.progress-bar').addClass('progress-bar-success');
+                $scope.savingMessage = "Sauvegardé!"
+            }, 0);
 
             console.log("The command as been saved and confirmation received inside response - Success or Not ?");
 
@@ -503,7 +546,15 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
     $scope.currentTable = 22;
     $scope.currentEmploye = 2;
 
+    var amt = 100;
 
+    $scope.countTo = amt;
+    $scope.countFrom = 0;
+    $scope.savingMessage = "Pret!";
+
+    $timeout(function(){
+        $scope.progressValue = amt;
+    }, 200);
 
     $scope.dynamicPopover = {
         content: '',

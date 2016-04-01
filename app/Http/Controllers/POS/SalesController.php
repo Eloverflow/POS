@@ -195,6 +195,7 @@ class SalesController extends Controller
         $result['msg'] = "Messages\n ";
         $result['success'] = "false";
         $result['commands'] = array();
+        $result['commandLine'] = array();
 
         //If the post isn't empty
         if (!empty($inputs)) {
@@ -210,9 +211,9 @@ class SalesController extends Controller
 
                 /*If the command Posted contain a commmand_number it mean that it already exist, so we gota update it instead of create it */
                 if(!empty($inputCommand['command_number'])){
-                    $command = Command::where('command_number', $inputCommand['command_number'])->get();
-
-                    $command = $command[0];
+                    $command = Command::where('command_number', $inputCommand['command_number'])->first();
+/*
+                    $command = $command[0];*/
 
                     /*If we found the command*/
                     if ($command != "") {
@@ -230,7 +231,7 @@ class SalesController extends Controller
                                 $isMissing = true;
 
                                 foreach ($inputCommand['commandItems'] as $inputItem) {
-                                    if($commandLine['item_id'] == $inputItem['id'])
+                                    if($commandLine['item_id'] == $inputItem['id'] && $commandLine['size'] == $inputItem['size']['name'])
                                         $isMissing = false;
                                 }
 
@@ -244,11 +245,12 @@ class SalesController extends Controller
 
                         //We update de command
                         foreach ($inputCommand['commandItems'] as $inputItem) {
-                            $commandLine = CommandLine::where('command_id', $command->id)->where('item_id', $inputItem['id']);
+                            $commandLine = CommandLine::where('command_id', $command->id)->where('item_id', $inputItem['id'])->where('size', $inputItem['size']['name']);
+/*
+                            var_dump($commandLine);*/
 
-                            var_dump($commandLine);
 
-                            if($commandLine != ""){
+                            if(!empty($commandLine->first())){
                                 $result['msg'] .= " - Succeeded at finding the command line";/*
                                 $result['inputItem'] = $inputItem;*/
                                 $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
@@ -256,7 +258,7 @@ class SalesController extends Controller
                             }
                             else{
                                 $result['msg'] .= " - Failed at finding the command line";
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
 
                                 if($commandLine == ""){
                                     $result['msg'] .= " - Failed at recording command line";
@@ -307,7 +309,7 @@ class SalesController extends Controller
                                 }
                                 else{
                                     $result['msg'] .= " - Failed at finding the command line";
-                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
+                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
 
                                     if($commandLine == ""){
                                         $result['msg'] .= " - Failed at recording command line";
@@ -331,7 +333,7 @@ class SalesController extends Controller
                                 /* var_dump($command);*/
 
 
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
 
                                 if($commandLine == ""){
                                     $result['msg'] .= " - Failed at command line";

@@ -320,13 +320,7 @@ div.saleTextZone input:focus{
 	bottom: 70px;
 }
 
-.btn-payer{
-	border-radius: 0;
-	height: 80px;
-	width: 41.7%;
-	position: fixed;
-	bottom: 0;
-}
+
 
 .sidebar{
 	padding-bottom: 140px;
@@ -479,7 +473,29 @@ pre{
 	color: white;
 }
 
+.btn-payer{
+	border-radius: 0;
+	height: 80px;
+	width: 41.7%;
+	position: fixed;
+	bottom: 0;
+}
 
+.progress {
+	width: 41.7%;
+	position: fixed;
+	bottom: -20px;
+	height: 5em;
+}
+.progress i {
+	font-size: 24px;
+	line-height: 3em;
+}
+
+.progress-bar {
+	-webkit-transition: width 1s ease-in-out;
+	transition: width 1s ease-in-out;
+}
 
 @media only screen and (min-width : 450px) {
 	.tableNumber{

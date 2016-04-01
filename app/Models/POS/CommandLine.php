@@ -8,7 +8,7 @@ class CommandLine extends Model
 {
     protected $table = 'command_lines';
 
-    protected $fillable = array('command_id', 'item_id', 'sale_id', 'cost', 'quantity', 'slug');
+    protected $fillable = array('command_id', 'item_id', 'sale_id', 'size', 'cost', 'quantity', 'slug');
 
 
     public function item()

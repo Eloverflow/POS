@@ -66,6 +66,8 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PunchesTableSeeder::class);
 
+        $this->call(TableSeeder::class);
+
         Model::reguard();
     }
 }

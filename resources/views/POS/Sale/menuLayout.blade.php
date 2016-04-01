@@ -25,6 +25,7 @@
     <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Bootstrap/js/ui-bootstrap-tpls-1.2.5.min.js') }}"></script>
     <script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-count-to.js') }}"></script>
     <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
     <script src="{{ @URL::to('js/unserialize.js') }}"></script>
     <script src="{{ @URL::to('js/menuAngular.js') }}"></script>

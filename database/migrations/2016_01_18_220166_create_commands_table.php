@@ -14,8 +14,8 @@ class CreateCommandsTable extends Migration
     {
         Schema::create('commands', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('note');
-            $table->boolean('status');
+            $table->string('note')->nullable();
+            $table->boolean('status')->nullable();
             $table->integer('command_number')->nullable();
             $table->integer('table_id')->unsigned();
             $table->foreign('table_id')->references('id')->on('tables')->nullable();
