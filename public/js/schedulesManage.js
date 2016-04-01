@@ -191,13 +191,7 @@ function dayClick(xDate, xEvent)
     }
 
 
-    var day = datet.getDate();
-    var dayNum = datet.getDay();
-    var monthIndex = datet.getMonth() + 1;
-    var year = datet.getFullYear();
-
-
-    var ymd = year +  "-" + monthIndex + "-" + day;
+    var ymd = formatDate(datet);
     $('#addModal #dateClicked').val(ymd);
     $("#addModal").modal('show');
 }

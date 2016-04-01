@@ -119,31 +119,45 @@ function addEvent($storedCalendar){
 
     $dDayNumber = $( "#addModal #dayNumber option:selected" ).val();
 
-    var date = new Date();
-    var day = date.getDate();
-    var dayNum = date.getDay();
-    var monthIndex = date.getMonth();
-    var year = date.getFullYear();
+    if($dDayNumber == -1)
+    {
 
-    var dayToSubstract = day - (dayNum - $dDayNumber);
-    monthIndex = monthIndex + 1;
+        for(var i = 0; i < 7; i++){
+            var lastSunday = getLastSunday(new Date());
+            var myDate = new Date(lastSunday.getTime() + (i * 24 * 60 * 60 * 1000));
 
-    var ymd = year +  "-" + monthIndex + "-" + dayToSubstract;
-    var sHM = $shour + ":" + $smin;
-    var eHM = $ehour + ":" + $emin;
+            $dateFormated = formatDate(myDate);
 
-    console.log(ymd);
-    var newEvent = {
-        title: "dispo",
-        isAllDay: false,
-        start: new Date(ymd + ' ' + sHM + ':00'+ '-04:00'),
-        end: new Date(ymd + ' ' + eHM + ':00'+ '-04:00'),
-        description: '',
-        resourceId: 4
-    };
+            var sHM = $shour + ":" + $smin;
+            var eHM = $ehour + ":" + $emin;
+
+            var newEvent = {
+                id: guid(),
+                title: 'Dispo',
+                isAllDay: false,
+                start: new Date($dateFormated + ' ' + sHM + ':00' + '-04:00'),
+                end: new Date($dateFormated + ' ' + eHM + ':00' + '-04:00'),
+            };
+            $storedCalendar.fullCalendar('addEventSource', [newEvent]);
+
+        }
+
+    } else {
+
+        var sHM = $shour + ":" + $smin;
+        var eHM = $ehour + ":" + $emin;
+
+        var newEvent = {
+            id: guid(),
+            title: "dispo",
+            isAllDay: false,
+            start: new Date($('#dateClicked').val() + ' ' + sHM + ':00'+ '-04:00'),
+            end: new Date($('#dateClicked').val() + ' ' + eHM + ':00'+ '-04:00'),
+        };
 
 
-    $storedCalendar.fullCalendar('addEventSource', [newEvent]);
+        $storedCalendar.fullCalendar('addEventSource', [newEvent]);
+    }
 }
 
 function dayClick(xDate, xEvent)
@@ -166,6 +180,8 @@ function dayClick(xDate, xEvent)
         $('#addModal #dayNumber').val($gDay);
     }
 
+    var ymd = formatDate(datet);
+    $('#addModal #dateClicked').val(ymd);
     $("#addModal").modal('show');
 }
 
@@ -187,4 +203,8 @@ function dispoClick(xDate, xEvent)
     // Set global var so we can get it when we edit.
     globStoredEvent = xEvent;
     $("#editModal").modal('show');
+}
+
+function deleteEvent($storedCalendar){
+    $storedCalendar.fullCalendar('removeEvents', globStoredEvent.id);
 }

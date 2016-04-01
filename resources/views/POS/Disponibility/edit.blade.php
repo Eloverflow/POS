@@ -92,6 +92,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
+                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -122,6 +123,7 @@
                             <h3>Day</h3>
                             {!! Form::label('', "" ) !!}
                             <select id="dayNumber" class="form-control">
+                                <option value="-1">All Week</option>
                                 <option value="0">Sunday</option>
                                 <option value="1">Monday</option>
                                 <option value="2">Tuesday</option>
@@ -189,17 +191,23 @@
                 </div>
 
                 <!-- dialog buttons -->
-                <div class="modal-footer"><button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button></div>
+                <div class="modal-footer">
+                    <button id="btnDelEvent" type="button" class="btn btn-danger">Delete</button>
+                    <button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button>
+                </div>
             </div>
         </div>
     </div>
 @stop
 
 @section("myjsfile")
+    <script src="{{ @URL::to('js/utils.js') }}"></script>
     <script src="{{ @URL::to('js/disponibilitiesManage.js') }}"></script>
     <script type="text/javascript">
         // var for edit Event
         var globStoredEvent = null;
+        var globStoredCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
+
         $('#btnAdd').click(function(e) {
             $('#addModal #sHour').val("");
             $('#addModal #sMin').val("");
@@ -210,17 +218,28 @@
         });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
-            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
-            postEditDisponibilities($storedCalendar);
+            postEditDisponibilities(globStoredCalendar);
 
         });
+        $("#btnDelEvent").click(function(){
+            deleteEvent(globStoredCalendar);
+            $("#editModal").modal('hide');
+        });
         $("#btnEditEvent").click(function(){
-            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
-            editEvent($storedCalendar);
+            editEvent(globStoredCalendar);
         });
         $("#btnAddEvent").click(function() {
-            $storedCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
-            addEvent($storedCalendar);
+            addEvent(globStoredCalendar);
+        });
+        $( "#dayNumber" ).change(function() {
+            //var nDate = new Date();
+            //nDate.setDate(nDate.getFullYear() + "-" +  nDate.getMonth() + "-" + (nDate.getDate() + this.value));
+            var realVal = parseInt(this.value);
+            if(realVal != -1) {
+                var lastSunday = getLastSunday(new Date());
+                var myDate = new Date(lastSunday.getTime() + (realVal * 24 * 60 * 60 * 1000));
+                $('#dateClicked').val(formatDate(myDate));
+            }
         });
     </script>
 @stop
