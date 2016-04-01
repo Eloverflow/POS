@@ -13,6 +13,7 @@ use App\Models\Addons\Rfid\TableRfidRequest;
 use App\Models\POS\Client;
 use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
+use App\Models\POS\Table;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Beer;
@@ -406,6 +407,21 @@ class ClientSeeder extends Seeder {
         Client::create(['id' => '1', 'credit' => 10, 'rfid_card_code' => '2784390787',  'slug' => '2784390787']);
 
         $this->command->info('clients table seeded!');
+    }
+
+}
+
+
+class TableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('tables')->delete();
+
+        Table::create(['id' => '1', 'name' => 'The pit', 'status' => '1']);
+        Table::create(['id' => '22', 'name' => 'SuperTable', 'status' => '0']);
+
+        $this->command->info('tables table seeded!');
     }
 
 }

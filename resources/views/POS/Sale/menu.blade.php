@@ -59,7 +59,7 @@
              </li>--}}
         </ul>
     <h1 class="bill-total">Total = <% totalBill | number:2 %></h1>
-    <button ng-click="payNow()" type="button" class="btn btn-success btn-payer">Payer</button>
+    <button ng-click="updateTable()" type="button" class="btn btn-success btn-payer">Update Table</button>
 
 </div><!--/.sidebar-->
 
@@ -67,7 +67,7 @@
     <div class="row fixed">
         <div class="row menu-filter">
            {{-- <button  ng-click="filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary" ><span class="glyphicon glyphicon-star"></span> Favorites</button>--}}
-            <button  ng-click="filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary" ><span class="glyphicon glyphicon-star"></span> Favorie</button>
+            <button ng-click="filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary" ><span class="glyphicon glyphicon-star"></span> Favorie</button>
             <button ng-repeat="itemType in menuItemTypes" ng-click="filters.itemtype.type = itemType.type" type="button" class="btn btn-primary"><% itemType.type %></button>
         </div>
     </div>

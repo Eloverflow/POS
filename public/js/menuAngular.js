@@ -338,7 +338,7 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
 */
 
             if(typeof $scope.commandClient[$scope.bigCurrentPage] === 'undefined' || $scope.commandClient[$scope.bigCurrentPage] === null )
-            $scope.commandClient[$scope.bigCurrentPage] = [];
+            $scope.commandClient[$scope.bigCurrentPage] = {};
 
             if(typeof $scope.commandClient[$scope.bigCurrentPage].commandItems === 'undefined' || $scope.commandClient[$scope.bigCurrentPage].commandItems === null )
             $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
@@ -362,7 +362,7 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
 
         if(typeof $scope.commandClient[$scope.bigCurrentPage] === 'undefined' || $scope.commandClient[$scope.bigCurrentPage] === null ){
 
-            $scope.commandClient[$scope.bigCurrentPage] = [];
+            $scope.commandClient[$scope.bigCurrentPage] = {};
             $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
 
         }
@@ -433,6 +433,7 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
 
     };
 
+/*
     $scope.payNow = function () {
 
         $url = 'http://pos.mirageflow.com/menu/payer';
@@ -445,6 +446,36 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
             $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
             $scope.updateBill();
         };
+
+        postReq.send($url, $data, null, $callbackFunction);
+
+    }
+*/
+    $scope.updateTable = function () {
+
+        $url = 'http://pos.mirageflow.com/menu/command';/*
+        $data = $scope.commandClient[$scope.bigCurrentPage].commandItems;*/
+        $data = {
+            commands : $scope.commandClient,
+            table : $scope.currentTable,
+            employee : $scope.currentEmploye
+        };
+
+        console.log('Data to save :');
+        console.log($data);
+
+        var $callbackFunction = function(response){
+
+            for(var f = 0; f < response.commands.length; f++){
+                $scope.commandClient[f+1].command_number = response.commands[f].command_number;
+                console.log($scope.commandClient[f+1]);
+            }
+
+            console.log("The command as been saved and confirmation received inside response - Success or Not ?");
+
+        };/*
+         $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
+         $scope.updateBill();*/
 
         postReq.send($url, $data, null, $callbackFunction);
 
@@ -463,13 +494,16 @@ var app = angular.module('menu', ['ui.bootstrap'], function($interpolateProvider
     $scope.bigTotalItems = 175;
     $scope.bigCurrentPage = 1;
 
-
-    $scope.commandClient[$scope.bigCurrentPage] = [];
+    $scope.commandClient[$scope.bigCurrentPage] = {};
     $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
+
+
 
 
     $scope.currentTable = 22;
     $scope.currentEmploye = 2;
+
+
 
     $scope.dynamicPopover = {
         content: '',

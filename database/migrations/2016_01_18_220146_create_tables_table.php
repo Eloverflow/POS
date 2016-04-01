@@ -16,8 +16,9 @@ class CreateTablesTable extends Migration
             $table->increments('id');
             $table->string('name');
             $table->boolean('status');
+            $table->integer('associated_employee_id')->nullable();/*
             $table->integer('associated_employee_id')->unsigned();
-            $table->foreign('associated_employee_id')->references('id')->on('employees')->nullable();
+            $table->foreign('associated_employee_id')->references('id')->on('employees')->nullable();*/
             $table->timestamps();
         });
     }
