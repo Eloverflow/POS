@@ -48,3 +48,9 @@ function guid() {
     return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
         s4() + '-' + s4() + s4() + s4();
 }
+
+function getLastSunday(d) {
+    var t = new Date(d);
+    t.setDate(t.getDate() - t.getDay());
+    return t;
+}
