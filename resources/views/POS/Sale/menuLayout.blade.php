@@ -66,11 +66,26 @@
             <ul class="user-menu tableNumber">
 
                 <li >
-                    <a href="#" ><span class="glyphicon glyphicon-unchecked"></span>
+                    <a href="#" ng-click="toggleModal()"><span class="glyphicon glyphicon-unchecked"></span>
                         Table #<% currentTable %>
                        </a>
                 </li>
-            </ul>
+            </ul>{{--
+            <button ng-click="toggleModal()" class="btn btn-default">Open modal</button>--}}
+
+            <modal title="Login form" visible="showModal">
+                <form role="form">
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input type="email" class="form-control" id="email" placeholder="Enter email" />
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" class="form-control" id="password" placeholder="Password" />
+                    </div>
+                    <button type="submit" class="btn btn-default">Submit</button>
+                </form>
+            </modal>
         </div>
 
     </div><!-- /.container-fluid -->

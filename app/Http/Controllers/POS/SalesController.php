@@ -183,6 +183,28 @@ class SalesController extends Controller
     }*/
 
 
+    public function getCommand()
+    {
+        $inputs = Input::except('_token');
+
+
+        $result['msg'] = "Messages\n ";
+        $result['success'] = "false";
+        $result['commands'] = array();
+
+        $command = Command::where('table_id', $inputs['table'])->where('status', '1')->get();
+
+        if($command != "")
+        {
+            $result['commands'] = $command->load('commandline');
+            $result['success'] = "true";
+        }
+
+
+        return $result;
+        //If the post isn't empty
+    }
+
 
     public function updateCommand()
     {
@@ -289,7 +311,12 @@ class SalesController extends Controller
                     $commandNumber = $commands->command_number;
 
 
-                    $command = Command::create(['table_id' => $inputs['table'], 'client_id' => $client->id, 'command_number' => 1 + $commandNumber ]);
+                    $command = Command::create([
+                        'table_id' => $inputs['table'],
+                        'client_id' => $client->id,
+                        'command_number' => 1 + $commandNumber,
+                        'status' => 1
+                    ]);
                     // Command::all()->last()->command_number + 1
 
                     if ($command != "") {
