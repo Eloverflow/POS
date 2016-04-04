@@ -12,11 +12,6 @@
                 <div class="panel-body">
 
                     <div class="form-group">
-                        <label>Email :</label>
-                        <p>{{ $ViewBag["employee"]->email }}</p>
-                    </div>
-
-                    <div class="form-group">
                         <label>First Name :</label>
                         <p>{{ $ViewBag["employee"]->firstName }}</p>
                     </div>
@@ -24,23 +19,7 @@
                         <label>Last Name :</label>
                         <p>{{ $ViewBag["employee"]->lastName }}</p>
                     </div>
-                    <div class="form-group">
-                        <label>Phone Number :</label>
-                        <p>{{ $ViewBag["employee"]->phone }}</p>
-                    </div>
 
-                    <div class="form-group">
-                        <label>Bonus Salary :</label>
-                        <p>{{ $ViewBag["employee"]->bonusSalary }}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Birth Date :</label>
-                        <p>{{ $ViewBag["employee"]->birthDate }}</p>
-                    </div>
-                    <div class="form-group">
-                        <label>Hire Date :</label>
-                        <p>{{ $ViewBag["employee"]->hireDate }}</p>
-                    </div>
                 </div>
             </div>
         </div>

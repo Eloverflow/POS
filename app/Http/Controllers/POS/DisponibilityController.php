@@ -277,7 +277,10 @@ class DisponibilityController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            return json_encode('Validation Error');
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
 
         }
         else
@@ -307,7 +310,9 @@ class DisponibilityController extends Controller
 
             }
 
-            return json_encode($jsonArray[0]['StartTime']);
+            return \Response::json([
+                'success' => "The Disponibility " . \Input::get('name') . " has been successfully created !"
+            ], 201);
         }
     }
 

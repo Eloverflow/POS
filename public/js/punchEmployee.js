@@ -2,9 +2,9 @@
  * Created by Maype-IsaelBlais on 2016-01-25.
  */
 
-function punchEmployee($lethis) {
+function punchEmployee() {
 
-    var $selectedEmployeeText = $('#EmployeeNumber').val();
+    var $selectedEmployeeText = $('#mainText').val();
     console.log($selectedEmployeeText);
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
