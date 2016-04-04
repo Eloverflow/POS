@@ -43,8 +43,24 @@ function postAddSchedules($storedCalendar) {
 
         },
         dataType: 'JSON',
-        success: function (data) {
-            console.log(data);
+        error: function (xhr, status, error) {
+            var erro = jQuery.parseJSON(xhr.responseText);
+            $("#errors").empty();
+            //$("##errors").append('<ul id="errorsul">');
+            [].forEach.call( Object.keys( erro ), function( key ){
+                [].forEach.call( Object.keys( erro[key] ), function( keyy ) {
+                    $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
+                });
+                //console.log( key , erro[key] );
+            });
+            //$("#displayErrors").append('</ul>');
+            $("#displayErrors").show();
+        },
+        success: function(xhr) {
+            [].forEach.call( Object.keys( xhr ), function( key ) {
+                alert(xhr[key]);
+                window.location.replace("/schedule");
+            });
         }
     });
 
@@ -83,8 +99,24 @@ function postEditSchedules($storedCalendar) {
 
         },
         dataType: 'JSON',
-        success: function (data) {
-            console.log(data);
+        error: function (xhr, status, error) {
+            var erro = jQuery.parseJSON(xhr.responseText);
+            $("#errors").empty();
+            //$("##errors").append('<ul id="errorsul">');
+            [].forEach.call( Object.keys( erro ), function( key ){
+                [].forEach.call( Object.keys( erro[key] ), function( keyy ) {
+                    $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
+                });
+                //console.log( key , erro[key] );
+            });
+            //$("#displayErrors").append('</ul>');
+            $("#displayErrors").show();
+        },
+        success: function(xhr) {
+            [].forEach.call( Object.keys( xhr ), function( key ) {
+                alert(xhr[key]);
+                window.location.replace("/schedule");
+            });
         }
     });
 

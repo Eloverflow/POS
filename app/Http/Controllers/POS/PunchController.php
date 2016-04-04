@@ -23,6 +23,12 @@ class PunchController extends Controller
         return $view;
     }
 
+    public function tables()
+    {
+        $view = \View::make('POS.Punch.tablesSelect');
+        return $view;
+    }
+
     public function details($id)
     {
         $employee = Employee::GetById($id);

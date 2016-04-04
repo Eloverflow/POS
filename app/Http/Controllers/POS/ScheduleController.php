@@ -379,7 +379,10 @@ class ScheduleController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            return json_encode('Validation Error');
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
 
         }
         else {
@@ -412,6 +415,10 @@ class ScheduleController extends Controller
                 ]);
 
             }
+
+            return \Response::json([
+                'success' => "The Schedule " . \Input::get('name') . " has been successfully edited !"
+            ], 201);
         }
 
     }
@@ -474,8 +481,10 @@ class ScheduleController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            //\Redirect::action('POS\ScheduleController@create')->withErrors($validation)->withInput();
-            return "valid Errors";
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
         }
         else
         {
@@ -507,6 +516,10 @@ class ScheduleController extends Controller
                 ]);
 
             }
+
+            return \Response::json([
+                'success' => "The Schedule " . \Input::get('name') . " has been successfully created !"
+            ], 201);
         }
     }
 

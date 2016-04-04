@@ -20,16 +20,10 @@
                     {{--'style' => 'display:none;visibility:hidden;'--}}
                     {!! Form::open(array('url' => 'disponibility/create', 'role' => 'form', 'id' => 'frmDispoCreate')) !!}
                     {!! Form::text('dispoId', $ViewBag['disponibility']->idDisponibility, array('class' => 'form-control', 'id' => 'dispoId', 'style' => 'display:none;visibility:hidden;')) !!}
-                    @if (count($errors) > 0)
-                        <div class="alert alert-danger">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                            <ul>
-                                @foreach ($errors->all() as $error)
-                                    <li>{{ $error }}</li>
-                                @endforeach
-                            </ul>
-                        </div>
-                    @endif
+                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                        <ul id="errors"></ul>
+                    </div>
                     <fieldset>
                         <legend>Disponibility Informations</legend>
                         <div class="mfs">

@@ -19,16 +19,10 @@
                     <div class="col-md-6">
                         {!! Form::open(array('url' => 'schedule/create', 'role' => 'form')) !!}
                         {!! Form::text('scheduleId', $ViewBag['schedule']->id, array('class' => 'form-control', 'id' => 'scheduleId', 'style' => 'display:none;visibility:hidden;')) !!}
-                        @if (count($errors) > 0)
-                            <div class="alert alert-danger">
-                                <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                                <ul>
-                                    @foreach ($errors->all() as $error)
-                                        <li>{{ $error }}</li>
-                                    @endforeach
-                                </ul>
-                            </div>
-                        @endif
+                        <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                            <ul id="errors"></ul>
+                        </div>
                         <fieldset>
                             <legend>Schedule Informations</legend>
                             <div class="mfs">
