@@ -18,6 +18,7 @@ class VerifyCsrfToken extends BaseVerifier
         'disponibility/*',
         'items/*',
         'inventory/*',
-        'menu/*'
+        'menu/*',
+        'employee/*'
     ];
 }

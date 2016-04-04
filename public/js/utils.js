@@ -7,7 +7,7 @@
 
 function getSuccessMessage($message)
 {
-    return '<div class=\"alert bg-success\" role=\"alert\">' +
+    return '<div class=\"no-marg alert bg-success\" role=\"alert\">' +
         '<svg class=\"glyph stroked checkmark\">' +
         '<use xlink:href=\"#stroked-checkmark\"></use>' +
         '</svg>' +
@@ -20,7 +20,7 @@ function getSuccessMessage($message)
 
 function getErrorMessage($message)
 {
-    return '<div class=\"alert bg-danger\" role=\"alert\">' +
+    return '<div class=\"no-marg alert bg-danger\" role=\"alert\">' +
         '<svg class=\"glyph stroked cancel\">' +
         '<use xlink:href=\"#stroked-cancel\"></use>' +
         '</svg>' +

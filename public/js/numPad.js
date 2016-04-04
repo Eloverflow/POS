@@ -69,7 +69,7 @@ var app = angular.module('myApp', [], function($interpolateProvider) {
                 $scope.mainText = "";
                 break;
             case 'clk':
-                alert("Punch");
+                punchEmployee();
                 break;
             case 'ent':
                 window.location.replace("menu");

@@ -1,14 +1,19 @@
-@extends('POS.Command.mainLayout')
+@extends('POS.Punch.mainLayout')
 
 @section("csrfToken")
+    <script src="{{ @URL::to('js/utils.js') }}"></script>
     <script src="{{ @URL::to('js/numPad.js') }}"></script>
+    <script src="{{ @URL::to('js/punchEmployee.js') }}"></script>
 @stop
 
 @section('content')
     <table id="keyboard" ng-app="myApp" ng-controller="myCtrl">
         <tbody>
             <tr>
-                <td colspan="4"><input type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"></td>
+                <td colspan="4" id="displayMessage"></td>
+            </tr>
+            <tr>
+                <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"></td>
             </tr>
             <tr>
                 <td colspan="2"><button class="button" ng-click="padClick('dl')">Del</button></td>

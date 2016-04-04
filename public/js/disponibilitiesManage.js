@@ -34,8 +34,23 @@ function postAddDisponibilities($storedCalendar) {
 
         },
         dataType: 'JSON',
-        success: function (data) {
-            console.log(data);
+        error: function (xhr, status, error) {
+            var erro = jQuery.parseJSON(xhr.responseText);
+            $("#displayErrors").append('<ul>');
+            [].forEach.call( Object.keys( erro ), function( key ){
+                [].forEach.call( Object.keys( erro[key] ), function( keyy ) {
+                    $("#displayErrors").append('<li>' + erro[key][keyy][0] + '</li>');
+                });
+                //console.log( key , erro[key] );
+            });
+            $("#displayErrors").append('</ul>');
+            $("#displayErrors").show();
+        },
+        success: function(xhr) {
+            [].forEach.call( Object.keys( xhr ), function( key ) {
+                alert(xhr[key]);
+                window.location.replace("/disponibility");
+            });
         }
     });
 
@@ -149,7 +164,7 @@ function addEvent($storedCalendar){
 
         var newEvent = {
             id: guid(),
-            title: "dispo",
+            title: "Dispo",
             isAllDay: false,
             start: new Date($('#dateClicked').val() + ' ' + sHM + ':00'+ '-04:00'),
             end: new Date($('#dateClicked').val() + ' ' + eHM + ':00'+ '-04:00'),

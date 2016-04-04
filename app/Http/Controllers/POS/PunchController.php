@@ -19,8 +19,7 @@ class PunchController extends Controller
 {
     public function index()
     {
-
-        $view = \View::make('POS.Punch.index');
+        $view = \View::make('POS.Punch.main');
         return $view;
     }
 
