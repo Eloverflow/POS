@@ -39,6 +39,7 @@ Route::get('/sales/list', 'POS\SalesController@liste');
 Route::get('/menu', 'POS\SalesController@menu');
 Route::post('/menu/payer', 'POS\SalesController@payer');
 Route::post('/menu/command', 'POS\SalesController@updateCommand');
+Route::post('/menu/getCommand', 'POS\SalesController@getCommand');
 
 Route::get('/inventory', 'ERP\InventoriesController@index');
 Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});
