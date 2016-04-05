@@ -51,6 +51,7 @@
     <ul class="nav menu">
         <li><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> Punch</a></li>
         <li><a href="{{ URL::to('employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
+        <li><a href="{{ URL::to('employee/titles') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employee Titles</a></li>
         <li><a href="{{ URL::to('disponibility') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> Disponibilities</a></li>
         <li><a href="{{ URL::to('schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> Schedules</a></li>
         <li><a href="{{ URL::to('items') }}"><svg class="glyph stroked bacon burger"><use xlink:href="#stroked-bacon-burger"/></svg></svg> Items</a></li>
