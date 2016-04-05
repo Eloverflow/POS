@@ -12,6 +12,7 @@
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/mainSale.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('css/tablesSelect.css') }}" rel="stylesheet">
 
     <script src="{{ @URL::to('Framework/Angular/angular.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-route.min.js') }}"></script>
@@ -19,7 +20,6 @@
     <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
     <script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>
-    <script src="{{ @URL::to('js/jquery-ui.js') }}"></script>
     <![endif]-->
     @yield('csrfToken')
 </head>
