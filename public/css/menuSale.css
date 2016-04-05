@@ -497,6 +497,15 @@ pre{
 	transition: width 1s ease-in-out;
 }
 
+.btn-table{
+	float: left;
+	display: inline-block;
+	width: 45%;
+	font-size: 30px;
+	margin: 5px;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+}
+
 @media only screen and (min-width : 450px) {
 	.tableNumber{
 		margin-right: 40px;
