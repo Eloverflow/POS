@@ -64,8 +64,7 @@
                 </li>
             </ul>
             <ul class="user-menu tableNumber">
-
-                <li >
+                <li>
                     <a href="#" ng-click="toggleModal()"><span class="glyphicon glyphicon-unchecked"></span>
                         Table #<% currentTable %>
                        </a>
@@ -73,18 +72,10 @@
             </ul>{{--
             <button ng-click="toggleModal()" class="btn btn-default">Open modal</button>--}}
 
-            <modal title="Login form" visible="showModal">
-                <form role="form">
-                    <div class="form-group">
-                        <label for="email">Email address</label>
-                        <input type="email" class="form-control" id="email" placeholder="Enter email" />
+            <modal title="Selectionne une table" visible="showModal">
+                    <div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]">
+                        <button type="button" class="btn btn-success btn-table" ng-click="addNote(suggestion, commandItem)" >Table #<% i %></button>
                     </div>
-                    <div class="form-group">
-                        <label for="password">Password</label>
-                        <input type="password" class="form-control" id="password" placeholder="Password" />
-                    </div>
-                    <button type="submit" class="btn btn-default">Submit</button>
-                </form>
             </modal>
         </div>
 
