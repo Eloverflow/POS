@@ -2,42 +2,58 @@
 
 @section("csrfToken")
     <script src="{{ @URL::to('js/utils.js') }}"></script>
-
+    <script src="{{ @URL::to('js/jquery-ui.js') }}"></script>
+    <script src="{{ @URL::to('js/jquery.ui.rotatable.js') }}"></script>
+    <link rel="stylesheet" href="{{ @URL::to('js/jquery.ui.rotatable.css') }}">
+    <link rel="stylesheet" href="{{ @URL::to('js/jquery-ui.css') }}">
 @stop
 
 @section('content')
-    <div>
-        <div id="role_1" class="role">
-            <h5>Administrator</h5>
-            <ul class="users">
-                <li class="draggable" id="user_1">
-                    <span id="posX"></span>
-                    <span id="posY"></span>
-                </li>
-                <li class="draggable" id="user_2">Bar</li>
-            </ul>
-        </div>
+    <div id="rowCmd"><a id="btnNewTable" href="#">New Table</a></div>
+    <div id="tablesContainer">
+
+        <ul class="tables">
+            <li class="draggable" id="user_1">
+                <span id="posX"></span>
+                <span id="posY"></span>
+            </li>
+            <li class="draggable" id="user_2">
+                <span id="posX"></span>
+                <span id="posY"></span>
+            </li>
+        </ul>
     </div>
 @stop
 
 @section('myjsfile')
     <script>
-        $("li").draggable({
-            revert: "invalid", // when not dropped, the item will revert back to its initial position
-            containment: "document",
-            helper: "clone",
-            cursor: "move",
-            start: function() {
-                var role = $(this).closest(".role").attr("id");
-                // Here, role is either the id or undefined if no role could be found
+        var rotateParams = {
+            start: function(event, ui) {
+                console.log("Rotating started");
             },
+            rotate: function(event, ui) {
+                console.log("Rotating");
+            },
+            stop: function(event, ui) {
+                console.log("Rotating stopped");
+            },
+        };
+        var dragParams = {
             drag: function(){
                 var offset = $(this).offset();
                 var xPos = offset.left;
                 var yPos = offset.top;
-                $('#posX').text('x: ' + xPos);
-                $('#posY').text('y: ' + yPos);
+                $(this).find('#posX').text('x: ' + xPos.toFixed(0));
+                $(this).find('#posY').text('y: ' + yPos.toFixed(0));
             }
+        };
+        $("#btnNewTable").click(function() {
+            $tableGUID = guid();
+            $("#tablesContainer .tables").append('<li class="draggable" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
+            $('#' + $tableGUID).resizable().rotatable(rotateParams);
+            $('#' + $tableGUID).draggable(dragParams);
         });
+        $('li').resizable().rotatable(rotateParams);
+        $("li").draggable(dragParams);
     </script>
 @stop

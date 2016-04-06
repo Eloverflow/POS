@@ -98,6 +98,8 @@ Route::post('/employee/create', 'POS\EmployeeController@postcreate');
 
 Route::get('/employee/details/{id}', 'POS\EmployeeController@details');
 
+Route::get('/employee/titles', 'POS\EmployeeTitleController@index');
+
 Route::get('/employee/edit/{id}', 'POS\EmployeeController@edit');
 Route::get('/employee/track/{id}', 'POS\EmployeeController@track');
 Route::post('/employee/edit', 'POS\EmployeeController@postedit');
