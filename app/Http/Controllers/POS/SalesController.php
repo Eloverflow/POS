@@ -275,12 +275,12 @@ class SalesController extends Controller
                             if(!empty($commandLine->first())){
                                 $result['msg'] .= " - Succeeded at finding the command line";/*
                                 $result['inputItem'] = $inputItem;*/
-                                $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
+                                $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => serialize($inputItem['notes'])]);
                                 $result['msg'] .= " - Command line normally updated";
                             }
                             else{
                                 $result['msg'] .= " - Failed at finding the command line";
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => serialize($inputItem['notes']) ]);
 
                                 if($commandLine == ""){
                                     $result['msg'] .= " - Failed at recording command line";
@@ -315,7 +315,8 @@ class SalesController extends Controller
                         'table_id' => $inputs['table'],
                         'client_id' => $client->id,
                         'command_number' => 1 + $commandNumber,
-                        'status' => 1
+                        'status' => 1,
+                        'notes' => serialize($inputCommand['notes'])
                     ]);
                     // Command::all()->last()->command_number + 1
 
@@ -336,7 +337,7 @@ class SalesController extends Controller
                                 }
                                 else{
                                     $result['msg'] .= " - Failed at finding the command line";
-                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
+                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => serialize($inputItem['notes'])]);
 
                                     if($commandLine == ""){
                                         $result['msg'] .= " - Failed at recording command line";
@@ -360,7 +361,7 @@ class SalesController extends Controller
                                 /* var_dump($command);*/
 
 
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity']]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => serialize($inputItem['notes'])]);
 
                                 if($commandLine == ""){
                                     $result['msg'] .= " - Failed at command line";

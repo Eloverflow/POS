@@ -72,16 +72,16 @@
             </ul>{{--
             <button ng-click="toggleModal()" class="btn btn-default">Open modal</button>--}}
 
-            <modal title="Selectionne une table" visible="showModal">
-                    <div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]">
-                        <button type="button" class="btn btn-success btn-table" ng-click="addNote(suggestion, commandItem)" >Table #<% i %></button>
-                    </div>
-            </modal>
+
         </div>
 
     </div><!-- /.container-fluid -->
 </nav>
-
+<modal title="Selectionne une table" visible="showModal">
+    <div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]">
+        <button type="button" class="btn btn-success btn-table" ng-click="changeTable(i)" >Table #<% i %></button>
+    </div>
+</modal>
 
 
 @yield('content')

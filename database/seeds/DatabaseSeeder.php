@@ -420,8 +420,9 @@ class TableSeeder extends Seeder {
     {
         DB::table('tables')->delete();
 
-        Table::create(['id' => '1', 'name' => 'The pit', 'status' => '1']);
-        Table::create(['id' => '22', 'name' => 'SuperTable', 'status' => '0']);
+        for($i = 1; $i < 23; $i++){
+            Table::create(['id' => $i, 'name' => 'Une nouvelle Table', 'status' => '1']);
+        }
 
         $this->command->info('tables table seeded!');
     }

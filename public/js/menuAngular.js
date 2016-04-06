@@ -123,8 +123,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
             $scope.menuItemsExtended = [];
 
             for(var i = 0; i < $scope.menuItemTypes.length; i++){
-
-                console.log($scope.menuItemTypes[i].type);
+/*
+                console.log($scope.menuItemTypes[i].type);*/
 
                 $scope.menuItemsExtended[i] =  $filter("filter")($scope.menuItems, {itemtype : {type: $scope.menuItemTypes[i].type}});
 
@@ -244,8 +244,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                 $scope.menuItemsExtended[i].sizes = size_array;
 
             }
-
-            console.log($scope.menuItemsExtended);
+/*
+            console.log($scope.menuItemsExtended);*/
 
 
             $scope.getCommand();
@@ -298,9 +298,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
             }
 
             $scope.dynamicPopover.note = '';
-        }
 
-        console.log(note);
+            $scope.updateBill();
+        }
+/*
+        console.log(note);*/
     }
 
     $scope.deleteItemNote = function(note, item) {
@@ -364,6 +366,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
         $scope.delayedUpdateTable();
 
+        $scope.updateTotal();
+
+    };
+
+    $scope.updateTotal = function(){
         var total = 0;
 
         if(typeof $scope.commandClient[$scope.bigCurrentPage] === 'undefined' || $scope.commandClient[$scope.bigCurrentPage] === null ){
@@ -384,7 +391,6 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         {
             $scope.totalBill = 0
         }
-
     };
 
 
@@ -422,9 +428,6 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         }
 /*
         item['size'] = sizes;*/
-
-
-        console.log($.grep(sizes, function(e){ return e.name == sizeSelected; })[0].name)
 
         $scope.sizeProp = {
             "name": size_name_array[0],
@@ -492,7 +495,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     }
 
 
-    $scope.updateTable = function () {
+    $scope.updateTable = function ($updateTableCallBack) {
 
         $url = 'http://pos.mirageflow.com/menu/command';/*
         $data = $scope.commandClient[$scope.bigCurrentPage].commandItems;*/
@@ -502,8 +505,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
             employee : $scope.currentEmploye
         };
 
-        console.log('Data to save :');
-        console.log($data);
+/*        console.log('Data to save :');
+        console.log($data);*/
 
         var $callbackFunction = function(response){
 
@@ -521,6 +524,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
             console.log("The command as been saved and confirmation received inside response - Success or Not ?");
 
+
+            if($updateTableCallBack != null)
+            $updateTableCallBack();
+
         };/*
          $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
          $scope.updateBill();*/
@@ -534,8 +541,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     };
 
     $scope.pageChanged = function() {
-        console.log('Page changed to: ' + $scope.bigCurrentPage);
-        $scope.updateBill();
+        console.log('Changed to client #' + $scope.bigCurrentPage);
+        $scope.updateTotal();
     };
 
 
@@ -605,6 +612,27 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         $scope.progressValue = amt;
     }, 200);
 
+
+    $scope.changeTable = function(i){
+/*
+        console.log('Table command status');
+        console.log($scope.commandClient);*/
+
+        var $callbackFunction = function(response){
+            $scope.currentTable = i;
+            $('#closeModal').click();
+            $scope.getCommand();
+        }
+
+        $scope.updateTable($callbackFunction);
+
+
+
+
+
+
+    };
+
     $scope.getCommand = function(){
         $url = 'http://pos.mirageflow.com/menu/getCommand';/*
          $data = $scope.commandClient[$scope.bigCurrentPage].commandItems;*/
@@ -617,76 +645,103 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         console.log($data);*/
 
         var $callbackFunction = function(response){
-/*
             console.log('GetCommand');
-            console.log(response);*/
-
-            for(var f = 0; f < response.commands.length; f++){
-                $scope.commandClient[f+1] = response.commands[f];
-
-                $scope.commandClient[f+1].commandItems = response.commands[f]['commandline'];
-
-/*
-                console.log('Command line');
-                console.log($scope.commandClient[f+1].commandItems);*/
-
-                for(var p = 0; p < $scope.commandClient[f+1].commandItems.length; p++){
+            console.log(response);
 
 
+            $scope.bigCurrentPage = 1;
 
-                    console.log('menuItems');
-                    console.log($scope.menuItems);
+            if(response.commands.length > 0)
+            {
 
-                    var size = $scope.commandClient[f+1].commandItems[p].size;
-                    var quantity = $scope.commandClient[f+1].commandItems[p].quantity;
-/*
-                    console.log(angular.copy($.grep($scope.menuItems, function(e){return e.id == $scope.commandClient[f+1].commandItems[p].item_id})[0]));*/
+                for(var f = 0; f < response.commands.length; f++){
+                    $scope.commandClient[f+1] = response.commands[f];
+                    $scope.commandClient[f+1].notes = unserialize($scope.commandClient[f+1].notes)
 
-                    $scope.commandClient[f+1].commandItems[p] = angular.copy($.grep($scope.menuItems, function(e){return e.id == $scope.commandClient[f+1].commandItems[p].item_id})[0]);
+                    $scope.commandClient[f+1].commandItems = response.commands[f]['commandline'];
 
-                    var size_prices_array = unserialize($scope.commandClient[f+1].commandItems[p]['size_prices_array']);
+                    /*
+                     console.log('Command line');
+                     console.log($scope.commandClient[f+1].commandItems);*/
 
-                    var size_names = $scope.commandClient[f+1].commandItems[p]['itemtype']['size_names'];
+                    for(var p = 0; p < $scope.commandClient[f+1].commandItems.length; p++){
 
-                    var size_name_array = size_names.split(",");
 
-                    //For each
-                    var sizes = [];
 
-                    for (var i = 0, len = size_name_array.length; i < len; i++) {
+                        /*   console.log('menuItems');
+                         console.log($scope.menuItems);*/
 
-                        sizes.push(
-                            {
-                                name: size_name_array[i],
-                                price: size_prices_array[i],
-                                value: i + size_prices_array[i]
-                            }
-                        )
+                        var size = $scope.commandClient[f+1].commandItems[p].size;
+                        var quantity = $scope.commandClient[f+1].commandItems[p].quantity;
+
+
+                        console.log('Notes')
+                        console.log($scope.commandClient[f+1].commandItems[p].notes);
+
+                        var notes = [];
+
+                        if($scope.commandClient[f+1].commandItems[p].notes != "")
+                        notes = unserialize($scope.commandClient[f+1].commandItems[p].notes);
+
+                        /*
+                         console.log(angular.copy($.grep($scope.menuItems, function(e){return e.id == $scope.commandClient[f+1].commandItems[p].item_id})[0]));*/
+
+                        $scope.commandClient[f+1].commandItems[p] = angular.copy($.grep($scope.menuItems, function(e){return e.id == $scope.commandClient[f+1].commandItems[p].item_id})[0]);
+
+                        var size_prices_array = unserialize($scope.commandClient[f+1].commandItems[p]['size_prices_array']);
+
+                        var size_names = $scope.commandClient[f+1].commandItems[p]['itemtype']['size_names'];
+
+                        var size_name_array = size_names.split(",");
+
+                        //For each
+                        var sizes = [];
+
+                        for (var i = 0, len = size_name_array.length; i < len; i++) {
+
+                            sizes.push(
+                                {
+                                    name: size_name_array[i],
+                                    price: size_prices_array[i],
+                                    value: i + size_prices_array[i]
+                                }
+                            )
+                        }
+
+
+                        $scope.commandClient[f+1].commandItems[p].size = $.grep(sizes, function(e){return e.name == size})[0];
+                        $scope.commandClient[f+1].commandItems[p].quantity = parseInt(quantity);
+                        $scope.commandClient[f+1].commandItems[p].notes = notes;
+
+                        /*
+                         console.log('commandline size')
+                         console.log($scope.commandClient[f+1].commandItems[p].size.value);*/
+
+
+                        /*
+                         $result = $.grep($scope.menuItems, function(e){return e.id == response.commands[f].commandline[p].item_id});*/
+
                     }
 
-
-                    $scope.commandClient[f+1].commandItems[p].size = $.grep(sizes, function(e){return e.name == size})[0];
-                    $scope.commandClient[f+1].commandItems[p].quantity = parseInt(quantity);
-
-                    /*
-                                        console.log('commandline size')
-                                        console.log($scope.commandClient[f+1].commandItems[p].size.value);*/
+                    $scope.commandClient[f+1].status = "1";
 
 
-                    /*
-                     $result = $.grep($scope.menuItems, function(e){return e.id == response.commands[f].commandline[p].item_id});*/
 
+
+                    console.log($scope.commandClient[f+1]);
                 }
 
-                $scope.commandClient[f+1].status = "1";
+            }
+            else
+            {
 
+                $scope.commandClient = [];
+                $scope.commandClient[$scope.bigCurrentPage] = {};
+                $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
 
-
-
-                console.log($scope.commandClient[f+1]);
             }
 
-            $scope.updateBill();
+            $scope.updateTotal();
 
 
             $timeout(function(){
@@ -719,10 +774,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         '<div class="modal-dialog">' +
         '<div class="modal-content">' +/*
         '<div class="modal-header">' +*/
-        '<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +/*
+        '<button id="closeModal" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +/*
         '<h4 class="modal-title">{{ title }}</h4>' +
         '</div>' +*/
-        '<div class="modal-header" ng-transclude></div>' +
+        '<div class="" ng-transclude></div>' +
         '</div>' +
         '</div>' +
         '</div>',
