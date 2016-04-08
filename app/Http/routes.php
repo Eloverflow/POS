@@ -34,6 +34,8 @@ Route::get('/sales', 'POS\SalesController@index');
 Route::get('/sales/list', 'POS\SalesController@liste');
 Route::get('/menu', 'POS\SalesController@menu');
 Route::post('/menu/payer', 'POS\SalesController@payer');
+Route::post('/menu/command', 'POS\SalesController@updateCommand');
+Route::post('/menu/getCommand', 'POS\SalesController@getCommand');
 
 Route::get('/inventory', 'ERP\InventoriesController@index');
 Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});
@@ -57,6 +59,8 @@ Route::post('/items/create', 'ERP\ItemsController@postCreate');
 Route::get('/items/edit/{slug}', 'ERP\ItemsController@edit');
 Route::post('/items/edit/{slug}', 'ERP\ItemsController@update');
 Route::get('/items/liste', 'ERP\ItemsController@liste');
+
+
 
 Route::get('/calendar',  function() {
     /*
