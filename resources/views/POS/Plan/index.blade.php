@@ -8,17 +8,17 @@
         <div class="col-md-6">
             <div class="col-md-6">
                 <div class="vcenter">
-                    <input type="text" name="planName" class='form-control' placeholder="Plan Name">
+                    <input type="text" id="planName" name="planName" class='form-control' placeholder="Plan Name">
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="vcenter">
-                    <input type="text" name="nbStages" class='form-control' placeholder="Nb. Stages">
+                    <input type="text" id="nbFloor" name="nbFloor" class='form-control' placeholder="Nb. Floor">
                 </div>
             </div>
             <div class="col-md-3">
                 <div class="vcenter">
-                    <a class="btn btn-primary pull-right" href="{{ @URL::to('plan/create') }}"> Create New </a>
+                    <a id="btnNewPlan" class="btn btn-primary pull-right" href="#"> Create New </a>
                 </div>
             </div>
         </div>
@@ -58,4 +58,15 @@
             </div>
         </div>
     </div>
+@stop
+
+@section('myjsfile')
+    <script>
+        $("#btnNewPlan").click(function() {
+            $planName = $("#planName").val();
+            $nbFloor = $("#nbFloor").val();
+
+            window.location.replace("/plan/create/" + $planName + "/" + $nbFloor);
+        });
+    </script>
 @stop

@@ -25,42 +25,7 @@
 
         </ul>
         <div id="tabControl" class="resp-tabs-container hor_1">
-            <div class="tablesContainer">
-                <ul class="tables">
-                    <li class="draggable tbl" id="user_1">
-                        <span id="posX"></span>
-                        <span id="posY"></span>
-                    </li>
-                    <li class="draggable tbl" id="user_2">
-                        <span id="posX"></span>
-                        <span id="posY"></span>
-                    </li>
-                </ul>
-            </div>
-            <div class="tablesContainer">
-                <ul class="tables">
-                    <li class="draggable tbl" id="user_1">
-                        <span id="posX"></span>
-                        <span id="posY"></span>
-                    </li>
-                    <li class="draggable tbl" id="user_2">
-                        <span id="posX"></span>
-                        <span id="posY"></span>
-                    </li>
-                </ul>
-            </div>
-            <div class="tablesContainer">
-                <ul class="tables">
-                    <li class="draggable tbl" id="user_1">
-                        <span id="posX"></span>
-                        <span id="posY"></span>
-                    </li>
-                    <li class="draggable tbl" id="user_2">
-                        <span id="posX"></span>
-                        <span id="posY"></span>
-                    </li>
-                </ul>
-            </div>
+
         </div>
     </div>
     <div id="nested-tabInfo">
@@ -96,7 +61,20 @@
         };
         $("#btnNewTab").click(function() {
             $("#parentHorizontalTab .resp-tabs-list").append("<li class=\"resp-tab-item hor_1 resp-tab-active\" aria-controls=\"hor_1_tab_item-"+ globTabNumber +"\" role=\"tab\" style=\"border-color: rgb(193, 193, 193); background-color: rgb(255, 255, 255);\">Horizontal PEN</li>");
-            $("#tabControl").append("<div id=\"tablesContainer\"><ul class=\"tables\"></ul></div>");
+            $("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\"></ul></div>");
+            $('#parentHorizontalTab').easyResponsiveTabs({
+                type: 'default', //Types: default, vertical, accordion
+                width: 'auto', //auto or any width like 600px
+                fit: true, // 100% fit in a container
+                tabidentify: 'hor_1', // The tab groups identifier
+                activate: function(event) { // Callback function if tab is switched
+                    var $tab = $(this);
+                    var $info = $('#nested-tabInfo');
+                    var $name = $('span', $info);
+                    $name.text($tab.text());
+                    $info.show();
+                }
+            });
             globTabNumber += 1;
         });
         $("#btnNewSeparation").click(function() {
