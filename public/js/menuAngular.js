@@ -316,6 +316,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
             index = $scope.commandClient[$scope.bigCurrentPage].notes.indexOf(note);
             $scope.commandClient[$scope.bigCurrentPage].notes.splice(index, 1);
         }
+        $scope.delayedUpdateTable();
 
     }
 
