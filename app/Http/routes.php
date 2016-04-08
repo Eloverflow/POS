@@ -30,16 +30,10 @@ Route::get('/about', 'PagesController@about');
 Route::get('/contact', 'PagesController@contact');
 
 
-Route::get('/keyboard', 'POS\CommandController@keyboard');
-Route::get('/mainmenu', 'POS\CommandController@mainmenu');
-
-
 Route::get('/sales', 'POS\SalesController@index');
 Route::get('/sales/list', 'POS\SalesController@liste');
 Route::get('/menu', 'POS\SalesController@menu');
 Route::post('/menu/payer', 'POS\SalesController@payer');
-Route::post('/menu/command', 'POS\SalesController@updateCommand');
-Route::post('/menu/getCommand', 'POS\SalesController@getCommand');
 
 Route::get('/inventory', 'ERP\InventoriesController@index');
 Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});
@@ -49,6 +43,7 @@ Route::get('/inventory/view/{slug}', 'ERP\InventoriesController@details');
 Route::post('/inventory/edit/{slug}', 'ERP\InventoriesController@update');
 Route::get('/inventory/create', 'ERP\InventoriesController@create');
 Route::post('/inventory/create', 'ERP\InventoriesController@postCreate');
+
 
 
 Route::get('/itemtypes', 'ERP\ItemTypesController@index');
@@ -98,8 +93,6 @@ Route::post('/employee/create', 'POS\EmployeeController@postcreate');
 
 Route::get('/employee/details/{id}', 'POS\EmployeeController@details');
 
-Route::get('/employee/titles', 'POS\EmployeeTitleController@index');
-
 Route::get('/employee/edit/{id}', 'POS\EmployeeController@edit');
 Route::get('/employee/track/{id}', 'POS\EmployeeController@track');
 Route::post('/employee/edit', 'POS\EmployeeController@postedit');
@@ -124,10 +117,10 @@ Route::post('/addon/rfid/beers', 'Addons\Rfid\RfidTableController@getBeers');
 Route::get('/schedule', 'POS\ScheduleController@index');
 
 Route::get('/schedule/create', 'POS\ScheduleController@create');
-Route::post('/schedule/create', 'POS\ScheduleController@postCreate');
+Route::post('/schedule/create', 'POS\ScheduleController@postcreate');
 
 Route::get('/schedule/edit/{id}', 'POS\ScheduleController@edit');
-Route::post('/schedule/edit', 'POS\ScheduleController@postEdit');
+Route::post('/schedule/edit', 'POS\ScheduleController@postedit');
 
 Route::get('/schedule/{scheduleid}/employees', 'POS\ScheduleController@employeesSchedule');
 Route::get('/schedule/{scheduleid}/employee/{employeeid}', 'POS\ScheduleController@employeeSchedule');
@@ -148,14 +141,18 @@ Route::post('/schedule/AjaxGetEmployeeDaySchedules', 'POS\ScheduleController@Aja
 
 /* Start Punch */
 Route::get('/punch', 'POS\PunchController@index');
-Route::get('/punch/tables', 'POS\PunchController@tables');
 /* End Punch */
+
+/* Start Plan */
+Route::get('/plan', 'POS\PlanController@index');
+Route::get('/plan/create/{planName}/{nbFloor}', 'POS\PlanController@create');
+/* End Plan */
 
 /* Start disponibility */
 Route::get('/disponibility', 'POS\DisponibilityController@index');
 
 Route::get('/disponibility/create', 'POS\DisponibilityController@create');
-Route::post('/disponibility/create', 'POS\DisponibilityController@postcreate');
+Route::post('/disponibility/create', 'POS\DisponibilityController@postCreate');
 
 Route::get('/disponibility/edit/{id}', 'POS\DisponibilityController@edit');
 Route::post('/disponibility/edit', 'POS\DisponibilityController@postedit');

@@ -28,6 +28,16 @@ class PlanController extends Controller
         return $view;
     }
 
+    public function create($planName, $nbFloor)
+    {
+        $view = \View::make('POS.Plan.create')
+            ->with('ViewBag', array (
+                'planName' => $planName,
+                'nbFloor' => $nbFloor
+            ));
+        return $view;
+    }
+
     public function delete($id)
     {
         $employee = Employee::GetById($id);
