@@ -332,6 +332,10 @@ class SalesController extends Controller
 
                                 if($commandLine != ""){
                                     $result['msg'] .= " - Succeeded at finding the command line";
+
+                                    //Serialization of notes
+                                    $inputItem['notes'] = serialize($inputItem['notes']);
+
                                     $commandLine->update($inputItem);
                                     $result['msg'] .= " - Command line normally updated";
                                 }
