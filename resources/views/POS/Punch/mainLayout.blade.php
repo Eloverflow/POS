@@ -48,7 +48,7 @@
     </div>
 </div>
 
-@yield('myjsfile')
+@yield('myjsfile');
 </body>
 
 </html>
