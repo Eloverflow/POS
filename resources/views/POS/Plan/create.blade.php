@@ -1,4 +1,4 @@
-@extends('POS.Punch.mainLayout')
+@extends('workerLayout')
 
 @section("csrfToken")
     <script src="{{ @URL::to('js/utils.js') }}"></script>
@@ -22,10 +22,14 @@
     <!--Horizontal Tab-->
     <div id="parentHorizontalTab">
         <ul class="resp-tabs-list hor_1">
-
+            <li>Floor No. 1</li>
         </ul>
         <div id="tabControl" class="resp-tabs-container hor_1">
+            <div class="tablesContainer">
+                <ul class="tables">
 
+                </ul>
+            </div>
         </div>
     </div>
     <div id="nested-tabInfo">
@@ -37,7 +41,7 @@
 
 @section('myjsfile')
     <script>
-        var globTabNumber = 0;
+        var globTabNumber = 1;
         var rotateParams = {
             start: function(event, ui) {
                 console.log("Rotating started");

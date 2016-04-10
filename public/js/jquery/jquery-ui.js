@@ -7,7 +7,7 @@
 	if ( typeof define === "function" && define.amd ) {
 
 		// AMD. Register as an anonymous module.
-		define([ "jquery" ], factory );
+		define([ "../jquery.ui.rotatable" ], factory );
 	} else {
 
 		// Browser globals

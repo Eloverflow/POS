@@ -49,7 +49,6 @@
         </div>
     </form>
     <ul class="nav menu">
-        <li><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> Punch</a></li>
         <li><a href="{{ URL::to('employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
         <li><a href="{{ URL::to('employee/titles') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employee Titles</a></li>
         <li><a href="{{ URL::to('disponibility') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> Disponibilities</a></li>
@@ -61,6 +60,7 @@
         <li><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> RFID Tables</a></li>
         <li><a href="{{ URL::to('plan') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> Plans</a></li>
         <li><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> RFID Request</a></li>
+        <li><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> Punch</a></li>
         <li><a href="{{ URL::to('menu') }}"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> Menu</a></li>
         <li role="presentation" class="divider"></li>
         <li><a href="{{ URL::to('auth/login') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
@@ -156,10 +156,10 @@
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart.js') }}"></script>
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>--}}
 <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.js') }}"></script>
-<script src="{{ @URL::asset('js/jquery.nicescroll.min.js') }}"></script>
+<script src="{{ @URL::asset('js/jquery/jquery.nicescroll.min.js') }}"></script>
 <script src="{{ @URL::to('js/baseEffect.js') }}"></script>
 @if(Request::path() == "addon/rfid/table")
-    <script src="{{ @URL::asset('js/jquery.sortable.js') }}"></script>
+    <script src="{{ @URL::asset('js/jquery/jquery.sortable.js') }}"></script>
     <script src="{{ @URL::asset('js/listener.js') }}"></script>
 @endif
 {{--End of Script call--}}
