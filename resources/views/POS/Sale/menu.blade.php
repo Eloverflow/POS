@@ -11,7 +11,7 @@
                     <span style="position: absolute; right: 6px; top:6px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandClient[bigCurrentPage].notes.length %></span>
                 </div>
             </li>
-            <div ng-show="commandClient[bigCurrentPage].notes.length != 0" class="itemNoteSeparation">
+            <div ng-show="commandClient[bigCurrentPage].notes.length != 0" class="itemNoteSeparation command">
                 <p ng-repeat="currentNote in commandClient[bigCurrentPage].notes" ><% currentNote.note %>  <span ng-click="deleteItemNote(currentNote)" class="glyphicon glyphicon-remove right"></span></p>
             </div>
             <script type="text/ng-template" id="myPopoverTemplate.html">
@@ -43,9 +43,10 @@
              <li ng-repeat="commandItem in commandClient[bigCurrentPage].commandItems"  id="commandItem<% commandItem.id %>" class="sale-item">
                  <span ng-click="increase(commandItem)" class="glyphicon glyphicon-plus"></span>
                  <span ng-click="decrease(commandItem)" class="glyphicon glyphicon-minus"></span>
-                 <div class="saleTextZone"><input id="" type="number" ng-change="updateBill()" ng-model="commandItem.quantity" value=""> X <span class="sale-item-name"><% commandItem.size.name + " de " + commandItem.name + " = " + (commandItem.size.price*commandItem.quantity | number:2) %></span></div>
+                 <div class="saleTextZone"><input id="" type="number" ng-change="updateBill()" ng-model="commandItem.quantity" value=""><span class="sale-item-name"><% commandItem.size.name + " " + commandItem.name%></span> </div>
                  <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right special"></span>
-                <span uib-popover-template="dynamicPopover.templateUrl" popover-title="<% dynamicPopover.title %>" popover-placement="<%placement.selected%>" popover-trigger="outsideClick" class="glyphicon glyphicon-comment itemNote right"> <span style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
+                 <span uib-popover-template="dynamicPopover.templateUrl" popover-title="<% dynamicPopover.title %>" popover-placement="<%placement.selected%>" popover-trigger="outsideClick" class="glyphicon glyphicon-comment itemNote right"> <span style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
+                 <span class="priceItems"><% (commandItem.size.price*commandItem.quantity | number:2) %></span>
                  <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
                      <p ng-repeat="item in commandItem.notes" ><% item.note %><span ng-click="deleteItemNote(item, commandItem.notes)" class="glyphicon glyphicon-remove right"></span></p>
                  </div>

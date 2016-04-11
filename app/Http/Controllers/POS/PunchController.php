@@ -23,6 +23,13 @@ class PunchController extends Controller
         return $view;
     }
 
+
+    public function keyboard()
+    {
+        $view = \View::make('POS.Punch.vKeyboard');
+        return $view;
+    }
+
     public function tables()
     {
         $view = \View::make('POS.Punch.tablesSelect');

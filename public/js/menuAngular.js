@@ -291,8 +291,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                 item.notes.push({note: note});
             }
             else{
-                if(typeof $scope.commandClient[$scope.bigCurrentPage].notes === 'undefined' || $scope.commandClient[$scope.bigCurrentPage].notes === null )
-                    $scope.commandClient[$scope.bigCurrentPage].notes = [];
+                if(typeof $scope.commandClient[$scope.bigCurrentPage].notes === 'undefined' || $scope.commandClient[$scope.bigCurrentPage].notes === null || $scope.commandClient[$scope.bigCurrentPage].notes === "")
+                $scope.commandClient[$scope.bigCurrentPage].notes = [];
 
                 $scope.commandClient[$scope.bigCurrentPage].notes.push({note: note})
             }
@@ -657,6 +657,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
                 for(var f = 0; f < response.commands.length; f++){
                     $scope.commandClient[f+1] = response.commands[f];
+
+
+                    if($scope.commandClient[f+1].notes != "")
                     $scope.commandClient[f+1].notes = unserialize($scope.commandClient[f+1].notes)
 
                     $scope.commandClient[f+1].commandItems = response.commands[f]['commandline'];
@@ -681,8 +684,15 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
                         var notes = [];
 
-                        if($scope.commandClient[f+1].commandItems[p].notes != "")
-                        notes = unserialize($scope.commandClient[f+1].commandItems[p].notes);
+                        if($scope.commandClient[f+1].commandItems[p].notes != ""){
+                            try {
+                                notes = unserialize($scope.commandClient[f+1].commandItems[p].notes);
+                            }
+                            catch(err) {
+                                //There was an error we flush the notes
+                                notes = [];
+                            }
+                        }
 
                         /*
                          console.log(angular.copy($.grep($scope.menuItems, function(e){return e.id == $scope.commandClient[f+1].commandItems[p].item_id})[0]));*/

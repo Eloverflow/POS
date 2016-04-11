@@ -233,8 +233,11 @@ class ItemTypesTableSeeder extends Seeder {
     {
         DB::table('item_types')->delete();
 
-        ItemType::create(['type' => 'Beer', 'field_names' => 'brand,style,percent ', 'size_names' => 'Verre,Pinte,Pichet,Baril', 'slug' => 'beer']);
+        ItemType::create(['type' => 'Bière', 'field_names' => 'brand,style,percent ', 'size_names' => 'Verre,Pinte,Pichet,Baril', 'slug' => 'beer']);
         ItemType::create(['type' => 'Drink', 'field_names' => 'flavour,color,author,percent', 'size_names' => 'Petit,Moyen,Gros', 'slug' => 'drink']);
+        ItemType::create(['type' => 'Poutine', 'field_names' => 'sauce, cheese, meet', 'size_names' => 'Petite,Moyenne,Grosse', 'slug' => 'Poutine']);
+        ItemType::create(['type' => 'Grilled Cheeze', 'field_names' => 'bread, cheese', 'size_names' => 'Simple,Double', 'slug' => 'grilled-cheeze']);
+        ItemType::create(['type' => 'Nachos', 'field_names' => 'chips,cheese,meet ', 'size_names' => 'Assiete,Plateau', 'slug' => 'nachos']);
 
         $this->command->info('ItemTypes table seeded!');
     }
@@ -279,12 +282,49 @@ class ItemsTableSeeder extends Seeder {
 
         Item::create([
             'item_type_id' => '2',
-            'name' => 'MyDrinkName',
+            'name' => 'DUniversal',
             'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ',
             'slug' => 'mydrinkname',
             'img_id' => 'drink.jpg',
             'custom_fields_array' => serialize(array('Sour','green','Jino', '20')),
             'size_prices_array' => serialize(array('2.25','5.00','7.95' ))]);
+
+        Item::create([
+            'item_type_id' => '2',
+            'name' => 'Vodka Jus d\'orange',
+            'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
+            'slug' => 'Vodka-jus-orange',
+            'img_id' => '',
+            'custom_fields_array' => serialize(array('Warming','Orange','Some Guy', '25')),
+            'size_prices_array' => serialize(array('3.25','5.50','8.35' ))]);
+
+        Item::create([
+            'item_type_id' => '3',
+            'name' => 'Poutine Côte Levée',
+            'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
+            'slug' => 'poutine-cote-leve',
+            'img_id' => '',
+            'custom_fields_array' => serialize(array('BBQ','Montery Jack','Côte Levée')),
+            'size_prices_array' => serialize(array('4.50','6.40','8.15' ))]);
+
+        Item::create([
+            'item_type_id' => '4',
+            'name' => 'Grilled cheeze bacon',
+            'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
+            'slug' => 'grilled-cheeze-bacon',
+            'img_id' => '',
+            'custom_fields_array' => serialize(array('White','4 Fromage')),
+            'size_prices_array' => serialize(array('3.90','6.00' ))]);
+
+
+        Item::create([
+            'item_type_id' => '5',
+            'name' => 'Nachos Chili Bacon',
+            'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
+            'slug' => 'nachos-chili-bacon',
+            'img_id' => '',
+            'custom_fields_array' => serialize(array('Nachos','4 Fromage', 'Bacon')),
+            'size_prices_array' => serialize(array('4.95','7.70' ))]);
 
         $this->command->info('Items table seeded!');
     }

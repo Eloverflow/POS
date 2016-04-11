@@ -44,15 +44,19 @@
 }
 
 .sidebar span.glyphicon.glyphicon-minus{
-	color: #30a5ff;
+	float: left;
+	margin-top: 6px;
+	color: #30a5ff;/*
 	margin-right: 0;
-	margin-bottom: 6px;
+	margin-bottom: 6px;*/
 }
 
 .sidebar span.glyphicon.glyphicon-plus{
-	color: #30a5ff;
+	float: left;
+	margin-top: 6px;
+	color: #30a5ff;/*
 	margin-right: 0;
-	margin-bottom: 6px;
+	margin-bottom: 6px;*/
 }
 .sidebar span.glyphicon.glyphicon-remove{
 	/*margin-top: 10px;*/
@@ -74,16 +78,28 @@
 	font-size: 28px;
 }
 
+.priceItems{
+	color: #8ad919;
+	padding: 4px;
+	float: right;
+}
+
 div.saleTextZone{
-	display: inline;
+
+	text-align: center;
+	display: inline-block;
 	top: 40px!important;
+	width: 50%;/*
+	word-wrap: break-word;*/
 }
 
 
 div.saleTextZone input{
+	margin-right: 40px;
+	float: left;
 	color: #333;
 	transition: border-color 0.3s;
-	width: 10%;
+	width: 14%;
 	text-align: center;
 	border: solid #30a5ff 4px;
 	border-radius: 2px;
@@ -307,6 +323,7 @@ div.saleTextZone input:focus{
 }
 
 #sidebar-collapse .glyphicon{
+
 	width: 7%;
 }
 
@@ -317,7 +334,7 @@ div.saleTextZone input:focus{
 	height: 60px;
 	width: 41.7%;
 	position: fixed;
-	bottom: 70px;
+	bottom: 60px;
 }
 
 
@@ -415,6 +432,8 @@ pre{
 }
 
 #contentPanel .beer-items{
+
+	min-height: 1000px;
 	border: 1px solid rgba(44,44,44,0.5);
 	background-color: #232323;
 	margin-top: 125px;
@@ -467,6 +486,12 @@ pre{
 	border-bottom: 3px solid #333;*/
 	border-radius: 7px;
 }
+
+.itemNoteSeparation.command{
+	margin-right: 6px;
+	margin-left: 6px;
+}
+
 .itemNoteSeparation p{
 	padding: 3px;
 	margin-left: 5px;
