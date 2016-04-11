@@ -16,34 +16,29 @@
     <span id="planName">{{ $ViewBag['planName'] }}</span>
     <h5>Floor Number:</h5>
     <span id="floorNumber">{{ $ViewBag['nbFloor'] }}</span>
-
+    <a class="btn btn-success pull-right" id="btnFinish" href="#"> Create </a>
     <br/>
-    <a id="btnNewTab" href="#">New Tab</a>
     <div id="rowCmd"><a id="btnNewTable" href="#">New Table</a> | <a id="btnNewPlace" href="#">New Place</a> | <a id="btnNewSeparation" href="#">New Separation</a></div>
     <!--Horizontal Tab-->
     <div id="parentHorizontalTab">
         <ul class="resp-tabs-list hor_1">
-            <li>Floor No. 1</li>
+
         </ul>
         <div id="tabControl" class="resp-tabs-container hor_1">
-            <div class="tablesContainer">
-                <ul class="tables">
 
-                </ul>
-            </div>
         </div>
     </div>
     <div id="nested-tabInfo">
-        Selected tab: <span class="tabName"></span>
+        Selected tab:       <span class="tabName"></span>
+        Selected tab ID:    <span class="tabItemID"></span>
     </div>
-
 
 @stop
 
 @section('myjsfile')
     <script>
         var globTabNumber = 1;
-
+        $('#target2').rotatable(); $('#draggable2').draggable();
         var rotateParams = {
             start: function(event, ui) {
                 console.log("Rotating started");
@@ -58,46 +53,51 @@
         var dragParams = {
             containment: "parent",
             drag: function(){
-                var offset = $(this).offset();
+                // Find the parent
+                var tablesContainer = $(this).parent();
+                var tablesContainerPos = tablesContainer.offset();
+
+                var tblContainerXPos = tablesContainerPos.left;
+                var tblContainerYPos = tablesContainerPos.top;
+                //console.log("X: " + tblContainerXPos + " Y: " + tblContainerYPos);
+
+                var offset = $(this).position();
                 var xPos = offset.left;
                 var yPos = offset.top;
                 $(this).find('#posX').text('x: ' + xPos.toFixed(0));
                 $(this).find('#posY').text('y: ' + yPos.toFixed(0));
             }
         };
-        $("#btnNewTab").click(function() {
-            $("#parentHorizontalTab .resp-tabs-list").append("<li class=\"resp-tab-item hor_1\" aria-controls=\"hor_1_tab_item-"+ globTabNumber +"\" role=\"tab\" style=\"border-color: rgb(193, 193, 193); background-color: rgb(255, 255, 255);\">Horizontal PEN</li>");
-            $("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\"></ul></div>");
-            $('#parentHorizontalTab').easyResponsiveTabs({
-                type: 'default', //Types: default, vertical, accordion
-                width: 'auto', //auto or any width like 600px
-                fit: true, // 100% fit in a container
-                tabidentify: 'hor_1', // The tab groups identifier
-                activate: function(event) { // Callback function if tab is switched
-                    var $tab = $(this);
-                    var $info = $('#nested-tabInfo');
-                    var $name = $('span', $info);
-                    $name.text($tab.text());
-                    $info.show();
-                }
-            });
-            globTabNumber += 1;
-        });
         $("#btnNewSeparation").click(function() {
             $tableGUID = guid();
-            $(".tablesContainer .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
+            var $info = $('#nested-tabInfo');
+            var $tabItemID = $('.tabItemID', $info);
+            var $tabControl = $("#tabControl");
+
+            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
+
             $('#' + $tableGUID).resizable().rotatable(rotateParams);
             $('#' + $tableGUID).draggable(dragParams);
         });
         $("#btnNewPlace").click(function() {
             $tableGUID = guid();
-            $(".tablesContainer .tables").append('<li class="draggable plc" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
+            var $info = $('#nested-tabInfo');
+            var $tabItemID = $('.tabItemID', $info);
+            var $tabControl = $("#tabControl");
+
+            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable plc" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
+
             $('#' + $tableGUID).rotatable(rotateParams);
             $('#' + $tableGUID).draggable(dragParams);
         });
         $("#btnNewTable").click(function() {
             $tableGUID = guid();
-            $(".tablesContainer .tables").append('<li class="draggable tbl" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
+            var $info = $('#nested-tabInfo');
+            var $tabItemID = $('.tabItemID', $info);
+            var $tabControl = $("#tabControl");
+            /*style="position:absolute; top: ' + 0 +'px; left: ' + 120 + 'px;"*/
+            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable tbl" ' + 'id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
+            //$(".tablesContainer .tables").append('<li class="draggable tbl" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
             $('#' + $tableGUID).rotatable(rotateParams);
             $('#' + $tableGUID).draggable(dragParams);
         });
@@ -108,52 +108,34 @@
     <script type="text/javascript">
         $(document).ready(function() {
 
-            //$("#parentHorizontalTab .resp-tabs-list").append("<li class=\"resp-tab-item hor_1\" aria-controls=\"hor_1_tab_item-"+ globTabNumber +"\" role=\"tab\" style=\"border-color: rgb(193, 193, 193); background-color: rgb(255, 255, 255);\">Horizontal PEN</li>");
-            //$("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\"></ul></div>");
-            alert($("#floorNumber").text());
-            //Horizontal Tab
-            $('#parentHorizontalTab').easyResponsiveTabs({
-                type: 'default', //Types: default, vertical, accordion
-                width: 'auto', //auto or any width like 600px
-                fit: true, // 100% fit in a container
-                tabidentify: 'hor_1', // The tab groups identifier
-                activate: function(event) { // Callback function if tab is switched
-                    var $tab = $(this);
-                    var $info = $('#nested-tabInfo');
-                    var $name = $('span', $info);
-                    $name.text($tab.text());
-                    $info.show();
+            var intNbFloor = parseInt($("#floorNumber").text());
+            if(intNbFloor >= 1){
+                for(var i = 1; i <= intNbFloor; i++){
+                    $("#parentHorizontalTab .resp-tabs-list").append("<li class=\"resp-tab-item hor_1\" aria-controls=\"hor_1_tab_item-"+ globTabNumber +"\" role=\"tab\" style=\"border-color: rgb(193, 193, 193); background-color: rgb(255, 255, 255);\">Floor No. " + i + "</li>");
+                    $("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\"></ul></div>");
                 }
-            });
+                $('#parentHorizontalTab').easyResponsiveTabs({
+                    type: 'default', //Types: default, vertical, accordion
+                    width: 'auto', //auto or any width like 600px
+                    fit: true, // 100% fit in a container
+                    tabidentify: 'hor_1', // The tab groups identifier
+                    activate: function(event) { // Callback function if tab is switched
 
+                        var $tab = $(this);
+                        var $info = $('#nested-tabInfo');
+                        var $name = $('.tabName', $info);
 
-            // Child Tab
-            $('#ChildVerticalTab_1').easyResponsiveTabs({
-                type: 'vertical',
-                width: 'auto',
-                fit: true,
-                tabidentify: 'ver_1', // The tab groups identifier
-                activetab_bg: '#fff', // background color for active tabs in this group
-                inactive_bg: '#F5F5F5', // background color for inactive tabs in this group
-                active_border_color: '#c1c1c1', // border color for active tabs heads in this group
-                active_content_border_color: '#5AB1D0' // border color for active tabs contect in this group so that it matches the tab head border
-            });
+                        var $tabItemID = $('.tabItemID', $info);
+                        $name.text($tab.text());
 
-            //Vertical Tab
-            $('#parentVerticalTab').easyResponsiveTabs({
-                type: 'vertical', //Types: default, vertical, accordion
-                width: 'auto', //auto or any width like 600px
-                fit: true, // 100% fit in a container
-                closed: 'accordion', // Start closed if in accordion view
-                tabidentify: 'hor_1', // The tab groups identifier
-                activate: function(event) { // Callback function if tab is switched
-                    var $tab = $(this);
-                    var $info = $('#nested-tabInfo2');
-                    var $name = $('span', $info);
-                    $name.text($tab.text());
-                    $info.show();
-                }
-            });
+                        $tabItemID.text($tab.attr("aria-controls").toString())
+                        $info.show();
+                    }
+                });
+            } else {
+                alert("The floor number must be greater than 0");
+            }
+
         });
     </script>
 @stop
