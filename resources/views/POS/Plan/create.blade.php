@@ -2,20 +2,21 @@
 
 @section("csrfToken")
     <script src="{{ @URL::to('js/utils.js') }}"></script>
-    <script src="{{ @URL::to('js/jquery-ui.js') }}"></script>
-    <script src="{{ @URL::to('js/jquery.ui.rotatable.js') }}"></script>
-    <link rel="stylesheet" href="{{ @URL::to('js/jquery.ui.rotatable.css') }}">
-    <link rel="stylesheet" href="{{ @URL::to('js/jquery-ui.css') }}">
+    <script src="{{ @URL::to('js/jquery/jquery-ui.js') }}"></script>
+    <script src="{{ @URL::to('js/jquery/jquery.ui.rotatable.js') }}"></script>
+    <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery.ui.rotatable.css') }}">
+    <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery-ui.css') }}">
     <script src="{{ @URL::to('js/easyResponsiveTabs.js') }}"></script>
     <script src="{{ @URL::to('js/planTabs.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ @URL::to('css/easy-responsive-tabs.css') }}" />
 @stop
 
 @section('content')
+    <h3>Plan name: </h3>
+    <span id="planName">{{ $ViewBag['planName'] }}</span>
+    <h5>Floor Number:</h5>
+    <span id="floorNumber">{{ $ViewBag['nbFloor'] }}</span>
 
-    <h2>Horizontal Tab with (Nested Tabs) </h2>
-    <h3>Plan name: {{ $ViewBag['planName'] }}</h3>
-    <span>Floor Number: {{ $ViewBag['nbFloor'] }}</span>
     <br/>
     <a id="btnNewTab" href="#">New Tab</a>
     <div id="rowCmd"><a id="btnNewTable" href="#">New Table</a> | <a id="btnNewPlace" href="#">New Place</a> | <a id="btnNewSeparation" href="#">New Separation</a></div>
@@ -42,6 +43,7 @@
 @section('myjsfile')
     <script>
         var globTabNumber = 1;
+
         var rotateParams = {
             start: function(event, ui) {
                 console.log("Rotating started");
@@ -51,7 +53,7 @@
             },
             stop: function(event, ui) {
                 console.log("Rotating stopped");
-            },
+            }
         };
         var dragParams = {
             containment: "parent",
@@ -64,7 +66,7 @@
             }
         };
         $("#btnNewTab").click(function() {
-            $("#parentHorizontalTab .resp-tabs-list").append("<li class=\"resp-tab-item hor_1 resp-tab-active\" aria-controls=\"hor_1_tab_item-"+ globTabNumber +"\" role=\"tab\" style=\"border-color: rgb(193, 193, 193); background-color: rgb(255, 255, 255);\">Horizontal PEN</li>");
+            $("#parentHorizontalTab .resp-tabs-list").append("<li class=\"resp-tab-item hor_1\" aria-controls=\"hor_1_tab_item-"+ globTabNumber +"\" role=\"tab\" style=\"border-color: rgb(193, 193, 193); background-color: rgb(255, 255, 255);\">Horizontal PEN</li>");
             $("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\"></ul></div>");
             $('#parentHorizontalTab').easyResponsiveTabs({
                 type: 'default', //Types: default, vertical, accordion
@@ -105,6 +107,10 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function() {
+
+            //$("#parentHorizontalTab .resp-tabs-list").append("<li class=\"resp-tab-item hor_1\" aria-controls=\"hor_1_tab_item-"+ globTabNumber +"\" role=\"tab\" style=\"border-color: rgb(193, 193, 193); background-color: rgb(255, 255, 255);\">Horizontal PEN</li>");
+            //$("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\"></ul></div>");
+            alert($("#floorNumber").text());
             //Horizontal Tab
             $('#parentHorizontalTab').easyResponsiveTabs({
                 type: 'default', //Types: default, vertical, accordion
@@ -119,6 +125,7 @@
                     $info.show();
                 }
             });
+
 
             // Child Tab
             $('#ChildVerticalTab_1').easyResponsiveTabs({
