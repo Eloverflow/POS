@@ -122,6 +122,14 @@
                     'background-color': options.activetab_bg,
                     'border-color': options.active_border_color
                 });
+                // MODIF: This put the first selected table item ID on the label
+                var $info = $('#nested-tabInfo');
+                var $name = $('.tabName', $info);
+                var $tabItemID = $('.tabItemID', $info);
+                $name.text("Floor No. 1")
+
+                var theTab = $($respTabs.find('.resp-tab-item.' + options.tabidentify)[tabNum]);
+                $tabItemID.text(theTab.attr("aria-controls"));
 
                 //keep closed if option = 'closed' or option is 'accordion' and the element is in accordion mode
                 if (options.closed !== true && !(options.closed === 'accordion' && !$respTabsList.is(':visible')) && !(options.closed === 'tabs' && $respTabsList.is(':visible'))) {
@@ -170,7 +178,6 @@
 
                             $respTabs.find('.resp-tab-content[aria-labelledby = ' + $tabAria + '].' + options.tabidentify).slideDown().addClass('resp-tab-content-active');
                         } else {
-                            console.log('here');
                             $respTabs.find('.resp-tab-active.' + options.tabidentify).removeClass('resp-tab-active').css({
                                 'background-color': options.inactive_bg,
                                 'border-color': 'none'
