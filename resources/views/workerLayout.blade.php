@@ -6,6 +6,8 @@
     <title>Mirageflow @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
 
     {{--Stylesheet call--}}
+    <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
     <link href="{{ @URL::to('Framework/Bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/datepicker3.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
@@ -18,7 +20,6 @@
     <script src="{{ @URL::to('Framework/Angular/angular-ui-router.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
-    <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
 
     @yield('csrfToken')
 </head>

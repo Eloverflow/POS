@@ -38,6 +38,58 @@ class PlanController extends Controller
         return $view;
     }
 
+    public function postCreate()
+    {
+        $inputs = \Input::all();
+
+        $rules = array(
+            'planName' => 'required',
+            'nbFloor' => 'required'
+        );
+
+        $message = array(
+            'required' => 'The :attribute is required !'
+        );
+
+        $validation = \Validator::make($inputs, $rules, $message);
+        if($validation -> fails())
+        {
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
+        }
+        else
+        {
+
+            $plan = Plan::create([
+                'planName' => \Input::get('planName'),
+                'nbFloor' => \Input::get('nbFloor')
+            ]);
+
+            $jsonArray = json_decode(\Input::get('floors'), true);
+            for($i = 0; $i < count($jsonArray); $i++)
+            {
+                //$jsonObj = json_decode(\Input::get('events')[$i], true);
+                $tables = $jsonArray[$i]["tables"];
+                for($j = 0; $j < count($tables); $j++) {
+                    tables::create([
+                        "schedule_id" => $schedule->id,
+                        'employee_id' => $employeeId,
+                        "day_number" => $jsonArray[$i]["dayIndex"],
+                        "startTime" => $resStart,
+                        "endTime" => $resStop
+                    ]);
+                }
+
+            }
+
+            return \Response::json([
+                'success' => "The Schedule " . \Input::get('name') . " has been successfully created !"
+            ], 201);
+        }
+    }
+
     public function delete($id)
     {
         $employee = Employee::GetById($id);
