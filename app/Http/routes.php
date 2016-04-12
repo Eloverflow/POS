@@ -147,6 +147,7 @@ Route::post('/schedule/AjaxGetEmployeeDaySchedules', 'POS\ScheduleController@Aja
 
 /* Start Punch */
 Route::get('/punch', 'POS\PunchController@index');
+Route::get('/keyboard', 'POS\PunchController@keyboard');
 /* End Punch */
 
 /* Start Plan */

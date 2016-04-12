@@ -8,7 +8,7 @@ class Command extends Model
 {
     protected $table = 'commands';
 
-    protected $fillable = array('table_id', 'client_id', 'command_number', 'total', 'status', 'slug');
+    protected $fillable = array('table_id', 'client_id', 'command_number', 'notes', 'total', 'status', 'slug');
 
 
     public function client()

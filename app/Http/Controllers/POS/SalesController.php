@@ -234,6 +234,13 @@ class SalesController extends Controller
                 /*If the command Posted contain a commmand_number it mean that it already exist, so we gota update it instead of create it */
                 if(!empty($inputCommand['command_number'])){
                     $command = Command::where('command_number', $inputCommand['command_number'])->first();
+
+                    /*We gotta update the command too now*/
+                    if(!empty($inputCommand['notes']))
+                    {
+                        $command['notes'] = serialize($inputCommand['notes']);
+                        $command->update();
+                    }
 /*
                     $command = $command[0];*/
 
@@ -310,13 +317,16 @@ class SalesController extends Controller
                     if(!empty($commands))
                     $commandNumber = $commands->command_number;
 
+                    $notes = "";
+                    if(!empty($inputCommand['notes']))
+                    $notes = serialize($inputCommand['notes']);
 
                     $command = Command::create([
                         'table_id' => $inputs['table'],
                         'client_id' => $client->id,
                         'command_number' => 1 + $commandNumber,
                         'status' => 1,
-                        'notes' => serialize($inputCommand['notes'])
+                        'notes' => $notes
                     ]);
                     // Command::all()->last()->command_number + 1
 
@@ -327,8 +337,11 @@ class SalesController extends Controller
 
                         if(!empty($inputCommand['command_number'])){
                             //We update de command
-                            foreach ($inputCommand['commandItems'] as $inputItem) {
-                                $commandLine = CommandLine::findOrNew($inputItem['id']);
+                            foreach ($inputCommand['commandItems'] as $inputItem) {/*
+                                $commandLine = CommandLine::findOrNew($inputItem['id']);*/
+
+                                $commandLine = CommandLine::where('command_id', $command->id)->where('item_id', $inputItem['id'])->where('size', $inputItem['size']['name']);
+
 
                                 if($commandLine != ""){
                                     $result['msg'] .= " - Succeeded at finding the command line";
@@ -341,7 +354,12 @@ class SalesController extends Controller
                                 }
                                 else{
                                     $result['msg'] .= " - Failed at finding the command line";
-                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => serialize($inputItem['notes'])]);
+
+                                    $notes = "";
+                                    if(!empty($inputCommand['notes']))
+                                        $notes = serialize($inputItem['notes']);
+
+                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => $notes]);
 
                                     if($commandLine == ""){
                                         $result['msg'] .= " - Failed at recording command line";
