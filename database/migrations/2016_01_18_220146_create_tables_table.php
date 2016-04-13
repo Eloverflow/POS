@@ -14,7 +14,15 @@ class CreateTablesTable extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name');
+
+            $table->integer('tblNumber');
+            $table->integer('noFloor');
+            $table->integer('xPos');
+            $table->integer('yPos');
+            $table->string('angle');
+            $table->integer('plan_id')->unsigned();
+            $table->foreign('plan_id')->references('id')->on('plans');
+
             $table->boolean('status');
             $table->integer('associated_employee_id')->nullable();/*
             $table->integer('associated_employee_id')->unsigned();

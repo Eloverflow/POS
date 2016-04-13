@@ -153,6 +153,7 @@ Route::get('/keyboard', 'POS\PunchController@keyboard');
 /* Start Plan */
 Route::get('/plan', 'POS\PlanController@index');
 Route::get('/plan/create/{planName}/{nbFloor}', 'POS\PlanController@create');
+Route::post('/plan/create', 'POS\PlanController@postCreate');
 /* End Plan */
 
 /* Start disponibility */

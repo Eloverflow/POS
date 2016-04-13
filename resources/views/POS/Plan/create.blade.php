@@ -1,6 +1,7 @@
 @extends('workerLayout')
 
 @section("csrfToken")
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script src="{{ @URL::to('js/utils.js') }}"></script>
     <script src="{{ @URL::to('js/jquery/jquery-ui.js') }}"></script>
     <script src="{{ @URL::to('js/jquery/jquery.ui.rotatable.js') }}"></script>
@@ -12,6 +13,10 @@
 @stop
 
 @section('content')
+    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+        <ul id="errors"></ul>
+    </div>
     <h3>Plan name: </h3>
     <span id="planName">{{ $ViewBag['planName'] }}</span>
     <h5>Floor Number:</h5>
@@ -104,11 +109,15 @@
             var $tabItemID = $('.tabItemID', $info);
             var $tabControl = $("#tabControl");
 
-            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable plc" id="' + $tableGUID + '"><span id="tblNum">0</span><span id="posX"></span><span id="posY"></span></li>');
+            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable plc" id="' + $tableGUID + '">' +
+                    '<span id="tableNumber">0</span>' +
+                    '<span id="posX"></span>' +
+                    '<span id="posY"></span>' +
+                    '</li>');
 
-            $( '#' + $tableGUID ).bind( "click", function() {
+            $( '#' + $tableGUID + ' #tableNumber' ).bind( "click", function() {
                 globEditTable = this;
-                $('#editModal #tblNum').val($(this).find("#tblNum").text());
+                $('#editModal #tblNum').val($(this).text());
                 $("#editModal").modal('show');
             });
             $('#' + $tableGUID).rotatable(rotateParams);
@@ -122,11 +131,15 @@
 
 
             /*style="position:absolute; top: ' + 0 +'px; left: ' + 120 + 'px;"*/
-            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable tbl" ' + 'id="' + $tableGUID + '"><span id="tblNum">0</span><span id="posX"></span><span id="posY"></span></li>');
+            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable tbl" ' + 'id="' + $tableGUID + '">' +
+                    '<div id="tableNumber">0</div>' +
+                    '<span id="posX"></span>' +
+                    '<span id="posY"></span>' +
+                    '</li>');
             //$(".tablesContainer .tables").append('<li class="draggable tbl" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
-            $( '#' + $tableGUID ).bind( "click", function() {
+            $( '#' + $tableGUID + ' #tableNumber' ).bind( "click", function() {
                 globEditTable = this;
-                $('#editModal #tblNum').val($(this).find("#tblNum").text());
+                $('#editModal #tblNum').val($(this).text());
                 $("#editModal").modal('show');
             });
             $('#' + $tableGUID).rotatable(rotateParams);
@@ -135,49 +148,77 @@
         $("#btnFinish").click(function() {
             var tblContainers = $( ".tablesContainer .tables" );
             var listItems = $( "#tabControl" ).find( tblContainers );
-
-            $arrayFloor = [];
+            $arrayFloorTable = [];
             for( $i = 0; $i < listItems.length; $i++ ){
-                $arrayFloorTable = [];
                 $liSubItems = $(listItems[$i]).find("li");
                 for( $j = 0; $j < $liSubItems.length; $j++ ){
                     //$arrayFloorTable.push()
                     $parsedliSubItem = $($liSubItems[$j]);
                     var offset = $parsedliSubItem.position();
-                    $xPos = offset.left;
-                    $yPos = offset.top;
+                    $xPos = offset.left.toFixed(0);
+                    $yPos = offset.top.toFixed(0);
 
-                    $tabNum = parseInt($parsedliSubItem.find("#tblNum").text());
+                    var txtRaw = $parsedliSubItem[0].style.transform;
+                    var radValReg = /\((.*)\)/;
+                    var radVal = 0;
+                    if(txtRaw.match(radValReg)[1] != null){
+                        radVal = txtRaw.match(radValReg)[1];
+                    }
+                    $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text());
                     var objTable = {
                         tblNum: $tabNum,
+                        noFloor: $i,
                         xPos: $xPos,
                         yPos: $yPos,
-                        angle: $parsedliSubItem[0].style.transform
+                        angle: radVal
                     };
                     $arrayFloorTable.push(objTable);
-                    console.log("tblNum: " + $tabNum + " x: " + $xPos + " - y: " + $yPos + " angle: " + $parsedliSubItem[0].style.transform)
-                }
-                if($arrayFloorTable.length > 0){
-                    $arrayFloor.push(
-                            $arrayFloorTable
-                    );
                 }
 
             }
 
-            for( $i = 0; $i < listItems.length; $i++ ){
-                //console.log($(listItems[$i]).find("li"));
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
-            }
+            var nbFloor = $("#floorNumber").text();
+            var planName = $("#planName").text();
+            $.ajax({
+                url: '/plan/create',
+                type: 'POST',
+                async: true,
+                data: {
+                    _token: CSRF_TOKEN,
+                    planName: planName,
+                    nbFloor: nbFloor,
+                    tables: JSON.stringify($arrayFloorTable)
 
-            console.log(JSON.stringify($arrayFloor))
+                },
+                dataType: 'JSON',
+                error: function (xhr, status, error) {
+                    var erro = jQuery.parseJSON(xhr.responseText);
+                    $("#errors").empty();
+                    //$("##errors").append('<ul id="errorsul">');
+                    [].forEach.call( Object.keys( erro ), function( key ){
+                        [].forEach.call( Object.keys( erro[key] ), function( keyy ) {
+                            $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
+                        });
+                        //console.log( key , erro[key] );
+                    });
+                    //$("#displayErrors").append('</ul>');
+                    $("#displayErrors").show();
+                },
+                success: function(xhr) {
+                    [].forEach.call( Object.keys( xhr ), function( key ) {
+                        alert(xhr[key]);
+                        window.location.replace("/plan");
+                    });
+                }
+            });
+
+            console.log(JSON.stringify($arrayFloorTable))
         });
         $("#btnEditTable").click(function() {
             $tblNumEdit = $('#editModal #tblNum').val();
-            $oTableNum = $(globEditTable).find("#tblNum");
-
-            $oTableNum.text($tblNumEdit);
-
+            $oTableNum = $(globEditTable).text($tblNumEdit);
         });
         $("#btnDelTable").click(function() {
 

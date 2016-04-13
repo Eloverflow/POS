@@ -8,7 +8,7 @@ class Table extends Model
 {
     protected $table = 'tables';
 
-    protected $fillable = array('name', 'isBusy', 'slug');
+    protected $fillable = array('tblNumber', 'noFloor', 'xPos', 'yPos', 'angle', 'plan_id', 'status');
 
 
     public function command()

@@ -13,6 +13,7 @@ use App\Models\Addons\Rfid\TableRfidRequest;
 use App\Models\POS\Client;
 use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
+use App\Models\POS\Plan;
 use App\Models\POS\Table;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
@@ -66,6 +67,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PunchesTableSeeder::class);
 
+        $this->call(PlanSeeder::class);
         $this->call(TableSeeder::class);
 
         Model::reguard();
@@ -454,14 +456,29 @@ class ClientSeeder extends Seeder {
 }
 
 
+class PlanSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('plans')->delete();
+
+        for($i = 1; $i < 2; $i++){
+            Plan::create(['id' => $i, 'name' => "Plan No. " . $i, 'nbFloor' => 2]);
+        }
+
+        $this->command->info('plans table seeded!');
+    }
+
+}
+
 class TableSeeder extends Seeder {
 
     public function run()
     {
         DB::table('tables')->delete();
 
-        for($i = 1; $i < 23; $i++){
-            Table::create(['id' => $i, 'name' => 'Une nouvelle Table', 'status' => '1']);
+        for($i = 1; $i < 5; $i++){
+            Table::create(['id' => $i, 'tblNumber' => $i, 'noFloor' => $i, 'xPos' => $i, 'yPos' => ($i*2),'angle' => '0.536766rad','plan_id' => 1, 'status' => '1']);
         }
 
         $this->command->info('tables table seeded!');

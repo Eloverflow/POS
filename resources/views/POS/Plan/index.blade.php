@@ -37,20 +37,24 @@
                             <th data-field="planName" data-sortable="true">Plan Name</th>
                             <th data-field="nbTables"  data-sortable="true">Nb. Tables</th>
                             <th data-field="nbFloors"  data-sortable="true">Nb. Floors</th>
+                            <th data-field="createdAt"  data-sortable="true">Created At</th>
                             <th data-field="actions" data-sortable="true"></th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        {{--@foreach ($ViewBag['employeeTitles'] as $employeeTitle)
+                        @foreach ($ViewBag['plans'] as $plan)
                             <tr>
-                                <td>{{ $employeeTitle->id }}</td>
-                                <td>{{ $employeeTitle->name }}</td>
-                                <td>{{ $employeeTitle->baseSalary }}</td>
-                                <td><a href="{{ URL::to('employee/title/edit', $employeeTitle->id) }}">Edit</a>
-                                    <a href="{{ URL::to('employee/title/delete', $employeeTitle->id) }}">Delete</a></td>
+                                <td>{{ $plan->idPlan }}</td>
+                                <td>{{ $plan->name }}</td>
+                                <td>0</td>
+                                <td>0</td>
+                                <td>{{ $plan->created_at }}</td>
+                                <td><a href="{{ URL::to('plan/details', $plan->idPlan) }}">Details</a>
+                                    <a href="{{ URL::to('plan/edit', $plan->idPlan) }}">Edit</a>
+                                    <a href="{{ URL::to('plan/delete', $plan->idPlan) }}">Delete</a></td>
                             </tr>
-                        @endforeach--}}
+                        @endforeach
 
                         </tbody>
                     </table>

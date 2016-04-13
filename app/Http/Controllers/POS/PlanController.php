@@ -4,8 +4,10 @@ namespace App\Http\Controllers\POS;
 
 use App\Http\Controllers\Controller;
 use App\Models\POS\Employee;
+use App\Models\POS\Plan;
 use App\Models\POS\EmployeeTitle;
 use App\Models\POS\Punch;
+use App\Models\POS\Table;
 use App\Models\Project;
 use App\Models\POS\Title_Employees;
 use App\Models\Auth\User;
@@ -20,10 +22,10 @@ class PlanController extends Controller
 {
     public function index()
     {
-        $plans = EmployeeTitle::getAll();
+        $plans = Plan::getAll();
         $view = \View::make('POS.Plan.index')
             ->with('ViewBag', array (
-
+                'plans' => $plans
             ));
         return $view;
     }
@@ -63,31 +65,29 @@ class PlanController extends Controller
         {
 
             $plan = Plan::create([
-                'planName' => \Input::get('planName'),
+                'name' => \Input::get('planName'),
                 'nbFloor' => \Input::get('nbFloor')
             ]);
 
-            $jsonArray = json_decode(\Input::get('floors'), true);
+            $jsonArray = json_decode(\Input::get('tables'), true);
             for($i = 0; $i < count($jsonArray); $i++)
             {
-                //$jsonObj = json_decode(\Input::get('events')[$i], true);
-                $tables = $jsonArray[$i]["tables"];
-                for($j = 0; $j < count($tables); $j++) {
-                    tables::create([
-                        "schedule_id" => $schedule->id,
-                        'employee_id' => $employeeId,
-                        "day_number" => $jsonArray[$i]["dayIndex"],
-                        "startTime" => $resStart,
-                        "endTime" => $resStop
+                    Table::create([
+                        "tblNumber" => $jsonArray[$i]["tblNum"],
+                        "noFloor" => $jsonArray[$i]["noFloor"],
+                        'xPos' => $jsonArray[$i]["yPos"],
+                        "yPos" => $jsonArray[$i]["yPos"],
+                        "angle" => $jsonArray[$i]["angle"],
+                        "plan_id" => $plan->id,
+                        "status" => 1
                     ]);
                 }
 
             }
 
             return \Response::json([
-                'success' => "The Schedule " . \Input::get('name') . " has been successfully created !"
+                'success' => "The plan " . \Input::get('planName') . " has been successfully created !"
             ], 201);
-        }
     }
 
     public function delete($id)
