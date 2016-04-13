@@ -135,14 +135,16 @@ function editEvent($storedCalendar){
     $employeeText = $( "#editModal #employeeSelect option:selected" ).text();
     $employeeId = $( "#editModal #employeeSelect option:selected" ).val();
 
-    $dateClicked = $('#editModal #dateClicked').val();
-
     var sHM = $shour + ":" + $smin;
     var eHM = $ehour + ":" + $emin;
 
+    var myDate = new Date($('#editModal #dateClicked').val());
+    $dateFormated = formatDate(myDate);
+
+
     globStoredEvent.title = $employeeText;
-    globStoredEvent.start = new Date($dateClicked + ' ' + sHM + ':00'+ '-04:00');
-    globStoredEvent.end = new Date($dateClicked + ' ' + eHM + ':00'+ '-04:00');
+    globStoredEvent.start = new Date($dateFormated + ' ' + sHM + ':00'+ '-04:00');
+    globStoredEvent.end = new Date($dateFormated + ' ' + eHM + ':00'+ '-04:00');
     globStoredEvent.employeeId = $employeeId;
 
     $storedCalendar.fullCalendar('updateEvent', globStoredEvent)

@@ -137,6 +137,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
+                        {!! Form::text('dateClicked', $ViewBag['startDate'], array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
