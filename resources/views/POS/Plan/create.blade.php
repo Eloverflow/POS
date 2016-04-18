@@ -161,8 +161,12 @@
                     var txtRaw = $parsedliSubItem[0].style.transform;
                     var radValReg = /\((.*)\)/;
                     var radVal = 0;
-                    if(txtRaw.match(radValReg)[1] != null){
-                        radVal = txtRaw.match(radValReg)[1];
+                    if(txtRaw != null && txtRaw.trim() != "") {
+                        if (txtRaw.match(radValReg)[1] != null) {
+                            radVal = txtRaw.match(radValReg)[1];
+                        }
+                    } else {
+                        radVal = 0;
                     }
                     $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text());
                     var objTable = {

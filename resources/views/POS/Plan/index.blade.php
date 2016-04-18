@@ -48,7 +48,7 @@
                                 <td>{{ $plan->idPlan }}</td>
                                 <td>{{ $plan->name }}</td>
                                 <td>0</td>
-                                <td>0</td>
+                                <td>{{ $plan->nbFloor }}</td>
                                 <td>{{ $plan->created_at }}</td>
                                 <td><a href="{{ URL::to('plan/details', $plan->idPlan) }}">Details</a>
                                     <a href="{{ URL::to('plan/edit', $plan->idPlan) }}">Edit</a>

@@ -16,4 +16,12 @@ class Table extends Model
         return $this->hasMany('App\Models\POS\Command');
     }
 
+    public static function GetByPlanId($id)
+    {
+        return  \DB::table('tables')
+            ->select(\DB::raw('tables.*'))
+            ->where('tables.plan_id', '=', $id)
+            ->orderBy('noFloor', 'asc')
+            ->get();
+    }
 }

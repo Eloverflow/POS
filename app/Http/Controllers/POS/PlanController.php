@@ -30,6 +30,18 @@ class PlanController extends Controller
         return $view;
     }
 
+    public function edit($id)
+    {
+        $plan = Plan::GetById($id);
+        $tables =  Table::GetByPlanId($id);
+        $view = \View::make('POS.Plan.edit')
+            ->with('ViewBag', array (
+                'plan' => $plan,
+                'tables' => json_encode($tables)
+            ));
+        return $view;
+    }
+
     public function create($planName, $nbFloor)
     {
         $view = \View::make('POS.Plan.create')

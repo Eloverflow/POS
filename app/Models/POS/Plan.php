@@ -20,5 +20,17 @@ class Plan extends Model
             '))
             ->get();
     }
+    public static function GetById($id)
+    {
+        return  \DB::table('plans')
+            ->select(\DB::raw('plans.id as idPlan,
+            name,
+            nbFloor,
+            plans.created_at
+            '))
+            ->where('id', '=', $id)
+            ->first();
+    }
+
 
 }
