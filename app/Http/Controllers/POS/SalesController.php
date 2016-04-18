@@ -317,6 +317,7 @@ class SalesController extends Controller
                     if(!empty($commands))
                     $commandNumber = $commands->command_number;
 
+
                     $notes = "";
                     if(!empty($inputCommand['notes']))
                     $notes = serialize($inputCommand['notes']);

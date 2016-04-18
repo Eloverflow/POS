@@ -622,6 +622,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         var $callbackFunction = function(response){
             $scope.currentTable = i;
             $('#closeModal').click();
+
+            $scope.commandClient = [];
             $scope.getCommand();
         }
 
