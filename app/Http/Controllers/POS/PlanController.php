@@ -85,9 +85,10 @@ class PlanController extends Controller
             for($i = 0; $i < count($jsonArray); $i++)
             {
                     Table::create([
+                        "type" => $jsonArray[$i]["tblType"],
                         "tblNumber" => $jsonArray[$i]["tblNum"],
                         "noFloor" => $jsonArray[$i]["noFloor"],
-                        'xPos' => $jsonArray[$i]["yPos"],
+                        'xPos' => $jsonArray[$i]["xPos"],
                         "yPos" => $jsonArray[$i]["yPos"],
                         "angle" => $jsonArray[$i]["angle"],
                         "plan_id" => $plan->id,

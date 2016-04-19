@@ -157,6 +157,7 @@
                     var offset = $parsedliSubItem.position();
                     $xPos = offset.left.toFixed(0);
                     $yPos = offset.top.toFixed(0);
+                    console.log($xPos);
 
                     var txtRaw = $parsedliSubItem[0].style.transform;
                     var radValReg = /\((.*)\)/;
@@ -169,7 +170,16 @@
                         radVal = 0;
                     }
                     $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text());
+                    $typeChr = "";
+                    if($parsedliSubItem.hasClass("tbl")){
+                        $typeChr = "tbl"
+                    } else if($parsedliSubItem.hasClass("plc")) {
+                        $typeChr = "plc"
+                    } else {
+                        $typeChr = "sep"
+                    }
                     var objTable = {
+                        tblType: $typeChr,
                         tblNum: $tabNum,
                         noFloor: $i,
                         xPos: $xPos,
@@ -213,7 +223,7 @@
                 success: function(xhr) {
                     [].forEach.call( Object.keys( xhr ), function( key ) {
                         alert(xhr[key]);
-                        window.location.replace("/plan");
+                        //window.location.replace("/plan");
                     });
                 }
             });

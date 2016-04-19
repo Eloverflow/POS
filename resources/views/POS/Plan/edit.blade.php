@@ -159,6 +159,7 @@
                     $xPos = offset.left.toFixed(0);
                     $yPos = offset.top.toFixed(0);
 
+
                     var txtRaw = $parsedliSubItem[0].style.transform;
                     var radValReg = /\((.*)\)/;
                     var radVal = 0;
@@ -244,25 +245,15 @@
                     $jsonTableArray = JSON.parse($("#jsonTables").val());
                     for(var j = 0; j < $jsonTableArray.length; j++){
                         if($jsonTableArray[j]['noFloor'] == ( i - 1 )) {
-                            liList = liList + '<li>' + $jsonTableArray[j]['tblNumber'] + '</li>'
+                            liList = liList + '<li class="draggable ' +  $jsonTableArray[j]['type'] + '" ' +
+                                    'id="' + guid() + '" ' +
+                                    'style="position: relative; left: ' + $jsonTableArray[j]['xPos'] + 'px; top: ' + $jsonTableArray[j]['yPos'] + 'px; transform: rotate(' + $jsonTableArray[j]['angle'] + ');"><div id="tableNumber">' + $jsonTableArray[j]['tblNumber'] + '</div><span id="posX">x: ' + $jsonTableArray[j]['xPos'] + '</span><span id="posY">y: ' + $jsonTableArray[j]['yPos'] + '</span></li>'
                         }
                     }
-                    //alert(liList);
-                    // <li class="draggable tbl ui-draggable ui-draggable-handle" id="bc9a2870-5ce3-b9eb-85be-1385b7c2f561" style="position: relative; left: 73px; top: 25px;"><div id="tableNumber">0</div><span id="posX">x: 72</span><span id="posY">y: 44</span><div class="ui-rotatable-handle ui-draggable"></div></li>
+
                     $("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\">" + liList + "</ul></div>");
-                    /*$("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable tbl" ' + 'id="' + $tableGUID + '">' +
-                            '<div id="tableNumber">0</div>' +
-                            '<span id="posX"></span>' +
-                            '<span id="posY"></span>' +
-                            '</li>');
-                    //$(".tablesContainer .tables").append('<li class="draggable tbl" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
-                    $( '#' + $tableGUID + ' #tableNumber' ).bind( "click", function() {
-                        globEditTable = this;
-                        $('#editModal #tblNum').val($(this).text());
-                        $("#editModal").modal('show');
-                    });
-                    $('#' + $tableGUID).rotatable(rotateParams);
-                    $('#' + $tableGUID).draggable(dragParams);*/
+                    $('#parentHorizontalTab li.draggable').rotatable(rotateParams);;
+                    $('#parentHorizontalTab li.draggable').draggable(dragParams);
 
                 }
                 $('#parentHorizontalTab').easyResponsiveTabs({

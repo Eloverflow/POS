@@ -478,7 +478,7 @@ class TableSeeder extends Seeder {
         DB::table('tables')->delete();
 
         for($i = 1; $i < 23; $i++){
-            Table::create(['id' => $i, 'tblNumber' => $i, 'noFloor' => $i, 'xPos' => $i, 'yPos' => ($i*2),'angle' => '0.536766rad','plan_id' => 1, 'status' => '1']);
+            Table::create(['id' => $i, 'type' => 'tbl', 'tblNumber' => $i, 'noFloor' => 0, 'xPos' => $i, 'yPos' => ($i*2),'angle' => '0.536766rad','plan_id' => 1, 'status' => '1']);
         }
 
         $this->command->info('tables table seeded!');
