@@ -129,8 +129,6 @@
             var $tabItemID = $('.tabItemID', $info);
             var $tabControl = $("#tabControl");
 
-
-            /*style="position:absolute; top: ' + 0 +'px; left: ' + 120 + 'px;"*/
             $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable tbl" ' + 'id="' + $tableGUID + '">' +
                     '<div id="tableNumber">0</div>' +
                     '<span id="posX"></span>' +
@@ -149,8 +147,10 @@
             var tblContainers = $( ".tablesContainer .tables" );
             var listItems = $( "#tabControl" ).find( tblContainers );
             $arrayFloorTable = [];
+
             for( $i = 0; $i < listItems.length; $i++ ){
                 $liSubItems = $(listItems[$i]).find("li");
+
                 for( $j = 0; $j < $liSubItems.length; $j++ ){
                     //$arrayFloorTable.push()
                     $parsedliSubItem = $($liSubItems[$j]);
