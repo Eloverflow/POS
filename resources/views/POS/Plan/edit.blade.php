@@ -21,7 +21,7 @@
     <span id="planName">{{ $ViewBag['plan']->name }}</span>
     <h5>Floor Number:</h5>
     <span id="floorNumber">{{ $ViewBag['plan']->nbFloor }}</span>
-    <a class="btn btn-success pull-right" id="btnFinish" href="#"> Create </a>
+    <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
     <br/>
     {!! Form::text('jsonTables', $ViewBag['tables'], array('class' => 'form-control', 'id' => 'jsonTables', 'style' => 'displagy:none;visibility:hidgden;')) !!}
     <div id="rowCmd"><a id="btnNewTable" href="#">New Table</a> | <a id="btnNewPlace" href="#">New Place</a> | <a id="btnNewSeparation" href="#">New Separation</a></div>
@@ -65,89 +65,8 @@
 @stop
 
 @section('myjsfile')
+    <script src="{{ @URL::to('js/planTabs.js') }}"></script>
     <script>
-        var globEditTable = null;
-        var rotateParams = {
-            start: function(event, ui) {
-                console.log("Rotating started");
-            },
-            rotate: function(event, ui) {
-                console.log("Rotating");
-            },
-            stop: function(event, ui) {
-                console.log("Rotating stopped");
-            }
-        };
-
-        var dragParams = {
-            containment: "parent",
-            drag: function(){
-                // Find the parent
-                var tablesContainer = $(this).parent();
-                var tablesContainerPos = tablesContainer.offset();
-
-                var offset = $(this).position();
-                var xPos = offset.left;
-                var yPos = offset.top;
-                $(this).find('#posX').text('x: ' + xPos.toFixed(0));
-                $(this).find('#posY').text('y: ' + yPos.toFixed(0));
-            }
-        };
-        $("#btnNewSeparation").click(function() {
-            $tableGUID = guid();
-            var $info = $('#nested-tabInfo');
-            var $tabItemID = $('.tabItemID', $info);
-            var $tabControl = $("#tabControl");
-
-            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
-
-            $('#' + $tableGUID).resizable().rotatable(rotateParams);
-            $('#' + $tableGUID).draggable(dragParams);
-        });
-        $("#btnNewPlace").click(function() {
-            $tableGUID = guid();
-            var $info = $('#nested-tabInfo');
-            var $tabItemID = $('.tabItemID', $info);
-            var $tabControl = $("#tabControl");
-
-            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable plc" id="' + $tableGUID + '">' +
-                    '<span id="tableNumber">0</span>' +
-                    '<span id="posX"></span>' +
-                    '<span id="posY"></span>' +
-                    '</li>');
-
-            $( '#' + $tableGUID + ' #tableNumber' ).bind( "click", function() {
-                globEditTable = this;
-                $('#editModal #tblNum').val($(this).text());
-                $("#editModal").modal('show');
-            });
-            $('#' + $tableGUID).rotatable(rotateParams);
-            $('#' + $tableGUID).draggable(dragParams);
-            $('#' + $tableGUID).css({top: 0, left: 0, position:'absolute'});
-        });
-        $("#btnNewTable").click(function() {
-            $tableGUID = guid();
-            var $info = $('#nested-tabInfo');
-            var $tabItemID = $('.tabItemID', $info);
-            var $tabControl = $("#tabControl");
-
-
-            /*style="position:absolute; top: ' + 0 +'px; left: ' + 120 + 'px;"*/
-            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable tbl" ' + 'id="' + $tableGUID + '">' +
-                    '<div id="tableNumber">0</div>' +
-                    '<span id="posX"></span>' +
-                    '<span id="posY"></span>' +
-                    '</li>');
-            //$(".tablesContainer .tables").append('<li class="draggable tbl" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
-            $( '#' + $tableGUID + ' #tableNumber' ).bind( "click", function() {
-                globEditTable = this;
-                $('#editModal #tblNum').val($(this).text());
-                $("#editModal").modal('show');
-            });
-            $('#' + $tableGUID).rotatable(rotateParams);
-            $('#' + $tableGUID).draggable(dragParams);
-            $('#' + $tableGUID).css({top: 0, left: 0, position:'absolute'});
-        });
         $("#btnFinish").click(function() {
             var tblContainers = $( ".tablesContainer .tables" );
             var listItems = $( "#tabControl" ).find( tblContainers );
@@ -172,8 +91,19 @@
                     } else {
                         radVal = 0;
                     }
+                    $tabId = parseInt($parsedliSubItem.find("#id").text());
                     $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text());
+                    $typeChr = "";
+                    if ($parsedliSubItem.hasClass("tbl")) {
+                        $typeChr = "tbl"
+                    } else if ($parsedliSubItem.hasClass("plc")) {
+                        $typeChr = "plc"
+                    } else {
+                        $typeChr = "sep"
+                    }
                     var objTable = {
+                        id: $tabId,
+                        tblType: $typeChr,
                         tblNum: $tabNum,
                         noFloor: $i,
                         xPos: $xPos,
@@ -190,7 +120,7 @@
             var nbFloor = $("#floorNumber").text();
             var planName = $("#planName").text();
             $.ajax({
-                url: '/plan/edit',
+                url: '/plan/edit/{{ Request::segment(3)}}' ,
                 type: 'POST',
                 async: true,
                 data: {
@@ -236,6 +166,12 @@
     </script>
     <script type="text/javascript">
         $(document).ready(function() {
+
+
+
+
+
+
             var TabNumber = 0;
             var intNbFloor = parseInt($("#floorNumber").text());
             if(intNbFloor >= 1){
@@ -244,18 +180,60 @@
 
 
                     var liList = "";
+
+                    var $tableArray = [];
+
                     $jsonTableArray = JSON.parse($("#jsonTables").val());
                     for(var j = 0; j < $jsonTableArray.length; j++){
                         if($jsonTableArray[j]['noFloor'] == ( i - 1 )) {
+
+                            var currentguid = guid();
+
+                            $tableArray.push(currentguid);
+
                             liList = liList + '<li class="draggable ' +  $jsonTableArray[j]['type'] + '" ' +
-                                    'id="' + guid() + '" ' +
-                                    'style="position: relative; left: ' + $jsonTableArray[j]['xPos'] + 'px; top: ' + $jsonTableArray[j]['yPos'] + 'px; transform: rotate(' + $jsonTableArray[j]['angle'] + ');"><div id="tableNumber">' + $jsonTableArray[j]['tblNumber'] + '</div><span id="posX">x: ' + $jsonTableArray[j]['xPos'] + '</span><span id="posY">y: ' + $jsonTableArray[j]['yPos'] + '</span></li>'
+                                    'id="' + currentguid + '" ' +
+                                    'style="position: relative; left: ' + $jsonTableArray[j]['xPos'] + 'px; top: ' + $jsonTableArray[j]['yPos'] + 'px; transform: rotate(' + $jsonTableArray[j]['angle'] + ');"><div id="tableNumber">' + $jsonTableArray[j]['tblNumber'] + '</div><span id="posX">' + $jsonTableArray[j]['xPos'] + '</span><span id="posY">' + $jsonTableArray[j]['yPos'] + '</span><span id="id">' + $jsonTableArray[j]['id'] + '</span></li>'
+
+
+
+
+
                         }
                     }
+
+
 
                     $("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\">" + liList + "</ul></div>");
                     $('#parentHorizontalTab li.draggable').rotatable(rotateParams);
                     $('#parentHorizontalTab li.draggable').draggable(dragParams);
+
+
+                    tabOffset = $('.tablesContainer').last().offset();
+                    for(var l = 0; l < $tableArray.length; l++){
+
+                        var currentTable = $('#' + $tableArray[l]);
+                        var curentTablePosition = currentTable.position();
+
+                        var top = tabOffset.top + parseInt(currentTable.find('#posY').text());
+                        var left = tabOffset.left + parseInt(currentTable.find('#posX').text());
+
+                        currentTable.offset({top: top, left: left});
+
+                        currentTable.find('#tableNumber').bind("click", function () {
+                                    globEditTable = this;
+                                    $('#editModal #tblNum').val($(this).text());
+                                    $("#editModal").modal('show');
+                                }
+                            );
+
+                        console.log(currentTable.offset())
+
+                    }
+
+
+
+
 
                 }
                 $('#parentHorizontalTab').easyResponsiveTabs({

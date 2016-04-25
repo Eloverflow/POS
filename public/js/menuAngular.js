@@ -96,13 +96,20 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     }
 
 
+    $url = 'http://pos.mirageflow.com/plan';
+    var $callbackFunction = function(response){
+
+    }
+    getReq.send($url, null ,$callbackFunction);
+
+
 
     $scope.filters = { };
 
     $scope.menuItemTypes = [];
 
     $url = 'http://pos.mirageflow.com/itemtypes/list';
-    var $callbackFunction = function(response){
+    $callbackFunction = function(response){
 
         console.log("Itemtype list received inside response");
 

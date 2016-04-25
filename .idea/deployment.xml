@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
-  <component name="PublishConfigData" autoUpload="Always" serverName="Mirageflow_Main">
+  <component name="PublishConfigData" autoUpload="Always" serverName="POS">
     <serverData>
-      <paths name="Mirageflow_Main">
+      <paths name="POS">
         <serverdata>
           <mappings>
             <mapping deploy="/" local="$PROJECT_DIR$" web="/" />

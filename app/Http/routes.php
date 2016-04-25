@@ -145,6 +145,7 @@ Route::post('/schedule/AjaxGetEmployeeDaySchedules', 'POS\ScheduleController@Aja
 
 /* End schedule */
 
+
 /* Start Punch */
 Route::get('/punch', 'POS\PunchController@index');
 Route::get('/keyboard', 'POS\PunchController@keyboard');
@@ -156,7 +157,7 @@ Route::get('/plan/create/{planName}/{nbFloor}', 'POS\PlanController@create');
 Route::post('/plan/create', 'POS\PlanController@postCreate');
 
 Route::get('/plan/edit/{id}', 'POS\PlanController@edit');
-Route::post('/plan/edit', 'POS\PlanController@postEdit');
+Route::post('/plan/edit/{id}', 'POS\PlanController@postEdit');
 
 Route::get('/plan/details/{id}', 'POS\PlanController@details');
 /* End Plan */

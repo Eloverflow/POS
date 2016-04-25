@@ -14,7 +14,6 @@ class CreateTablesTable extends Migration
     {
         Schema::create('tables', function (Blueprint $table) {
             $table->increments('id');
-
             $table->char('type', 3);
             $table->integer('tblNumber');
             $table->integer('noFloor');

@@ -20,6 +20,7 @@ class Plan extends Model
             '))
             ->get();
     }
+
     public static function GetById($id)
     {
         return  \DB::table('plans')

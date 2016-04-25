@@ -1,15 +1,14 @@
 @extends('workerLayout')
 
 @section("csrfToken")
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <meta name="csrf-token" content="{{ csrf_token() }}"/>
     <script src="{{ @URL::to('js/utils.js') }}"></script>
     <script src="{{ @URL::to('js/jquery/jquery-ui.js') }}"></script>
     <script src="{{ @URL::to('js/jquery/jquery.ui.rotatable.js') }}"></script>
     <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery.ui.rotatable.css') }}">
     <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery-ui.css') }}">
     <script src="{{ @URL::to('js/easyResponsiveTabs.js') }}"></script>
-    <script src="{{ @URL::to('js/planTabs.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ @URL::to('css/easy-responsive-tabs.css') }}" />
+    <link rel="stylesheet" type="text/css" href="{{ @URL::to('css/easy-responsive-tabs.css') }}"/>
 @stop
 
 @section('content')
@@ -23,7 +22,8 @@
     <span id="floorNumber">{{ $ViewBag['nbFloor'] }}</span>
     <a class="btn btn-success pull-right" id="btnFinish" href="#"> Create </a>
     <br/>
-    <div id="rowCmd"><a id="btnNewTable" href="#">New Table</a> | <a id="btnNewPlace" href="#">New Place</a> | <a id="btnNewSeparation" href="#">New Separation</a></div>
+    <div id="rowCmd"><a id="btnNewTable" href="#">New Table</a> | <a id="btnNewPlace" href="#">New Place</a> | <a
+                id="btnNewSeparation" href="#">New Separation</a></div>
     <!--Horizontal Tab-->
     <div id="parentHorizontalTab">
         <ul class="resp-tabs-list hor_1">
@@ -34,8 +34,8 @@
         </div>
     </div>
     <div id="nested-tabInfo">
-        Selected tab:       <span class="tabName"></span>
-        Selected tab ID:    <span class="tabItemID"></span>
+        Selected tab: <span class="tabName"></span>
+        Selected tab ID: <span class="tabItemID"></span>
     </div>
 
     <div id="editModal" class="modal fade">
@@ -64,134 +64,29 @@
 @stop
 
 @section('myjsfile')
+    <script src="{{ @URL::to('js/planTabs.js') }}"></script>
     <script>
-        var globEditTable = null;
-        var rotateParams = {
-            start: function(event, ui) {
-                console.log("Rotating started");
-            },
-            rotate: function(event, ui) {
-                console.log("Rotating");
-            },
-            stop: function(event, ui) {
-                console.log("Rotating stopped");
-            }
-        };
-
-        var dragParams = {
-            containment: "parent",
-           /* start:*/
-            drag: function(){
-                // Find the parent
-                var tablesContainer = $(this).parent();
-                var tablesContainerPos = tablesContainer.offset();
-
-                var width = $(this).width();
-                var height = $(this).height();
-
-                var offset = $(this).position();
-                var xPos = offset.left;
-                var yPos = offset.top;
-
-                 console.log(xPos);
-                 console.log(yPos);
-
-                $(this).find('#posX').text('x: ' + xPos.toFixed(0));
-                $(this).find('#posY').text('y: ' + yPos.toFixed(0));
-
-
-                $(this).css({top: yPos.toFixed(0), left: xPos.toFixed(0)});
-            }
-        };
-        $("#btnNewSeparation").click(function() {
-            $tableGUID = guid();
-            var $info = $('#nested-tabInfo');
-            var $tabItemID = $('.tabItemID', $info);
-            var $tabControl = $("#tabControl");
-
-            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
-
-            $('#' + $tableGUID).resizable().rotatable(rotateParams);
-            $('#' + $tableGUID).draggable(dragParams);
-        });
-        $("#btnNewPlace").click(function() {
-            $tableGUID = guid();
-            var $info = $('#nested-tabInfo');
-            var $tabItemID = $('.tabItemID', $info);
-            var $tabControl = $("#tabControl");
-
-            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable plc" id="' + $tableGUID + '">' +
-                    '<span id="tableNumber">0</span>' +
-                    '<span id="posX"></span>' +
-                    '<span id="posY"></span>' +
-                    '</li>');
-
-            $( '#' + $tableGUID + ' #tableNumber' ).bind( "click", function() {
-                globEditTable = this;
-                $('#editModal #tblNum').val($(this).text());
-                $("#editModal").modal('show');
-            });
-            $('#' + $tableGUID).rotatable(rotateParams);
-            $('#' + $tableGUID).draggable(dragParams);
-            $('#' + $tableGUID).css({top: 0, left: 0, position:'absolute'});
-        });
-        $("#btnNewTable").click(function() {
-            $tableGUID = guid();
-            var $info = $('#nested-tabInfo');
-            var $tabItemID = $('.tabItemID', $info);
-            var $tabControl = $("#tabControl");
-
-            $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable tbl" ' + 'id="' + $tableGUID + '">' +
-                    '<div id="tableNumber">0</div>' +
-                    '<span id="posX">x:0</span>' +
-                    '<span id="posY">y:0</span>' +
-                    '</li>');
-            //$(".tablesContainer .tables").append('<li class="draggable tbl" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
-            $( '#' + $tableGUID + ' #tableNumber' ).bind( "click", function() {
-                globEditTable = this;
-                $('#editModal #tblNum').val($(this).text());
-                $("#editModal").modal('show');
-            });
-
-            $('#' + $tableGUID).draggable(dragParams);
-            $('#' + $tableGUID).rotatable(rotateParams);
-
-
-            var width = $(this).width();
-            var height = $(this).height();
-
-            var top = width/2;
-            var left = height/2;
-
-            $('#' + $tableGUID).css({top: 0, left: 0, position:'relative'});
-
-            var curTab = $("[aria-labelledby='" + $tabItemID.text() + "'] .tables");
-            var offsetTab =  curTab.offset();
-            console.log(offsetTab);
-            $('#' + $tableGUID).offset({top: offsetTab.top})
-
-
-        });
-        $("#btnFinish").click(function() {
-            var tblContainers = $( ".tablesContainer .tables" );
-            var listItems = $( "#tabControl" ).find( tblContainers );
+        $("#btnFinish").click(function () {
+            var tblContainers = $(".tablesContainer .tables");
+            var listItems = $("#tabControl").find(tblContainers);
             $arrayFloorTable = [];
 
-            for( $i = 0; $i < listItems.length; $i++ ){
+            for ($i = 0; $i < listItems.length; $i++) {
                 $liSubItems = $(listItems[$i]).find("li");
 
-                for( $j = 0; $j < $liSubItems.length; $j++ ){
+                for ($j = 0; $j < $liSubItems.length; $j++) {
                     //$arrayFloorTable.push()
                     $parsedliSubItem = $($liSubItems[$j]);
-                    var offset = $parsedliSubItem.position();
-                    $xPos = offset.left.toFixed(0);
-                    $yPos = offset.top.toFixed(0);
+                    //var offset = $parsedliSubItem.offset();
+
+                    $xPos = $parsedliSubItem.find("#posX").text();
+                    $yPos = $parsedliSubItem.find("#posY").text();
                     console.log($xPos);
 
                     var txtRaw = $parsedliSubItem[0].style.transform;
                     var radValReg = /\((.*)\)/;
                     var radVal = 0;
-                    if(txtRaw != null && txtRaw.trim() != "") {
+                    if (txtRaw != null && txtRaw.trim() != "") {
                         if (txtRaw.match(radValReg)[1] != null) {
                             radVal = txtRaw.match(radValReg)[1];
                         }
@@ -200,9 +95,9 @@
                     }
                     $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text());
                     $typeChr = "";
-                    if($parsedliSubItem.hasClass("tbl")){
+                    if ($parsedliSubItem.hasClass("tbl")) {
                         $typeChr = "tbl"
-                    } else if($parsedliSubItem.hasClass("plc")) {
+                    } else if ($parsedliSubItem.hasClass("plc")) {
                         $typeChr = "plc"
                     } else {
                         $typeChr = "sep"
@@ -233,15 +128,14 @@
                     planName: planName,
                     nbFloor: nbFloor,
                     tables: JSON.stringify($arrayFloorTable)
-
                 },
                 dataType: 'JSON',
                 error: function (xhr, status, error) {
                     var erro = jQuery.parseJSON(xhr.responseText);
                     $("#errors").empty();
                     //$("##errors").append('<ul id="errorsul">');
-                    [].forEach.call( Object.keys( erro ), function( key ){
-                        [].forEach.call( Object.keys( erro[key] ), function( keyy ) {
+                    [].forEach.call(Object.keys(erro), function (key) {
+                        [].forEach.call(Object.keys(erro[key]), function (keyy) {
                             $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
                         });
                         //console.log( key , erro[key] );
@@ -249,8 +143,8 @@
                     //$("#displayErrors").append('</ul>');
                     $("#displayErrors").show();
                 },
-                success: function(xhr) {
-                    [].forEach.call( Object.keys( xhr ), function( key ) {
+                success: function (xhr) {
+                    [].forEach.call(Object.keys(xhr), function (key) {
                         alert(xhr[key]);
                         //window.location.replace("/plan");
                     });
@@ -259,23 +153,23 @@
 
             console.log(JSON.stringify($arrayFloorTable))
         });
-        $("#btnEditTable").click(function() {
+        $("#btnEditTable").click(function () {
             $tblNumEdit = $('#editModal #tblNum').val();
             $oTableNum = $(globEditTable).text($tblNumEdit);
         });
-        $("#btnDelTable").click(function() {
+        $("#btnDelTable").click(function () {
 
         });
         //$(".tablesContainer ul li").rotatable(rotateParams);
         //$(".tablesContainer ul li").draggable(dragParams);
     </script>
     <script type="text/javascript">
-        $(document).ready(function() {
+        $(document).ready(function () {
             var TabNumber = 0;
             var intNbFloor = parseInt($("#floorNumber").text());
-            if(intNbFloor >= 1){
-                for(var i = 1; i <= intNbFloor; i++){
-                    $("#parentHorizontalTab .resp-tabs-list").append("<li class=\"resp-tab-item hor_1\" aria-controls=\"hor_1_tab_item-"+ TabNumber +"\" role=\"tab\" style=\"border-color: rgb(193, 193, 193); background-color: rgb(255, 255, 255);\">Floor No. " + i + "</li>");
+            if (intNbFloor >= 1) {
+                for (var i = 1; i <= intNbFloor; i++) {
+                    $("#parentHorizontalTab .resp-tabs-list").append("<li class=\"resp-tab-item hor_1\" aria-controls=\"hor_1_tab_item-" + TabNumber + "\" role=\"tab\" style=\"border-color: rgb(193, 193, 193); background-color: rgb(255, 255, 255);\">Floor No. " + i + "</li>");
                     $("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\"></ul></div>");
                 }
                 $('#parentHorizontalTab').easyResponsiveTabs({
@@ -283,7 +177,7 @@
                     width: 'auto', //auto or any width like 600px
                     fit: true, // 100% fit in a container
                     tabidentify: 'hor_1', // The tab groups identifier
-                    activate: function(event) { // Callback function if tab is switched
+                    activate: function (event) { // Callback function if tab is switched
 
                         var $tab = $(this);
                         var $info = $('#nested-tabInfo');

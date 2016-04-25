@@ -30,6 +30,11 @@ class PlanController extends Controller
         return $view;
     }
 
+    public function tables()
+    {
+
+    }
+
     public function edit($id)
     {
         $plan = Plan::GetById($id);
@@ -51,6 +56,67 @@ class PlanController extends Controller
             ));
         return $view;
     }
+
+    public function postEdit($id)
+    {
+        $inputs = \Input::all();
+
+        $rules = array(
+            'planName' => 'required',
+            'nbFloor' => 'required'
+        );
+
+        $message = array(
+            'required' => 'The :attribute is required !'
+        );
+
+        $validation = \Validator::make($inputs, $rules, $message);
+        if($validation -> fails())
+        {
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
+        }
+        else
+        {
+            $jsonArray = json_decode(\Input::get('tables'), true);
+            for($i = 0; $i < count($jsonArray); $i++)
+            {
+
+                $jsonArray[$i]["tblNumber"] = $jsonArray[$i]["tblNum"];
+                $jsonArray[$i]["type"] = $jsonArray[$i]["tblType"];
+                $jsonArray[$i]["plan_id"] = $id;
+
+
+                if(!empty($jsonArray[$i]["id"]))
+                {
+                    $table = Table::where('id', $jsonArray[$i]["id"])->first();
+
+                    if($table != ""){
+                        $table->update($jsonArray[$i]);
+                    }else{
+                        /*No table found at ID*/
+                    }
+                }
+                else
+                {
+                    $table = Table::create($jsonArray[$i]);
+                    if($table == "") {
+                        //Failed at creating table
+                    }
+                }
+
+            }
+
+        }
+
+        return \Response::json([
+            'success' => "The plan " . \Input::get('planName') . " has been successfully created !"
+        ], 201);
+    }
+
+
 
     public function postCreate()
     {
