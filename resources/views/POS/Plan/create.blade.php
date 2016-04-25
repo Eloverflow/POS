@@ -122,6 +122,7 @@
             });
             $('#' + $tableGUID).rotatable(rotateParams);
             $('#' + $tableGUID).draggable(dragParams);
+            $('#' + $tableGUID).css({top: 0, left: 0, position:'absolute'});
         });
         $("#btnNewTable").click(function() {
             $tableGUID = guid();
@@ -131,8 +132,8 @@
 
             $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable tbl" ' + 'id="' + $tableGUID + '">' +
                     '<div id="tableNumber">0</div>' +
-                    '<span id="posX"></span>' +
-                    '<span id="posY"></span>' +
+                    '<span id="posX">x:0</span>' +
+                    '<span id="posY">y:0</span>' +
                     '</li>');
             //$(".tablesContainer .tables").append('<li class="draggable tbl" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
             $( '#' + $tableGUID + ' #tableNumber' ).bind( "click", function() {
@@ -142,6 +143,7 @@
             });
             $('#' + $tableGUID).rotatable(rotateParams);
             $('#' + $tableGUID).draggable(dragParams);
+            $('#' + $tableGUID).css({top: 0, left: 0, position:'absolute'});
         });
         $("#btnFinish").click(function() {
             var tblContainers = $( ".tablesContainer .tables" );

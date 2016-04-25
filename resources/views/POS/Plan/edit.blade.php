@@ -123,6 +123,7 @@
             });
             $('#' + $tableGUID).rotatable(rotateParams);
             $('#' + $tableGUID).draggable(dragParams);
+            $('#' + $tableGUID).css({top: 0, left: 0, position:'absolute'});
         });
         $("#btnNewTable").click(function() {
             $tableGUID = guid();
@@ -145,6 +146,7 @@
             });
             $('#' + $tableGUID).rotatable(rotateParams);
             $('#' + $tableGUID).draggable(dragParams);
+            $('#' + $tableGUID).css({top: 0, left: 0, position:'absolute'});
         });
         $("#btnFinish").click(function() {
             var tblContainers = $( ".tablesContainer .tables" );
@@ -252,7 +254,7 @@
                     }
 
                     $("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\">" + liList + "</ul></div>");
-                    $('#parentHorizontalTab li.draggable').rotatable(rotateParams);;
+                    $('#parentHorizontalTab li.draggable').rotatable(rotateParams);
                     $('#parentHorizontalTab li.draggable').draggable(dragParams);
 
                 }
