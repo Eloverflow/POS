@@ -80,16 +80,27 @@
 
         var dragParams = {
             containment: "parent",
+           /* start:*/
             drag: function(){
                 // Find the parent
                 var tablesContainer = $(this).parent();
                 var tablesContainerPos = tablesContainer.offset();
 
+                var width = $(this).width();
+                var height = $(this).height();
+
                 var offset = $(this).position();
                 var xPos = offset.left;
                 var yPos = offset.top;
+
+                 console.log(xPos);
+                 console.log(yPos);
+
                 $(this).find('#posX').text('x: ' + xPos.toFixed(0));
                 $(this).find('#posY').text('y: ' + yPos.toFixed(0));
+
+
+                $(this).css({top: yPos.toFixed(0), left: xPos.toFixed(0)});
             }
         };
         $("#btnNewSeparation").click(function() {
@@ -141,9 +152,25 @@
                 $('#editModal #tblNum').val($(this).text());
                 $("#editModal").modal('show');
             });
-            $('#' + $tableGUID).rotatable(rotateParams);
+
             $('#' + $tableGUID).draggable(dragParams);
-            $('#' + $tableGUID).css({top: 0, left: 0, position:'absolute'});
+            $('#' + $tableGUID).rotatable(rotateParams);
+
+
+            var width = $(this).width();
+            var height = $(this).height();
+
+            var top = width/2;
+            var left = height/2;
+
+            $('#' + $tableGUID).css({top: 0, left: 0, position:'relative'});
+
+            var curTab = $("[aria-labelledby='" + $tabItemID.text() + "'] .tables");
+            var offsetTab =  curTab.offset();
+            console.log(offsetTab);
+            $('#' + $tableGUID).offset({top: offsetTab.top})
+
+
         });
         $("#btnFinish").click(function() {
             var tblContainers = $( ".tablesContainer .tables" );
