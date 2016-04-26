@@ -45,14 +45,14 @@
 
                         @foreach ($ViewBag['plans'] as $plan)
                             <tr>
-                                <td>{{ $plan->idPlan }}</td>
+                                <td>{{ $plan->id }}</td>
                                 <td>{{ $plan->name }}</td>
-                                <td>0</td>
+                                <td>{{ count($plan->table) }}</td>
                                 <td>{{ $plan->nbFloor }}</td>
                                 <td>{{ $plan->created_at }}</td>
-                                <td><a href="{{ URL::to('plan/details', $plan->idPlan) }}">Details</a>
-                                    <a href="{{ URL::to('plan/edit', $plan->idPlan) }}">Edit</a>
-                                    <a href="{{ URL::to('plan/delete', $plan->idPlan) }}">Delete</a></td>
+                                <td><a href="{{ URL::to('plan/details', $plan->id) }}">Details</a>
+                                    <a href="{{ URL::to('plan/edit', $plan->id) }}">Edit</a>
+                                    <a href="{{ URL::to('plan/delete', $plan->id) }}">Delete</a></td>
                             </tr>
                         @endforeach
 
