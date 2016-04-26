@@ -24,4 +24,9 @@ class Table extends Model
             ->orderBy('noFloor', 'asc')
             ->get();
     }
+
+    public function plan()
+    {
+        return $this->hasOne('App\Models\POS\Plan');
+    }
 }

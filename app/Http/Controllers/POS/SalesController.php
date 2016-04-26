@@ -192,7 +192,7 @@ class SalesController extends Controller
         $result['success'] = "false";
         $result['commands'] = array();
 
-        $command = Command::where('table_id', $inputs['table'])->where('status', '1')->get();
+        $command = Command::where('table_id', $inputs['table']['id'])->where('status', '1')->get();
 
         if($command != "")
         {
@@ -323,7 +323,7 @@ class SalesController extends Controller
                     $notes = serialize($inputCommand['notes']);
 
                     $command = Command::create([
-                        'table_id' => $inputs['table'],
+                        'table_id' => $inputs['table']['id'],
                         'client_id' => $client->id,
                         'command_number' => 1 + $commandNumber,
                         'status' => 1,

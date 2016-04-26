@@ -30,11 +30,12 @@ class PlanController extends Controller
         return $view;
     }
 
-    public function tables()
+    public function tablePlan($id)
     {
-
+        $plan = Plan::where('id', $id)->first();
+        $plan->load('table');
+        return $plan;
     }
-
     public function edit($id)
     {
         $plan = Plan::GetById($id);

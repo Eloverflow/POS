@@ -33,5 +33,11 @@ class Plan extends Model
             ->first();
     }
 
+    public function table()
+    {
+        return $this->hasMany('App\Models\POS\Table');
+    }
+
+
 
 }
