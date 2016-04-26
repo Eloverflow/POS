@@ -6,6 +6,16 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
 })
 
+.filter('floor', function() {
+    return function(input, total) {
+        total = parseInt(total);
+        for (var i=0; i<total; i++)
+            input.push(i);
+        return input;
+    };
+})
+
+
 
 .factory('getReq', function ($http, $location) {
 
@@ -96,8 +106,12 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     }
 
 
-    $url = 'http://pos.mirageflow.com/plan';
+    $url = 'http://pos.mirageflow.com/api/table-plan/36';
     var $callbackFunction = function(response){
+
+        $scope.plan = response;
+
+        $scope.currentTable = $scope.plan.table[0];
 
     }
     getReq.send($url, null ,$callbackFunction);
@@ -287,6 +301,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         $scope.sizeProp.value = size;
     };
 
+    $scope.toggleCommandTime = function(){
+        $scope.commandItemTimeToggle = !$scope.commandItemTimeToggle;
+    }
 
 
     $scope.noteSuggestions = ['Sans gluten', 'Ne pas faire', 'OPC'];
@@ -607,7 +624,6 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
 
 
-    $scope.currentTable = 22;
     $scope.currentEmploye = 2;
 
     var amt = 100;
@@ -621,13 +637,13 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     }, 200);
 
 
-    $scope.changeTable = function(i){
+    $scope.changeTable = function(table){
 /*
         console.log('Table command status');
         console.log($scope.commandClient);*/
 
         var $callbackFunction = function(response){
-            $scope.currentTable = i;
+            $scope.currentTable = table;
             $('#closeModal').click();
 
             $scope.commandClient = [];

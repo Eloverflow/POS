@@ -66,10 +66,16 @@
             <ul class="user-menu tableNumber">
                 <li>
                     <a href="#" ng-click="toggleModal()"><span class="glyphicon glyphicon-unchecked"></span>
-                        Table #<% currentTable %>
+                        Table #<% currentTable.tblNumber %>
                        </a>
                 </li>
             </ul>{{--
+            <ul class="user-menu">
+                <li>
+                    <a> ng-click="askFullscreen"</a>
+                </li>
+            </ul>--}}
+            {{--
             <button ng-click="toggleModal()" class="btn btn-default">Open modal</button>--}}
 
 
@@ -78,8 +84,11 @@
     </div><!-- /.container-fluid -->
 </nav>
 <modal title="Selectionne une table" visible="showModal">
-    <div ng-repeat="i in [1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22]">
-        <button type="button" class="btn btn-success btn-table" ng-click="changeTable(i)" >Table #<% i %></button>
+    <div ng-repeat="n in [] | floor:plan.nbFloor" >
+        <span class="floor">Étage <% n+1 %></span>
+        <div ng-repeat="i in plan.table | filter:{noFloor: n}">
+            <button type="button" class="btn btn-success btn-table" ng-click="changeTable(i)" >Table #<% i.tblNumber %></button>
+        </div>
     </div>
 </modal>
 
@@ -119,7 +128,36 @@
     $(window).on('resize', function () {
         if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
     })
+
+    $(document).on('click', function(){
+
+        requestFullScreen(elem);
+        $(document).unbind();
+        console.log("Here we go fullscreen");
+    });
+
+
+
+    function requestFullScreen(element) {
+        // Supports most browsers and their versions.
+        var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullscreen;
+
+        if (requestMethod) { // Native full screen.
+            requestMethod.call(element);
+        } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript !== null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+    }
+
+   var elem = document.body; // Make the body go full screen.
+
+
+
 </script>
+
 
 @yield('myjsfile')
 </body>

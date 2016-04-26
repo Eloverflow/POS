@@ -46,7 +46,8 @@
                  <div class="saleTextZone"><input id="" type="number" ng-change="updateBill()" ng-model="commandItem.quantity" value=""><span class="sale-item-name"><% commandItem.size.name + " " + commandItem.name%></span> </div>
                  <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right special"></span>
                  <span uib-popover-template="dynamicPopover.templateUrl" popover-title="<% dynamicPopover.title %>" popover-placement="<%placement.selected%>" popover-trigger="outsideClick" class="glyphicon glyphicon-comment itemNote right"> <span style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
-                 <span class="priceItems"><% (commandItem.size.price*commandItem.quantity | number:2) %></span>
+                 <span class="priceItems" ng-hide="commandItemTimeToggle"><% (commandItem.size.price*commandItem.quantity | number:2) %></span>
+                 <span class="timeItems" ng-show="commandItemTimeToggle"><% commandItem.updated_at | date:'HH' %></span>
                  <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
                      <p ng-repeat="item in commandItem.notes" ><% item.note %><span ng-click="deleteItemNote(item, commandItem.notes)" class="glyphicon glyphicon-remove right"></span></p>
                  </div>
@@ -59,8 +60,19 @@
                  <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right"></span>
              </li>--}}
         </ul>
-    <h1 class="bill-total">Total = <% totalBill | number:2 %></h1>{{--
-    <button ng-click="updateTable()" type="button" class="btn btn-success btn-payer">Update Table</button>--}}
+
+    <div class="div-bill-total">
+        <h1 class="bill-total">Total = <% totalBill | number:2 %></h1>
+
+        <button href="#" ng-click="toggleCommandTime()"   type="button" class="btn btn-success"><span class="glyphicon glyphicon-time"></span>
+            Afficher le temps
+        </button>
+
+    </div>
+    <div class="div-btn-facture">
+        <button ng-click="" type="button" class="btn btn-success btn-facture">1 Factures</button>
+        <button ng-click="" type="button" class="btn btn-success btn-facture">Plusieurs Factures</button>
+    </div>
     <uib-progressbar class="progress-striped active" animate="true" max="100" value="progressValue" type="success"><i><%savingMessage%>{{-- <span count-to="5" duration="5" count-from="0"></span>/5 secondes--}}</i></uib-progressbar>
 
 

@@ -84,6 +84,12 @@
 	float: right;
 }
 
+.timeItems{
+	color: #30a5ff;
+	padding: 4px;
+	float: right;
+}
+
 div.saleTextZone{
 
 	text-align: center;
@@ -327,17 +333,44 @@ div.saleTextZone input:focus{
 	width: 7%;
 }
 
-.bill-total{
+.div-bill-total{
 	border-top: 2px solid #222;
-	padding-top: 5px;
+	padding-top: 1px;
 	background-color: #333;
-	height: 60px;
+	height: 40px;
 	width: 41.7%;
 	position: fixed;
-	bottom: 60px;
+	bottom: 120px;
 }
 
+.bill-total{
+	position: absolute;
+}
 
+.div-bill-total button{
+	margin: 8px;
+	background-color: #30a5ff;
+	font-size: 20px;
+	float: right;
+}
+
+.div-btn-facture{
+	padding: 0;
+	border-top: 2px solid #222;
+	background-color: #333;
+	height: 50px;
+	width: 41.7%;
+	position: fixed;
+	bottom: 50px;
+}
+
+.btn-facture{
+	font-size: 25px;
+	height: 100%;
+	width: 49.5%;
+	display: inline;
+	padding: 0;
+}
 
 .sidebar{
 	padding-bottom: 140px;
@@ -497,24 +530,24 @@ pre{
 	margin-left: 5px;
 	color: white;
 }
-
+/*
 .btn-payer{
 	border-radius: 0;
 	height: 80px;
 	width: 41.7%;
 	position: fixed;
 	bottom: 0;
-}
+}*/
 
 .progress {
 	width: 41.7%;
 	position: fixed;
 	bottom: -20px;
-	height: 5em;
+	height: 3.5em;
 }
 .progress i {
 	font-size: 24px;
-	line-height: 3em;
+	line-height: 2em;
 }
 
 .progress-bar {
@@ -528,6 +561,28 @@ pre{
 	width: 45%;
 	font-size: 30px;
 	margin: 5px;
+	box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+}
+
+
+body{
+	width: 100%;
+	height: 100%;
+}
+
+.floor{
+	opacity: 0.9;
+	text-align: center;
+	background-color: #30a5ff;
+	border-radius: 3px;
+	color: whitesmoke;
+	float: left;
+	display: inline;
+	width: 90%;
+	font-size: 30px;
+	margin: 10px;
+	margin-bottom: 0;
+	text-shadow: 0 4px 8px rgba(0,0,0,0.8);
 	box-shadow: 0 4px 8px rgba(0,0,0,0.8);
 }
 

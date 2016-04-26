@@ -160,6 +160,7 @@ Route::get('/plan/edit/{id}', 'POS\PlanController@edit');
 Route::post('/plan/edit/{id}', 'POS\PlanController@postEdit');
 
 Route::get('/plan/details/{id}', 'POS\PlanController@details');
+Route::get('/api/table-plan/{id}', 'POS\PlanController@tablePlan');
 /* End Plan */
 
 /* Start disponibility */
