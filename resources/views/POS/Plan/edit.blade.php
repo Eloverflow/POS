@@ -21,10 +21,16 @@
     <span id="planName">{{ $ViewBag['plan']->name }}</span>
     <h5>Floor Number:</h5>
     <span id="floorNumber">{{ $ViewBag['plan']->nbFloor }}</span>
-    <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
     <br/>
-    {!! Form::text('jsonTables', $ViewBag['tables'], array('class' => 'form-control', 'id' => 'jsonTables', 'style' => 'displagy:none;visibility:hidgden;')) !!}
-    <div id="rowCmd"><a id="btnNewTable" href="#">New Table</a> | <a id="btnNewPlace" href="#">New Place</a> | <a id="btnNewSeparation" href="#">New Separation</a></div>
+    {!! Form::text('jsonTables', $ViewBag['tables'], array('class' => 'form-control', 'id' => 'jsonTables', 'style' => 'display:none;visibility:hidden;')) !!}
+    <div id="rowCmd">
+        <a id="btnNewTable" class="btn btn-primary" href="#"> New Table </a>
+        <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
+        <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
+        <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
+
+        <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
+    </div>
     <!--Horizontal Tab-->
     <div id="parentHorizontalTab">
         <ul class="resp-tabs-list hor_1">
@@ -58,7 +64,6 @@
                     <button id="btnDelTable" type="button" class="btn btn-danger">Delete</button>
                     <button id="btnEditTable" type="button" class="btn btn-primary">Edit</button>
                 </div>
-                <div class="modal-footer"></div>
             </div>
         </div>
     </div>
@@ -71,20 +76,22 @@
             var tblContainers = $( ".tablesContainer .tables" );
             var listItems = $( "#tabControl" ).find( tblContainers );
             $arrayFloorTable = [];
-            for( $i = 0; $i < listItems.length; $i++ ){
+            for ($i = 0; $i < listItems.length; $i++) {
                 $liSubItems = $(listItems[$i]).find("li");
-                for( $j = 0; $j < $liSubItems.length; $j++ ){
+
+                for ($j = 0; $j < $liSubItems.length; $j++) {
                     //$arrayFloorTable.push()
                     $parsedliSubItem = $($liSubItems[$j]);
-                    var offset = $parsedliSubItem.position();
-                    $xPos = offset.left.toFixed(0);
-                    $yPos = offset.top.toFixed(0);
+                    //var offset = $parsedliSubItem.offset();
 
+                    $xPos = $parsedliSubItem.find("#posX").text();
+                    $yPos = $parsedliSubItem.find("#posY").text();
+                    console.log($xPos);
 
                     var txtRaw = $parsedliSubItem[0].style.transform;
                     var radValReg = /\((.*)\)/;
                     var radVal = 0;
-                    if(txtRaw != null && txtRaw.trim() != "") {
+                    if (txtRaw != null && txtRaw.trim() != "") {
                         if (txtRaw.match(radValReg)[1] != null) {
                             radVal = txtRaw.match(radValReg)[1];
                         }

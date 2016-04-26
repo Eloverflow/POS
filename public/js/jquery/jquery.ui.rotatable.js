@@ -6,7 +6,6 @@ $.widget("ui.rotatable", $.ui.mouse, {
     options: {
         handle: false,
         angle: false,
-        wheelRotate: true,
         snap: false,
         step: 22.5,
 
@@ -67,13 +66,8 @@ $.widget("ui.rotatable", $.ui.mouse, {
         this.listeners = {
             rotateElement: $.proxy(this.rotateElement, this),
             startRotate: $.proxy(this.startRotate, this),
-            stopRotate: $.proxy(this.stopRotate, this),
-            wheelRotate: $.proxy(this.wheelRotate, this)
+            stopRotate: $.proxy(this.stopRotate, this)
         };
-
-        if (this.options.wheelRotate) {
-            this.element.bind('wheel', this.listeners.wheelRotate);
-        }
 
         handle.draggable({ helper: 'clone', start: this.dragStart, handle: handle });
         handle.bind('mousedown', this.listeners.startRotate);
@@ -94,10 +88,6 @@ $.widget("ui.rotatable", $.ui.mouse, {
     _destroy: function() {
         this.element.removeClass('ui-rotatable');
         this.element.find('.ui-rotatable-handle').remove();
-
-        if (this.options.wheelRotate) {
-            this.element.unbind('wheel', this.listeners.wheelRotate);
-        }
     },
 
     performRotation: function(angle) {
@@ -223,16 +213,6 @@ $.widget("ui.rotatable", $.ui.mouse, {
         }
 
         return rotateAngle;
-    },
-
-    wheelRotate: function(event) {
-        var angle = Math.round(event.originalEvent.deltaY/10) * Math.PI/180;
-        if (this.options.snap || event.shiftKey) {
-          angle = this._calculateSnap(angle);
-        }
-        angle = this.elementCurrentAngle + angle;
-        this.angle(angle);
-        this._trigger("rotate", event, this.ui());
     },
 
     _calculateSnap: function(rotateAngle) {

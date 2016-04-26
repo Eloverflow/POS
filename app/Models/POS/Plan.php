@@ -13,11 +13,17 @@ class Plan extends Model
     public static function getAll()
     {
         return  \DB::table('plans')
+            ->join('tables', 'employees.userId', '=', 'users.id')
             ->select(\DB::raw('plans.id as idPlan,
             name,
             nbFloor,
             plans.created_at
             '))
+            ->get();
+
+        return \DB::table('employees')
+            ->join('users', 'employees.userId', '=', 'users.id')
+            ->select(\DB::raw('employees.id as idEmployee, firstName, lastName, email, hireDate'))
             ->get();
     }
 

@@ -12,6 +12,7 @@
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/datepicker3.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('css/workerLayout.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/mainSale.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/tablesSelect.css') }}" rel="stylesheet">
 
@@ -26,7 +27,7 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="container-fluid">
+
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
                     <span class="sr-only">Toggle navigation</span>
@@ -34,7 +35,7 @@
                 </button>
                 <a class="navbar-brand" href="{{@URL::to('/')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pub</span>Alex</a>
             </div>
-        </div>
+
     </div><!-- /.container-fluid -->
 </nav>
 </div>

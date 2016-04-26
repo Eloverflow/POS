@@ -1,9 +1,11 @@
 /**
  * Created by isaelblais on 4/8/2016.
  */
+var totalTables = 0;
+
 var globEditTable = null;
 var rotateParams = {
-    start: function (event, ui) {
+    /*start: function (event, ui) {
         console.log("Rotating started");
     },
     rotate: function (event, ui) {
@@ -11,7 +13,7 @@ var rotateParams = {
     },
     stop: function (event, ui) {
         console.log("Rotating stopped");
-    }
+    }*/
 };
 
 var dragParams = {
@@ -51,15 +53,16 @@ $("#btnNewSeparation").click(function () {
     $('#' + $tableGUID).draggable(dragParams);
 });
 $("#btnNewPlace").click(function () {
+    totalTables += 1;
     $tableGUID = guid();
     var $info = $('#nested-tabInfo');
     var $tabItemID = $('.tabItemID', $info);
     var $tabControl = $("#tabControl");
 
     $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable plc" id="' + $tableGUID + '">' +
-        '<span id="tableNumber">0</span>' +
-        '<span id="posX"></span>' +
-        '<span id="posY"></span>' +
+        '<span id="tableNumber">' + totalTables + '</span>' +
+        '<span id="posX">0</span>' +
+        '<span id="posY">0</span>' +
         '</li>');
 
     $('#' + $tableGUID + ' #tableNumber').bind("click", function () {
@@ -68,17 +71,22 @@ $("#btnNewPlace").click(function () {
         $("#editModal").modal('show');
     });
     $('#' + $tableGUID).rotatable(rotateParams);
+    $('#' + $tableGUID).bind("mousewheel", function() {
+        return false;
+    });
+
     $('#' + $tableGUID).draggable(dragParams);
     $('#' + $tableGUID).css({top: 0, left: 0, position: 'absolute'});
 });
 $("#btnNewTable").click(function () {
+    totalTables += 1;
     $tableGUID = guid();
     var $info = $('#nested-tabInfo');
     var $tabItemID = $('.tabItemID', $info);
     var $tabControl = $("#tabControl");
 
     $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable tbl" ' + 'id="' + $tableGUID + '">' +
-        '<div id="tableNumber">0</div>' +
+        '<div id="tableNumber">' + totalTables + '</div>' +
         '<span id="posX">0</span>' +
         '<span id="posY">0</span>' +
         '</li>');
@@ -89,9 +97,8 @@ $("#btnNewTable").click(function () {
         $("#editModal").modal('show');
     });
 
-    $('#' + $tableGUID).draggable(dragParams);
     $('#' + $tableGUID).rotatable(rotateParams);
-
+    $('#' + $tableGUID).draggable(dragParams);
 
     var width = $(this).width();
     var height = $(this).height();
@@ -103,8 +110,76 @@ $("#btnNewTable").click(function () {
 
     var curTab = $("[aria-labelledby='" + $tabItemID.text() + "'] .tables");
     var offsetTab = curTab.offset();
-    console.log(offsetTab);
+
     $('#' + $tableGUID).offset({top: offsetTab.top})
+
+
+    $('#' + $tableGUID).unbind("mousewheel");
+});
+
+$("#btnReOrder").click(function () {
+    var tblContainers = $(".tablesContainer .tables");
+    var listItems = $("#tabControl").find(tblContainers);
+    $arrayFloorTable = [];
+
+    for ($i = 0; $i < listItems.length; $i++) {
+        $liSubItems = $(listItems[$i]).find("li");
+
+        for ($j = 0; $j < $liSubItems.length; $j++) {
+            //$arrayFloorTable.push()
+            $parsedliSubItem = $($liSubItems[$j]);
+            //var offset = $parsedliSubItem.offset();
+
+            $xPos = parseInt($parsedliSubItem.find("#posX").text());
+            $yPos = parseInt($parsedliSubItem.find("#posY").text());
+            $sGuid = $parsedliSubItem.attr('id');
+
+            var txtRaw = $parsedliSubItem[0].style.transform;
+            var radValReg = /\((.*)\)/;
+            var radVal = 0;
+            if (txtRaw != null && txtRaw.trim() != "") {
+                if (txtRaw.match(radValReg)[1] != null) {
+                    radVal = txtRaw.match(radValReg)[1];
+                }
+            } else {
+                radVal = 0;
+            }
+            $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text());
+            $typeChr = "";
+            if ($parsedliSubItem.hasClass("tbl")) {
+                $typeChr = "tbl"
+            } else if ($parsedliSubItem.hasClass("plc")) {
+                $typeChr = "plc"
+            } else {
+                $typeChr = "sep"
+            }
+            var objTable = {
+                guid: $sGuid,
+                tblType: $typeChr,
+                tblNum: $tabNum,
+                noFloor: $i,
+                xPos: $xPos,
+                yPos: $yPos,
+                angle: radVal
+            };
+            $arrayFloorTable.push(objTable);
+        }
+
+    }
+
+
+    $arrayFloorTable.sort(function(a,b) {return (a.xPos > b.xPos) ? 1 : ((b.xPos > a.xPos) ? -1 : 0);} );
+    $arrayFloorTable.sort(function(a,b) {return (a.yPos > b.yPos) ? 1 : ((b.yPos > a.yPos) ? -1 : 0);} );
+
+
+    var Incr = 1;
+    for($i = 0; $i < $arrayFloorTable.length; $i ++){
+        var tblLiObj = $("#tabControl").find("#" + $arrayFloorTable[$i].guid);
+        var tblNumObj = tblLiObj.find("#tableNumber");
+        //console.log(tblNumObj);
+        tblNumObj.text(Incr.toString());
+        Incr += 1;
+    }
 
 
 });

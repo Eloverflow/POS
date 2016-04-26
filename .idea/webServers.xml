@@ -1,2 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project version="4" />
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="684530f1-09b8-4e90-9f47-4dc61f89360f" name="Mirageflow_Main" url="http://45.55.192.111">
+        <fileTransfer host="45.55.192.111" port="22" rootFolder="/var/www/POS" accessType="SFTP" password="dfc7dfc3dfc4dfc3dfcddfdfdfc4dfcbdfd8dfcbdfc8dfcf" username="root">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

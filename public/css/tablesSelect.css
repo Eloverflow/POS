@@ -16,16 +16,35 @@
     position: relative;
 }
 
+#id {
+    display: none;
+    visibility: hidden;
+}
+
+#posX {
+    display: none;
+    visibility: hidden;
+}
+
+#posY {
+     display: none;
+     visibility: hidden;
+}
+
 .tbl {
     width: 200px;
     height: 100px;
-    background-color: beige;
+    border-radius: 5px;
+    background-color: #D1AB5A;
+    background-image: url('../img/wood-pattern.png');
 }
 
 .plc {
     width: 100px;
     height: 100px;
-    background-color: beige;
+    border-radius: 5px;
+    background-color: #D1AB5A;
+    background-image: url('../img/wood-pattern.png');
 }
 
 .sep {
@@ -36,7 +55,7 @@
 
 .draggable {
     padding: 0.5em;
-    border: 1px solid gray;
+    border: 1px solid #422D00;
 
 }
 
