@@ -22,10 +22,14 @@ class PlanController extends Controller
 {
     public function index()
     {
+
+        $plans2 = Plan::all();
+        $plans2->load('table');
+
         $plans = Plan::getAll();
         $view = \View::make('POS.Plan.index')
             ->with('ViewBag', array (
-                'plans' => $plans
+                'plans' => $plans2
             ));
         return $view;
     }
