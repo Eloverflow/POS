@@ -79,6 +79,12 @@
 }
 
 .priceItems{
+	width: 14%;
+	height: 30px;
+	word-break: break-all;
+	text-overflow: clip;
+	overflow: hidden;
+	position: absolute;
 	color: #8ad919;
 	padding: 4px;
 	float: right;
@@ -337,10 +343,10 @@ div.saleTextZone input:focus{
 	border-top: 2px solid #222;
 	padding-top: 1px;
 	background-color: #333;
-	height: 40px;
+	height: 60px;
 	width: 41.7%;
 	position: fixed;
-	bottom: 120px;
+	bottom: 100px;
 }
 
 .bill-total{
@@ -356,12 +362,13 @@ div.saleTextZone input:focus{
 
 .div-btn-facture{
 	padding: 0;
+	padding-bottom: 1px;
 	border-top: 2px solid #222;
 	background-color: #333;
 	height: 50px;
 	width: 41.7%;
 	position: fixed;
-	bottom: 50px;
+	bottom: 49px;
 }
 
 .btn-facture{
@@ -373,7 +380,7 @@ div.saleTextZone input:focus{
 }
 
 .sidebar{
-	padding-bottom: 140px;
+	padding-bottom: 180px;
 }
 
 
@@ -412,6 +419,9 @@ margin-right: 5px;*/
 width: 100%;*/
 }
 
+body{
+	transition: visibility  0.3s;
+}
 
 #contentPanel{
 	visibility: visible!important;
@@ -564,6 +574,26 @@ pre{
 	box-shadow: 0 4px 8px rgba(0,0,0,0.8);
 }
 
+#splashFullScreen{
+	z-index: 9999;
+	border-radius: 10px;
+	padding: 50px;
+	background-color: #49d100;
+	transition: font-size 0.3s;
+	color: #fff;
+	text-shadow: 0 4px 8px rgba(255,255,255,0.7);
+	font-size: 40px;/*
+	position: absolute;*/
+	position: fixed; /* or absolute */
+	top: 50%;
+	left: 50%;
+	text-align: center;/*
+	width: 300px;*//*
+	margin-top: 30%;*/
+	margin-top: -50px;
+	margin-left: -300px;
+	visibility: hidden;
+}
 
 body{
 	width: 100%;

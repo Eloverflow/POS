@@ -131,8 +131,20 @@
 
     $(document).on('click', function(){
 
+        //Going fullscren splash
+        //$('body').css("visibility","hidden");
+        $('#splashFullScreen').css("visibility","visible");
+        $('#splashFullScreen').css("font-size","50px");
+
         requestFullScreen(elem);
+        $('#splashFullScreen').delay(200).fadeTo( 800, 0, function() {
+            $('#splashFullScreen').css("visibility","hidden");
+        });
+/*
+        $('body').delay(4000).css("visibility","visible");*/
+        //leaving fullscren splash
         $(document).unbind();
+
         console.log("Here we go fullscreen");
     });
 
