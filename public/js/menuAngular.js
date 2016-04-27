@@ -321,7 +321,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                 $scope.commandClient[$scope.bigCurrentPage].notes.push({note: note})
             }
 
-            $scope.dynamicPopover.note = '';
+            $scope.noteDynamicPopover.note = '';
 
             $scope.updateBill();
         }
@@ -574,26 +574,26 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     };
 
 
-    $scope.showModal = false;
-    $scope.toggleModal = function(){
-        $scope.showModal = !$scope.showModal;
+    $scope.showTableModal = false;
+    $scope.toggleTableModal = function(){
+        $scope.showTableModal = !$scope.showTableModal;
+    };
+
+
+    $scope.showDivideBillModal = false;
+    $scope.toggleDivideBillModal = function(){
+        $scope.showDivideBillModal = !$scope.showDivideBillModal;
     };
 
 
 
-    $scope.dynamicPopover = {
+
+    $scope.noteDynamicPopover = {
         content: '',
-        templateUrl: 'myPopoverTemplate.html',
+        templateUrl: 'notePopover.html',
         title: 'Notes sur la commande'
     };
 
-/*
-    $scope.dynamicPopoverItems = {
-        content: '',
-        templateUrl: 'myPopoverTemplate.html',
-        title: 'Notes sur l\'item'
-    };
-*/
 
     $scope.placement = {
         options: [

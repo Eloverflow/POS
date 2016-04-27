@@ -65,29 +65,35 @@
             </ul>
             <ul class="user-menu tableNumber">
                 <li>
-                    <a href="#" ng-click="toggleModal()"><span class="glyphicon glyphicon-unchecked"></span>
+                    <a href="#" ng-click="toggleTableModal()"><span class="glyphicon glyphicon-unchecked"></span>
                         Table #<% currentTable.tblNumber %>
                        </a>
                 </li>
-            </ul>{{--
-            <ul class="user-menu">
-                <li>
-                    <a> ng-click="askFullscreen"</a>
-                </li>
-            </ul>--}}
-            {{--
-            <button ng-click="toggleModal()" class="btn btn-default">Open modal</button>--}}
-
+            </ul>
 
         </div>
 
     </div><!-- /.container-fluid -->
 </nav>
-<modal title="Selectionne une table" visible="showModal">
+<modal title="Selectionne une table" visible="showTableModal">
     <div ng-repeat="n in [] | floor:plan.nbFloor" >
         <span class="floor">Étage <% n+1 %></span>
         <div ng-repeat="i in plan.table | filter:{noFloor: n}">
             <button type="button" class="btn btn-success btn-table" ng-click="changeTable(i)" >Table #<% i.tblNumber %></button>
+        </div>
+    </div>
+</modal>
+<modal title="Diviser Factures" class="center-modal" visible="showDivideBillModal">
+    <div class="divideBillChoices" >
+        <div class="divideBillChoice">
+            Une Facture par Personne
+        </div>
+        <div class="divideBillChoice">
+            Une Seule Facture
+        </div>
+
+        <div class="divideBillChoice">
+            Diviser manuellement
         </div>
     </div>
 </modal>
