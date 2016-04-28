@@ -586,6 +586,22 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     };
 
 
+    $scope.divideBill = function(){
+        $scope.toggleDivideBillModal();
+
+        $('#billWindow').slideUp(0);
+        $('#billWindow').css('visibility', 'visible')
+        $scope.openBill();
+    };
+
+    $scope.openBill = function(){
+        $('#billWindow').slideDown(400);
+    }
+
+    $scope.closeBill = function(){
+        $('#billWindow').slideUp(250);
+    }
+
 
 
     $scope.noteDynamicPopover = {

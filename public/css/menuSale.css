@@ -346,7 +346,63 @@ div.saleTextZone input:focus{
 	height: 60px;
 	width: 41.7%;
 	position: fixed;
-	bottom: 100px;
+	bottom: 99px;
+}
+
+.bill-separation{
+	width: 100%;
+	border-top: 2px solid #222;
+}
+
+.bill{
+	display: inline-block;
+	float: left;
+	height: auto;
+	width: 4%;
+	padding: 10px;
+	background-color: #222;
+	margin-right: 4px;
+}
+
+.bill-container{
+	/*overflow: scroll; width: 5000px; height: 90%;
+*/
+	/*height: 100%*/;/*
+	width: 100%;
+	white-space: nowrap;
+	overflow-x: visible;*/
+}
+
+.container-outer { overflow: scroll; width: 100%; height: 88% }
+.container-inner { width: 10000px; }
+
+
+.bill ul{
+	padding: 0;
+}
+
+.bill li{
+	list-style: none;
+	background-color: #444;
+	box-shadow: 0 0 4px rgba(0,0,0,0.5);
+	padding: 10px;
+	border-top: 1px solid rgba(44,44,44,0.5);
+	color: #fff;
+}
+
+#billWindow h1{
+
+	color: #30a5ff;
+}
+
+
+#billWindow{
+	width: 100%;
+	height: 100%;
+	position: fixed;
+	background-color: #333;
+	z-index: 9999;
+	visibility: hidden;
 }
 
 .bill-total{

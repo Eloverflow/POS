@@ -70,6 +70,20 @@
                        </a>
                 </li>
             </ul>
+            <ul class="user-menu tableNumber">
+                <li>
+                    <a href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
+                        Plan
+                    </a>
+                </li>
+            </ul>
+            <ul class="user-menu tableNumber">
+                <li>
+                    <a href="#" ng-click="openBill()"><span class="glyphicon glyphicon-bitcoin"></span>
+                        Factures
+                    </a>
+                </li>
+            </ul>
 
         </div>
 
@@ -92,7 +106,7 @@
             Une Seule Facture
         </div>
 
-        <div class="divideBillChoice">
+        <div ng-click="divideBill()" class="divideBillChoice">
             Diviser manuellement
         </div>
     </div>
@@ -100,6 +114,41 @@
 
 
 @yield('content')
+
+
+<div id="billWindow">
+    <h1>Factures</h1>
+    <div class="upRight">
+        <button ng-click="closeBill()" type="button" class="btn btn-danger">FERMER</button>
+    </div>
+    <div class="bill-separation">
+    </div>
+    <div class="container-outer">
+        <div class="container-inner">
+        <div ng-repeat="n in [] | floor:4" class="bill">
+           {{-- <ul>
+                <li>test</li>
+                <li>test</li>
+            </ul>--}}
+            <h2>Facture #n</h2>
+            <ul>
+            <li ng-repeat="commandItem in commandClient[bigCurrentPage].commandItems"
+                id="commandItem<% commandItem.id %>" class="sale-item">
+
+                <div class="saleTextZone">
+                    <span><%commandItem.quantity%></span> x
+                    <span class="sale-item-name"> <% commandItem.size.name + " " + commandItem.name%></span></div>
+                    <span class="">$ <% (commandItem.size.price*commandItem.quantity | number:2) %></span>
+
+                <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
+                    <p ng-repeat="item in commandItem.notes"><% item.note %></p>
+                </div>
+            </li>
+            </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {{--Script call--}}
