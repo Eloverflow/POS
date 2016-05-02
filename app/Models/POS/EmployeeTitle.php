@@ -13,7 +13,7 @@ class EmployeeTitle extends Model
     {
         return \DB::table('employees')
             ->join('users', 'employees.userId', '=', 'users.id')
-            ->select(\DB::raw('employees.id as idEmployee, users.id as idUser, employees.bonusSalary, streetAddress, phone, firstName, lastName, city, nas, pc, state, birthDate, hireDate, email, hireDate'))
+            ->select(\DB::raw('employees.id as idEmployee, users.id as idUser, employees.bonusSalary, streetAddress, phone, firstName, lastName, city, nas, pc, state, birthDate, hireDate'))
             ->where('employees.id', '=', $id)
             ->first();
     }
@@ -24,4 +24,14 @@ class EmployeeTitle extends Model
             ->select(\DB::raw('id, name, baseSalary'))
             ->get();
     }
+
+    public static function getEmployeesByTitleId($id)
+    {
+        return \DB::table('title_employees')
+        ->join('employees', 'title_employees.employee_id', '=', 'employees.id')
+        ->select(\DB::raw('employees.id as idEmployee, employees.bonusSalary, streetAddress, phone, firstName, lastName, city, nas, pc, state, birthDate, hireDate'))
+        ->where('employee_titles_id', '=', $id)
+        ->get();
+    }
+
 }

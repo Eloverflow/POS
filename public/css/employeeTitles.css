@@ -1,0 +1,48 @@
+
+
+table td {
+
+}
+
+span.glyphicon {
+    font-size: 1.2em;
+    margin-right: 8px;
+}
+
+/*span.glyphicon:hover {
+    color: red;
+}*/
+
+.accordion-button {
+    margin-right: 2px;
+}
+
+.hsize {
+    font-size: 18px;
+    display: inline-block;
+}
+
+.ui-accordion-header.ui-state-active  {
+    background-color: #E0E0E0;
+    border: 1px solid #C9C9C9;
+}
+
+.ui-accordion-header.ui-state-active span.glyphicon  {
+    color: #8B8C8C;
+}
+
+.ui-accordion-header.ui-state-active span.glyphicon:hover {
+    color: #636363;
+}
+
+.ui-accordion-header.ui-state-default {
+    border: 1px solid #C9C9C9;
+}
+
+.ui-accordion-header.ui-state-default span.glyphicon  {
+    color: #8B8C8C;
+}
+
+.ui-accordion-header.ui-state-default span.glyphicon:hover {
+    color: #636363;
+}

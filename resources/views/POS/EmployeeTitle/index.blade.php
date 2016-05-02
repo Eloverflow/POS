@@ -1,5 +1,14 @@
 @extends('master')
-
+@section('csrfToken')
+    <script src="{{ @URL::to('js/jquery/jquery-ui.js') }}"></script>
+    <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery-ui.css') }}"/>
+    <link rel="stylesheet" href="{{ @URL::to('css/employeeTitles.css') }}"/>
+    <script>
+        $(function() {
+            $( "#accordion" ).accordion();
+        });
+    </script>
+    @stop
 @section('content')
     <div class="row">
         <div class="col-md-6">
@@ -18,31 +27,61 @@
                     @if (!empty($success))
                         {{ $success }}
                     @endif
-                    <table data-toggle="table"  data-show-refresh="true" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
-                        <thead>
-                        <tr>
-                            <th data-field="id" data-checkbox="true" >Item ID</th>
-                            <th data-field="titleName" data-sortable="true">Title Name</th>
-                            <th data-field="baseSalary"  data-sortable="true">Base Salary</th>
-                            <th data-field="actions" data-sortable="true"></th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                        <div id="accordion">
+                            @foreach ($ViewBag['employeeTitles'] as $employeeTitle)
+                                <div>
+                                    <span class="hidden">{{ $employeeTitle->id }}</span>
+                                    <span class="viewShow">
+                                        <span><h6 class="hsize"><strong>{{ $employeeTitle->name }}</strong></h6> <span class="btn btn-default">{{ $employeeTitle->baseSalary . "/h"}}</span></span>
+                                        <span class="delEmplTitle pull-right glyphicon glyphicon-trash"></span>
+                                        <span class="editEmplTitle pull-right glyphicon glyphicon-pencil"></span>
+                                    </span>
+                                    <span class="viewHide">
+                                        <span>{!! Form::text('employeeTitle', $employeeTitle->name, array('class' => 'form-control')) !!}
+                                            {!! Form::text('employeeTitle', $employeeTitle->baseSalary, array('class' => 'form-control')) !!}</span>
+                                        <span class="cancEmplTitle pull-right glyphicon glyphicon glyphicon-remove"></span>
+                                        <span class="doneEmplTitle pull-right glyphicon glyphicon-ok"></span>
+                                    </span>
+                                </div>
 
-                        @foreach ($ViewBag['employeeTitles'] as $employeeTitle)
-                            <tr>
-                                <td>{{ $employeeTitle->id }}</td>
-                                <td>{{ $employeeTitle->name }}</td>
-                                <td>{{ $employeeTitle->baseSalary }}</td>
-                                <td><a href="{{ URL::to('employee/title/edit', $employeeTitle->id) }}">Edit</a>
-                                    <a href="{{ URL::to('employee/title/delete', $employeeTitle->id) }}">Delete</a></td>
-                            </tr>
-                        @endforeach
+                                <div>
+                                    @if($employeeTitle->cntEmployees != null || count($employeeTitle->cntEmployees) > 0)
+                                        <table>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Full Name</th>
+                                                <th>Hire Date</th>
+                                            </tr>
+                                            @foreach($employeeTitle->cntEmployees as $employee)
+                                                <tr>
+                                                    <td>{{ $employeeTitle->id }}</td>
+                                                    <td>{{ $employee->firstName . " " . $employee->lastName}}</td>
+                                                    <td>{{ $employee->hireDate }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    @endif
+                                </div>
 
-                        </tbody>
-                    </table>
+                            @endforeach
+                        </div>
+
                 </div>
             </div>
         </div>
     </div>
+@stop
+
+@section("myjsfile")
+    <script>
+        $(document).ready(function(){
+            $(".editEmplTitle").bind("click", function() {
+                var parent  = $(this).parent();
+                console.log(parent);
+                //alert("clicked edit");
+            });
+
+
+        });
+    </script>
 @stop

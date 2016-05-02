@@ -745,3 +745,8 @@ li.addTable .glyphicon{
 		margin-top: 0;
 	}
 }
+
+.hiddenRow {
+	padding: 0 !important;
+}
+
