@@ -1,8 +1,12 @@
 @extends('master')
 @section('csrfToken')
+    <script src="{{ @URL::to('js/jquery/jquery-ui.js') }}"></script>
+    <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery-ui.css') }}"/>
     <link rel="stylesheet" href="{{ @URL::to('css/employeeTitles.css') }}"/>
     <script>
-
+        $(function() {
+            $( "#accordion" ).accordion();
+        });
     </script>
     @stop
 @section('content')
@@ -23,36 +27,45 @@
                     @if (!empty($success))
                         {{ $success }}
                     @endif
-                    <table id="employeeTitles" class="table">
-                        <thead>
-                        <tr>
-                            <th class="hidden" >Item ID</th>
-                            <th style="width:40px"></th>
-                            <th>Title Name</th>
-                            <th>Base Salary</th>
-                            <th></th>
-                        </tr>
-                        </thead>
-                        <tbody>
+                        <div id="accordion">
+                            @foreach ($ViewBag['employeeTitles'] as $employeeTitle)
+                                <div>
+                                    <span class="hidden">{{ $employeeTitle->id }}</span>
+                                    <span class="viewShow">
+                                        <span><h6 class="hsize"><strong>{{ $employeeTitle->name }}</strong></h6> <span class="btn btn-default">{{ $employeeTitle->baseSalary . "/h"}}</span></span>
+                                        <span class="delEmplTitle pull-right glyphicon glyphicon-trash"></span>
+                                        <span class="editEmplTitle pull-right glyphicon glyphicon-pencil"></span>
+                                    </span>
+                                    <span class="viewHide">
+                                        <span>{!! Form::text('employeeTitle', $employeeTitle->name, array('class' => 'form-control')) !!}
+                                            {!! Form::text('employeeTitle', $employeeTitle->baseSalary, array('class' => 'form-control')) !!}</span>
+                                        <span class="cancEmplTitle pull-right glyphicon glyphicon glyphicon-remove"></span>
+                                        <span class="doneEmplTitle pull-right glyphicon glyphicon-ok"></span>
+                                    </span>
+                                </div>
 
-                        @foreach ($ViewBag['employeeTitles'] as $employeeTitle)
-                            <tr>
-                                <td class="hidden">{{ $employeeTitle->id }}</td>
-                                <td data-shown="false" class="rowExp"><svg style="width:30px;height:30px;" class="glyph stroked eye"><use xlink:href="#stroked-eye"/></svg></td>
-                                <td>{{ $employeeTitle->name }}</td>
-                                <td>{{ $employeeTitle->baseSalary }}</td>
-                                <td><a href="{{ URL::to('employee/title/edit', $employeeTitle->id) }}">Edit</a>
-                                    <a href="{{ URL::to('employee/title/delete', $employeeTitle->id) }}">Delete</a></td>
-                            </tr>
-                            <tr >
-                                <td colspan="5">
-                                    <h2>This is title</h2>
-                                </td>
-                            </tr>
-                        @endforeach
+                                <div>
+                                    @if($employeeTitle->cntEmployees != null || count($employeeTitle->cntEmployees) > 0)
+                                        <table>
+                                            <tr>
+                                                <th>Id</th>
+                                                <th>Full Name</th>
+                                                <th>Hire Date</th>
+                                            </tr>
+                                            @foreach($employeeTitle->cntEmployees as $employee)
+                                                <tr>
+                                                    <td>{{ $employeeTitle->id }}</td>
+                                                    <td>{{ $employee->firstName . " " . $employee->lastName}}</td>
+                                                    <td>{{ $employee->hireDate }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </table>
+                                    @endif
+                                </div>
 
-                        </tbody>
-                    </table>
+                            @endforeach
+                        </div>
+
                 </div>
             </div>
         </div>
@@ -62,44 +75,13 @@
 @section("myjsfile")
     <script>
         $(document).ready(function(){
-
-            var element = $("#employeeTitles");
-            $(element).find("tr:odd").addClass("odd");
-            /*$(element).find("tr:not(.odd)").hide();*/
-            //$(element).find("tr:not(.odd)").css({"height": "0px"});
-            //$(element).find("tr:not(.odd) td").css({"height": "0px"});
-            $(element).find("tr:not(.odd) td").children().hide();
-            $(element).find("tr:not(.odd) td").css({"padding": "0px"});
-
-
-            $(element).find("tr:first-child").show();
-
-            $(".rowExp").bind("click", function() {
-
-                $dataShownValue = $(this).attr("data-shown");
-                $parentRowButton = $(this).parent();
-                $nextRowOdd = $parentRowButton.closest('tr').next('tr')
-
-                if($dataShownValue == "true"){
-                    $nextRowOdd.animate(
-                            {"height": "0px"},
-                            "fast");
-                    $nextRowOdd.find("td").children().hide();
-
-                    $(this).attr("data-shown","false");
-                } else if($dataShownValue == "false") {
-                    $nextRowOdd.find("td").children().show();
-                    /*
-                     $nextRowOdd.slideUp(0);*/
-                    $nextRowOdd.animate(
-                            {"height": "auto"},
-                            "slow");
-
-                    $(this).attr("data-shown","true");
-                }
-
-                //$("#employeeTitles").next("tr").toggle();
+            $(".editEmplTitle").bind("click", function() {
+                var parent  = $(this).parent();
+                console.log(parent);
+                //alert("clicked edit");
             });
+
+
         });
     </script>
 @stop

@@ -21,15 +21,12 @@
     <h5>Floor Number:</h5>
     <span id="floorNumber">{{ $ViewBag['nbFloor'] }}</span>
     <a class="btn btn-success pull-right" id="btnFinish" href="#"> Create </a>
-    <a class="btn btn-warning pull-right" id="btnReOrder" href="#"> Re-order </a>
     <br/>
     <div id="rowCmd">
         <a id="btnNewTable" class="btn btn-primary" href="#"> New Table </a>
         <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
         <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
         <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
-
-        <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
     </div>
     <!--Horizontal Tab-->
     <div id="parentHorizontalTab">

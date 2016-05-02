@@ -21,6 +21,12 @@ class EmployeeTitleController extends Controller
     public function index()
     {
         $employeeTitles = EmployeeTitle::getAll();
+
+        for($i = 0; $i < count($employeeTitles); $i++){
+            $employees = EmployeeTitle::getEmployeesByTitleId($employeeTitles[$i]->id);
+            $employeeTitles[$i]->{"cntEmployees"} = $employees;
+        }
+
         $view = \View::make('POS.EmployeeTitle.index')
             ->with('ViewBag', array (
                 'employeeTitles' => $employeeTitles

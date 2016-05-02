@@ -31,6 +31,7 @@
 
         <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
     </div>
+
     <!--Horizontal Tab-->
     <div id="parentHorizontalTab">
         <ul class="resp-tabs-list hor_1">
