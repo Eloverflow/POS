@@ -14,21 +14,14 @@
     <link href="{{ @URL::to('css/menuSale.css') }}" rel="stylesheet">
     {{--End of Stylesheet call--}}
 
+    <link href="{{ URL::to('Framework/please-wait/please-wait.css') }}" rel="stylesheet">
+
     <!--Icons-->
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/lumino.glyphs.js') }}"></script>
 
 
     <script src="{{ @URL::to('Framework/Angular/angular.min.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Angular/angular-route.min.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Angular/angular-ui-router.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Bootstrap/js/ui-bootstrap-tpls-1.2.5.min.js') }}"></script>
-    <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Angular/angular-count-to.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
-    <script src="{{ @URL::to('js/unserialize.js') }}"></script>
-    <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
+
 
     <!--[if lt IE 9]>
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/html5shiv.js') }}"></script>
@@ -38,6 +31,14 @@
 </head>
 
 <body ng-app="menu" ng-controller="menuController">
+<script type="text/javascript" src="{{ URL::to('Framework/please-wait/please-wait.min.js')  }}"></script>
+<script type="text/javascript">
+    window.loading_screen = window.pleaseWait({
+        logo: "{{ URL::to('Framework/please-wait/easypos.png')  }}",
+        backgroundColor: '#222',
+        loadingHtml: "<div class='spinner'><div class='rect1'></div> <div class='rect2'></div> <div class='rect3'></div> <div class='rect4'></div> <div class='rect5'></div> </div>"
+    });
+</script>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -45,7 +46,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span>Facture</span> <span class="glyphicon glyphicon-barcode"></span>
             </button>
-            <a class="navbar-brand" href="{{@URL::to('/')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pub</span>Alex</a>
+            <a class="navbar-brand" href="{{@URL::to('/menu/start')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>EASY</span>POS</a>
             <ul class="user-menu">
 
                 <li class="dropdown pull-right">
@@ -99,10 +100,10 @@
 </modal>
 <modal title="Diviser Factures" class="center-modal" visible="showDivideBillModal">
     <div class="divideBillChoices" >
-        <div class="divideBillChoice">
+        <div ng-click="perClientBill()" class="divideBillChoice">
             Une Facture par Personne
         </div>
-        <div class="divideBillChoice">
+        <div ng-click="oneBill()" class="divideBillChoice">
             Une Seule Facture
         </div>
 
@@ -124,27 +125,41 @@
     <div class="bill-separation">
     </div>
     <div class="container-outer">
-        <div class="container-inner">
-        <div ng-repeat="n in [] | floor:4" class="bill">
+        <div class="container-inner">{{--
+        <div ng-repeat="n in [] | floor:4" class="bill">--}}
            {{-- <ul>
                 <li>test</li>
                 <li>test</li>
             </ul>--}}
-            <h2>Facture #n</h2>
-            <ul>
-            <li ng-repeat="commandItem in commandClient[bigCurrentPage].commandItems"
-                id="commandItem<% commandItem.id %>" class="sale-item">
 
-                <div class="saleTextZone">
-                    <span><%commandItem.quantity%></span> x
-                    <span class="sale-item-name"> <% commandItem.size.name + " " + commandItem.name%></span></div>
+            <div ng-repeat="bill in bills"  class="bill" >
+
+            <h2>Facture <% bill.number %></h2>
+            <ul>
+
+
+                <li ng-click="checkBillItem(commandItem)" ng-repeat="commandItem in bill" id="commandItem<% commandItem.id %>" class="sale-item">
+
+                    <span ng-show="commandItem.checked" class="glyphicon glyphicon-check move-bill-item-check"></span>
+                    <span ng-hide="commandItem.checked" class="glyphicon glyphicon-unchecked move-bill-item-check"></span>
+                    <div class="saleTextZone">
+                        <span><%commandItem.quantity%></span> x
+                        <span class="sale-item-name"> <% commandItem.size.name + " " + commandItem.name%></span></div>
                     <span class="">$ <% (commandItem.size.price*commandItem.quantity | number:2) %></span>
 
-                <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
-                    <p ng-repeat="item in commandItem.notes"><% item.note %></p>
-                </div>
-            </li>
+                    <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
+                        <p ng-repeat="item in commandItem.notes"><% item.note %></p>
+                    </div>
+                </li>
+                <li class="add-bill-item">
+                    <span class="glyphicon glyphicon-plus"></span>
+                </li>
+
+                <li ng-show="movingBillItem" class="move-bill-item">
+                    <span class="glyphicon glyphicon glyphicon-share"></span>
+                </li>
             </ul>
+                <h3>Total: $ <% bill.total | number:2 %></h3>
             </div>
         </div>
     </div>
@@ -166,64 +181,7 @@
 @endif
 {{--End of Script call--}}
 
-<script>
-    $('#calendar').datepicker({
-    });
 
-    !function ($) {
-        $(document).on("click","ul.nav li.parent > a > span.icon", function(){
-            $(this).find('em:first').toggleClass("glyphicon-minus");
-        });
-        $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-    }(window.jQuery);
-
-    $(window).on('resize', function () {
-        if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
-    })
-    $(window).on('resize', function () {
-        if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
-    })
-
-    $(document).on('click', function(){
-
-        //Going fullscren splash
-        //$('body').css("visibility","hidden");
-        $('#splashFullScreen').css("visibility","visible");
-        $('#splashFullScreen').css("font-size","50px");
-
-        requestFullScreen(elem);
-        $('#splashFullScreen').delay(200).fadeTo( 800, 0, function() {
-            $('#splashFullScreen').css("visibility","hidden");
-        });
-/*
-        $('body').delay(4000).css("visibility","visible");*/
-        //leaving fullscren splash
-        $(document).unbind();
-
-        console.log("Here we go fullscreen");
-    });
-
-
-
-    function requestFullScreen(element) {
-        // Supports most browsers and their versions.
-        var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullscreen;
-
-        if (requestMethod) { // Native full screen.
-            requestMethod.call(element);
-        } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
-            var wscript = new ActiveXObject("WScript.Shell");
-            if (wscript !== null) {
-                wscript.SendKeys("{F11}");
-            }
-        }
-    }
-
-   var elem = document.body; // Make the body go full screen.
-
-
-
-</script>
 
 
 @yield('myjsfile')

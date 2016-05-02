@@ -1,5 +1,19 @@
 @extends('POS.Sale.menuLayout')
 
+@section('csrfToken')
+    <script src="{{ @URL::to('Framework/Angular/angular-route.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-ui-router.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/js/ui-bootstrap-tpls-1.2.5.min.js') }}"></script>
+    <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-count-to.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
+    <script src="{{ @URL::to('js/unserialize.js') }}"></script>
+    <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
+@stop
+
+
 @section('content')
     <div id="splashFullScreen">Maintenant en mode plein écran.</div>
     <div id="sidebar-collapse" class="col-sm-3 col-lg-5 sidebar">
@@ -170,5 +184,65 @@
         </div>
     </div>
 
+@stop
 
+@section('myjsfile')
+    <script>
+        /*    $('#calendar').datepicker({
+         });
+
+         !function ($) {
+         $(document).on("click","ul.nav li.parent > a > span.icon", function(){
+         $(this).find('em:first').toggleClass("glyphicon-minus");
+         });
+         $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
+         }(window.jQuery);*/
+
+        $(window).on('resize', function () {
+            if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+        })
+        $(window).on('resize', function () {
+            if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+        })
+
+        $(document).on('click', function(){
+
+            //Going fullscren splash
+            //$('body').css("visibility","hidden");
+            $('#splashFullScreen').css("visibility","visible");
+            $('#splashFullScreen').css("font-size","50px");
+
+            requestFullScreen(elem);
+            $('#splashFullScreen').delay(200).fadeTo( 800, 0, function() {
+                $('#splashFullScreen').css("visibility","hidden");
+            });
+            /*
+             $('body').delay(4000).css("visibility","visible");*/
+            //leaving fullscren splash
+            $(document).unbind();
+
+            console.log("Here we go fullscreen");
+        });
+
+
+
+        function requestFullScreen(element) {
+            // Supports most browsers and their versions.
+            var requestMethod = element.requestFullScreen || element.webkitRequestFullScreen || element.mozRequestFullScreen || element.msRequestFullscreen;
+
+            if (requestMethod) { // Native full screen.
+                requestMethod.call(element);
+            } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+                var wscript = new ActiveXObject("WScript.Shell");
+                if (wscript !== null) {
+                    wscript.SendKeys("{F11}");
+                }
+            }
+        }
+
+        var elem = document.body; // Make the body go full screen.
+
+
+
+    </script>
 @stop

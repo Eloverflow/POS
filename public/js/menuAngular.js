@@ -73,7 +73,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
 
     $scope.commandItems = [];
+
     $scope.delete2 = function (item) {
+
             $factureItem = $('#factureItem'+item.id);
 
             /*$factureItem.slideUp('slow', function(){*/
@@ -594,6 +596,95 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         $scope.openBill();
     };
 
+    $scope.oneBill = function(){
+        $scope.toggleDivideBillModal();
+
+        $scope.bills = [];
+        var bill = [];
+        var total = 0;
+
+        for(var f = 0; f < $scope.commandClient.length; f++){
+                if(typeof $scope.commandClient[f+1] != 'undefined' && $scope.commandClient[f+1] != null){
+                    for(var p = 0; p < $scope.commandClient[f+1].commandItems.length; p++){
+                        var item = angular.copy($scope.commandClient[f+1].commandItems[p])
+                        item.checked = false
+                        bill.push(item);
+                        total +=  item.size.price*item.quantity
+                    }
+                }
+        }
+
+        $scope.bills[0] = bill;
+        $scope.bills[0].number = 1;
+        $scope.bills[0].total = total;
+        total = 0;
+
+        console.log('Bills')
+        console.log($scope.bills[0])
+
+        $('#billWindow').slideUp(0);
+        $('#billWindow').css('visibility', 'visible')
+        $scope.openBill();
+    };
+
+
+    $scope.perClientBill = function(){
+        $scope.toggleDivideBillModal();
+
+        $scope.bills = [];
+        var bill = [];
+        var total = 0;
+
+        for(var f = 0; f < $scope.commandClient.length; f++){
+            if(typeof $scope.commandClient[f+1] != 'undefined' && $scope.commandClient[f+1] != null){
+                for(var p = 0; p < $scope.commandClient[f+1].commandItems.length; p++){
+
+                    var item = angular.copy($scope.commandClient[f+1].commandItems[p])
+                    item.checked = false;
+                    bill.push(item);
+                    total +=  item.size.price*item.quantity
+                }
+            }
+            $scope.bills[f] = bill;
+            $scope.bills[f].number = f+1;
+            $scope.bills[f].total = total;
+            total = 0;
+            bill = [];
+        }
+
+
+        console.log('Bills')
+        console.log($scope.bills[0])
+
+        $('#billWindow').slideUp(0);
+        $('#billWindow').css('visibility', 'visible')
+        $scope.openBill();
+    };
+
+
+    $scope.checkBillItem = function(commandItem){
+
+        commandItem.checked = !commandItem.checked;
+
+
+        if(commandItem.checked){
+            $scope.movingBillItem = true;
+        }
+        else{
+
+            var checkedItems =  $filter("filter")($scope.bills, {checked:  "true"})[0];
+
+            if(typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0)
+            $scope.movingBillItem = false;
+        }
+
+        /*
+        var checkBox = $(this).find('.move-bill-item')
+        checkBox.addClass('glyphicon-checked')
+        checkBox.removeClass('glyphicon-checked')*/
+
+    }
+
     $scope.openBill = function(){
         $('#billWindow').slideDown(400);
     }
@@ -641,6 +732,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     $scope.commandClient[$scope.bigCurrentPage].commandItems = [];
 
 
+    $scope.bills = [];
+    $scope.bills[0] = [];
+    $scope.movingBillItem = false;
 
 
     $scope.currentEmploye = 2;
@@ -812,6 +906,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
             console.log("The command as been loaded and confirmation received inside response - Success or Not ?");
 
+
+            /*End of loading screen*/
+            window.loading_screen.finish();
 
         };
 
