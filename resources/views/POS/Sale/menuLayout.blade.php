@@ -65,25 +65,31 @@
             </ul>
             <ul class="user-menu tableNumber">
                 <li>
-                    <a href="#" ng-click="toggleModal()"><span class="glyphicon glyphicon-unchecked"></span>
+                    <a href="#" ng-click="toggleTableModal()"><span class="glyphicon glyphicon-unchecked"></span>
                         Table #<% currentTable.tblNumber %>
                        </a>
                 </li>
-            </ul>{{--
-            <ul class="user-menu">
+            </ul>
+            <ul class="user-menu tableNumber">
                 <li>
-                    <a> ng-click="askFullscreen"</a>
+                    <a href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
+                        Plan
+                    </a>
                 </li>
-            </ul>--}}
-            {{--
-            <button ng-click="toggleModal()" class="btn btn-default">Open modal</button>--}}
-
+            </ul>
+            <ul class="user-menu tableNumber">
+                <li>
+                    <a href="#" ng-click="openBill()"><span class="glyphicon glyphicon-bitcoin"></span>
+                        Factures
+                    </a>
+                </li>
+            </ul>
 
         </div>
 
     </div><!-- /.container-fluid -->
 </nav>
-<modal title="Selectionne une table" visible="showModal">
+<modal title="Selectionne une table" visible="showTableModal">
     <div ng-repeat="n in [] | floor:plan.nbFloor" >
         <span class="floor">Étage <% n+1 %></span>
         <div ng-repeat="i in plan.table | filter:{noFloor: n}">
@@ -91,9 +97,58 @@
         </div>
     </div>
 </modal>
+<modal title="Diviser Factures" class="center-modal" visible="showDivideBillModal">
+    <div class="divideBillChoices" >
+        <div class="divideBillChoice">
+            Une Facture par Personne
+        </div>
+        <div class="divideBillChoice">
+            Une Seule Facture
+        </div>
+
+        <div ng-click="divideBill()" class="divideBillChoice">
+            Diviser manuellement
+        </div>
+    </div>
+</modal>
 
 
 @yield('content')
+
+
+<div id="billWindow">
+    <h1>Factures</h1>
+    <div class="upRight">
+        <button ng-click="closeBill()" type="button" class="btn btn-danger">FERMER</button>
+    </div>
+    <div class="bill-separation">
+    </div>
+    <div class="container-outer">
+        <div class="container-inner">
+        <div ng-repeat="n in [] | floor:4" class="bill">
+           {{-- <ul>
+                <li>test</li>
+                <li>test</li>
+            </ul>--}}
+            <h2>Facture #n</h2>
+            <ul>
+            <li ng-repeat="commandItem in commandClient[bigCurrentPage].commandItems"
+                id="commandItem<% commandItem.id %>" class="sale-item">
+
+                <div class="saleTextZone">
+                    <span><%commandItem.quantity%></span> x
+                    <span class="sale-item-name"> <% commandItem.size.name + " " + commandItem.name%></span></div>
+                    <span class="">$ <% (commandItem.size.price*commandItem.quantity | number:2) %></span>
+
+                <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
+                    <p ng-repeat="item in commandItem.notes"><% item.note %></p>
+                </div>
+            </li>
+            </ul>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 {{--Script call--}}
@@ -131,8 +186,20 @@
 
     $(document).on('click', function(){
 
+        //Going fullscren splash
+        //$('body').css("visibility","hidden");
+        $('#splashFullScreen').css("visibility","visible");
+        $('#splashFullScreen').css("font-size","50px");
+
         requestFullScreen(elem);
+        $('#splashFullScreen').delay(200).fadeTo( 800, 0, function() {
+            $('#splashFullScreen').css("visibility","hidden");
+        });
+/*
+        $('body').delay(4000).css("visibility","visible");*/
+        //leaving fullscren splash
         $(document).unbind();
+
         console.log("Here we go fullscreen");
     });
 

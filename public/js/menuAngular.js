@@ -321,7 +321,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                 $scope.commandClient[$scope.bigCurrentPage].notes.push({note: note})
             }
 
-            $scope.dynamicPopover.note = '';
+            $scope.noteDynamicPopover.note = '';
 
             $scope.updateBill();
         }
@@ -354,6 +354,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
         //Eventually selected size
         $scope.selectedItemForSize['size'] = angular.copy($scope.sizeProp.value);
+
+        var time = new Date();
+        $scope.selectedItemForSize['time']= time.getHours()+"H"+((time.getMinutes().toString().length < 2) ? "0" : "") + time.getMinutes();
 
 
         var result = "";
@@ -571,26 +574,42 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     };
 
 
-    $scope.showModal = false;
-    $scope.toggleModal = function(){
-        $scope.showModal = !$scope.showModal;
+    $scope.showTableModal = false;
+    $scope.toggleTableModal = function(){
+        $scope.showTableModal = !$scope.showTableModal;
     };
 
 
+    $scope.showDivideBillModal = false;
+    $scope.toggleDivideBillModal = function(){
+        $scope.showDivideBillModal = !$scope.showDivideBillModal;
+    };
 
-    $scope.dynamicPopover = {
+
+    $scope.divideBill = function(){
+        $scope.toggleDivideBillModal();
+
+        $('#billWindow').slideUp(0);
+        $('#billWindow').css('visibility', 'visible')
+        $scope.openBill();
+    };
+
+    $scope.openBill = function(){
+        $('#billWindow').slideDown(400);
+    }
+
+    $scope.closeBill = function(){
+        $('#billWindow').slideUp(250);
+    }
+
+
+
+    $scope.noteDynamicPopover = {
         content: '',
-        templateUrl: 'myPopoverTemplate.html',
+        templateUrl: 'notePopover.html',
         title: 'Notes sur la commande'
     };
 
-/*
-    $scope.dynamicPopoverItems = {
-        content: '',
-        templateUrl: 'myPopoverTemplate.html',
-        title: 'Notes sur l\'item'
-    };
-*/
 
     $scope.placement = {
         options: [
@@ -692,13 +711,16 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                     /*
                      console.log('Command line');
                      console.log($scope.commandClient[f+1].commandItems);*/
-
+                    var time;
                     for(var p = 0; p < $scope.commandClient[f+1].commandItems.length; p++){
 
 
 
                         /*   console.log('menuItems');
                          console.log($scope.menuItems);*/
+
+                        time = new Date($scope.commandClient[f+1].commandItems[p].created_at);
+
 
                         var size = $scope.commandClient[f+1].commandItems[p].size;
                         var quantity = $scope.commandClient[f+1].commandItems[p].quantity;
@@ -748,6 +770,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                         $scope.commandClient[f+1].commandItems[p].size = $.grep(sizes, function(e){return e.name == size})[0];
                         $scope.commandClient[f+1].commandItems[p].quantity = parseInt(quantity);
                         $scope.commandClient[f+1].commandItems[p].notes = notes;
+
+                        $scope.commandClient[f+1].commandItems[p].time = time.getHours()+"H"+((time.getMinutes().toString().length < 2) ? "0" : "") + time.getMinutes();
 
                         /*
                          console.log('commandline size')
