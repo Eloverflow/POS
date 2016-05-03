@@ -72,3 +72,30 @@
     line-height: 50px;
     font-size: 24px;
 }
+
+#follower{
+    transition: backgroundColor 0.1s, box-shadow 0.1s;
+    z-index:0; position: fixed; background-color: #30a5ff; padding-left:1px; width: 34px; height: 34px; text-align: center;font-size: 25px; border-radius: 50%;
+    cursor: none;
+}
+
+
+#follower:active{
+    background-color: #2ca02c;
+    box-shadow: 0 4px 8px rgba(0,0,0,1);
+}
+
+#canvaShape{
+    position: absolute;
+    color: #fff;
+    z-index: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 40px;
+}
+/*
+
+#canvaWalls{
+
+    cursor: pointer;
+}*/
