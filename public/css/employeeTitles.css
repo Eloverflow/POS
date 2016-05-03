@@ -20,11 +20,34 @@ span.glyphicon {
 .hsize {
     font-size: 18px;
     display: inline-block;
+    font-weight: bold;
+}
+
+.cont-block {
+    margin-top: 8px;
+    display: inline-block;
+    height: 75px;
+}
+
+.inpt-bar {
+    display: inline-block  !important;
+}
+
+.in-Title {
+    width: 200px !important;
+}
+
+.in-BSalary {
+    width: 100px !important;
 }
 
 .ui-accordion-header.ui-state-active  {
     background-color: #E0E0E0;
     border: 1px solid #C9C9C9;
+}
+
+.ui-accordion-header.ui-state-active label  {
+    color: black;
 }
 
 .ui-accordion-header.ui-state-active span.glyphicon  {
@@ -45,4 +68,8 @@ span.glyphicon {
 
 .ui-accordion-header.ui-state-default span.glyphicon:hover {
     color: #636363;
+}
+
+.table {
+    width: 400px !important;
 }
