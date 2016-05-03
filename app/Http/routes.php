@@ -33,6 +33,8 @@ Route::get('/contact', 'PagesController@contact');
 Route::get('/sales', 'POS\SalesController@index');
 Route::get('/sales/list', 'POS\SalesController@liste');
 Route::get('/menu', 'POS\SalesController@menu');
+
+Route::get('/menu/start', 'POS\SalesController@menuStart');
 Route::post('/menu/payer', 'POS\SalesController@payer');
 Route::post('/menu/command', 'POS\SalesController@updateCommand');
 Route::post('/menu/getCommand', 'POS\SalesController@getCommand');

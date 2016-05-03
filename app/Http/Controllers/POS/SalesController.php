@@ -89,6 +89,11 @@ class SalesController extends Controller
     {
         return view('POS.Sale.menu');
     }
+
+    public function menuStart()
+    {
+        return view('POS.Sale.start');
+    }
 /*
     public function payer(){
 
