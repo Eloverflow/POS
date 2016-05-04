@@ -21,18 +21,120 @@ class EmployeeTitleController extends Controller
     public function index()
     {
         $employeeTitles = EmployeeTitle::getAll();
+        $employeesList = Employee::GetAll();
 
         for($i = 0; $i < count($employeeTitles); $i++){
-            $employees = EmployeeTitle::getEmployeesByTitleId($employeeTitles[$i]->id);
+            $employees = EmployeeTitle::getEmployeesByTitleId($employeeTitles[$i]->emplTitleId);
             $employeeTitles[$i]->{"cntEmployees"} = $employees;
         }
 
         $view = \View::make('POS.EmployeeTitle.index')
             ->with('ViewBag', array (
-                'employeeTitles' => $employeeTitles
+                'employeeTitles' => $employeeTitles,
+                'employees' => $employeesList
             ));
         return $view;
     }
+
+    public function delEmployee()
+    {
+        $inputs = \Input::all();
+
+        $rules = array(
+            'titleEmployeeId' => 'required'
+        );
+
+        $message = array(
+            'required' => 'The :attribute is required !'
+        );
+
+        $validation = \Validator::make($inputs, $rules, $message);
+        if($validation -> fails())
+        {
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
+        }
+        else
+        {
+
+            $empl =  Employee::GetById(\Input::get('emplId'));
+            $emplTitle  = EmployeeTitle::getById(\Input::get('emplTitleId'));
+
+            Title_Employees::where("id", "=", \Input::get('titleEmployeeId'))
+                ->delete();
+
+            return \Response::json([
+                'success' => "The employee has been successfully removed from the title !"
+            ], 201);
+        }
+    }
+
+    public function addEmployee()
+    {
+        $inputs = \Input::all();
+
+        $rules = array(
+            'emplTitleId' => 'required',
+            'emplId' => 'required'
+        );
+
+        $message = array(
+            'required' => 'The :attribute is required !'
+        );
+
+        $validation = \Validator::make($inputs, $rules, $message);
+        if($validation -> fails())
+        {
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
+        }
+        else
+        {
+            $checkTitleEmployee = Title_Employees::getByEmployeeAndTitleId(\Input::get('emplId'), \Input::get('emplTitleId'));
+            if($checkTitleEmployee == null){
+                $empl =  Employee::GetById(\Input::get('emplId'));
+                $emplTitle  = EmployeeTitle::getById(\Input::get('emplTitleId'));
+
+                $titleEmployee = Title_Employees::create([
+                    'employee_id' => \Input::get('emplId'),
+                    'employee_titles_id' => \Input::get('emplTitleId')
+                ]);
+
+                $objTitleEmployee = array (
+                    "id" => $titleEmployee->id,
+                    "fullName" => ($empl->firstName . " " . $empl->lastName),
+                    "hireDate" => $empl->hireDate
+                );
+
+                $messages = array(
+                    'success' => ("The employee " . $empl->firstName . " has been successfully added to " . $emplTitle->name . " title !"),
+                    'titleEmployee' => json_encode($objTitleEmployee)
+                );
+
+                return \Response::json([
+                    'success' => $messages
+                ], 201);
+
+                /*return \Response::json([
+                    'success' => "The employee " . $empl->firstName . " has been successfully added to " . $emplTitle->name . " title !"
+                ], 201);*/
+            } else {
+                $messages = array(
+                    "emplTitleId" => array(0 => "The selected employee is already a part of this title !")
+                );
+
+                return \Response::json([
+                    'errors' => $messages
+                ], 422);
+            }
+
+        }
+    }
+
     public function postCreate()
     {
         $inputs = \Input::all();
@@ -118,7 +220,7 @@ class EmployeeTitleController extends Controller
         }
 
         return \Response::json([
-            'success' => "The Employee Title " . \Input::get('planName') . " has been successfully created !"
+            'success' => "The employee title " . \Input::get('emplTitleName') . " has been successfully edited !"
         ], 201);
     }
 

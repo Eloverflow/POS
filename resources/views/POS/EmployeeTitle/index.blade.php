@@ -37,7 +37,7 @@
                                         <span class="editEmplTitle pull-right glyphicon glyphicon-pencil"></span>
                                     </div>
                                     <div class="viewHide">
-                                           <span id="emplTitleId" class="hidden">{{ $employeeTitle->id }}</span>
+                                           <span id="emplTitleId" class="hidden">{{ $employeeTitle->emplTitleId }}</span>
                                            <div class="cont-block">
                                                 <label for="emplTitleName">Title Name :</label>
                                                 <br />
@@ -58,8 +58,8 @@
                                 </div>
 
                                 <div>
-                                    <button type="button" class="btn btn-success pull-right">Add Employee</button>
-                                        <table class="table">
+                                    <button data-emplTitleId="{{ $employeeTitle->emplTitleId }}" type="button" class="btn btn-success pull-right btnAddEmployee">Add Employee</button>
+                                        <table id="tbl-{{ $employeeTitle->emplTitleId }}" class="table">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -72,10 +72,10 @@
                                             @if($employeeTitle->cntEmployees != null || count($employeeTitle->cntEmployees) > 0)
                                                 @foreach($employeeTitle->cntEmployees as $employee)
                                                     <tr>
-                                                        <td>{{ $employeeTitle->id }}</td>
+                                                        <td>{{ $employee->idTitleEmployee }}</td>
                                                         <td>{{ $employee->firstName . " " . $employee->lastName}}</td>
                                                         <td>{{ $employee->hireDate }}</td>
-                                                        <td><a href="#" class="delEmpl pull-right glyphicon glyphicon-trash"></a></td>
+                                                        <td><a href="#" class="delEmpl pull-right glyphicon glyphicon-remove"></a></td>
                                                     </tr>
                                                 @endforeach
                                             @endif
@@ -90,6 +90,33 @@
             </div>
         </div>
     </div>
+    <div id="addModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- dialog body -->
+                <div class="modal-header">
+                    {!! Form::text('frmTitleId', null, array('class' => 'form-control', 'id' => 'frmTitleId', 'style' => 'display:none;visibility:hidden;')) !!}
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div class="form-group">
+                        <h3>Select an employee</h3>
+                        <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                            <ul id="errors"></ul>
+                        </div>
+                        <select id="employeeSelect" name="employeeSelect" class="form-control">
+                            @foreach ($ViewBag['employees'] as $employee)
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                </div>
+
+                <!-- dialog buttons -->
+                <div class="modal-footer"><button id="frmBtnAddEmpl" type="button" class="btn btn-primary">Add</button></div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section("myjsfile")
@@ -98,6 +125,106 @@
 
             $(".viewHide").hide();
 
+            $(".btnAddEmployee").bind("click", function() {
+                //alert();
+                $("#frmTitleId").val($(this).attr("data-emplTitleId"));
+                $("#addModal").modal('show');
+            });
+
+            var delEmployee = function(lethis) {
+
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                var parentParent = $(lethis).parent().parent();
+
+                var titleEmployee = parentParent.find("td").eq(0).text();
+
+                $.ajax({
+                    url: '/employee/title/del/employee',
+                    type: 'DELETE',
+                    async: true,
+                    data: {
+                        _token: CSRF_TOKEN,
+                        titleEmployeeId: titleEmployee
+                    },
+                    dataType: 'JSON',
+                    error: function (xhr, status, error) {
+                        var erro = jQuery.parseJSON(xhr.responseText);
+                        console.log(erro);
+                        $("#errors").empty();
+                        //$("##errors").append('<ul id="errorsul">');
+                        [].forEach.call(Object.keys(erro), function (key) {
+                            [].forEach.call(Object.keys(erro[key]), function (keyy) {
+                                $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
+                            });
+                            //console.log( key , erro[key] );
+                        });
+                        //$("#displayErrors").append('</ul>');
+                        $("#displayErrors").show();
+                    },
+                    success: function (xhr) {
+                        parentParent.remove();
+                        [].forEach.call(Object.keys(xhr), function (key) {
+                            alert(xhr[key]);
+                        });
+                    }
+                });
+
+            };
+
+            $(".delEmpl").bind("click", function() {
+                delEmployee(this);
+            });
+
+
+            $("#frmBtnAddEmpl").bind("click", function() {
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                var emplId =  $("#employeeSelect").val();
+                var emplTitleId = $("#frmTitleId").val();
+                $.ajax({
+                    url: '/employee/title/add/employee',
+                    type: 'POST',
+                    async: true,
+                    data: {
+                        _token: CSRF_TOKEN,
+                        emplTitleId: emplTitleId,
+                        emplId: emplId
+                    },
+                    dataType: 'JSON',
+                    error: function (xhr, status, error) {
+                        var erro = jQuery.parseJSON(xhr.responseText);
+                        console.log(erro);
+                        $("#errors").empty();
+                        //$("##errors").append('<ul id="errorsul">');
+                        [].forEach.call(Object.keys(erro), function (key) {
+                            [].forEach.call(Object.keys(erro[key]), function (keyy) {
+                                $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
+                            });
+                            //console.log( key , erro[key] );
+                        });
+                        //$("#displayErrors").append('</ul>');
+                        $("#displayErrors").show();
+                    },
+                    success: function (xhr) {
+
+                        [].forEach.call(Object.keys(xhr), function (key) {
+                            var jsonTitleEmplObj = JSON.parse(xhr[key]["titleEmployee"]);
+                            $("#tbl-" + emplTitleId).append('<tr><td>' + jsonTitleEmplObj['id'] +
+                                    '</td><td>' + jsonTitleEmplObj['fullName'] +
+                                    '</td><td>' + jsonTitleEmplObj['hireDate'] +
+                                    '<td><a href="#" class="delEmpl pull-right glyphicon glyphicon-remove"></a></td>' +
+                                    '</td></tr>');
+
+                            $(".delEmpl").bind("click", function() {
+                                delEmployee(this);
+                            });
+
+                            $("#addModal").modal('hide');
+                            alert(xhr[key]["success"]);
+
+                        });
+                    }
+                });
+            });
 
             $(".editEmplTitle").bind("click", function() {
                 var parent  = $(this).parent().parent();
@@ -164,8 +291,10 @@
 
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
                 var emplTitleId = parseInt(inptTitleId);
-                var emplTitleName = inptTitleName
-                var emplTitleBaseSalary = inptBaseSalary
+                var emplTitleName = inptTitleName;
+                var emplTitleBaseSalary = inptBaseSalary;
+
+                console.log()
                 $.ajax({
                     url: '/employee/title/edit',
                     type: 'POST',
@@ -209,6 +338,9 @@
                 //console.log(parent);
                 //alert("clicked edit");
             });
+
+
         });
+
     </script>
 @stop
