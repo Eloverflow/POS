@@ -181,11 +181,14 @@ var bntWall = $("#btnAddWalls").click(function () {
         canvas.on('mouse:up', function(o){
             isDown = false;
         });*/
+            var canvas = new fabric.Canvas('canvaWalls', { selection: false,  hoverCursor: 'move' });
 
-            canvas = this.__canvas = new fabric.Canvas('canvaWalls', { selection: false,  CURSOR: 'crosshair' });
+            /*canvas = this.__canvas = fabricCanva;*/
+
+
             fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
-            function makeCircle(left, top, line1, line2, line3, line4) {
+            function makeCircle(left, top, link1, link2) {
                 var c = new fabric.Circle({
                     left: left,
                     top: top,
@@ -196,10 +199,8 @@ var bntWall = $("#btnAddWalls").click(function () {
                 });
                 c.hasControls = c.hasBorders = false;
 
-                c.line1 = line1;
-                c.line2 = line2;
-                c.line3 = line3;
-                c.line4 = line4;
+                c.link1 = link1;
+                c.link2 = link2;
 
                 return c;
             }
@@ -210,11 +211,12 @@ var bntWall = $("#btnAddWalls").click(function () {
                     fill: '#333',
                     stroke: '#333',
                     strokeWidth: 14,
+                    hoverCursor: 'pointer',
                     selectable: false
                 });
 
                 l.hasControls = l.hasBorders = false;
-                l.hoverCursor = 'crosshair';/* = 'pointer';*/
+               /* l.hoverCursor = 'pointer';*//* = 'pointer';*/
 
 
                 return l;
@@ -228,21 +230,109 @@ var bntWall = $("#btnAddWalls").click(function () {
 
             canvas.add(line, line2, line3, line4);
 
-            canvas.add(
+            var circle =[
                 makeCircle(line.get('x1'), line.get('y1'), line4, line),
                 makeCircle(line2.get('x1'), line2.get('y1'), line, line2),
                 makeCircle(line3.get('x1'), line3.get('y1'), line2, line3),
                 makeCircle(line4.get('x1'), line.get('y1'), line3, line4)
-            );
 
-            canvas.on('object:moving', function(e) {
+            ];
+            canvas.add(
+                circle[0],
+                circle[1],
+                circle[2],
+                circle[3]
+            );/*
+            canvas.hoverCursor = 'pointer';
+*/
+            var timeoutHandle;
+            var updateOnListener = function(){
+                canvas.on({
+                    'mouse:down': function(e) {
+                        if (e.target) {
+                            e.target.opacity = 0.5;
+
+                            /*We cut wall*/
+                            follower.css('z-index', 1);
+
+                            $('#canvaShape').fadeOut(150);
+
+
+
+
+
+                            canvas.renderAll();
+                        }
+                    },
+                    'mouse:up': function(e) {
+                        if (e.target) {
+                            e.target.opacity = 1;
+                            follower.css('z-index', 0);
+                            canvas.renderAll();
+                        }
+                    },
+                    'object:moved': function(e) {
+                        e.target.opacity = 0.5;
+                    },
+                    'object:modified': function(e) {
+                        e.target.opacity = 1;
+                    },
+                    'object:moving': function(e){
+                        var p = e.target;
+                        p.link1 && p.link1.set({ 'x2': p.left, 'y2': p.top });
+                        p.link2 && p.link2.set({ 'x1': p.left, 'y1': p.top });
+                        canvas.renderAll();
+
+                        // in your click function, call clearTimeout
+                        window.clearTimeout(timeoutHandle);
+
+                        // then call setTimeout again to reset the timer
+                        timeoutHandle = window.setTimeout(function() {
+
+                           /* canvas.add(
+                                makeCircle(line.get('x1'), line.get('y1')),
+                                makeCircle(line2.get('x1'), line2.get('y1')),
+                                makeCircle(line3.get('x1'), line3.get('y1')),
+                                makeCircle(line4.get('x1'), line.get('y1'))
+                            );*/
+/*
+                            canvas.removeListeners();*/
+                           /* canvas.removeListener();
+                                setTimeout(function() {
+
+                                    updateOnListener();
+                                }, 100);
+                            console.log('DelayedUpdateLaunched');*/
+                        }, 100);
+
+                    },
+                    'object:hover': function(e){
+                        console.log('testHover')
+                    }
+                });
+                console.log('updateListener');
+            }
+
+        updateOnListener();
+
+
+
+
+            /*
+            this.__canvas.push(canvas);*/
+
+          /*  canvas.on('object:moving', function(e) {
+                console.log('test')
                 var p = e.target;
                 p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
                 p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
                 p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
                 p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
                 canvas.renderAll();
-            });
+            });*/
+            /*.on('object:hovering', function(e) {
+           console.log('test')
+        });*/
 
         var mouseX = 0, mouseY = 0, limitX = 2000, limitY = 4000;
 
@@ -270,6 +360,28 @@ var bntWall = $("#btnAddWalls").click(function () {
             mouseY = Math.min(e.pageY, limitY);*/
         });
 
+        $(window).click(function(e){
+
+            if(e.pageX > tblContainers.offset().left+5 && e.pageY > tblContainers.offset().top+5)
+            {
+
+
+                circle.push(makeCircle(line.get('x1'), line.get('y1'), line4, line))
+                canvas.add(circle[circle.length-1]);
+                console.log('Click event')
+                /*Inside*/
+            }
+            else{
+                /*Outside*/
+            }
+
+
+
+            /*
+             mouseX = Math.min(e.pageX, limitX);
+             mouseY = Math.min(e.pageY, limitY);*/
+        });
+
         // cache the selector
         /*var xp = 0, yp = 0*/;/*
         var loop = setInterval(function(){
@@ -279,8 +391,8 @@ var bntWall = $("#btnAddWalls").click(function () {
             follower.css({left:xp, top:yp});
 
         }, 30);*/
+/*
 
-        /*
         var context = $("#canvaWalls").get(0).getContext("2d");
 */
 
@@ -290,8 +402,8 @@ var bntWall = $("#btnAddWalls").click(function () {
         data.push({ x1 : line2.get('x1'), y1 : line2.get('y1'), x2 : line2.get('x2'), y2 : line2.get('y2') });
         data.push({ x1 : line3.get('x1'), y1 : line3.get('y1'), x2 : line3.get('x2'), y2 : line3.get('y2') });
         data.push({ x1 : line4.get('x1'), y1 : line4.get('y1'), x2 : line4.get('x2'), y2 : line4.get('y2') });
-
-        $('#canvaWalls').css({cursor: 'pointer'});
+/*
+        $('#canvaWalls').css({cursor: 'pointer'});*/
 
 
         canvaWall.mousemove(function(e) {

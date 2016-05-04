@@ -49,7 +49,6 @@ Route::get('/inventory/create', 'ERP\InventoriesController@create');
 Route::post('/inventory/create', 'ERP\InventoriesController@postCreate');
 
 
-
 Route::get('/itemtypes', 'ERP\ItemTypesController@index');
 Route::get('/itemtypes/list', 'ERP\ItemTypesController@liste');
 Route::get('/itemtypes/edit/{slug}', 'ERP\ItemTypesController@edit');
