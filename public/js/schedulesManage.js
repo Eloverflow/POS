@@ -124,10 +124,10 @@ function postEditSchedules($storedCalendar) {
 
 function editEvent($storedCalendar){
 
-    $shour = $('#editModal #sHour').val();
+    $shour = parseInt($('#editModal #sHour').val());
     $smin = $('#editModal #sMin').val();
 
-    $ehour = $('#editModal #eHour').val();
+    $ehour = parseInt($('#editModal #eHour').val());
     $emin = $('#editModal #eMin').val();
 
 
@@ -148,13 +148,11 @@ function editEvent($storedCalendar){
         dateAdd = myDate;
     }
     console.log(formatDate(dateAdd));
-    console.log(sHM + " - " + eHM);
-
-    console.log($dateFormated);
+    //console.log(sHM + " - " + eHM);
 
     globStoredEvent.title = $employeeText;
     globStoredEvent.start = new Date($dateFormated + ' ' + sHM + ':00'+ '-04:00');
-    globStoredEvent.end = new Date($dateFormated + ' ' + eHM + ':00'+ '-04:00');
+    globStoredEvent.end = new Date(formatDate(dateAdd) + ' ' + eHM + ':00'+ '-04:00');
     globStoredEvent.employeeId = $employeeId;
 
     $storedCalendar.fullCalendar('updateEvent', globStoredEvent)

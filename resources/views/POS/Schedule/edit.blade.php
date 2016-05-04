@@ -222,11 +222,6 @@
             $('#addModal #eMin').val("");
             $("#addModal").modal('show');
         });
-        $('#btnAdd').click(function(e) {
-            e.preventDefault();
-            postEditSchedules(globStoredCalendar);
-
-        });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
             postEditSchedules(globStoredCalendar);
