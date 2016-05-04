@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery.ui.rotatable.css') }}">
     <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery-ui.css') }}">
     <script src="{{ @URL::to('js/easyResponsiveTabs.js') }}"></script>
+    <script src="{{ @URL::to('Framework/fabric.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ @URL::to('css/easy-responsive-tabs.css') }}"/>
 @stop
 
@@ -27,7 +28,9 @@
         <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
         <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
         <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
+        <a class="btn btn-info" id="btnAddWalls" href="#"> Add Walls </a>
     </div>
+    <div hidden id="follower"><span class="glyphicon glyphicon-plus"></span></div>
     <!--Horizontal Tab-->
     <div id="parentHorizontalTab">
         <ul class="resp-tabs-list hor_1">
@@ -199,6 +202,12 @@
                 alert("The floor number must be greater than 0");
             }
 
+
+
+         /*   $('.resp-tab-item').append('<li class="resp-tab-item" style="border-color: rgb(193, 193, 193); background-color: rgb(245, 245, 245);">Floor No. 2</li>')
+*/
+
         });
+
     </script>
 @stop
