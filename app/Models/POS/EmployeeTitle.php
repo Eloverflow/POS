@@ -11,17 +11,16 @@ class EmployeeTitle extends Model
 
     public static function getById($id)
     {
-        return \DB::table('employees')
-            ->join('users', 'employees.userId', '=', 'users.id')
-            ->select(\DB::raw('employees.id as idEmployee, users.id as idUser, employees.bonusSalary, streetAddress, phone, firstName, lastName, city, nas, pc, state, birthDate, hireDate'))
-            ->where('employees.id', '=', $id)
+        return \DB::table('employee_titles')
+            ->select(\DB::raw('employee_titles.*'))
+            ->where('id', '=', $id)
             ->first();
     }
 
     public static function getAll()
     {
         return \DB::table('employee_titles')
-            ->select(\DB::raw('id, name, baseSalary'))
+            ->select(\DB::raw('employee_titles.id as emplTitleId, name, baseSalary'))
             ->get();
     }
 
@@ -29,7 +28,7 @@ class EmployeeTitle extends Model
     {
         return \DB::table('title_employees')
         ->join('employees', 'title_employees.employee_id', '=', 'employees.id')
-        ->select(\DB::raw('employees.id as idEmployee, employees.bonusSalary, streetAddress, phone, firstName, lastName, city, nas, pc, state, birthDate, hireDate'))
+        ->select(\DB::raw('employees.id as idEmployee, title_employees.id as idTitleEmployee, employees.bonusSalary, streetAddress, phone, firstName, lastName, city, nas, pc, state, birthDate, hireDate'))
         ->where('employee_titles_id', '=', $id)
         ->get();
     }

@@ -23,6 +23,20 @@ class Title_Employees extends Model
             ->get();
     }
 
+    public static function getByEmployeeAndTitleId($employeeId, $employeeTitleId)
+    {
+        return \DB::table('title_employees')
+            ->join('employee_titles', 'title_employees.employee_titles_id', '=', 'employee_titles.id')
+            ->select(\DB::raw('title_employees.id as idTitleEmployees,
+            employee_titles.id as idEmployeeTitles,
+            employee_titles.name,
+            employee_titles.baseSalary
+            '))
+            ->where('title_employees.employee_id', '=', $employeeId)
+            ->where('title_employees.employee_titles_id', '=', $employeeTitleId)
+            ->first();
+    }
+
     public static function DeleteByEmployeeId($employeeId)
     {
         return \DB::table('title_employees')
