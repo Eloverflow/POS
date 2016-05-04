@@ -141,6 +141,16 @@ function editEvent($storedCalendar){
     var myDate = new Date($('#editModal #dateClicked').val());
     $dateFormated = formatDate(myDate);
 
+    var dateAdd = null;
+    if($ehour < $shour) {
+        dateAdd = new Date(myDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+    } else {
+        dateAdd = myDate;
+    }
+    console.log(formatDate(dateAdd));
+    console.log(sHM + " - " + eHM);
+
+    console.log($dateFormated);
 
     globStoredEvent.title = $employeeText;
     globStoredEvent.start = new Date($dateFormated + ' ' + sHM + ':00'+ '-04:00');
@@ -156,10 +166,10 @@ function deleteEvent($storedCalendar){
 
 function addEvent($storedCalendar){
 
-    $shour = $('#addModal #sHour').val();
+    $shour = parseInt($('#addModal #sHour').val());
     $smin = $('#addModal #sMin').val();
 
-    $ehour = $('#addModal #eHour').val();
+    $ehour = parseInt($('#addModal #eHour').val());
     $emin = $('#addModal #eMin').val();
     $dateClicked = $('#addModal #dateClicked').val();
 
@@ -175,27 +185,56 @@ function addEvent($storedCalendar){
         for(var i = 1; i <= 7; i++){
             var myDate = new Date(new Date($('#startDate').val()).getTime() + (i * 24 * 60 * 60 * 1000));
 
+            var dateAdd = new Date();
+            if($ehour < $shour) {
+                dateAdd = new Date(myDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+            } else {
+                dateAdd = myDate;
+            }
+            //console.log($dateClicked);
+
             $dateFormated = formatDate(myDate);
             var newEvent = {
                 id: guid(),
                 title: $employeeName,
                 isAllDay: false,
                 start: new Date($dateFormated + ' ' + sHM + ':00' + '-04:00'),
-                end: new Date($dateFormated + ' ' + eHM + ':00' + '-04:00'),
+                end: new Date(formatDate(dateAdd) + ' ' + eHM + ':00' + '-04:00'),
                 description: '',
                 employeeId: $employeeId
             };
+
             $storedCalendar.fullCalendar('addEventSource', [newEvent]);
 
         }
 
     } else {
+
+        /*var dateAdd = new Date($dateClicked);
+        if($ehour < $shour) {
+            dateAdd = new Date(dateAdd.getTime() + (2 * 24 * 60 * 60 * 1000))
+            console.log("yes");
+        }*/
+
+        var dateAdd = null;
+        if($ehour < $shour) {
+            var curDay = new Date($dateClicked);
+            dateAdd = new Date(curDay.getTime() + (2 * 24 * 60 * 60 * 1000));
+        } else {
+            dateAdd = new Date(new Date($dateClicked).getTime() + (1 * 24 * 60 * 60 * 1000));
+        }
+        //console.log(formatDate(new Date($dateClicked)));
+        console.log(formatDate(dateAdd));
+        console.log($dateClicked);
+        //
+        //console.log("Start: " + $dateClicked + ' ' + sHM + " End: " + formatDate(new Date(curDay.getTime() + (2 * 24 * 60 * 60 * 1000))) + ' ' + eHM);
+
         var newEvent = {
             id: guid(),
             title: $employeeName,
             isAllDay: false,
             start: new Date($dateClicked + ' ' + sHM + ':00' + '-04:00'),
-            end: new Date($dateClicked + ' ' + eHM + ':00' + '-04:00'),
+            end: new Date(formatDate(dateAdd) + ' ' + eHM + ':00' + '-04:00'),
             description: '',
             employeeId: $employeeId
         };

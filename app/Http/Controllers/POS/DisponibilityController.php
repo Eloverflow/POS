@@ -68,14 +68,13 @@ class DisponibilityController extends Controller
 
                     $date = new DateTime();
                     $date->modify('Sunday last week +' . $dayNumber . ' days');
-                    //$date->add(new DateInterval('P' . $i .'D'));
 
                     $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
                     $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
 
-                   /* if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
+                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));
-                    }*/
+                    }
 
                     $events[] = \Calendar::event(
                         "Dispo",
@@ -143,13 +142,12 @@ class DisponibilityController extends Controller
                     $date->modify('Sunday last week +' . $dayNumber . ' days');
                     //$date->add(new DateInterval('P' . $i .'D'));
 
-                    $dateForTimeZone = new DateTime();
-                    $timezone = $dateForTimeZone->getTimezone();
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
 
-
-                    /*For now Timezone is kinda hard coded, we know this is wrong but, well... you know..*/
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime . '-04:00' );
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime . '-04:00');
+                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
+                        $dispoEnd->add(new DateInterval('P1D'));
+                    }
 
                     $events[] = \Calendar::event(
                         "Dispo",

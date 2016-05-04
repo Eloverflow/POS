@@ -114,10 +114,10 @@ function postEditDisponibilities($storedCalendar) {
 function editEvent($storedCalendar){
 
 
-    $shour = $('#editModal #sHour').val();
+    $shour = parseInt($('#editModal #sHour').val());
     $smin = $('#editModal #sMin').val();
 
-    $ehour = $('#editModal #eHour').val();
+    $ehour = parseInt($('#editModal #eHour').val());
     $emin = $('#editModal #eMin').val();
 
 
@@ -136,17 +136,26 @@ function editEvent($storedCalendar){
     var sHM = $shour + ":" + $smin;
     var eHM = $ehour + ":" + $emin;
 
+    var dateAdd = null;
+    if($ehour < $shour) {
+        var curDay = new Date(ymd);
+        dateAdd = new Date(curDay.getTime() + (1 * 24 * 60 * 60 * 1000));
+    } else {
+        dateAdd = new Date(ymd);
+    }
+
+
     globStoredEvent.start = new Date(ymd + ' ' + sHM + ':00' + '-04:00');
-    globStoredEvent.end = new Date(ymd + ' ' + eHM + ':00' + '-04:00');
+    globStoredEvent.end = new Date(formatDate(dateAdd) + ' ' + eHM + ':00' + '-04:00');
 
     $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
 }
 function addEvent($storedCalendar){
 
-    $shour = $('#addModal #sHour').val();
+    $shour = parseInt($('#addModal #sHour').val());
     $smin = $('#addModal #sMin').val();
 
-    $ehour = $('#addModal #eHour').val();
+    $ehour = parseInt($('#addModal #eHour').val());
     $emin = $('#addModal #eMin').val();
 
     $dDayNumber = $( "#addModal #dayNumber option:selected" ).val();
@@ -163,12 +172,20 @@ function addEvent($storedCalendar){
             var sHM = $shour + ":" + $smin;
             var eHM = $ehour + ":" + $emin;
 
+            var dateAdd = new Date();
+            if($ehour < $shour) {
+                dateAdd = new Date(myDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+            } else {
+                dateAdd = myDate;
+            }
+
+            //console.log("Start: " + $dateFormated + ' ' + sHM + " End: " + formatDate(dateAdd) + ' ' + eHM);
             var newEvent = {
                 id: guid(),
                 title: 'Dispo',
                 isAllDay: false,
                 start: new Date($dateFormated + ' ' + sHM + ':00' + '-04:00'),
-                end: new Date($dateFormated + ' ' + eHM + ':00' + '-04:00'),
+                end: new Date(formatDate(dateAdd) + ' ' + eHM + ':00' + '-04:00'),
             };
             $storedCalendar.fullCalendar('addEventSource', [newEvent]);
 
@@ -179,16 +196,27 @@ function addEvent($storedCalendar){
         var sHM = $shour + ":" + $smin;
         var eHM = $ehour + ":" + $emin;
 
+        var dateAdd = null;
+        if($ehour < $shour) {
+            var curDay = new Date($('#dateClicked').val());
+            dateAdd = new Date(curDay.getTime() + (2 * 24 * 60 * 60 * 1000));
+        } else {
+            dateAdd = new Date(new Date($('#dateClicked').val()).getTime() + (1 * 24 * 60 * 60 * 1000));
+        }
+
+        //console.log(formatDate(dateAdd));
+        //console.log($('#dateClicked').val());
+
         var newEvent = {
             id: guid(),
             title: "Dispo",
             isAllDay: false,
             start: new Date($('#dateClicked').val() + ' ' + sHM + ':00'+ '-04:00'),
-            end: new Date($('#dateClicked').val() + ' ' + eHM + ':00'+ '-04:00'),
+            end: new Date(formatDate(dateAdd) + ' ' + eHM + ':00'+ '-04:00'),
         };
 
-
         $storedCalendar.fullCalendar('addEventSource', [newEvent]);
+
     }
 }
 
