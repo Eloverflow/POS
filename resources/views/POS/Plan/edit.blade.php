@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery.ui.rotatable.css') }}">
     <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery-ui.css') }}">
     <script src="{{ @URL::to('js/easyResponsiveTabs.js') }}"></script>
+    <script src="{{ @URL::to('Framework/fabric.js') }}"></script>
     <script src="{{ @URL::to('js/planTabs.js') }}"></script>
     <link rel="stylesheet" type="text/css" href="{{ @URL::to('css/easy-responsive-tabs.css') }}" />
 @stop
@@ -21,6 +22,7 @@
     <span id="planName">{{ $ViewBag['plan']->name }}</span>
     <h5>Floor Number:</h5>
     <span id="floorNumber">{{ $ViewBag['plan']->nbFloor }}</span>
+    <span style="visibility: hidden" id="wallPoints">{{ $ViewBag['plan']->wallPoints }}</span>
     <br/>
     {!! Form::text('jsonTables', $ViewBag['tables'], array('class' => 'form-control', 'id' => 'jsonTables', 'style' => 'display:none;visibility:hidden;')) !!}
     <div id="rowCmd">
@@ -28,9 +30,12 @@
         <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
         <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
         <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
+        <a class="btn btn-info" id="btnEditWalls" href="#"> Edit Walls </a>
+        <a class="btn btn-success" id="btnSaveWalls" style="visibility: hidden" href="#"> Save Walls </a>
 
         <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
     </div>
+    <div hidden id="follower"><span class="glyphicon glyphicon-plus"></span></div>
 
     <!--Horizontal Tab-->
     <div id="parentHorizontalTab">
@@ -178,8 +183,6 @@
 
 
 
-
-
             var TabNumber = 0;
             var intNbFloor = parseInt($("#floorNumber").text());
             if(intNbFloor >= 1){
@@ -266,6 +269,40 @@
                 alert("The floor number must be greater than 0");
             }
 
+
+
+
+       /*     var tblContainers = $( ".tablesContainer .tables" );
+            var listItems = $( "#tabControl" ).find( tblContainers );
+
+            tblContainers.prepend('<canvas id="canvaWalls" width="' + tblContainers.width() +'" height="' +  tblContainers.height() + '" style="position:absolute;"></canvas>')
+
+            var wallPoints = $("#wallPoints").text();
+
+            var onePoint = wallPoints.split(",");
+
+            var canvas = new fabric.Canvas('canvaWalls', { selection: false,  hoverCursor: 'move', defaultCursor: 'pointer' });
+
+            for(var m = 0; m < onePoint.length; m++){
+                var coordonate = onePoint[m].split(":");
+
+                canvas.add(new fabric.Circle({
+                    left: coordonate[0],
+                    top: coordonate[1],
+                    strokeWidth: 5,
+                    radius: 12,
+                    fill: '#fff',
+                    stroke: '#666'
+                }))
+
+            }
+
+            canvas.renderAll();
+
+*/
         });
+
+
+
     </script>
 @stop

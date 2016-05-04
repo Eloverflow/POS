@@ -29,6 +29,7 @@
         <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
         <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
         <a class="btn btn-info" id="btnAddWalls" href="#"> Add Walls </a>
+        <a class="btn btn-success" id="btnSaveWalls" style="visibility: hidden" href="#"> Save Walls </a>
     </div>
     <div hidden id="follower"><span class="glyphicon glyphicon-plus"></span></div>
     <!--Horizontal Tab-->
@@ -124,6 +125,18 @@
 
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
+            var wallPoints = ""
+            if(circle){
+                for(var l = 0; l < circle.length; l++){
+
+                    if(wallPoints != ""){
+                        wallPoints+= ","
+                    }
+
+                    wallPoints+= circle[l].left+":"+circle[l].top
+                }
+            }
+
             var nbFloor = $("#floorNumber").text();
             var planName = $("#planName").text();
             $.ajax({
@@ -134,6 +147,7 @@
                     _token: CSRF_TOKEN,
                     planName: planName,
                     nbFloor: nbFloor,
+                    wallPoints: wallPoints,
                     tables: JSON.stringify($arrayFloorTable)
                 },
                 dataType: 'JSON',

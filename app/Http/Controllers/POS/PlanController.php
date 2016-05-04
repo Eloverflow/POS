@@ -149,7 +149,8 @@ class PlanController extends Controller
 
             $plan = Plan::create([
                 'name' => \Input::get('planName'),
-                'nbFloor' => \Input::get('nbFloor')
+                'nbFloor' => \Input::get('nbFloor'),
+                'wallPoints' => \Input::get('wallPoints')
             ]);
 
             $jsonArray = json_decode(\Input::get('tables'), true);
