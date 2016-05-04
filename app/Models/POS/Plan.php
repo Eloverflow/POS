@@ -8,7 +8,7 @@ class Plan extends Model
 {
     protected $table = 'plans';
 
-    protected $fillable = array('name', 'nbFloor');
+    protected $fillable = array('name', 'nbFloor', 'wallPoints');
 
     public static function getAll()
     {
@@ -17,6 +17,7 @@ class Plan extends Model
             ->select(\DB::raw('plans.id as idPlan,
             name,
             nbFloor,
+            wallPoints,
             count(tables.id) as nbTable,
             plans.created_at
             '))
@@ -31,6 +32,7 @@ class Plan extends Model
             ->select(\DB::raw('plans.id as idPlan,
             name,
             nbFloor,
+            wallPoints,
             plans.created_at
             '))
             ->where('id', '=', $id)
