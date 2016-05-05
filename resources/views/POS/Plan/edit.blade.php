@@ -130,6 +130,10 @@
 
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
+            var wallPoints = getWalls()
+            console.log('circle')
+            console.log(circle)
+
             var nbFloor = $("#floorNumber").text();
             var planName = $("#planName").text();
             $.ajax({
@@ -139,6 +143,7 @@
                 data: {
                     _token: CSRF_TOKEN,
                     planName: planName,
+                    wallPoints:wallPoints,
                     nbFloor: nbFloor,
                     tables: JSON.stringify($arrayFloorTable)
 
@@ -236,7 +241,7 @@
                                     $('#editModal #tblNum').val($(this).text());
                                     $("#editModal").modal('show');
                                 }
-                            );
+                        );
 
                         console.log(currentTable.offset())
 
@@ -272,34 +277,283 @@
 
 
 
-       /*     var tblContainers = $( ".tablesContainer .tables" );
+            var tblContainers = $( ".tablesContainer .tables" );
             var listItems = $( "#tabControl" ).find( tblContainers );
 
-            tblContainers.prepend('<canvas id="canvaWalls" width="' + tblContainers.width() +'" height="' +  tblContainers.height() + '" style="position:absolute;"></canvas>')
+            tblContainers.prepend('<canvas id="canvaWalls" width="' + tblContainers.width() +'" height="' +  tblContainers.height() + '"<!-- style="position:absolute;"-->></canvas>')
 
             var wallPoints = $("#wallPoints").text();
 
             var onePoint = wallPoints.split(",");
 
-            var canvas = new fabric.Canvas('canvaWalls', { selection: false,  hoverCursor: 'move', defaultCursor: 'pointer' });
+            canvas = new fabric.Canvas('canvaWalls', { selection: false,  hoverCursor: 'move', defaultCursor: 'pointer',position:'absolute' });
+
+            fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
+
+            /*
+             var line1 = makeLine([ 0, 0, 0, 400 ]),
+             line2 =  makeLine([ 0, 400, 400,400  ]),
+             line3 = makeLine([ 400, 400, 400, 0 ]),
+             line4 = makeLine([ 400, 0, 0, 0 ]);
+
+
+             var line = [line1,line2,line3,line4]
+
+
+             canvas.add(line[0], line[1], line[2], line[3]);
+
+             circle =[
+             makeCircle(line[0].get('x1'), line[0].get('y1'), line[3], line[0]),
+             makeCircle(line[1].get('x1'), line[1].get('y1'), line[0], line[1]),
+             makeCircle(line[2].get('x1'), line[2].get('y1'), line[1], line[2]),
+             makeCircle(line[3].get('x1'), line[3].get('y1'), line[2], line[3])
+
+             ];
+
+             line[0].link1 = circle[0]
+             line[0].link2 = circle[1]
+             line[1].link1 = circle[1]
+             line[1].link2 = circle[2]
+             line[2].link1 = circle[2]
+             line[2].link2 = circle[3]
+             line[3].link1 = circle[3]
+             line[3].link2 = circle[0]
+
+
+
+             canvas.add(
+             circle[0],
+             circle[1],
+             circle[2],
+             circle[3]
+             );*/
+
+            var lastCircle;
+            var firstCircle;
+            var lastLine;
+
+            line = [];
+            circle = [];
 
             for(var m = 0; m < onePoint.length; m++){
                 var coordonate = onePoint[m].split(":");
 
-                canvas.add(new fabric.Circle({
-                    left: coordonate[0],
-                    top: coordonate[1],
-                    strokeWidth: 5,
-                    radius: 12,
-                    fill: '#fff',
-                    stroke: '#666'
-                }))
+                var x1 = parseInt(coordonate[0]);
+                var y1 = parseInt(coordonate[1]);
+
+
+
+                if(m > 0){
+
+
+
+                    line.push(lastLine = makeLine([lastCircle.left,lastCircle.top,x1,y1]));
+                    lastLine.link1 = lastCircle;
+
+                    if( m > 1){
+                        lastCircle.link2 = line[line.length-1];
+                    }
+
+
+                    circle.push(lastCircle = makeCircle(x1, y1));
+                    lastCircle.link1 = line[line.length-1];
+                    lastLine.link2 = lastCircle;
+
+
+                    /*
+                     lastCircle.link1 = line[line.length-1]*/
+
+                    canvas.add(lastCircle, lastLine)
+                }
+                else{
+                    circle.push(lastCircle = makeCircle(x1, y1));
+                    firstCircle = lastCircle;
+                    canvas.add(lastCircle)
+                }
+
+
+                if(m == onePoint.length-1){
+                    line.push(lastLine = makeLine([x1,y1,firstCircle.left,firstCircle.top]));
+                    /*lastCircle.link1 = line[line.length-1];*/
+
+                    lastCircle.link2 = line[line.length-1];
+                    firstCircle.link2 = line[0];
+                    firstCircle.link1 = line[line.length-1];
+                    console.log( line[0])
+                    canvas.add(lastLine)
+                }
+
+
+                canvas.sendToBack(lastLine);
+                canvas.bringToFront(lastCircle);
+
+
 
             }
 
+
+
+            /*
+             console.log( coordonate)
+             var curentCircle = new fabric.Circle({
+             left: parseInt(coordonate[0]),
+             top: parseInt(coordonate[1]),
+             strokeWidth: 5,
+             radius: 12,
+             fill: '#fff',
+             stroke: '#666'
+             })
+
+             var line;
+             if(m == 0){
+             firstCircle = curentCircle;
+             }
+             else
+             {
+             if(m == onePoint.length-1)
+             {
+             line = new fabric.Line([curentCircle.left,curentCircle.top,lastCircle.left,lastCircle.top], {
+             fill: '#333',
+             stroke: '#333',
+             strokeWidth: 14,
+             selectable: false
+             });
+
+             line.link1 = curentCircle;
+             line.link2 = lastCircle;
+
+             line.hasControls = line.hasBorders = false;
+             canvas.add(line);
+
+             var line2 = new fabric.Line([curentCircle.left,curentCircle.top,firstCircle.left,firstCircle.top], {
+             fill: '#333',
+             stroke: '#333',
+             strokeWidth: 14,
+             selectable: false
+             });
+
+             line2.link1 = curentCircle;
+             line2.link2 = firstCircle;
+
+             line2.hasControls = line2.hasBorders = false;
+             canvas.add(line2);
+
+             }
+             else{
+             line = new fabric.Line([lastCircle.left,lastCircle.top,curentCircle.left,curentCircle.top], {
+             fill: '#333',
+             stroke: '#333',
+             strokeWidth: 14,
+             selectable: false
+             });
+
+             line.link1 = curentCircle;
+             line.link2 = lastCircle;
+
+             line.hasControls = line.hasBorders = false;
+             canvas.add(line);
+
+
+
+             }
+             }
+
+
+             /!* l.hoverCursor = 'pointer';*!//!* = 'pointer';*!/
+
+             if(m == 1){
+             firstLine = line;
+             }
+
+             if(m > 1){
+
+             curentCircle.link1 = line
+             curentCircle.link2 = lastLine
+             }
+
+
+             lastCircle = curentCircle;
+
+             lastLine = line;
+             canvas.add(curentCircle)
+             }
+             */
+   console.log(line)
+
             canvas.renderAll();
 
-*/
+            var updateOnListener = function(){
+                canvas.on({
+                    'mouse:down': function(e) {
+                        if (e.target) {
+                            e.target.opacity = 0.5;
+
+                            /*We cut wall*//*
+                             follower.css('z-index', 1);
+
+                             $('#canvaShape').fadeOut(150);
+
+                             */
+
+
+                            canvas.renderAll();
+                        }
+                    },
+                    'mouse:up': function(e) {
+                        if (e.target) {
+                            e.target.opacity = 1;/*
+                             follower.css('z-index', 0);*/
+                            canvas.renderAll();
+                        }
+                    },
+                    'object:moved': function(e) {
+                        e.target.opacity = 0.5;
+                    },
+                    'object:modified': function(e) {
+                        e.target.opacity = 1;
+                    },
+                    'object:moving': function(e){
+                        var p = e.target;
+                        p.link1 && p.link1.set({ 'x2': p.left, 'y2': p.top });
+                        p.link2 && p.link2.set({ 'x1': p.left, 'y1': p.top });
+                        canvas.renderAll();
+
+                        /*// in your click function, call clearTimeout
+                         window.clearTimeout(timeoutHandle);
+
+                         // then call setTimeout again to reset the timer
+                         timeoutHandle = window.setTimeout(function() {
+
+                         /!* canvas.add(
+                         makeCircle(line.get('x1'), line.get('y1')),
+                         makeCircle(line2.get('x1'), line2.get('y1')),
+                         makeCircle(line3.get('x1'), line3.get('y1')),
+                         makeCircle(line4.get('x1'), line.get('y1'))
+                         );*!/
+                         /!*
+                         canvas.removeListeners();*!/
+                         /!* canvas.removeListener();
+                         setTimeout(function() {
+
+                         updateOnListener();
+                         }, 100);
+                         console.log('DelayedUpdateLaunched');*!/
+                         }, 100);*/
+
+                    },
+                    'object:hover': function(e){
+                        console.log('testHover')
+                    }
+                });
+                console.log('updateListener');
+            }
+
+            updateOnListener();
+
+            var canvasContainer = tblContainers.find('.canvas-container')
+            canvasContainer.css({position: 'absolute'})
+
+
         });
 
 

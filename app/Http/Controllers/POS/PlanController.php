@@ -66,6 +66,7 @@ class PlanController extends Controller
     {
         $inputs = \Input::all();
 
+
         $rules = array(
             'planName' => 'required',
             'nbFloor' => 'required'
@@ -85,7 +86,14 @@ class PlanController extends Controller
         }
         else
         {
+
+            $plan = Plan::where('id', $id)->first();
+
+            $plan->update(['wallPoints' => \Input::get('wallPoints')]);
+
+
             $jsonArray = json_decode(\Input::get('tables'), true);
+
             for($i = 0; $i < count($jsonArray); $i++)
             {
 
