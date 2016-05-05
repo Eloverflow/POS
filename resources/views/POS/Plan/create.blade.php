@@ -125,17 +125,6 @@
 
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
-            var wallPoints = ""
-            if(circle){
-                for(var l = 0; l < circle.length; l++){
-
-                    if(wallPoints != ""){
-                        wallPoints+= ","
-                    }
-
-                    wallPoints+= circle[l].left+":"+circle[l].top
-                }
-            }
 
             var nbFloor = $("#floorNumber").text();
             var planName = $("#planName").text();
@@ -147,7 +136,7 @@
                     _token: CSRF_TOKEN,
                     planName: planName,
                     nbFloor: nbFloor,
-                    wallPoints: wallPoints,
+                    wallPoints: getWalls(),
                     tables: JSON.stringify($arrayFloorTable)
                 },
                 dataType: 'JSON',

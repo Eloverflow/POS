@@ -108,7 +108,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     }
 
 
-    $url = 'http://pos.mirageflow.com/api/table-plan/36';
+    $url = 'http://pos.mirageflow.com/api/table-plan/1';
     var $callbackFunction = function(response){
 
         $scope.plan = response;
