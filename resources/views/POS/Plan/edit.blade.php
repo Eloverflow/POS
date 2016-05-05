@@ -290,44 +290,6 @@
 
             fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
-            /*
-             var line1 = makeLine([ 0, 0, 0, 400 ]),
-             line2 =  makeLine([ 0, 400, 400,400  ]),
-             line3 = makeLine([ 400, 400, 400, 0 ]),
-             line4 = makeLine([ 400, 0, 0, 0 ]);
-
-
-             var line = [line1,line2,line3,line4]
-
-
-             canvas.add(line[0], line[1], line[2], line[3]);
-
-             circle =[
-             makeCircle(line[0].get('x1'), line[0].get('y1'), line[3], line[0]),
-             makeCircle(line[1].get('x1'), line[1].get('y1'), line[0], line[1]),
-             makeCircle(line[2].get('x1'), line[2].get('y1'), line[1], line[2]),
-             makeCircle(line[3].get('x1'), line[3].get('y1'), line[2], line[3])
-
-             ];
-
-             line[0].link1 = circle[0]
-             line[0].link2 = circle[1]
-             line[1].link1 = circle[1]
-             line[1].link2 = circle[2]
-             line[2].link1 = circle[2]
-             line[2].link2 = circle[3]
-             line[3].link1 = circle[3]
-             line[3].link2 = circle[0]
-
-
-
-             canvas.add(
-             circle[0],
-             circle[1],
-             circle[2],
-             circle[3]
-             );*/
-
             var lastCircle;
             var firstCircle;
             var lastLine;
@@ -335,30 +297,31 @@
             line = [];
             circle = [];
 
-            for(var m = 0; m < onePoint.length; m++){
+
+
+            for(var m = onePoint.length-1; m >= 0; m--){
                 var coordonate = onePoint[m].split(":");
 
                 var x1 = parseInt(coordonate[0]);
                 var y1 = parseInt(coordonate[1]);
 
-
-
-                if(m > 0){
-
-
-
+                if(m < onePoint.length-1){
+                    if( m < onePoint.length-2) {
+                        lastCircle.link1 = lastLine;
+                    }
                     line.push(lastLine = makeLine([lastCircle.left,lastCircle.top,x1,y1]));
                     lastLine.link1 = lastCircle;
 
-                    if( m > 1){
+
+/*
+
+                    if( m < onePoint.length-1){
                         lastCircle.link2 = line[line.length-1];
                     }
-
-
+*/
                     circle.push(lastCircle = makeCircle(x1, y1));
-                    lastCircle.link1 = line[line.length-1];
+                    lastCircle.link2 = lastLine;
                     lastLine.link2 = lastCircle;
-
 
                     /*
                      lastCircle.link1 = line[line.length-1]*/
@@ -372,113 +335,36 @@
                 }
 
 
-                if(m == onePoint.length-1){
-                    line.push(lastLine = makeLine([x1,y1,firstCircle.left,firstCircle.top]));
-                    /*lastCircle.link1 = line[line.length-1];*/
+                if(m == 0){
 
-                    lastCircle.link2 = line[line.length-1];
+                    /*lastCircle.link1 = lastLine;
+                    line.push(lastLine = makeLine([x1,y1,firstCircle.left,firstCircle.top]));
+                    /!*lastCircle.link1 = line[line.length-1];*!/
+
+                    lastCircle.link2 = lastLine;
                     firstCircle.link2 = line[0];
-                    firstCircle.link1 = line[line.length-1];
+                    firstCircle.link1 = lastLine;
                     console.log( line[0])
-                    canvas.add(lastLine)
+                    canvas.add(lastLine)*/
                 }
 
-
+/*
                 canvas.sendToBack(lastLine);
-                canvas.bringToFront(lastCircle);
+                canvas.bringToFront(lastCircle);*/
 
 
 
             }
 
+            console.log('circle[g]');
+            for(var g = 0; g < circle.length; g++){
+                console.log(circle[g]);
+            }
 
-
-            /*
-             console.log( coordonate)
-             var curentCircle = new fabric.Circle({
-             left: parseInt(coordonate[0]),
-             top: parseInt(coordonate[1]),
-             strokeWidth: 5,
-             radius: 12,
-             fill: '#fff',
-             stroke: '#666'
-             })
-
-             var line;
-             if(m == 0){
-             firstCircle = curentCircle;
-             }
-             else
-             {
-             if(m == onePoint.length-1)
-             {
-             line = new fabric.Line([curentCircle.left,curentCircle.top,lastCircle.left,lastCircle.top], {
-             fill: '#333',
-             stroke: '#333',
-             strokeWidth: 14,
-             selectable: false
-             });
-
-             line.link1 = curentCircle;
-             line.link2 = lastCircle;
-
-             line.hasControls = line.hasBorders = false;
-             canvas.add(line);
-
-             var line2 = new fabric.Line([curentCircle.left,curentCircle.top,firstCircle.left,firstCircle.top], {
-             fill: '#333',
-             stroke: '#333',
-             strokeWidth: 14,
-             selectable: false
-             });
-
-             line2.link1 = curentCircle;
-             line2.link2 = firstCircle;
-
-             line2.hasControls = line2.hasBorders = false;
-             canvas.add(line2);
-
-             }
-             else{
-             line = new fabric.Line([lastCircle.left,lastCircle.top,curentCircle.left,curentCircle.top], {
-             fill: '#333',
-             stroke: '#333',
-             strokeWidth: 14,
-             selectable: false
-             });
-
-             line.link1 = curentCircle;
-             line.link2 = lastCircle;
-
-             line.hasControls = line.hasBorders = false;
-             canvas.add(line);
-
-
-
-             }
-             }
-
-
-             /!* l.hoverCursor = 'pointer';*!//!* = 'pointer';*!/
-
-             if(m == 1){
-             firstLine = line;
-             }
-
-             if(m > 1){
-
-             curentCircle.link1 = line
-             curentCircle.link2 = lastLine
-             }
-
-
-             lastCircle = curentCircle;
-
-             lastLine = line;
-             canvas.add(curentCircle)
-             }
-             */
-   console.log(line)
+            console.log('line[g]')
+            for(g = 0; g < line.length; g++){
+                console.log(line[g])
+            }
 
             canvas.renderAll();
 

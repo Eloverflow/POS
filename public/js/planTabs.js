@@ -257,7 +257,6 @@ var bntWall = $("#btnAddWalls").click(function () {
             makeCircle(line[1].get('x1'), line[1].get('y1'), line[0], line[1]),
             makeCircle(line[2].get('x1'), line[2].get('y1'), line[1], line[2]),
             makeCircle(line[3].get('x1'), line[3].get('y1'), line[2], line[3])
-
         ];
 
         line[0].link1 = circle[0]
