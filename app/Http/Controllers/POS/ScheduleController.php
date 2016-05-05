@@ -277,8 +277,17 @@ class ScheduleController extends Controller
 
     public function edit($id)
     {
-        $schedule = Schedule::GetById($id);
-        $employeeTitles = EmployeeTitle::All();
+        //$events = [];
+
+       // $schedule = Schedule::GetById($id);
+
+
+        $date = new DateTime();
+        $date->modify('Sunday last week');
+        $lastSundayStr = $date->format('Y-m-d');
+
+        $lastDay = $date->add(new DateInterval('P6D'));
+
         $employees = Employee::getAll();
 
         $schedule = Schedule::GetById($id);
@@ -314,8 +323,8 @@ class ScheduleController extends Controller
                     $date = new DateTime($schedule->startDate);
                     $date->add(new DateInterval('P' . $i .'D'));
 
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-0:00');
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-00:00');
 
                     if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));
@@ -342,23 +351,27 @@ class ScheduleController extends Controller
             'right' => '');
 
         $calendar = \Calendar::addEvents($events)->setOptions([
+            //'firstDay' => 1,
             'timezone' => 'local', 'EDT', ('America/Montreal'),
             'defaultDate' => $schedule->startDate,
             'editable' => true,
-            'defaultView' => 'agendaWeek',
             'header' => $calendarSettings,
-            'lang' => 'fr-ca',
-            'titleFormat' => $strCalendar
+            'defaultView' => 'agendaWeek',
+            'titleFormat' => $strCalendar,
+            'lang' => 'fr-ca'
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
             'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(jsEvent, xEvent);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 
         $view = \View::make('POS.Schedule.edit')->with('ViewBag', array(
-            'calendar' => $calendar,
-            'employees' => $employees,
-            'schedule' => $schedule
-        ));
+                'employees' => $employees,
+                'calendar' => $calendar,
+                'startDate' => $lastSundayStr,
+                'endDate' => $lastDay->format('Y-m-d'),
+                'schedule' => $schedule
+            )
+        );
         return $view;
     }
 
