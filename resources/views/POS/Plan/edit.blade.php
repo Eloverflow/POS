@@ -478,7 +478,7 @@
              canvas.add(curentCircle)
              }
              */
-
+   console.log(line)
 
             canvas.renderAll();
 
