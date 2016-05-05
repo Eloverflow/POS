@@ -4,6 +4,10 @@
 // var for edit Event
 var globStoredEvent = null;
 var globRefEventId = null;
+
+var globTimeZoneAMontreal = "America/Montreal";
+moment.tz.add("America/Montreal|EST EDT EWT EPT|50 40 40 40|01010101010101010101010101010101010101010101012301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-28tR0 bV0 2m30 1in0 121u 1nb0 1g10 11z0 1o0u 11zu 1o0u 11zu 3VAu Rzu 1qMu WLu 1qMu WLu 1qKu WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 4kO0 8x40 iv0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0");
+
 function postAddSchedules($storedCalendar) {
 
 
@@ -125,21 +129,20 @@ function postEditSchedules($storedCalendar) {
 function editEvent($storedCalendar){
 
     $shour = parseInt($('#editModal #sHour').val());
-    $smin = $('#editModal #sMin').val();
+    $smin = parseInt($('#editModal #sMin').val());
 
     $ehour = parseInt($('#editModal #eHour').val());
-    $emin = $('#editModal #eMin').val();
+    $emin = parseInt($('#editModal #eMin').val());
 
 
     $dDayNumber = $( "#editModal #dayNumber option:selected" ).val();
     $employeeText = $( "#editModal #employeeSelect option:selected" ).text();
     $employeeId = $( "#editModal #employeeSelect option:selected" ).val();
 
-    var sHM = $shour + ":" + $smin;
-    var eHM = $ehour + ":" + $emin;
+    var sHM = ($shour < 10? '0' + $shour : $shour) + ":" + ($smin < 10? '0' + $smin : $smin);
+    var eHM = ($ehour < 10? '0' + $ehour : $ehour) + ":" + ($emin < 10? '0' + $emin : $emin);
 
     var myDate = new Date($('#editModal #dateClicked').val());
-    $dateFormated = formatDate(myDate);
 
     var dateAdd = null;
     if($ehour < $shour) {
@@ -150,9 +153,14 @@ function editEvent($storedCalendar){
     console.log(formatDate(dateAdd));
     //console.log(sHM + " - " + eHM);
 
+
+    console.log(sHM);
+    //console.log(moment("05:00").tz(globTimeZoneAMontreal).format());
+    //console.log(moment(formatDate(dateAdd) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
+
     globStoredEvent.title = $employeeText;
-    globStoredEvent.start = new Date($dateFormated + ' ' + sHM + ':00'+ '-04:00');
-    globStoredEvent.end = new Date(formatDate(dateAdd) + ' ' + eHM + ':00'+ '-04:00');
+    globStoredEvent.start = new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
+    globStoredEvent.end = new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format());
     globStoredEvent.employeeId = $employeeId;
 
     $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
