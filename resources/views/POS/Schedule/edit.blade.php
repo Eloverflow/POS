@@ -1,7 +1,8 @@
 @extends('master')
 @section('csrfToken')
     <link rel="stylesheet" href="{{ @URL::to('css/fullcalendar.min.css') }}"/>
-    <script src="{{ @URL::to('js/moment.min.js') }}"></script>
+    <script src="{{ @URL::to('js/moment/moment.js') }}"></script>
+    <script src="{{ @URL::to('js/moment/moment-timezone.js') }}"></script>
     <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>
     <script src="{{ @URL::to('js/fr-ca.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
@@ -33,7 +34,7 @@
 
                                 <div class="form-group">
                                     {!! Form::label('startDate', "Start Date" ) !!}
-                                    {!! Form::text('startDate', $ViewBag['schedule']->startDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                    {!! Form::text('startDate', $ViewBag['schedule']->startDate, array('class' => 'form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'startDate', 'disabled ')) !!}
                                 </div>
 
                                 <div class="form-group">
