@@ -6,14 +6,14 @@ var totalTables = 0;
 var globEditTable = null;
 var rotateParams = {
     /*start: function (event, ui) {
-        console.log("Rotating started");
-    },
-    rotate: function (event, ui) {
-        console.log("Rotating");
-    },
-    stop: function (event, ui) {
-        console.log("Rotating stopped");
-    }*/
+     console.log("Rotating started");
+     },
+     rotate: function (event, ui) {
+     console.log("Rotating");
+     },
+     stop: function (event, ui) {
+     console.log("Rotating stopped");
+     }*/
 };
 
 var dragParams = {
@@ -149,17 +149,17 @@ var bntEditWalls = $("#btnEditWalls").click(function(){
         var follower = $("#follower");
         follower.hide()
 
-         customizeWall();
+        customizeWall();
     }
     else{
         bntEditWalls.css({backgroundColor: "#5bc0de"})
         bntEditWalls.text('Edit Walls')
         tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})/*
-        $(window).unbind();*/
+         $(window).unbind();*/
         var follower = $("#follower");
         follower.hide()
-/*
-        canvaContainer.empty();*/
+        /*
+         canvaContainer.empty();*/
     }
 
 
@@ -232,7 +232,7 @@ var bntWall = $("#btnAddWalls").click(function () {
          canvas.on('mouse:up', function(o){
          isDown = false;
          });*/
-       canvas = new fabric.Canvas('canvaWalls', {selection: false, hoverCursor: 'move', defaultCursor: 'pointer'});
+        canvas = new fabric.Canvas('canvaWalls', {selection: false, hoverCursor: 'move', defaultCursor: 'pointer'});
 
         /*canvas = this.__canvas = fabricCanva;*/
 
@@ -391,19 +391,19 @@ var bntWall = $("#btnAddWalls").click(function () {
     var listItems = $("#tabControl").find(tblContainers);
     $arrayFloorWall = [];
 
-   /* for ($i = 0; $i < listItems.length; $i++) {
-        $liSubItems = $(listItems[$i]).find("div.wall");
+    /* for ($i = 0; $i < listItems.length; $i++) {
+     $liSubItems = $(listItems[$i]).find("div.wall");
 
-        for ($j = 0; $j < $liSubItems.length; $j++) {
-            //$arrayFloorTable.push()
-            $parsedliSubItem = $($liSubItems[$j]);
-            //var offset = $parsedliSubItem.offset();
+     for ($j = 0; $j < $liSubItems.length; $j++) {
+     //$arrayFloorTable.push()
+     $parsedliSubItem = $($liSubItems[$j]);
+     //var offset = $parsedliSubItem.offset();
 
-            $xPos = parseInt($parsedliSubItem.find("#posX").text());
-            $yPos = parseInt($parsedliSubItem.find("#posY").text());
-            $sGuid = $parsedliSubItem.attr('id');
-        }
-    }*/
+     $xPos = parseInt($parsedliSubItem.find("#posX").text());
+     $yPos = parseInt($parsedliSubItem.find("#posY").text());
+     $sGuid = $parsedliSubItem.attr('id');
+     }
+     }*/
 });
 
 function makeCircle(left, top, link1, link2) {
@@ -671,7 +671,7 @@ function getGoodLink(link){
 }
 
 
-    function getWalls(){
+function getWalls(){
     var wallPoints = ""
     var noEnd = true;
     lastCircle = circle[0];
@@ -696,7 +696,7 @@ function getGoodLink(link){
             }
         }
         else
-        noEnd = false;
+            noEnd = false;
 
 
         console.log('\nChoose')
