@@ -174,7 +174,6 @@ btnDeleteWalls.click(function(){
 
 bntEditWalls.click(function(){
     tblContainers = $(".tablesContainer .tables");
-    var canvaContainer  = tblContainers.find('.canvas-container');
     wallToggle = !wallToggle;
 
     if(wallToggle) {
@@ -200,6 +199,7 @@ bntEditWalls.click(function(){
         btnDeleteWalls.css({visibility: 'hidden'});
     }
 });
+
 bntAddWalls.click(function () {
     tblContainers = $(".tablesContainer .tables");
     wallToggle = !wallToggle;
@@ -226,10 +226,10 @@ bntAddWalls.click(function () {
         fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
         /*Base wall and circle starting*/
-        var line1 = makeLine([0, 0, 0, 400]),
-            line2 = makeLine([0, 400, 400, 400]),
-            line3 = makeLine([400, 400, 400, 0]),
-            line4 = makeLine([400, 0, 0, 0]);
+        var line1 = makeLine([5, 5, 5, 400]),
+            line2 = makeLine([5, 400, 400, 400]),
+            line3 = makeLine([400, 400, 400, 5]),
+            line4 = makeLine([400, 5, 5, 5]);
         line = [line1, line2, line3, line4]
         canvas.add(line[0], line[1], line[2], line[3]);
         circle = [
@@ -255,14 +255,7 @@ bntAddWalls.click(function () {
         /*Base wall and circle ending*/
 
         /*Base wall and circle starting*/
-        canvas.on({
-            'object:moving': function (e) {
-                var p = e.target;
-                p.link1 && p.link1.set({'x2': p.left, 'y2': p.top});
-                p.link2 && p.link2.set({'x1': p.left, 'y1': p.top});
-                canvas.renderAll();
-            }
-        });
+        observeCanvas();
         /*By looking into Git history we could plug back the listener to had a junction remover inside the canva*/
 
         customizeWall()
@@ -429,11 +422,38 @@ function customizeWall(){
                 canvas.sendToBack(line[line.length-1]);
                 canvas.bringToFront(circle[circle.length-1]);
                 canvas.renderAll();
+                observeCanvas();
             }
         }
         else{
             /*Outside the box */
         }
+    });
+}
+
+/*Watching bondairies and circle movement to addapt line*/
+function observeCanvas(){
+    var tblContainers = $(".tablesContainer .tables");
+    canvas.observe("object:moving", function(e){
+        var obj = e.target;
+        if(obj.top < 0){
+            obj.top = Math.max(obj.top, 5);
+        }
+        else if(obj.top > tblContainers.height()){
+            obj.top = Math.min(obj.top, tblContainers.height()-5  );
+        }
+
+        if(obj.left < 0){
+            obj.left = Math.max(obj.left , 5)
+        }
+        else if(obj.left > tblContainers.width() ){
+            obj.left = Math.min(obj.left, tblContainers.width()-5 )
+        }
+
+        obj.link1 && obj.link1.set({'x2': obj.left, 'y2': obj.top});
+        obj.link2 && obj.link2.set({'x1': obj.left, 'y1': obj.top});
+        canvas.renderAll();
+
     });
 }
 
