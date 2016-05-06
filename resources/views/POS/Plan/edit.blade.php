@@ -30,9 +30,10 @@
         <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
         <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
         <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
+        <a class="btn btn-info" id="btnAddWalls" style="visibility: hidden; position: absolute" href="#"> Add Walls </a>
         <a class="btn btn-info" id="btnEditWalls" href="#"> Edit Walls </a>
         <a class="btn btn-success" id="btnSaveWalls" style="visibility: hidden" href="#"> Save Walls </a>
-
+        <a class="btn btn-danger" id="btnDeleteWalls" style="visibility: hidden" href="#"> Delete Walls </a>
         <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
     </div>
     <div hidden id="follower"><span class="glyphicon glyphicon-plus"></span></div>
@@ -297,7 +298,26 @@
             line = [];
             circle = [];
 
-
+         /*   for(var m = 0; m < onePoint.length; m++){
+                var coordonate = onePoint[m].split(":");
+                var x1 = parseInt(coordonate[0]);
+                var y1 = parseInt(coordonate[1]);
+                if(m > 0){
+                    line.push(lastLine = makeLine([lastCircle.left,lastCircle.top,x1,y1]));
+                    circle.push(lastCircle = makeCircle(x1, y1));
+                    canvas.add(lastCircle, lastLine)
+                }
+                else{
+                    circle.push(lastCircle = makeCircle(x1, y1));
+                    canvas.add(lastCircle)
+                }
+                if(m == onePoint.length-1){
+                    line.push(lastLine = makeLine([x1,y1,firstCircle.left,firstCircle.top]));
+                    canvas.add(lastLine)
+                }
+                canvas.sendToBack(lastLine);
+                canvas.bringToFront(lastCircle);
+            }*/
 
             for(var m = onePoint.length-1; m >= 0; m--){
                 var coordonate = onePoint[m].split(":");
@@ -306,25 +326,9 @@
                 var y1 = parseInt(coordonate[1]);
 
                 if(m < onePoint.length-1){
-                    if( m < onePoint.length-2) {
-                        lastCircle.link1 = lastLine;
-                    }
                     line.push(lastLine = makeLine([lastCircle.left,lastCircle.top,x1,y1]));
-                    lastLine.link1 = lastCircle;
 
-
-/*
-
-                    if( m < onePoint.length-1){
-                        lastCircle.link2 = line[line.length-1];
-                    }
-*/
                     circle.push(lastCircle = makeCircle(x1, y1));
-                    lastCircle.link2 = lastLine;
-                    lastLine.link2 = lastCircle;
-
-                    /*
-                     lastCircle.link1 = line[line.length-1]*/
 
                     canvas.add(lastCircle, lastLine)
                 }
@@ -336,25 +340,32 @@
 
 
                 if(m == 0){
-
-                    /*lastCircle.link1 = lastLine;
                     line.push(lastLine = makeLine([x1,y1,firstCircle.left,firstCircle.top]));
-                    /!*lastCircle.link1 = line[line.length-1];*!/
-
-                    lastCircle.link2 = lastLine;
-                    firstCircle.link2 = line[0];
-                    firstCircle.link1 = lastLine;
-                    console.log( line[0])
-                    canvas.add(lastLine)*/
+                    canvas.add(lastLine)
                 }
 
-/*
                 canvas.sendToBack(lastLine);
-                canvas.bringToFront(lastCircle);*/
+                canvas.bringToFront(lastCircle);
 
 
 
             }
+            for(var m = 0; m < onePoint.length; m++){
+                line[m].link1 = circle[m];
+
+                if(m < onePoint.length-1)
+                    line[m].link2 = circle[m+1]
+
+                if(m > 0)
+                    circle[m].link1 = line[m-1]
+
+                circle[m].link2 = line[m]
+            }
+
+            line[line.length-1].link2 = circle[circle.length-1];
+            circle[0].link1 = line[line.length-1];
+
+
 
             console.log('circle[g]');
             for(var g = 0; g < circle.length; g++){

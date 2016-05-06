@@ -118,25 +118,62 @@ $("#btnNewTable").click(function () {
 });
 
 
-/*Jean added*/
+/*Jean added from here*/
 var circle;
 var canvas;
 var wallToggle = false;
-var canvaWall
+var canvaWall;
+var follower;
+var end;
+var lastCircle;
+var line = [];
+var btnDeleteWalls = $("#btnDeleteWalls");
+var bntEditWalls = $("#btnEditWalls");
+var bntAddWalls = $("#btnAddWalls");
+var tblContainers;
+
 var bntSaveWalls = $("#btnSaveWalls").click(function(){
+    wallToggle = !wallToggle;
     var tblContainers = $(".tablesContainer .tables");
-    bntWall.css({backgroundColor: "#5bc0de"})
-    bntWall.text('Add Walls')
+    bntAddWalls.css({backgroundColor: "#5bc0de"})
+    bntAddWalls.text('Add Walls')
     tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
     $(window).unbind();
     var follower = $("#follower");
     follower.hide()
 
-    /*Take all the cordinate and place them inside an input that will be serialized*/
+    bntEditWalls.css({backgroundColor: "#5bc0de"})
+    bntEditWalls.text('Edit Walls')
+    tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
+    btnDeleteWalls.css({visibility: 'hidden'});
+    bntSaveWalls.css({visibility: 'hidden'});
 });
 
-var bntEditWalls = $("#btnEditWalls").click(function(){
+
+function deleteWall() {
     var tblContainers = $(".tablesContainer .tables");
+    canvas = new fabric.Canvas('canvaWalls', {selection: false, hoverCursor: 'move', defaultCursor: 'pointer'});
+
+    tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
+    var follower = $("#follower");
+    follower.hide()
+
+    bntEditWalls.css({visibility: 'hidden'});
+    bntSaveWalls.css({visibility: 'hidden'});
+    btnDeleteWalls.css({visibility: 'hidden'});
+    bntAddWalls.css({visibility: 'visible'});
+
+}
+
+btnDeleteWalls.click(function(){
+    line = []
+    circle = []
+    wallToggle = !wallToggle;
+    deleteWall();
+});
+
+bntEditWalls.click(function(){
+    tblContainers = $(".tablesContainer .tables");
     var canvaContainer  = tblContainers.find('.canvas-container');
     wallToggle = !wallToggle;
 
@@ -146,7 +183,8 @@ var bntEditWalls = $("#btnEditWalls").click(function(){
         tblContainers.css({backgroundColor: "rgba(0,0,0,0.5)"})
 
         bntSaveWalls.css({visibility: 'visible'});
-        var follower = $("#follower");
+        btnDeleteWalls.css({visibility: 'visible'});
+        follower = $("#follower");
         follower.hide()
 
         customizeWall();
@@ -154,111 +192,52 @@ var bntEditWalls = $("#btnEditWalls").click(function(){
     else{
         bntEditWalls.css({backgroundColor: "#5bc0de"})
         bntEditWalls.text('Edit Walls')
-        tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})/*
-         $(window).unbind();*/
-        var follower = $("#follower");
+        tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
+        follower = $("#follower");
         follower.hide()
-        /*
-         canvaContainer.empty();*/
+
+        bntSaveWalls.css({visibility: 'hidden'});
+        btnDeleteWalls.css({visibility: 'hidden'});
     }
-
-
-
-
-
 });
-var line = [];
-var canvas;
-var bntWall = $("#btnAddWalls").click(function () {
-    var tblContainers = $(".tablesContainer .tables");
-
+bntAddWalls.click(function () {
+    tblContainers = $(".tablesContainer .tables");
     wallToggle = !wallToggle;
 
     if(wallToggle) {
 
-        bntWall.css({backgroundColor: "#884444"})
-        bntWall.text('Cancel Add Walls')
+        bntAddWalls.css({backgroundColor: "#884444"})
+        bntAddWalls.text('Cancel Add Walls')
         tblContainers.css({backgroundColor: "rgba(0,0,0,0.5)"})
 
         bntSaveWalls.css({visibility: 'visible'});
+        btnDeleteWalls.css({visibility: 'visible'});
 
-
-        tblContainers.append('<div id="canvaShape" >Click on a wall to add junction point !</div><canvas id="canvaWalls" width="' + tblContainers.width() + '" height="' + tblContainers.height() + '" style="border:1px solid #ccc"></canvas>')
+        /*For old wall*/
+        $('.canvas-container').remove();
+        tblContainers.prepend('<canvas id="canvaWalls" width="' + tblContainers.width() + '" height="' + tblContainers.height() + '" style="border:1px solid #ccc"></canvas>')
         canvaWall = $('#canvaWalls')
 
 
-        /*  var mouseX = 0, mouseY = 0, limitX = 150-15, limitY = 150-15;
-         $(window).mousemove(function(e){
-         mouseX = Math.min(e.pageX, limitX);
-         mouseY = Math.min(e.pageY, limitY);
-         });
+        canvas = new fabric.Canvas('canvaWalls', {selection: false, hoverCursor: 'move', defaultCursor: 'pointer',  position:'absolute'});
 
-         // cache the selector
-         var follower = $("#tabControl");
-         var xp = 0, yp = 0;
-         var loop = setInterval(function(){
-         // change 12 to alter damping higher is slower
-         xp += (mouseX - xp) / 12;
-         yp += (mouseY - yp) / 12;
-         follower.css({left:xp, top:yp});
-
-         }, 30);*/
-
-        /*        var canvas = new fabric.Canvas('canvaWalls', { selection: false });
-
-         var line, isDown;
-
-         canvas.on('mouse:down', function(o){
-         isDown = true;
-         var pointer = canvas.getPointer(o.e);
-         var points = [ pointer.x, pointer.y, pointer.x, pointer.y ];
-         line = new fabric.Line(points, {
-         strokeWidth: 8,
-         fill: 'brown',
-         stroke: 'brown',
-         originX: 'center',
-         originY: 'center'
-         });
-         canvas.add(line);
-         });
-
-         canvas.on('mouse:move', function(o){
-         if (!isDown) return;
-         var pointer = canvas.getPointer(o.e);
-         line.set({ x2: pointer.x, y2: pointer.y });
-         canvas.renderAll();
-         });
-
-         canvas.on('mouse:up', function(o){
-         isDown = false;
-         });*/
-        canvas = new fabric.Canvas('canvaWalls', {selection: false, hoverCursor: 'move', defaultCursor: 'pointer'});
-
-        /*canvas = this.__canvas = fabricCanva;*/
-
+        $('.canvas-container').css({position:'absolute'})
 
         fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
-
-
+        /*Base wall and circle starting*/
         var line1 = makeLine([0, 0, 0, 400]),
             line2 = makeLine([0, 400, 400, 400]),
             line3 = makeLine([400, 400, 400, 0]),
             line4 = makeLine([400, 0, 0, 0]);
-
-
         line = [line1, line2, line3, line4]
-
-
         canvas.add(line[0], line[1], line[2], line[3]);
-
         circle = [
             makeCircle(line[0].get('x1'), line[0].get('y1'), line[3], line[0]),
             makeCircle(line[1].get('x1'), line[1].get('y1'), line[0], line[1]),
             makeCircle(line[2].get('x1'), line[2].get('y1'), line[1], line[2]),
             makeCircle(line[3].get('x1'), line[3].get('y1'), line[2], line[3])
         ];
-
         line[0].link1 = circle[0]
         line[0].link2 = circle[1]
         line[1].link1 = circle[1]
@@ -267,144 +246,43 @@ var bntWall = $("#btnAddWalls").click(function () {
         line[2].link2 = circle[3]
         line[3].link1 = circle[3]
         line[3].link2 = circle[0]
-
-
         canvas.add(
             circle[0],
             circle[1],
             circle[2],
             circle[3]
         );
-        /*
-         canvas.hoverCursor = 'pointer';
-         */
-        var timeoutHandle;
-        var updateOnListener = function () {
-            canvas.on({
-                'mouse:down': function (e) {
-                    if (e.target) {
-                        e.target.opacity = 0.5;
+        /*Base wall and circle ending*/
 
-                        /*We cut wall*/
-                        /*
-                         follower.css('z-index', 1);
-
-                         $('#canvaShape').fadeOut(150);
-
-                         */
-
-
-                        canvas.renderAll();
-                    }
-                },
-                'mouse:up': function (e) {
-                    if (e.target) {
-                        e.target.opacity = 1;
-                        /*
-                         follower.css('z-index', 0);*/
-                        canvas.renderAll();
-                    }
-                },
-                'object:moved': function (e) {
-                    e.target.opacity = 0.5;
-                },
-                'object:modified': function (e) {
-                    e.target.opacity = 1;
-                },
-                'object:moving': function (e) {
-                    var p = e.target;
-                    p.link1 && p.link1.set({'x2': p.left, 'y2': p.top});
-                    p.link2 && p.link2.set({'x1': p.left, 'y1': p.top});
-                    canvas.renderAll();
-
-                    /*// in your click function, call clearTimeout
-                     window.clearTimeout(timeoutHandle);
-
-                     // then call setTimeout again to reset the timer
-                     timeoutHandle = window.setTimeout(function() {
-
-                     /!* canvas.add(
-                     makeCircle(line.get('x1'), line.get('y1')),
-                     makeCircle(line2.get('x1'), line2.get('y1')),
-                     makeCircle(line3.get('x1'), line3.get('y1')),
-                     makeCircle(line4.get('x1'), line.get('y1'))
-                     );*!/
-                     /!*
-                     canvas.removeListeners();*!/
-                     /!* canvas.removeListener();
-                     setTimeout(function() {
-
-                     updateOnListener();
-                     }, 100);
-                     console.log('DelayedUpdateLaunched');*!/
-                     }, 100);*/
-
-                },
-                'object:hover': function (e) {
-                    console.log('testHover')
-                }
-            });
-            console.log('updateListener');
-        }
-
-        updateOnListener();
-
-
-        /*
-         this.__canvas.push(canvas);*/
-
-        /*  canvas.on('object:moving', function(e) {
-         console.log('test')
-         var p = e.target;
-         p.line1 && p.line1.set({ 'x2': p.left, 'y2': p.top });
-         p.line2 && p.line2.set({ 'x1': p.left, 'y1': p.top });
-         p.line3 && p.line3.set({ 'x1': p.left, 'y1': p.top });
-         p.line4 && p.line4.set({ 'x1': p.left, 'y1': p.top });
-         canvas.renderAll();
-         });*/
-        /*.on('object:hovering', function(e) {
-         console.log('test')
-         });*/
+        /*Base wall and circle starting*/
+        canvas.on({
+            'object:moving': function (e) {
+                var p = e.target;
+                p.link1 && p.link1.set({'x2': p.left, 'y2': p.top});
+                p.link2 && p.link2.set({'x1': p.left, 'y1': p.top});
+                canvas.renderAll();
+            }
+        });
+        /*By looking into Git history we could plug back the listener to had a junction remover inside the canva*/
 
         customizeWall()
     }
     else{
-        bntWall.css({backgroundColor: "#5bc0de"})
-        bntWall.text('Add Walls')
+        bntAddWalls.css({backgroundColor: "#5bc0de"})
+        bntAddWalls.text('Add Walls')
         tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
         $(window).unbind();
         var follower = $("#follower");
         follower.hide()
 
-        tblContainers.empty();
+        deleteWall()
+
     }
 
-
-
-
-
-
-
-
-
-    var listItems = $("#tabControl").find(tblContainers);
-    $arrayFloorWall = [];
-
-    /* for ($i = 0; $i < listItems.length; $i++) {
-     $liSubItems = $(listItems[$i]).find("div.wall");
-
-     for ($j = 0; $j < $liSubItems.length; $j++) {
-     //$arrayFloorTable.push()
-     $parsedliSubItem = $($liSubItems[$j]);
-     //var offset = $parsedliSubItem.offset();
-
-     $xPos = parseInt($parsedliSubItem.find("#posX").text());
-     $yPos = parseInt($parsedliSubItem.find("#posY").text());
-     $sGuid = $parsedliSubItem.attr('id');
-     }
-     }*/
 });
 
+/*Make a circle inside a canva with "link1" been the source line and "link2" been the destination line */
+/*Link is only an abstract logic it may differ*/
 function makeCircle(left, top, link1, link2) {
     var c = new fabric.Circle({
         left: left,
@@ -415,44 +293,33 @@ function makeCircle(left, top, link1, link2) {
         stroke: '#666'
     });
     c.hasControls = c.hasBorders = false;
-
     c.link1 = link1;
     c.link2 = link2;
-
     return c;
 }
 
+/*Make a line inside a canva with "link1" been the source circle and "link2" been the destination circle */
+/*Link is only an abstract logic it may differ*/
 function makeLine(coords, link1, link2) {
-
     var l = new fabric.Line(coords, {
         fill: '#333',
         stroke: '#333',
         strokeWidth: 14,
         selectable: false
     });
-
     l.link1 = link1;
     l.link2 = link2;
-
     l.hasControls = l.hasBorders = false;
-    /* l.hoverCursor = 'pointer';*/
-    /* = 'pointer';*/
-
-
     return l;
 }
 
 
 function customizeWall(){
-    var tblContainers = $(".tablesContainer .tables");
+    tblContainers = $(".tablesContainer .tables");
+    follower = $("#follower");
 
-    var mouseX = 0, mouseY = 0, limitX = 2000, limitY = 4000;
-
-    var follower = $("#follower");
-
-
+    /*Make a follower behind canva to show an action is possible*/
     $(window).mousemove(function(e){
-
         if(e.pageX > tblContainers.offset().left+5 && e.pageY > tblContainers.offset().top+5)
         {
             follower.offset({
@@ -464,16 +331,10 @@ function customizeWall(){
         else{
             follower.hide(300);
         }
-
-
-
-        /*
-         mouseX = Math.min(e.pageX, limitX);
-         mouseY = Math.min(e.pageY, limitY);*/
     });
 
+    /*Find the best place to cut between the wall and cut*/
     $(window).click(function(e){
-
         if(e.pageX > tblContainers.offset().left+5 && e.pageY > tblContainers.offset().top+5)
         {
 
@@ -482,16 +343,12 @@ function customizeWall(){
             var curTab = $("[aria-labelledby='" + $tabItemID.text() + "'] .tables");
             var offsetTab = curTab.offset();
 
-            /*
-             circle.push(makeCircle(line.get('x1'), line.get('y1'), line4, line))
-             canvas.add(circle[circle.length-1]);*/
-
             var canvaUpper = tblContainers.find('.upper-canvas');
 
             /*Do not add wall while moving them*/
             if(canvaUpper.css('cursor') != "move"){
 
-                console.log('Click event')
+                //console.log('Click event')
                 /*Inside*/
 
                 var junctionScore = 99999;
@@ -512,13 +369,10 @@ function customizeWall(){
 
                 }
 
-
-                console.log(circle[lastBestJunction].link1.top)
-                console.log(circle[lastBestJunction].link1.left )
+                //console.log(circle[lastBestJunction].link1.top)
+                //console.log(circle[lastBestJunction].link1.left)
 
                 var closestCircle = circle[lastBestJunction];
-
-
                 var linkList = [{
                     link: closestCircle.link1,
                     x: closestCircle.link1.get('x1'),
@@ -538,11 +392,9 @@ function customizeWall(){
                 }
                 ];
 
-
                 var winnerScore =99999999,lastBestScore,currentScorePos;
 
                 for(var k = 0; k < linkList.length; k++ ){
-
                     currentScorePos = Math.pow(boxX - linkList[k].x,2) + Math.pow(boxY - linkList[k].y,2);
 
                     if(currentScorePos < winnerScore){
@@ -551,23 +403,12 @@ function customizeWall(){
                     }
                 }
 
-                console.log(closestCircle)
-                console.log(lastBestScore)
-                console.log(linkList[lastBestScore])
-
-
-                var closestWall = linkList[lastBestScore].link;
+                //console.log(closestCircle)
+                //console.log(lastBestScore)
+                //console.log(linkList[lastBestScore])
 
                 /* On Set une l'extrémité de la place à x2 et y2, au curseur*/
                 linkList[lastBestScore].link.set({x2: boxX, y2: boxY})
-
-
-                /*
-                 var linkLowerCircle = linkList[lastBestScore].link.link1;
-
-                 /!*Swap link*!/
-                 linkLowerCircle.link1 = linkLowerCircle.link2;*/
-
 
                 /*Create a line from the second point to the cursor point*/
                 line.push(makeLine([ boxX, boxY,closestCircle.left, closestCircle.top ]))
@@ -577,117 +418,79 @@ function customizeWall(){
                 circle.push(makeCircle(boxX, boxY,linkList[lastBestScore].link, newLine))
                 var newCircle = circle[circle.length-1]
 
-
                 newLine.link1 = closestCircle
                 newLine.link2 = newCircle
 
-
                 closestCircle.link1 = newLine
-
-                /*
-                 /!*nearest circle new line attribution*!/
-                 linkLowerCircle.link2 = newLine;*/
 
                 /*Adding to visual*/
                 canvas.add(line[line.length-1],circle[circle.length-1]);
 
                 canvas.sendToBack(line[line.length-1]);
                 canvas.bringToFront(circle[circle.length-1]);
-
-
                 canvas.renderAll();
-
             }
         }
         else{
             /*Outside the box */
         }
     });
-
-
-
 }
-var end;
-var lastCircle;
-var revert = false;
 
+/*Get good link to next circle*/
 function getGoodLink(link){
+    //console.log('\nlinkIs')
+    //console.log(link)
 
-    if(link) {
-        console.log('\nlinkIs')
-        console.log(link)
-        var goodLink;
-        if (!revert)
-            goodLink = link.link1.link1;
-        else
-            goodLink = link.link2.link2;
+    var goodLink = link.link1.link1;
 
+    if(!goodLink){
+        goodLink = link.link2.link2;
+    }
+    //console.log('\nGoodlinkIs')
+    //console.log(goodLink)
 
-        if (!goodLink) {
-            revert = true;
-            goodLink = link.link2.link2;
-        }
-        console.log('\nGoodlinkIs')
-        console.log(goodLink)
+    var compare;
+    compare = link.link1.link1;
 
-        var compare;
-        if (!revert)
-            compare = link.link1.link1;
-        else
-            compare = link.link2.link2
+    if(link.top == compare.top && link.left  == compare.left){
+        goodLink = link.link1.link2;
+        end = false;
+        //console.log('trying another one 1')
+        //console.log(goodLink)
 
-        if (typeof compare != "undefined" && link.top == compare.top && link.left == compare.left) {
-            if (!revert)
-                goodLink = link.link1.link2;
-            else
-                goodLink = link.link1.link1;
+        if(goodLink.top != lastCircle.top && goodLink.left  != lastCircle.left){
 
-            end = false;
-            console.log('trying another one 1')
-            console.log(goodLink)
-
-            if (goodLink.top != lastCircle.top && goodLink.left != lastCircle.left) {
-
-                end = true;
-            }
-
-        }
-        else {
             end = true;
-            console.log('last was the good one')
-            console.log(goodLink)
         }
-
-
-        if (!end) {
-            goodLink = getGoodLink(goodLink)
-        }
-        return goodLink;
     }
-    else{
-        return "undefined";
+    else
+    {
+        end = true;
+        //console.log('last was the good one')
+        //console.log(goodLink)
     }
+
+    if(!end){
+        goodLink = getGoodLink(goodLink)
+    }
+    return goodLink;
 }
 
 
+/*Get the list of wall stored by tokenized arraw x1,y1:x2,y2:x3 ...*/
 function getWalls(){
-    var wallPoints = ""
+    var wallPoints = "";
     var noEnd = true;
     lastCircle = circle[0];
 
     while(noEnd){
-
-
         if(typeof lastCircle != "undefined") {
-
             if (wallPoints != "") {
                 wallPoints += ","
             }
-
             wallPoints += lastCircle.left + ":" + lastCircle.top
-
             lastCircle = getGoodLink(lastCircle)
-
 
             if (typeof lastCircle != "undefined" && lastCircle.top == circle[0].top && lastCircle.left == circle[0].left) {
                 noEnd = false;
@@ -697,18 +500,16 @@ function getWalls(){
         else
             noEnd = false;
 
-
-        console.log('\nChoose')
+        /*console.log('\nChoose')
         console.log(lastCircle)
         console.log('\n')
         console.log('wallPoints')
         console.log(wallPoints)
-        console.log('\n')
+        console.log('\n')*/
     }
     return wallPoints;
 }
-
-/*Jean added end*/
+/*Jean added End*/
 
 
 $("#btnReOrder").click(function () {
