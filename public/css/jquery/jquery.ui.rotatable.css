@@ -1,9 +1,18 @@
 .ui-rotatable-handle {
-    height: 16px;
-    width: 16px;
+    transition: all 0.2s;
+    height: 20px;
+    width: 20px;
     cursor: pointer;
-    background-image: url('../../img/rotate.png');
-    background-size: 100%;
     left: 2px;
     bottom: 2px;
+    color: white;
+    stroke-width: 3px;
+    transform: rotate(215deg);
+    background: url('../../img/rotateArrow.svg');
+    background-size: 100%;
+}
+
+.ui-rotatable-handle:hover {
+
+    transform: rotate(110deg);
 }

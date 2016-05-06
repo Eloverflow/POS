@@ -117,6 +117,73 @@ $("#btnNewTable").click(function () {
     $('#' + $tableGUID).unbind("mousewheel");
 });
 
+$("#btnReOrder").click(function () {
+    var tblContainers = $(".tablesContainer .tables");
+    var listItems = $("#tabControl").find(tblContainers);
+    $arrayFloorTable = [];
+
+    for ($i = 0; $i < listItems.length; $i++) {
+        $liSubItems = $(listItems[$i]).find("li");
+
+        for ($j = 0; $j < $liSubItems.length; $j++) {
+            //$arrayFloorTable.push()
+            $parsedliSubItem = $($liSubItems[$j]);
+            //var offset = $parsedliSubItem.offset();
+
+            $xPos = parseInt($parsedliSubItem.find("#posX").text());
+            $yPos = parseInt($parsedliSubItem.find("#posY").text());
+            $sGuid = $parsedliSubItem.attr('id');
+
+            var txtRaw = $parsedliSubItem[0].style.transform;
+            var radValReg = /\((.*)\)/;
+            var radVal = 0;
+            if (txtRaw != null && txtRaw.trim() != "") {
+                if (txtRaw.match(radValReg)[1] != null) {
+                    radVal = txtRaw.match(radValReg)[1];
+                }
+            } else {
+                radVal = 0;
+            }
+            $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text());
+            $typeChr = "";
+            if ($parsedliSubItem.hasClass("tbl")) {
+                $typeChr = "tbl"
+            } else if ($parsedliSubItem.hasClass("plc")) {
+                $typeChr = "plc"
+            } else {
+                $typeChr = "sep"
+            }
+            var objTable = {
+                guid: $sGuid,
+                tblType: $typeChr,
+                tblNum: $tabNum,
+                noFloor: $i,
+                xPos: $xPos,
+                yPos: $yPos,
+                angle: radVal
+            };
+            $arrayFloorTable.push(objTable);
+        }
+
+    }
+
+
+    $arrayFloorTable.sort(function(a,b) {return (a.xPos > b.xPos) ? 1 : ((b.xPos > a.xPos) ? -1 : 0);} );
+    $arrayFloorTable.sort(function(a,b) {return (a.yPos > b.yPos) ? 1 : ((b.yPos > a.yPos) ? -1 : 0);} );
+
+
+    var Incr = 1;
+    for($i = 0; $i < $arrayFloorTable.length; $i ++){
+        var tblLiObj = $("#tabControl").find("#" + $arrayFloorTable[$i].guid);
+        var tblNumObj = tblLiObj.find("#tableNumber");
+        //console.log(tblNumObj);
+        tblNumObj.text(Incr.toString());
+        Incr += 1;
+    }
+
+
+});
+
 
 /*Jean added from here*/
 var circle;
@@ -521,80 +588,12 @@ function getWalls(){
             noEnd = false;
 
         /*console.log('\nChoose')
-        console.log(lastCircle)
-        console.log('\n')
-        console.log('wallPoints')
-        console.log(wallPoints)
-        console.log('\n')*/
+         console.log(lastCircle)
+         console.log('\n')
+         console.log('wallPoints')
+         console.log(wallPoints)
+         console.log('\n')*/
     }
     return wallPoints;
 }
 /*Jean added End*/
-
-
-$("#btnReOrder").click(function () {
-    var tblContainers = $(".tablesContainer .tables");
-    var listItems = $("#tabControl").find(tblContainers);
-    $arrayFloorTable = [];
-
-    for ($i = 0; $i < listItems.length; $i++) {
-        $liSubItems = $(listItems[$i]).find("li");
-
-        for ($j = 0; $j < $liSubItems.length; $j++) {
-            //$arrayFloorTable.push()
-            $parsedliSubItem = $($liSubItems[$j]);
-            //var offset = $parsedliSubItem.offset();
-
-            $xPos = parseInt($parsedliSubItem.find("#posX").text());
-            $yPos = parseInt($parsedliSubItem.find("#posY").text());
-            $sGuid = $parsedliSubItem.attr('id');
-
-            var txtRaw = $parsedliSubItem[0].style.transform;
-            var radValReg = /\((.*)\)/;
-            var radVal = 0;
-            if (txtRaw != null && txtRaw.trim() != "") {
-                if (txtRaw.match(radValReg)[1] != null) {
-                    radVal = txtRaw.match(radValReg)[1];
-                }
-            } else {
-                radVal = 0;
-            }
-            $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text());
-            $typeChr = "";
-            if ($parsedliSubItem.hasClass("tbl")) {
-                $typeChr = "tbl"
-            } else if ($parsedliSubItem.hasClass("plc")) {
-                $typeChr = "plc"
-            } else {
-                $typeChr = "sep"
-            }
-            var objTable = {
-                guid: $sGuid,
-                tblType: $typeChr,
-                tblNum: $tabNum,
-                noFloor: $i,
-                xPos: $xPos,
-                yPos: $yPos,
-                angle: radVal
-            };
-            $arrayFloorTable.push(objTable);
-        }
-
-    }
-
-
-    $arrayFloorTable.sort(function(a,b) {return (a.xPos > b.xPos) ? 1 : ((b.xPos > a.xPos) ? -1 : 0);} );
-    $arrayFloorTable.sort(function(a,b) {return (a.yPos > b.yPos) ? 1 : ((b.yPos > a.yPos) ? -1 : 0);} );
-
-
-    var Incr = 1;
-    for($i = 0; $i < $arrayFloorTable.length; $i ++){
-        var tblLiObj = $("#tabControl").find("#" + $arrayFloorTable[$i].guid);
-        var tblNumObj = tblLiObj.find("#tableNumber");
-        //console.log(tblNumObj);
-        tblNumObj.text(Incr.toString());
-        Incr += 1;
-    }
-
-
-});
