@@ -75,7 +75,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
-                        {!! Form::text('dateClicked', $ViewBag['schedule']->startDate, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
+                        {!! Form::text('dateClicked', $ViewBag['schedule']->startDate, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'displgay:none;visibiligty:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -252,6 +252,17 @@
             }
             //$( "#endDate").val(nDate.getFullYear() + "-" + (nDate.getMonth() + 1) + "-" + nDate.getDate());
             //var $startDate = $('#startDate').val();
+        });
+        $( "#dayNumber" ).change(function() {
+            //var nDate = new Date();
+            //nDate.setDate(nDate.getFullYear() + "-" +  nDate.getMonth() + "-" + (nDate.getDate() + this.value));
+            var realVal = parseInt(this.value);
+            if(realVal != -1) {
+                realVal += 1;
+                console.log(realVal);
+                var myDate = new Date(new Date($('#startDate').val()).getTime() + (realVal * 24 * 60 * 60 * 1000));
+                $('#dateClicked').val(formatDate(myDate));
+            }
         });
     </script>
 @stop

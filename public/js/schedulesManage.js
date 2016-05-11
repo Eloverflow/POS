@@ -173,33 +173,59 @@ function deleteEvent($storedCalendar){
 function addEvent($storedCalendar){
 
     $shour = parseInt($('#addModal #sHour').val());
-    $smin = $('#addModal #sMin').val();
+    $smin = parseInt($('#addModal #sMin').val());
 
     $ehour = parseInt($('#addModal #eHour').val());
-    $emin = $('#addModal #eMin').val();
-    $dateClicked = $('#addModal #dateClicked').val();
+    $emin = parseInt($('#addModal #eMin').val());
 
     $dDayNumber = $("#addModal #dayNumber option:selected" ).val();
     $employeeId = $("#addModal #employeeSelect option:selected" ).val()
     $employeeName = $("#addModal #employeeSelect option:selected" ).text()
 
-    var sHM = $shour + ":" + $smin;
-    var eHM = $ehour + ":" + $emin;
+    // number verification
+    $validationError = false;
+    /*if(!$.isNumeric($shour) || !$.isNumeric($ehour)){
+        alert("Please enter some valid numbers");
+    } else {
+        if($.isNumeric($smin)){
+            if($smin > 59 || $smin < 0 ){
+                alert("The number of minutes must be between 0 and 59")
+            }
+        } else {
+            if($('#addModal #sMin').val() == ""){
+                $smin = 0;
+            }
+        }
+        if($.isNumeric($emin)){
+            if($emin > 59 || $emin < 0 ){
+                alert("The number of minutes must be between 0 and 59")
+            }
+        } else {
+            if($('#addModal #eMin').val() == ""){
+                $emin = 0;
+            }
+        }
+    }*/
+
+    var sHM = ($shour < 10? '0' + $shour : $shour) + ":" + ($smin < 10? '0' + $smin : $smin);
+    var eHM = ($ehour < 10? '0' + $ehour : $ehour) + ":" + ($emin < 10? '0' + $emin : $emin);
+
+    var myDate = new Date($('#addModal #dateClicked').val());
 
     if($dDayNumber == -1)
     {
         for(var i = 1; i <= 7; i++){
-            var myDate = new Date(new Date($('#startDate').val()).getTime() + (i * 24 * 60 * 60 * 1000));
+            var startDate = new Date(new Date($('#startDate').val()).getTime() + (i * 24 * 60 * 60 * 1000));
 
             var dateAdd = new Date();
             if($ehour < $shour) {
-                dateAdd = new Date(myDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+                dateAdd = new Date(startDate.getTime() + (1 * 24 * 60 * 60 * 1000));
             } else {
-                dateAdd = myDate;
+                dateAdd = startDate;
             }
             //console.log($dateClicked);
 
-            $dateFormated = formatDate(myDate);
+            $dateFormated = formatDate(startDate);
             var newEvent = {
                 id: guid(),
                 title: $employeeName,
@@ -216,31 +242,23 @@ function addEvent($storedCalendar){
 
     } else {
 
-        /*var dateAdd = new Date($dateClicked);
-        if($ehour < $shour) {
-            dateAdd = new Date(dateAdd.getTime() + (2 * 24 * 60 * 60 * 1000))
-            console.log("yes");
-        }*/
-
         var dateAdd = null;
         if($ehour < $shour) {
-            var curDay = new Date($dateClicked);
-            dateAdd = new Date(curDay.getTime() + (2 * 24 * 60 * 60 * 1000));
+            dateAdd = new Date(myDate.getTime() + (1 * 24 * 60 * 60 * 1000));
         } else {
-            dateAdd = new Date(new Date($dateClicked).getTime() + (1 * 24 * 60 * 60 * 1000));
+            dateAdd = myDate;
         }
-        //console.log(formatDate(new Date($dateClicked)));
-        console.log(formatDate(dateAdd));
-        console.log($dateClicked);
-        //
+        console.log(new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format()));
+        console.log(new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format()));
+
         //console.log("Start: " + $dateClicked + ' ' + sHM + " End: " + formatDate(new Date(curDay.getTime() + (2 * 24 * 60 * 60 * 1000))) + ' ' + eHM);
 
         var newEvent = {
             id: guid(),
             title: $employeeName,
             isAllDay: false,
-            start: new Date($dateClicked + ' ' + sHM + ':00' + '-04:00'),
-            end: new Date(formatDate(dateAdd) + ' ' + eHM + ':00' + '-04:00'),
+            start: new Date(moment(formatDate(myDate) + ' ' + sHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
+            end: new Date(moment(formatDate(dateAdd) + ' ' + eHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
             description: '',
             employeeId: $employeeId
         };
