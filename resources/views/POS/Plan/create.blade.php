@@ -30,6 +30,7 @@
         <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
         <a class="btn btn-info" id="btnAddWalls" href="#"> Add Walls </a>
         <a class="btn btn-success" id="btnSaveWalls" style="visibility: hidden" href="#"> Save Walls </a>
+        <a class="btn btn-danger" id="btnDeleteWalls" style="visibility: hidden" href="#"> Delete Walls </a>
     </div>
     <div hidden id="follower"><span class="glyphicon glyphicon-plus"></span></div>
     <!--Horizontal Tab-->
