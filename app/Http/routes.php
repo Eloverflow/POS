@@ -25,41 +25,41 @@ Route::controllers([
 /* End Authentication */
 
 
-Route::get('/', 'PagesController@index');
-Route::get('/about', 'PagesController@about');
-Route::get('/contact', 'PagesController@contact');
+Route::get('/',  ['uses' => 'PagesController@index', 'middleware' => 'auth']);
+Route::get('/about',  ['uses' => 'PagesController@about', 'middleware' => 'auth']);
+Route::get('/contact',  ['uses' => 'PagesController@contact', 'middleware' => 'auth']);
 
 
-Route::get('/sales', 'POS\SalesController@index');
-Route::get('/sales/list', 'POS\SalesController@liste');
-Route::get('/menu', 'POS\SalesController@menu');
+Route::get('/sales',  ['uses' => 'POS\SalesController@index', 'middleware' => 'auth']);
+Route::get('/sales/list',  ['uses' => 'POS\SalesController@liste', 'middleware' => 'auth']);
+Route::get('/menu',  ['uses' => 'POS\SalesController@menu', 'middleware' => 'auth']);
 
-Route::get('/menu/start', 'POS\SalesController@menuStart');
-Route::post('/menu/payer', 'POS\SalesController@payer');
-Route::post('/menu/command', 'POS\SalesController@updateCommand');
-Route::post('/menu/getCommand', 'POS\SalesController@getCommand');
+Route::get('/menu/start',  ['uses' => 'POS\SalesController@menuStart', 'middleware' => 'auth']);
+Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware' => 'auth']);
+Route::post('/menu/command',  ['uses' => 'POS\SalesController@updateCommand', 'middleware' => 'auth']);
+Route::post('/menu/getCommand',  ['uses' => 'POS\SalesController@getCommand', 'middleware' => 'auth']);
 
-Route::get('/inventory', 'ERP\InventoriesController@index');
+Route::get('/inventory',  ['uses' => 'ERP\InventoriesController@index', 'middleware' => 'auth']);
 Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});
-Route::get('/inventory/edit/{slug}', 'ERP\InventoriesController@edit');
+Route::get('/inventory/edit/{slug}',  ['uses' => 'ERP\InventoriesController@edit', 'middleware' => 'auth']);
 Route::get('/inventory/view',  function() { return Redirect::to('/inventory');});
-Route::get('/inventory/view/{slug}', 'ERP\InventoriesController@details');
-Route::post('/inventory/edit/{slug}', 'ERP\InventoriesController@update');
-Route::get('/inventory/create', 'ERP\InventoriesController@create');
-Route::post('/inventory/create', 'ERP\InventoriesController@postCreate');
+Route::get('/inventory/view/{slug}',  ['uses' => 'ERP\InventoriesController@details', 'middleware' => 'auth']);
+Route::post('/inventory/edit/{slug}',  ['uses' => 'ERP\InventoriesController@update', 'middleware' => 'auth']);
+Route::get('/inventory/create',  ['uses' => 'ERP\InventoriesController@create', 'middleware' => 'auth']);
+Route::post('/inventory/create',  ['uses' => 'ERP\InventoriesController@postCreate', 'middleware' => 'auth']);
 
 
-Route::get('/itemtypes', 'ERP\ItemTypesController@index');
-Route::get('/itemtypes/list', 'ERP\ItemTypesController@liste');
-Route::get('/itemtypes/edit/{slug}', 'ERP\ItemTypesController@edit');
-Route::post('/itemtypes/edit/{slug}', 'ERP\ItemTypesController@update');
+Route::get('/itemtypes',  ['uses' => 'ERP\ItemTypesController@index', 'middleware' => 'auth']);
+Route::get('/itemtypes/list',  ['uses' => 'ERP\ItemTypesController@liste', 'middleware' => 'auth']);
+Route::get('/itemtypes/edit/{slug}',  ['uses' => 'ERP\ItemTypesController@edit', 'middleware' => 'auth']);
+Route::post('/itemtypes/edit/{slug}',  ['uses' => 'ERP\ItemTypesController@update', 'middleware' => 'auth']);
 
-Route::get('/items', 'ERP\ItemsController@index');
-Route::get('/items/create', 'ERP\ItemsController@create');
-Route::post('/items/create', 'ERP\ItemsController@postCreate');
-Route::get('/items/edit/{slug}', 'ERP\ItemsController@edit');
-Route::post('/items/edit/{slug}', 'ERP\ItemsController@update');
-Route::get('/items/liste', 'ERP\ItemsController@liste');
+Route::get('/items',  ['uses' => 'ERP\ItemsController@index', 'middleware' => 'auth']);
+Route::get('/items/create',  ['uses' => 'ERP\ItemsController@create', 'middleware' => 'auth']);
+Route::post('/items/create',  ['uses' => 'ERP\ItemsController@postCreate', 'middleware' => 'auth']);
+Route::get('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@edit', 'middleware' => 'auth']);
+Route::post('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@update', 'middleware' => 'auth']);
+Route::get('/items/liste',  ['uses' => 'ERP\ItemsController@liste', 'middleware' => 'auth']);
 
 
 
@@ -84,105 +84,105 @@ Route::get('/calendar',  function() {
     return view('calendar', compact('calendar'));
 });
 
-Route::get('/clients', 'POS\ClientController@index');
-Route::get('/clients/create', 'POS\ClientController@create');
-Route::post('/clients/create', 'POS\ClientController@postCreate');
-Route::get('/clients/edit/{slug}', 'POS\ClientController@edit');
-Route::post('/clients/edit/{slug}', 'POS\ClientController@update');
+Route::get('/clients',  ['uses' => 'POS\ClientController@index', 'middleware' => 'auth']);
+Route::get('/clients/create',  ['uses' => 'POS\ClientController@create', 'middleware' => 'auth']);
+Route::post('/clients/create',  ['uses' => 'POS\ClientController@postCreate', 'middleware' => 'auth']);
+Route::get('/clients/edit/{slug}',  ['uses' => 'POS\ClientController@edit', 'middleware' => 'auth']);
+Route::post('/clients/edit/{slug}',  ['uses' => 'POS\ClientController@update', 'middleware' => 'auth']);
 
 /* Start employee */
-Route::get('/employee', 'POS\EmployeeController@index');
+Route::get('/employee',  ['uses' => 'POS\EmployeeController@index', 'middleware' => 'auth']);
 
-Route::get('/employee/create', 'POS\EmployeeController@create');
-Route::post('/employee/create', 'POS\EmployeeController@postcreate');
+Route::get('/employee/create',  ['uses' => 'POS\EmployeeController@create', 'middleware' => 'auth']);
+Route::post('/employee/create',  ['uses' => 'POS\EmployeeController@postcreate', 'middleware' => 'auth']);
 
-Route::get('/employee/details/{id}', 'POS\EmployeeController@details');
+Route::get('/employee/details/{id}',  ['uses' => 'POS\EmployeeController@details', 'middleware' => 'auth']);
 
-Route::get('/employee/titles', 'POS\EmployeeTitleController@index');
-Route::post('/employee/title/create', 'POS\EmployeeTitleController@postCreate');
-Route::post('/employee/title/edit', 'POS\EmployeeTitleController@postEdit');
-Route::post('/employee/title/add/employee', 'POS\EmployeeTitleController@addEmployee');
-Route::delete('/employee/title/del/employee', 'POS\EmployeeTitleController@delEmployee');
+Route::get('/employee/titles',  ['uses' => 'POS\EmployeeTitleController@index', 'middleware' => 'auth']);
+Route::post('/employee/title/create',  ['uses' => 'POS\EmployeeTitleController@postCreate', 'middleware' => 'auth']);
+Route::post('/employee/title/edit',  ['uses' => 'POS\EmployeeTitleController@postEdit', 'middleware' => 'auth']);
+Route::post('/employee/title/add/employee',  ['uses' => 'POS\EmployeeTitleController@addEmployee', 'middleware' => 'auth']);
+Route::delete('/employee/title/del/employee',  ['uses' => 'POS\EmployeeTitleController@delEmployee', 'middleware' => 'auth']);
 
 
-Route::get('/employee/edit/{id}', 'POS\EmployeeController@edit');
-Route::get('/employee/track/{id}', 'POS\EmployeeController@track');
-Route::post('/employee/edit', 'POS\EmployeeController@postedit');
+Route::get('/employee/edit/{id}',  ['uses' => 'POS\EmployeeController@edit', 'middleware' => 'auth']);
+Route::get('/employee/track/{id}',  ['uses' => 'POS\EmployeeController@track', 'middleware' => 'auth']);
+Route::post('/employee/edit',  ['uses' => 'POS\EmployeeController@postedit', 'middleware' => 'auth']);
 
-Route::get('/employee/delete/{id}', 'POS\EmployeeController@delete');
-Route::post('/employee/Partialdelete', 'POS\EmployeeController@ajaxPartdelete');
-Route::post('/employee/Completedelete', 'POS\EmployeeController@ajaxCompdelete');
+Route::get('/employee/delete/{id}',  ['uses' => 'POS\EmployeeController@delete', 'middleware' => 'auth']);
+Route::post('/employee/Partialdelete',  ['uses' => 'POS\EmployeeController@ajaxPartdelete', 'middleware' => 'auth']);
+Route::post('/employee/Completedelete',  ['uses' => 'POS\EmployeeController@ajaxCompdelete', 'middleware' => 'auth']);
 
-Route::post('/employee/punch', 'POS\PunchController@ajaxPunchEmployee');
+Route::post('/employee/punch',  ['uses' => 'POS\PunchController@ajaxPunchEmployee', 'middleware' => 'auth']);
 /* End employee */
 
-Route::get('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@index');
-Route::post('/addon/rfid/request', 'Addons\Rfid\RfidRequestController@create');
-Route::post('/addon/rfid/checkRequest', 'Addons\Rfid\RfidRequestController@checkTableRequest');
+Route::get('/addon/rfid/request',  ['uses' => 'Addons\Rfid\RfidRequestController@index', 'middleware' => 'auth']);
+Route::post('/addon/rfid/request',  ['uses' => 'Addons\Rfid\RfidRequestController@create', 'middleware' => 'auth']);
+Route::post('/addon/rfid/checkRequest',  ['uses' => 'Addons\Rfid\RfidRequestController@checkTableRequest', 'middleware' => 'auth']);
 
-Route::get('/addon/rfid/table', 'Addons\Rfid\RfidTableController@index');
-Route::get('/addon/rfid/table/{slug}', 'Addons\Rfid\RfidTableController@edit');
-Route::post('/addon/rfid/table/{slug}', 'Addons\Rfid\RfidTableController@update');
-Route::post('/addon/rfid/beers', 'Addons\Rfid\RfidTableController@getBeers');
+Route::get('/addon/rfid/table',  ['uses' => 'Addons\Rfid\RfidTableController@index', 'middleware' => 'auth']);
+Route::get('/addon/rfid/table/{slug}',  ['uses' => 'Addons\Rfid\RfidTableController@edit', 'middleware' => 'auth']);
+Route::post('/addon/rfid/table/{slug}',  ['uses' => 'Addons\Rfid\RfidTableController@update', 'middleware' => 'auth']);
+Route::post('/addon/rfid/beers',  ['uses' => 'Addons\Rfid\RfidTableController@getBeers', 'middleware' => 'auth']);
 
 /* Start schedule */
-Route::get('/schedule', 'POS\ScheduleController@index');
+Route::get('/schedule',  ['uses' => 'POS\ScheduleController@index', 'middleware' => 'auth']);
 
-Route::get('/schedule/create', 'POS\ScheduleController@create');
-Route::post('/schedule/create', 'POS\ScheduleController@postcreate');
+Route::get('/schedule/create',  ['uses' => 'POS\ScheduleController@create', 'middleware' => 'auth']);
+Route::post('/schedule/create',  ['uses' => 'POS\ScheduleController@postcreate', 'middleware' => 'auth']);
 
-Route::get('/schedule/edit/{id}', 'POS\ScheduleController@edit');
-Route::post('/schedule/edit', 'POS\ScheduleController@postedit');
+Route::get('/schedule/edit/{id}',  ['uses' => 'POS\ScheduleController@edit', 'middleware' => 'auth']);
+Route::post('/schedule/edit',  ['uses' => 'POS\ScheduleController@postedit', 'middleware' => 'auth']);
 
-Route::get('/schedule/{scheduleid}/employees', 'POS\ScheduleController@employeesSchedule');
-Route::get('/schedule/{scheduleid}/employee/{employeeid}', 'POS\ScheduleController@employeeSchedule');
+Route::get('/schedule/{scheduleid}/employees',  ['uses' => 'POS\ScheduleController@employeesSchedule', 'middleware' => 'auth']);
+Route::get('/schedule/{scheduleid}/employee/{employeeid}', ['uses' => 'POS\ScheduleController@employeeSchedule', 'middleware' => 'auth']);
 
-Route::get('/schedule/delete/{id}', 'POS\ScheduleController@delete');
-Route::delete('/schedule/deleteArch/{id}', 'POS\ScheduleController@deleteArch');
-Route::delete('/schedule/deleteComp/{id}', 'POS\ScheduleController@deleteComp');
+Route::get('/schedule/delete/{id}',  ['uses' => 'POS\ScheduleController@delete', 'middleware' => 'auth']);
+Route::delete('/schedule/deleteArch/{id}',  ['uses' => 'POS\ScheduleController@deleteArch', 'middleware' => 'auth']);
+Route::delete('/schedule/deleteComp/{id}',  ['uses' => 'POS\ScheduleController@deleteComp', 'middleware' => 'auth']);
 
-Route::get('/schedule/{scheduleid}/pdf', 'POS\ScheduleController@GetSchedulePDF');
-Route::get('/schedule/{scheduleid}/employee/{employeeid}/pdf', 'POS\ScheduleController@GetScheduleForEmployeePDF');
+Route::get('/schedule/{scheduleid}/pdf',  ['uses' => 'POS\ScheduleController@GetSchedulePDF', 'middleware' => 'auth']);
+Route::get('/schedule/{scheduleid}/employee/{employeeid}/pdf',  ['uses' => 'POS\ScheduleController@GetScheduleForEmployeePDF', 'middleware' => 'auth']);
 
-Route::get('/schedule/details/{id}', 'POS\ScheduleController@details');
+Route::get('/schedule/details/{id}',  ['uses' => 'POS\ScheduleController@details', 'middleware' => 'auth']);
 
-Route::post('/schedule/AjaxFindDispos', 'POS\ScheduleController@AjaxFindDispos');
-Route::post('/schedule/AjaxGetEmployeeDaySchedules', 'POS\ScheduleController@AjaxGetEmployeeDaySchedules');
+Route::post('/schedule/AjaxFindDispos',  ['uses' => 'POS\ScheduleController@AjaxFindDispos', 'middleware' => 'auth']);
+Route::post('/schedule/AjaxGetEmployeeDaySchedules',  ['uses' => 'POS\ScheduleController@AjaxGetEmployeeDaySchedules', 'middleware' => 'auth']);
 
 /* End schedule */
 
 
 /* Start Punch */
-Route::get('/punch', 'POS\PunchController@index');
-Route::get('/keyboard', 'POS\PunchController@keyboard');
+Route::get('/punch',  ['uses' => 'POS\PunchController@index', 'middleware' => 'auth']);
+Route::get('/keyboard',  ['uses' => 'POS\PunchController@keyboard', 'middleware' => 'auth']);
 /* End Punch */
 
 /* Start Plan */
-Route::get('/plan', 'POS\PlanController@index');
-Route::get('/plan/create/{planName}/{nbFloor}', 'POS\PlanController@create');
-Route::post('/plan/create', 'POS\PlanController@postCreate');
+Route::get('/plan',  ['uses' => 'POS\PlanController@index', 'middleware' => 'auth']);
+Route::get('/plan/create/{planName}/{nbFloor}',  ['uses' => 'POS\PlanController@create', 'middleware' => 'auth']);
+Route::post('/plan/create',  ['uses' => 'POS\PlanController@postCreate', 'middleware' => 'auth']);
 
-Route::get('/plan/edit/{id}', 'POS\PlanController@edit');
-Route::post('/plan/edit/{id}', 'POS\PlanController@postEdit');
+Route::get('/plan/edit/{id}',  ['uses' => 'POS\PlanController@edit', 'middleware' => 'auth']);
+Route::post('/plan/edit/{id}',  ['uses' => 'POS\PlanController@postEdit', 'middleware' => 'auth']);
 
-Route::get('/plan/details/{id}', 'POS\PlanController@details');
-Route::get('/api/table-plan/{id}', 'POS\PlanController@tablePlan');
+Route::get('/plan/details/{id}',  ['uses' => 'POS\PlanController@details', 'middleware' => 'auth']);
+Route::get('/api/table-plan/{id}',  ['uses' => 'POS\PlanController@tablePlan', 'middleware' => 'auth']);
 /* End Plan */
 
 /* Start disponibility */
-Route::get('/disponibility', 'POS\DisponibilityController@index');
+Route::get('/disponibility',  ['uses' => 'POS\DisponibilityController@index', 'middleware' => 'auth']);
 
-Route::get('/disponibility/create', 'POS\DisponibilityController@create');
-Route::post('/disponibility/create', 'POS\DisponibilityController@postCreate');
+Route::get('/disponibility/create',  ['uses' => 'POS\DisponibilityController@create', 'middleware' => 'auth']);
+Route::post('/disponibility/create',  ['uses' => 'POS\DisponibilityController@postCreate', 'middleware' => 'auth']);
 
-Route::get('/disponibility/edit/{id}', 'POS\DisponibilityController@edit');
-Route::post('/disponibility/edit', 'POS\DisponibilityController@postedit');
+Route::get('/disponibility/edit/{id}',  ['uses' => 'POS\DisponibilityController@edit', 'middleware' => 'auth']);
+Route::post('/disponibility/edit',  ['uses' => 'POS\DisponibilityController@postedit', 'middleware' => 'auth']);
 
-Route::get('/disponibility/delete/{id}', 'POS\DisponibilityController@delete');
-Route::delete('/disponibility/deleteArch/{id}', 'POS\DisponibilityController@deleteArch');
-Route::delete('/disponibility/deleteComp/{id}', 'POS\DisponibilityController@deleteComp');
+Route::get('/disponibility/delete/{id}',  ['uses' => 'POS\DisponibilityController@delete', 'middleware' => 'auth']);
+Route::delete('/disponibility/deleteArch/{id}',  ['uses' => 'POS\DisponibilityController@deleteArch', 'middleware' => 'auth']);
+Route::delete('/disponibility/deleteComp/{id}',  ['uses' => 'POS\DisponibilityController@deleteComp', 'middleware' => 'auth']);
 
-Route::get('/disponibility/details/{id}', 'POS\DisponibilityController@details');
+Route::get('/disponibility/details/{id}',  ['uses' => 'POS\DisponibilityController@details', 'middleware' => 'auth']);
 /* End disponibility */
 
 /* Start Punch */

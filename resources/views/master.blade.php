@@ -37,6 +37,33 @@
             </button>
             <a class="navbar-brand" href="#"><span>Easy</span>Pos</a>
 
+            @if (Auth::check())
+                <ul class="user-menu">
+                    <li class="dropdown pull-right">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Auth::user()->name }} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu">
+
+                            {{--User Menu definition--}}
+                            <?php
+                            $userMenuTabs = array
+                            (
+                                    array('name' => 'Profile', 'href' => '#', 'class' => 'glyph stroked male-user', 'xlink' => 'stroked-male-user'),
+                                    array('name' => 'Settings', 'href' => '#', 'class'=> 'glyph stroked gear', 'xlink' => 'stroked-gear'),
+                                    array('name' => 'Logout', 'href' => '/auth/logout', 'class'=> 'glyph stroked cancel', 'xlink' => 'stroked-cancel')
+                            );
+                            ?>
+                            {{--End of User Menu definition--}}
+
+                            {{--User Menu rendering--}}
+                            @for ($i = 0; $i < count($userMenuTabs); $i++) {{--For each item in the menu--}}
+                            {{--Render current line--}}
+                            <li><a href="{{ @URL::to($userMenuTabs[$i]['href']) }}"><svg class="{{ $userMenuTabs[$i]['class'] }}"><use xlink:href="#{{ $userMenuTabs[$i]['xlink'] }}"></use></svg> {{ $userMenuTabs[$i]['name'] }}</a></li>
+                            @endfor
+                            {{--End of User Menu rendering--}}
+                        </ul>
+                    </li>
+                </ul>
+            @endif
         </div>
 
     </div><!-- /.container-fluid -->
@@ -123,7 +150,18 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
+            @if(Session::has('success'))
+                <div id="flash-msg" class="row collapse in">
+                    <div class="col-lg-12">
+                        <div id="flash-success" class="alert bg-success" role="alert">
+                            <svg class="glyph stroked checkmark"><use xlink:href="#stroked-checkmark"></use></svg> {{ Session::get('success') }} <a data-toggle="collapse" href="#flash-msg" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                        </div>
+                    </div>
+                </div>
+            @endif
             @yield('content')
+
+            {{-- Maybe to remove--}}
             @if(!empty($previousTableRow) || !empty($nextTableRow))
                 <?php $path = dirname(Request::path()); ?>
                 <nav>
