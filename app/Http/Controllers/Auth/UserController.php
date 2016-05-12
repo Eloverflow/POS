@@ -7,8 +7,10 @@ use Auth;
 use Hash;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Support\Facades\Input;
+use Redirect;
+use Validator;
 
-class PasswordController extends Controller
+class UserController extends Controller
 {
     /*
     |--------------------------------------------------------------------------
@@ -21,24 +23,7 @@ class PasswordController extends Controller
     |
     */
 
-    protected $redirectTo = '/';
-
-    use ResetsPasswords;
-
-    /**
-     * Create a new password controller instance.
-     *
-     * @return void
-     */
-    public function __construct()
-    {
-        $this->middleware('guest');
-    }
-
-    public function passwordUpdate(){
-
-
-
+    public function updatePassword(){
 
         $rules = array(
             'now_password'          => 'required|min:8',
@@ -49,10 +34,10 @@ class PasswordController extends Controller
             'required' => 'The :attribute is required !'
         );
 
-        $validation = \Validator::make(Input::all(), $rules, $message);
+        $validation = Validator::make(Input::all(), $rules, $message);
         if($validation -> fails())
         {
-            return \Redirect::url('/user/password/update', array())->withErrors($validation)
+            return Redirect::to('/user/password/update')->withErrors($validation)
                 ->withInput();
         }
         else {
@@ -61,7 +46,10 @@ class PasswordController extends Controller
                 $user = Auth::user();
                 $user->password = Input::get('password');
                 $user->save();
-                \Redirect::url('/', array())->withSuccess('Password successfully updated !');
+                return Redirect::to('/')->withSuccess('Password successfully updated !');
+            }
+            else{
+                return Redirect::to('/user/password/update')->withErrors('Passwords dont match !');
             }
 
         }

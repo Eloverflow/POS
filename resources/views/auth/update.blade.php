@@ -27,21 +27,13 @@
                             </div>
                         @endif
 
-                        <form class="form-horizontal" role="form" method="POST" action="/password/reset">
+                        <form class="form-horizontal" role="form" method="POST" action="{{ @URL::to('/user/password/update') }}">
                             <input type="hidden" name="_token" value="{{ csrf_token() }}">
-                            <input type="hidden" name="token" value="{{ $token }}">
-
-                            <div class="form-group">
-                                <label class="col-md-4 control-label">E-Mail Address</label>
-                                <div class="col-md-6">
-                                    <input type="email" class="form-control" name="email" value="{{ old('email') }}">
-                                </div>
-                            </div>
 
                             <div class="form-group">
                                 <label class="col-md-4 control-label">Current Password</label>
                                 <div class="col-md-6">
-                                    <input type="password" class="form-control" name="curPassword">
+                                    <input type="password" class="form-control" name="now_password">
                                 </div>
                             </div>
 

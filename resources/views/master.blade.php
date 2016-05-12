@@ -46,7 +46,7 @@ $userMenuTabs = array
 (
         //array('name' => 'Profile', 'href' => '#', 'class' => 'glyph stroked male-user', 'xlink' => 'stroked-male-user'),
         //array('name' => 'Settings', 'href' => '#', 'class'=> 'glyph stroked gear', 'xlink' => 'stroked-gear'),
-        array('name' => 'Change password', 'href' => '/auth/password', 'class'=> 'glyph stroked gear', 'xlink' => 'stroked-gear'),
+        array('name' => 'Change password', 'href' => '/user/password/update', 'class'=> 'glyph stroked gear', 'xlink' => 'stroked-gear'),
         array('name' => 'Logout', 'href' => '/auth/logout', 'class'=> 'glyph stroked cancel', 'xlink' => 'stroked-cancel'),
 );
 ?>
@@ -119,17 +119,6 @@ $userMenuTabs = array
 
 
 <div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-
-
-    @if(Session::has('success'))
-        <div id="flash-msg" class="row collapse in">
-            <div class="col-lg-12">
-                <div id="flash-success" class="alert bg-success" role="alert">
-                    <svg class="glyph stroked checkmark"><use xlink:href="#stroked-checkmark"></use></svg> {{ Session::get('success') }} <a data-toggle="collapse" href="#flash-msg" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
-                </div>
-            </div>
-        </div>
-    @endif
 
     <div class="row">
         @if(!empty($title))

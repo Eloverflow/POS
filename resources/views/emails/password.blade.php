@@ -258,7 +258,7 @@
                 </div>
 
                 <div style="Margin-left: 20px;Margin-right: 20px;">
-                    <h1 class="size-30" style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;font-size: 30px;line-height: 38px;color: #44a8c7;font-family: Cabin,Avenir,sans-serif;text-align: center;"><span style="color:#ffffff"><strong>Password reset</strong></span></h1><h1 class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-style: normal;font-weight: normal;font-size: 16px;line-height: 24px;color: #44a8c7;font-family: Cabin,Avenir,sans-serif;text-align: center;"><strong><span style="color:#ffffff"></span></strong></h1>
+                    <h1 class="size-30" style="Margin-top: 0;Margin-bottom: 0;font-style: normal;font-weight: normal;font-size: 30px;line-height: 38px;color: #44a8c7;font-family: Cabin,Avenir,sans-serif;text-align: center;"><span style="color:#ffffff"><strong>Password Reset</strong></span></h1><h1 class="size-16" style="Margin-top: 20px;Margin-bottom: 20px;font-style: normal;font-weight: normal;font-size: 16px;line-height: 24px;color: #44a8c7;font-family: Cabin,Avenir,sans-serif;text-align: center;"><strong><span style="color:#ffffff"></span></strong></h1>
                 </div>
 
                 <div style="Margin-left: 20px;Margin-right: 20px;">
@@ -266,7 +266,7 @@
                 </div>
 
                 <div style="Margin-left: 20px;Margin-right: 20px;">
-                    <p class="size-22" style="Margin-top: 0;Margin-bottom: 0;font-size: 22px;line-height: 31px;text-align: center;"><span style="color:#30a5ff">Cliquez sur lien !</span></p><p class="size-13" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 13px;line-height: 21px;text-align: center;"><strong><span style="color:#ffffff"></span></strong></p>
+                    <p class="size-22" style="Margin-top: 0;Margin-bottom: 0;font-size: 22px;line-height: 31px;text-align: center;"><span style="color:#30a5ff">Click on the button to reset your password !</span></p><p class="size-13" style="Margin-top: 20px;Margin-bottom: 20px;font-size: 13px;line-height: 21px;text-align: center;"><strong><span style="color:#ffffff"></span></strong></p>
                 </div>
 
                 <div style="Margin-left: 20px;Margin-right: 20px;">
@@ -274,7 +274,7 @@
                 </div>
                 <div style="Margin-left: 20px;Margin-right: 20px;">
                     <div class="btn btn--shadow" style="Margin-bottom: 20px;text-align: center;">
-                        <a style="border-radius: 4px;display: inline-block;font-weight: bold;text-align: center;text-decoration: none !important;transition: opacity 0.1s ease-in;color: #fff;box-shadow: inset 0 -2px 0 0 rgba(0, 0, 0, 0.2);background-color: #ffffff; color: #44a8c7; font-family: 'Open Sans', sans-serif !important;font-family: &quot;Open Sans&quot;,sans-serif;font-size: 14px;line-height: 24px;padding: 12px 35px 13px 35px;" href="http://pos.mirageflow.com/auth/reset" data-width="82" target="_blank">Reset password</a></div>
+                        <a style="border-radius: 4px;display: inline-block;font-weight: bold;text-align: center;text-decoration: none !important;transition: opacity 0.1s ease-in;color: #fff;box-shadow: inset 0 -2px 0 0 rgba(0, 0, 0, 0.2);background-color: #ffffff; color: #44a8c7; font-family: 'Open Sans', sans-serif !important;font-family: &quot;Open Sans&quot;,sans-serif;font-size: 14px;line-height: 24px;padding: 12px 35px 13px 35px;" href="http://pos.mirageflow.com/password/reset/{{$token}}" data-width="82" target="_blank">Reset password</a></div>
                 </div>
 
                 <div style="Margin-left: 20px;Margin-right: 20px;Margin-bottom: 12px;">

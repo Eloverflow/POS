@@ -23,8 +23,9 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 /* End Authentication */
-/*
-Route::get('/password/email',  function() { return  view('shared.list';});*/
+
+Route::get('/user/password/update', ['uses' => function() { return  view('auth.update');},'middleware' => 'auth']);
+Route::post('/user/password/update', ['uses' => 'Auth\UserController@updatePassword','middleware' => 'auth']);
 
 Route::get('/',  ['uses' => 'PagesController@index', 'middleware' => 'auth']);
 Route::get('/about',  ['uses' => 'PagesController@about', 'middleware' => 'auth']);
