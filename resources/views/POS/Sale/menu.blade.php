@@ -205,6 +205,7 @@
             if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
         })
 
+        if ($(window).width() > 450)
         $(document).on('click', function(){
 
             //Going fullscren splash

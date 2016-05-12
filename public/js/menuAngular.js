@@ -686,6 +686,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     }
 
     $scope.openBill = function(){
+        console.log($scope.bills )
+        if(typeof $scope.bills != 'undefined' && $scope.bills != null && $scope.bills[0].length == 0)
+        $scope.toggleDivideBillModal();
+
+
         $('#billWindow').slideDown(400);
     }
 

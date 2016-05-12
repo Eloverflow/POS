@@ -23,7 +23,8 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 /* End Authentication */
-
+/*
+Route::get('/password/email',  function() { return  view('shared.list';});*/
 
 Route::get('/',  ['uses' => 'PagesController@index', 'middleware' => 'auth']);
 Route::get('/about',  ['uses' => 'PagesController@about', 'middleware' => 'auth']);
@@ -62,27 +63,6 @@ Route::post('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@update', 'mid
 Route::get('/items/liste',  ['uses' => 'ERP\ItemsController@liste', 'middleware' => 'auth']);
 
 
-
-Route::get('/calendar',  function() {
-    /*
-        $events = [];*/
-
-    $event = \Calendar::event(
-        "Jean - 2016-03-09 to 2016-03-11 ", //event title
-        false, //full day event?
-        '21:30', //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
-        '23:40', //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-        1, //optional event ID
-        [
-            'url' => 'http://full-calendar.io',
-            //any other full-calendar supported parameters
-        ]
-    );
-
-    $calendar = \Calendar::addEvent($event);
-
-    return view('calendar', compact('calendar'));
-});
 
 Route::get('/clients',  ['uses' => 'POS\ClientController@index', 'middleware' => 'auth']);
 Route::get('/clients/create',  ['uses' => 'POS\ClientController@create', 'middleware' => 'auth']);

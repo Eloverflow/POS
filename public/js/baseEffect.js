@@ -2,9 +2,9 @@
  * Created by Jean on 2016-01-01.
  */
 
-
+/*
 var pageScroll = false;
-setTimeout(function() { pageScroll.resize(); }, 500);
+setTimeout(function() { pageScroll.resize(); }, 500);*/
 /*
 
 setTimeout(function() { $('.fc-day-grid-container.fc-scroller').css('height', 'auto'); }, 100);
@@ -266,6 +266,7 @@ function autoHeightAnimate(element, time){
 }
 
 
+/*
 
 $(document).ready(
 
@@ -276,3 +277,4 @@ $(document).ready(
     }
 
 );
+*/

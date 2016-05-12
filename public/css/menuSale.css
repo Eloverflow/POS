@@ -159,8 +159,8 @@ div.saleTextZone input:focus{
 */
 
 
-
-.menu-filter{
+.menu-filter{overflow-y: hidden;
+	height: 82px;
 	background-color: rgba(0,0,0,0.8);
 	/*border-radius: 4px!important;*//*
 	margin-top: 2px;*//*
@@ -789,9 +789,14 @@ body{
 	box-shadow: 0 6px 12px rgba(0,0,0,0.9);
 }
 
+.tableNumber{
+	padding: 6px;
+}
+
 
 @media only screen and (min-width : 450px) {
 	.tableNumber{
+		padding: 0;
 		margin-right: 40px;
 	}
 

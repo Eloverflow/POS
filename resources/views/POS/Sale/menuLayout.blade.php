@@ -49,8 +49,8 @@
             <a class="navbar-brand" href="{{@URL::to('/menu/start')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>EASY</span>POS</a>
             <ul class="user-menu">
 
-                <li class="dropdown pull-right">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg>
+                <li  class="dropdown pull-right">
+                    <a style="cursor: not-allowed"  href="#" class="dropdown-toggle" data-toggle="{{--dropdown--}}" aria-expanded="false"><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg>
                         Employé #<% currentEmploye %>
                         <span class="caret"></span></a>
                     <ul class="dropdown-menu" role="menu">
@@ -71,17 +71,17 @@
                        </a>
                 </li>
             </ul>
-            <ul class="user-menu tableNumber">
-                <li>
-                    <a href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
-                        Plan
-                    </a>
-                </li>
-            </ul>
-            <ul class="user-menu tableNumber">
+            <ul class="user-menu">
                 <li>
                     <a href="#" ng-click="openBill()"><span class="glyphicon glyphicon-bitcoin"></span>
                         Factures
+                    </a>
+                </li>
+            </ul>
+            <ul class="user-menu">
+                <li>
+                    <a style="cursor: not-allowed" href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
+                        Plan
                     </a>
                 </li>
             </ul>
@@ -107,7 +107,7 @@
             Une Seule Facture
         </div>
 
-        <div ng-click="divideBill()" class="divideBillChoice">
+        <div style="background-color: grey; cursor: default" ng-click="divideBill()" class="divideBillChoice">
             Diviser manuellement
         </div>
     </div>
@@ -164,25 +164,6 @@
         </div>
     </div>
 </div>
-
-
-{{--Script call--}}
-<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.js') }}"></script>
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/chart.min.js') }}"></script>
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/chart-data.js') }}"></script>
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart.js') }}"></script>
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>
-<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.js') }}"></script>{{--
-<script src="{{ @URL::asset('js/jquery.nicescroll.min.js') }}"></script>--}}{{--
-<script src="{{ @URL::to('js/baseEffect.js') }}"></script>--}}
-@if(Request::path() == "addon/rfid/table")
-    <script src="{{ @URL::asset('js/jquery.sortable.js') }}"></script>
-    <script src="{{ @URL::asset('js/listener.js') }}"></script>
-@endif
-{{--End of Script call--}}
-
-
-
 
 @yield('myjsfile')
 </body>

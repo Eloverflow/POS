@@ -37,7 +37,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#"><span>Easy</span>Pos</a>
+                <a class="navbar-brand" href="{{ @URL::to('/') }}"><span>Easy</span>Pos</a>
             </div>
     </div>
 </div>

@@ -1,5 +1,6 @@
 @extends('POS.Sale.menuLayout')
 
+
 @section('content')
 
     Entrez votre numéro d'employé.
@@ -22,7 +23,7 @@
         window.loading_screen = window.pleaseWait({
             logo: "{{ URL::to('Framework/please-wait/easypos.png')  }}",
             backgroundColor: '#222',
-            loadingHtml: "<div class='spinner'><a href='{{ @URL::to('/menu') }}'><button type='button' class='btn btn-primary'>Lancer</button></a></div>"
+            loadingHtml: "<div class='spinner'><a href='{{ @URL::to('/menu') }}'><button type='button' class='btn btn-primary'>Lancer</button></a><a href='{{ @URL::to('/') }}'><button type='button' class='btn btn-danger'>Quitter</button></a></div>"
         });
     </script>
 @stop

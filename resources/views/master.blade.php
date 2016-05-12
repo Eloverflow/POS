@@ -3,12 +3,11 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Mirageflow @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
-{{--
-    <script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>--}}
+    <title>EASYPOS @foreach(Request::segments() as $segment){{ ' | ' . ucwords( str_replace('_', ' ', $segment))}}@endforeach</title>
+{{--<script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>--}}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
-    @yield('csrfToken')
-    {{--Stylesheet call--}}
+@yield('csrfToken')
+{{--Stylesheet call--}}
     <link href="{{ @URL::to('Framework/Bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/datepicker3.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
@@ -36,34 +35,37 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="#"><span>Easy</span>Pos</a>
-
-            @if (Auth::check())
-                <ul class="user-menu">
-                    <li class="dropdown pull-right">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Auth::user()->name }} <span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu">
-
-                            {{--User Menu definition--}}
-                            <?php
-                            $userMenuTabs = array
-                            (
-                                    array('name' => 'Profile', 'href' => '#', 'class' => 'glyph stroked male-user', 'xlink' => 'stroked-male-user'),
-                                    array('name' => 'Settings', 'href' => '#', 'class'=> 'glyph stroked gear', 'xlink' => 'stroked-gear'),
-                                    array('name' => 'Logout', 'href' => '/auth/logout', 'class'=> 'glyph stroked cancel', 'xlink' => 'stroked-cancel')
-                            );
-                            ?>
-                            {{--End of User Menu definition--}}
-
-                            {{--User Menu rendering--}}
-                            @for ($i = 0; $i < count($userMenuTabs); $i++) {{--For each item in the menu--}}
-                            {{--Render current line--}}
-                            <li><a href="{{ @URL::to($userMenuTabs[$i]['href']) }}"><svg class="{{ $userMenuTabs[$i]['class'] }}"><use xlink:href="#{{ $userMenuTabs[$i]['xlink'] }}"></use></svg> {{ $userMenuTabs[$i]['name'] }}</a></li>
-                            @endfor
-                            {{--End of User Menu rendering--}}
-                        </ul>
+@if (Auth::check())
+            <ul class="user-menu">
+                <li class="dropdown pull-right">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Auth::user()->name }} <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+{{--User Menu definition--}}
+<?php
+$userMenuTabs = array
+(
+        //array('name' => 'Profile', 'href' => '#', 'class' => 'glyph stroked male-user', 'xlink' => 'stroked-male-user'),
+        //array('name' => 'Settings', 'href' => '#', 'class'=> 'glyph stroked gear', 'xlink' => 'stroked-gear'),
+        array('name' => 'Change password', 'href' => '/auth/password', 'class'=> 'glyph stroked gear', 'xlink' => 'stroked-gear'),
+        array('name' => 'Logout', 'href' => '/auth/logout', 'class'=> 'glyph stroked cancel', 'xlink' => 'stroked-cancel'),
+);
+?>
+{{--End of User Menu definition--}}
+{{--User Menu rendering--}}
+                    @for ($i = 0; $i < count($userMenuTabs); $i++) {{--For each item in the menu--}}
+                    <li>
+                        <a href="{{ @URL::to($userMenuTabs[$i]['href']) }}">
+                            <svg class="{{ $userMenuTabs[$i]['class'] }}">
+                                <use xlink:href="#{{ $userMenuTabs[$i]['xlink'] }}"></use>
+                            </svg> {{ $userMenuTabs[$i]['name'] }}
+                        </a>
                     </li>
-                </ul>
-            @endif
+                    @endfor
+{{--End of User Menu rendering--}}
+                    </ul>
+                </li>
+            </ul>
+@endif
         </div>
 
     </div><!-- /.container-fluid -->
@@ -76,27 +78,31 @@
         </div>
     </form>
     <ul class="nav menu">
+
+        @if (Auth::check())
         <li><a href="{{ URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg> Dashboard</a></li>
         <li><a href="{{ URL::to('employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
         <li><a href="{{ URL::to('employee/titles') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employee Titles</a></li>
         <li><a href="{{ URL::to('disponibility') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> Disponibilities</a></li>
         <li><a href="{{ URL::to('schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> Schedules</a></li>
         <li><a href="{{ URL::to('items') }}"><svg class="glyph stroked bacon burger"><use xlink:href="#stroked-bacon-burger"/></svg></svg> Items</a></li>
-        <li><a href="{{ URL::to('itemtypes') }}"><svg class="glyph stroked paper coffee cup"><use xlink:href="#stroked-paper-coffee-cup"/></svg> Item Types</a></li>
+        {{--<li><a href="{{ URL::to('itemtypes') }}"><svg class="glyph stroked paper coffee cup"><use xlink:href="#stroked-paper-coffee-cup"/></svg> Item Types</a></li>--}}
         <li><a href="{{ URL::to('inventory') }}"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg> Inventory</a></li>
-        <li><a href="{{ URL::to('clients') }}"><svg class="glyph stroked female user"><use xlink:href="#stroked-female-user"/></svg> Clients</a></li>
-        <li><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> RFID Tables</a></li>
+        {{--<li><a href="{{ URL::to('clients') }}"><svg class="glyph stroked female user"><use xlink:href="#stroked-female-user"/></svg> Clients</a></li>--}}
+        {{--<li><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> RFID Tables</a></li>--}}
         <li><a href="{{ URL::to('plan') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> Plans</a></li>
-        <li><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> RFID Request</a></li>
+        {{--<li><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> RFID Request</a></li>--}}
         <li><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> Punch</a></li>
         <li><a href="{{ URL::to('menu/start') }}"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> Menu</a></li>
         <li role="presentation" class="divider"></li>
-        <li><a href="{{ URL::to('auth/login') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li>
+        @else
+        <li><a href="{{ URL::to('auth/login') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li><li role="presentation" class="divider"></li>
+        @endif
     </ul>
 
 
 </div><!--/.sidebar-->
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
+<div style="z-index: -1;" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
     <div class="row fixed">
         <ol class="breadcrumb">
             <li><a href="{{ @URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
@@ -110,6 +116,8 @@
         </ol>
     </div>
 </div>
+
+
 <div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 
 
@@ -195,7 +203,7 @@
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart.js') }}"></script>
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>--}}
 <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.js') }}"></script>
-<script src="{{ @URL::asset('js/jquery/jquery.nicescroll.min.js') }}"></script>
+{{--<script src="{{ @URL::asset('js/jquery/jquery.nicescroll.min.js') }}"></script>--}}
 <script src="{{ @URL::to('js/baseEffect.js') }}"></script>
 @if(Request::path() == "addon/rfid/table")
     <script src="{{ @URL::asset('js/jquery/jquery.sortable.js') }}"></script>
