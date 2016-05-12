@@ -19,7 +19,7 @@
     <script src="{{ @URL::to('Framework/Angular/angular-ui-router.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
-    <script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
     <![endif]-->
     @yield('csrfToken')
 </head>
