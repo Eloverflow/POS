@@ -184,7 +184,7 @@ function addEvent($storedCalendar){
 
     // number verification
     $validationError = false;
-    /*if(!$.isNumeric($shour) || !$.isNumeric($ehour)){
+    if(!$.isNumeric($shour) || !$.isNumeric($ehour)){
         alert("Please enter some valid numbers");
     } else {
         if($.isNumeric($smin)){
@@ -205,7 +205,7 @@ function addEvent($storedCalendar){
                 $emin = 0;
             }
         }
-    }*/
+    }
 
     var sHM = ($shour < 10? '0' + $shour : $shour) + ":" + ($smin < 10? '0' + $smin : $smin);
     var eHM = ($ehour < 10? '0' + $ehour : $ehour) + ":" + ($emin < 10? '0' + $emin : $emin);
