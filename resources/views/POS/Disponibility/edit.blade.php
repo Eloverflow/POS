@@ -94,7 +94,7 @@
                         <strong>Success!</strong><div class="successMsg"></div>
                     </div>
                     <div class="col-md-4">
-                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:nosne;visibilsity:hidden;')) !!}
+                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -157,7 +157,7 @@
                         <strong>Success!</strong><div class="successMsg"></div>
                     </div>
                     <div class="col-md-4">
-                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'displasy:none;visibsility:hidden;')) !!}
+                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -231,7 +231,7 @@
         });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
-            postAddDisponibilities(globStoredCalendar);
+            postEditDisponibilities(globStoredCalendar);
 
         });
         $("#btnDelEvent").click(function(){
