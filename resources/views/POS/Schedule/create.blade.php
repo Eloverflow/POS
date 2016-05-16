@@ -73,6 +73,13 @@
                 <!-- dialog body -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                        <strong>Whoops!</strong><br><br>
+                        <ul id="errors"></ul>
+                    </div>
+                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
+                        <strong>Success!</strong><div class="successMsg"></div>
+                    </div>
                     <div class="col-md-4">
                         {!! Form::text('dateClicked', $ViewBag['startDate'], array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
@@ -137,6 +144,13 @@
                 <!-- dialog body -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                        <strong>Whoops!</strong><br><br>
+                        <ul id="errors"></ul>
+                    </div>
+                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
+                        <strong>Success!</strong><div class="successMsg"></div>
+                    </div>
                     <div class="col-md-4">
                         {!! Form::text('dateClicked', $ViewBag['startDate'], array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">

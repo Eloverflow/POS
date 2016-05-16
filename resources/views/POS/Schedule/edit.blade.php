@@ -74,8 +74,15 @@
                 <!-- dialog body -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                        <strong>Whoops!</strong><br><br>
+                        <ul id="errors"></ul>
+                    </div>
+                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
+                        <strong>Success!</strong><div class="successMsg"></div>
+                    </div>
                     <div class="col-md-4">
-                        {!! Form::text('dateClicked', $ViewBag['schedule']->startDate, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'displgay:none;visibiligty:hidden;')) !!}
+                        {!! Form::text('dateClicked', $ViewBag['schedule']->startDate, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -142,6 +149,13 @@
                 <!-- dialog body -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                        <strong>Whoops!</strong><br><br>
+                        <ul id="errors"></ul>
+                    </div>
+                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
+                        <strong>Success!</strong><div class="successMsg"></div>
+                    </div>
                     <div class="col-md-4">
                         {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
