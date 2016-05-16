@@ -1,7 +1,8 @@
 @extends('master')
 @section('csrfToken')
     <link rel="stylesheet" href="{{ @URL::to('css/fullcalendar.min.css') }}"/>
-    <script src="{{ @URL::to('js/moment.min.js') }}"></script>
+    <script src="{{ @URL::to('js/moment/moment.js') }}"></script>
+    <script src="{{ @URL::to('js/moment/moment-timezone.js') }}"></script>
     <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
@@ -142,6 +143,7 @@
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <div class="col-md-4">
+                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">

@@ -232,10 +232,14 @@ class ScheduleController extends Controller
                     $endTime = $weekDispos[$i][$j]->endTime;
 
                     $date = new DateTime($schedule->startDate);
+                    $startDatewithTMZ =  date_create($schedule->startDate, timezone_open('America/Montreal'));
+                    $startOffset = date_offset_get($startDatewithTMZ);
+                    $offsetInHourFormat = ($startOffset /60) /60;
+
                     $date->add(new DateInterval('P' . $i .'D'));
 
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-4:00');
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. $offsetInHourFormat);
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. $offsetInHourFormat);
 
                     if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));

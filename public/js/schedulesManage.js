@@ -142,7 +142,9 @@ function editEvent($storedCalendar){
 
         var dateAdd = null;
         if ($ehour < $shour) {
-            dateAdd = new Date(myDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+            dateAdd = new Date(moment(formatDate(myDate)).add(1, 'days')
+                .tz(globTimeZoneAMontreal)
+                .format());
         } else {
             dateAdd = myDate;
         }
@@ -206,23 +208,30 @@ function addEvent($storedCalendar){
         if ($dDayNumber == -1) {
 
             for (var i = 1; i <= 7; i++) {
-                var startDate = new Date(new Date($('#startDate').val()).getTime() + (i * 24 * 60 * 60 * 1000));
+                var startDate = new Date(moment(formatDate(myDate) + ' ' + sHM)
+                    .add(i, 'days')
+                    .tz(globTimeZoneAMontreal)
+                    .format());
 
                 var dateAdd = new Date();
                 if ($ehour < $shour) {
-                    dateAdd = new Date(startDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+                    dateAdd = new Date(moment(formatDate(startDate)).add(1, 'days')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
                 } else {
                     dateAdd = startDate;
                 }
-                //console.log($dateClicked);
 
-                $dateFormated = formatDate(startDate);
                 var newEvent = {
                     id: guid(),
                     title: $employeeName,
                     isAllDay: false,
-                    start: new Date($dateFormated + ' ' + sHM + ':00' + '-04:00'),
-                    end: new Date(formatDate(dateAdd) + ' ' + eHM + ':00' + '-04:00'),
+                    start: new Date(moment(formatDate(startDate) + ' ' + sHM)
+                        .tz(globTimeZoneAMontreal)
+                        .format()),
+                    end: new Date(moment(formatDate(dateAdd) + ' ' + eHM)
+                        .tz(globTimeZoneAMontreal)
+                        .format()),
                     description: '',
                     employeeId: $employeeId
                 };
@@ -235,7 +244,9 @@ function addEvent($storedCalendar){
 
             var dateAdd = null;
             if ($ehour < $shour) {
-                dateAdd = new Date(myDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+                dateAdd = new Date(moment(formatDate(myDate)).add(1, 'days')
+                    .tz(globTimeZoneAMontreal)
+                    .format());
             } else {
                 dateAdd = myDate;
             }
