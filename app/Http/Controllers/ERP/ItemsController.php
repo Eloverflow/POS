@@ -216,6 +216,33 @@ class ItemsController extends Controller
         return view('shared.create',compact('title', 'tableChoiceLists', 'tableColumns'));
     }
 
+    public function createe()
+    {
+        /*Page Title*/
+        $title = 'Items';
+
+        $tableColumns = array('name', 'description');
+
+
+        $tableChoiceListTable = ItemType::all();
+        /*select all where type = beer*/
+
+        $tableChoiceListTitle = "ItemType";
+        $tableChoiceListDBColumn = "item_type_id";
+        $tableChoiceListTitleColumn = "type";
+        $tableChoiceListContentColumn = "";
+        $tableChoiceListCreateURL = @URL::to('/itemtypes');
+
+        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
+
+
+        $tableChoiceLists = array($tableChoiceList1);
+
+
+
+        return view('erp.items.create',compact('title', 'tableChoiceLists', 'tableColumns'));
+    }
+
     public function postCreate()
     {
         $inputs = \Input::all();

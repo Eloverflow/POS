@@ -63,7 +63,7 @@ Route::get('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@edit', 'middle
 Route::post('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@update', 'middleware' => 'auth']);
 Route::get('/items/liste',  ['uses' => 'ERP\ItemsController@liste', 'middleware' => 'auth']);
 
-
+Route::get('/items/createe',  ['uses' => 'ERP\ItemsController@createe', 'middleware' => 'auth']);
 
 Route::get('/clients',  ['uses' => 'POS\ClientController@index', 'middleware' => 'auth']);
 Route::get('/clients/create',  ['uses' => 'POS\ClientController@create', 'middleware' => 'auth']);
