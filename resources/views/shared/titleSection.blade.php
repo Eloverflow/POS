@@ -16,7 +16,7 @@
                 $path = dirname(dirname($path));
             }
             ;?>
-            <a class="btn btn-primary pull-right" href="{{ @URL::to($path. '/create') }}">Add to {{$title}}</a>
+            <a class="btn btn-primary pull-right" href="{{ @URL::to($path. '/create') }}">Create New</a>
 
         </div>
     </div>
