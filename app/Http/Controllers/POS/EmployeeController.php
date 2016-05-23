@@ -9,6 +9,7 @@ use App\Models\POS\Punch;
 use App\Models\Project;
 use App\Models\POS\Title_Employees;
 use App\Models\Auth\User;
+use Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -145,12 +146,15 @@ class EmployeeController extends Controller
         }
         else
         {
+            $salt = Hash::make(\Input::get('password'));
+
             $user = User::create([
-                'name' => 'default_username',
+                'name' => 'user_employee',
                 'email' => \Input::get('email'),
-                'password' => bcrypt(\Input::get('password')),
+                'password' => crypt(\Input::get('password'), $salt)
 
             ]);
+
             $employee = Employee::create([
                 'firstName' => \Input::get('firstName'),
                 'lastName' => \Input::get('lastName'),
@@ -183,4 +187,17 @@ class EmployeeController extends Controller
         $view = \View::make('POS.Employee.delete')->with('employee', $employee);
         return $view;
     }
+
+    public function getEmployee($id)
+    {
+        \Input::get('password');
+
+        $employee = Employee::GetById($id);
+
+        if($employee['password'])
+
+        return ;
+    }
+
+
 }

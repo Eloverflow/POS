@@ -575,6 +575,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         $scope.updateTotal();
     };
 
+    $scope.showEmployeeModal = false;
+    $scope.toggleEmployeeModal = function(){
+        $scope.showEmployeeModal = !$scope.showEmployeeModal;
+    };
+
 
     $scope.showTableModal = false;
     $scope.toggleTableModal = function(){
@@ -588,6 +593,58 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     };
 
 
+    $scope.changeEmployee = function() {
+        $scope.toggleEmployeeModal();
+
+        $scope.numPadMsg = "Entrez votre numero d'employee";
+        $scope.mainText = '';
+        $scope.validation = false;
+    }
+
+    $scope.mainText ="";
+    $scope.padClick = function($value) {
+        //$scope.mainText = $scope.mainText.val + $value;
+
+        switch ($value) {
+            case 'dl':
+                $scope.mainText = $scope.mainText.slice(0, -1);
+                break;
+            case 'cl':
+                $scope.mainText = "";
+                break;
+            case 'clk':
+                punchEmployee();
+                break;
+            case 'ent':
+                if($scope.validation){
+
+
+
+                    $scope.toggleEmployeeModal();
+                }
+                else{
+                    $scope.numPadMsg = "Entrez votre mot de passe";
+
+                    /*We need to validate*/
+                    $scope.validation = true;
+
+                    /*Empty the field*/
+                    $scope.mainText = '';
+                }
+
+                /* window.location.replace("menu");*/
+
+                break;
+            case 'pt':
+                $scope.mainText = $scope.mainText + ".";
+                break;
+            default:
+                $scope.mainText = $scope.mainText + $value;
+
+        }
+
+    }
+
     $scope.divideBill = function(){
         $scope.toggleDivideBillModal();
 
@@ -595,6 +652,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         $('#billWindow').css('visibility', 'visible')
         $scope.openBill();
     };
+
+
+
 
     $scope.oneBill = function(){
         $scope.toggleDivideBillModal();
@@ -742,7 +802,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     $scope.movingBillItem = false;
 
 
-    $scope.currentEmploye = 2;
+    $scope.currentEmploye = {
+        name: "Jean",
+        number: 2
+        };
 
     var amt = 100;
 
@@ -776,6 +839,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
 
     };
+
+
 
     $scope.getCommand = function(){
         $url = 'http://pos.mirageflow.com/menu/getCommand';/*
@@ -929,6 +994,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
 
 })
+
 
 .directive('modal', function () {
     return {

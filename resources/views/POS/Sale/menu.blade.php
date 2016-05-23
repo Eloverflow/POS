@@ -11,6 +11,10 @@
     <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
     <script src="{{ @URL::to('js/unserialize.js') }}"></script>
     <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
+
+
+    <script src="{{ @URL::to('js/utils.js') }}"></script>
+    <script src="{{ @URL::to('js/punchEmployee.js') }}"></script>
 @stop
 
 
