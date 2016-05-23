@@ -2,6 +2,15 @@
 
 @section('title', $title)
 
+@section('afterContent')
+@include('shared.afterContent')
+@stop
+
+
+@section('titleSection')
+@include('shared.titleSection')
+@stop
+
 @section('csrfToken')
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop

@@ -2,6 +2,15 @@
 
 @section('title', $title)
 
+@section('afterContent')
+    @include('shared.afterContent')
+@stop
+
+
+@section('titleSection')
+    @include('shared.titleSection')
+@stop
+
 @section('content')
     <div class="panel panel-default">
         <div class="panel-body">
