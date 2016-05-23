@@ -128,42 +128,61 @@ function postEditSchedules($storedCalendar) {
 
 function editEvent($storedCalendar){
 
-    $shour = parseInt($('#editModal #sHour').val());
-    $smin = parseInt($('#editModal #sMin').val());
-
-    $ehour = parseInt($('#editModal #eHour').val());
-    $emin = parseInt($('#editModal #eMin').val());
-
-
     $dDayNumber = $( "#editModal #dayNumber option:selected" ).val();
     $employeeText = $( "#editModal #employeeSelect option:selected" ).text();
     $employeeId = $( "#editModal #employeeSelect option:selected" ).val();
 
-    var sHM = ($shour < 10? '0' + $shour : $shour) + ":" + ($smin < 10? '0' + $smin : $smin);
-    var eHM = ($ehour < 10? '0' + $ehour : $ehour) + ":" + ($emin < 10? '0' + $emin : $emin);
+    var ValidationResult = ModalValidation("#editModal");
+    //console.log(ValidationResult.errors);
+    if(ValidationResult.errors.length == 0) {
+        var sHM = ($shour < 10 ? '0' + $shour : $shour) + ":" + ($smin < 10 ? '0' + $smin : $smin);
+        var eHM = ($ehour < 10 ? '0' + $ehour : $ehour) + ":" + ($emin < 10 ? '0' + $emin : $emin);
 
-    var myDate = new Date($('#editModal #dateClicked').val());
+        var myDate = new Date($('#editModal #dateClicked').val());
 
-    var dateAdd = null;
-    if($ehour < $shour) {
-        dateAdd = new Date(myDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+        var dateAdd = null;
+        if ($ehour < $shour) {
+            dateAdd = new Date(moment(formatDate(myDate)).add(1, 'days')
+                .tz(globTimeZoneAMontreal)
+                .format());
+        } else {
+            dateAdd = myDate;
+        }
+        console.log(formatDate(dateAdd));
+        //console.log(sHM + " - " + eHM);
+
+
+        console.log(sHM);
+        //console.log(moment("05:00").tz(globTimeZoneAMontreal).format());
+        //console.log(moment(formatDate(dateAdd) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
+
+        globStoredEvent.title = $employeeText;
+        globStoredEvent.start = new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
+        globStoredEvent.end = new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format());
+        globStoredEvent.employeeId = $employeeId;
+
+        $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
+
+        $("#editModal #displayErrors").hide();
+
+        $("#editModal #displaySuccesses .successMsg").empty();
+        $("#editModal #displaySuccesses .successMsg").append('The moment has been edited succesfully !');
+
+        $("#editModal #displaySuccesses").show();
+
+
     } else {
-        dateAdd = myDate;
+
+        $("#editModal #displaySuccesses").hide();
+        $("#editModal #displayErrors #errors").empty();
+        for(var x = 0; x < ValidationResult.errors.length; x++) {
+            $("#editModal #displayErrors #errors").append('<li class="errors">' + ValidationResult.errors[x] + '</li>');
+            //$("#errors").append('<li class="errors">' + arrayErrors[i] + '</li>');
+        }
+        $("#editModal #displayErrors").show();
+        //console.log( key , erro[key] );
+
     }
-    console.log(formatDate(dateAdd));
-    //console.log(sHM + " - " + eHM);
-
-
-    console.log(sHM);
-    //console.log(moment("05:00").tz(globTimeZoneAMontreal).format());
-    //console.log(moment(formatDate(dateAdd) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
-
-    globStoredEvent.title = $employeeText;
-    globStoredEvent.start = new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
-    globStoredEvent.end = new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format());
-    globStoredEvent.employeeId = $employeeId;
-
-    $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
 }
 
 function deleteEvent($storedCalendar){
@@ -172,97 +191,100 @@ function deleteEvent($storedCalendar){
 
 function addEvent($storedCalendar){
 
-    $shour = parseInt($('#addModal #sHour').val());
-    $smin = parseInt($('#addModal #sMin').val());
-
-    $ehour = parseInt($('#addModal #eHour').val());
-    $emin = parseInt($('#addModal #eMin').val());
-
     $dDayNumber = $("#addModal #dayNumber option:selected" ).val();
     $employeeId = $("#addModal #employeeSelect option:selected" ).val()
     $employeeName = $("#addModal #employeeSelect option:selected" ).text()
 
-    // number verification
-    $validationError = false;
-    /*if(!$.isNumeric($shour) || !$.isNumeric($ehour)){
-        alert("Please enter some valid numbers");
-    } else {
-        if($.isNumeric($smin)){
-            if($smin > 59 || $smin < 0 ){
-                alert("The number of minutes must be between 0 and 59")
+
+    var ValidationResult = ModalValidation("#addModal");
+    //console.log(ValidationResult.errors);
+    if(ValidationResult.errors.length == 0) {
+
+        var sHM = ($shour < 10 ? '0' + $shour : $shour) + ":" + ($smin < 10 ? '0' + $smin : $smin);
+        var eHM = ($ehour < 10 ? '0' + $ehour : $ehour) + ":" + ($emin < 10 ? '0' + $emin : $emin);
+
+        var myDate = new Date($('#addModal #dateClicked').val());
+
+        if ($dDayNumber == -1) {
+
+            for (var i = 1; i <= 7; i++) {
+                var startDate = new Date(moment(formatDate(myDate) + ' ' + sHM)
+                    .add(i, 'days')
+                    .tz(globTimeZoneAMontreal)
+                    .format());
+
+                var dateAdd = new Date();
+                if ($ehour < $shour) {
+                    dateAdd = new Date(moment(formatDate(startDate)).add(1, 'days')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
+                } else {
+                    dateAdd = startDate;
+                }
+
+                var newEvent = {
+                    id: guid(),
+                    title: $employeeName,
+                    isAllDay: false,
+                    start: new Date(moment(formatDate(startDate) + ' ' + sHM)
+                        .tz(globTimeZoneAMontreal)
+                        .format()),
+                    end: new Date(moment(formatDate(dateAdd) + ' ' + eHM)
+                        .tz(globTimeZoneAMontreal)
+                        .format()),
+                    description: '',
+                    employeeId: $employeeId
+                };
+
+                $storedCalendar.fullCalendar('addEventSource', [newEvent]);
+
             }
+
         } else {
-            if($('#addModal #sMin').val() == ""){
-                $smin = 0;
-            }
-        }
-        if($.isNumeric($emin)){
-            if($emin > 59 || $emin < 0 ){
-                alert("The number of minutes must be between 0 and 59")
-            }
-        } else {
-            if($('#addModal #eMin').val() == ""){
-                $emin = 0;
-            }
-        }
-    }*/
 
-    var sHM = ($shour < 10? '0' + $shour : $shour) + ":" + ($smin < 10? '0' + $smin : $smin);
-    var eHM = ($ehour < 10? '0' + $ehour : $ehour) + ":" + ($emin < 10? '0' + $emin : $emin);
-
-    var myDate = new Date($('#addModal #dateClicked').val());
-
-    if($dDayNumber == -1)
-    {
-        for(var i = 1; i <= 7; i++){
-            var startDate = new Date(new Date($('#startDate').val()).getTime() + (i * 24 * 60 * 60 * 1000));
-
-            var dateAdd = new Date();
-            if($ehour < $shour) {
-                dateAdd = new Date(startDate.getTime() + (1 * 24 * 60 * 60 * 1000));
+            var dateAdd = null;
+            if ($ehour < $shour) {
+                dateAdd = new Date(moment(formatDate(myDate)).add(1, 'days')
+                    .tz(globTimeZoneAMontreal)
+                    .format());
             } else {
-                dateAdd = startDate;
+                dateAdd = myDate;
             }
-            //console.log($dateClicked);
+            console.log(new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format()));
+            console.log(new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format()));
 
-            $dateFormated = formatDate(startDate);
+            //console.log("Start: " + $dateClicked + ' ' + sHM + " End: " + formatDate(new Date(curDay.getTime() + (2 * 24 * 60 * 60 * 1000))) + ' ' + eHM);
+
             var newEvent = {
                 id: guid(),
                 title: $employeeName,
                 isAllDay: false,
-                start: new Date($dateFormated + ' ' + sHM + ':00' + '-04:00'),
-                end: new Date(formatDate(dateAdd) + ' ' + eHM + ':00' + '-04:00'),
+                start: new Date(moment(formatDate(myDate) + ' ' + sHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
+                end: new Date(moment(formatDate(dateAdd) + ' ' + eHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
                 description: '',
                 employeeId: $employeeId
             };
-
             $storedCalendar.fullCalendar('addEventSource', [newEvent]);
 
-        }
+            $("#addModal #displayErrors").hide();
 
+            $("#addModal #displaySuccesses .successMsg").empty();
+            $("#addModal #displaySuccesses .successMsg").append('The moment has been added succesfully !');
+
+            $("#addModal #displaySuccesses").show();
+
+        }
     } else {
 
-        var dateAdd = null;
-        if($ehour < $shour) {
-            dateAdd = new Date(myDate.getTime() + (1 * 24 * 60 * 60 * 1000));
-        } else {
-            dateAdd = myDate;
+        $("#addModal #displaySuccesses").hide();
+        $("#addModal #displayErrors #errors").empty();
+        for(var x = 0; x < ValidationResult.errors.length; x++) {
+            $("#addModal #displayErrors #errors").append('<li class="errors">' + ValidationResult.errors[x] + '</li>');
+            //$("#errors").append('<li class="errors">' + arrayErrors[i] + '</li>');
         }
-        console.log(new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format()));
-        console.log(new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format()));
+        $("#addModal #displayErrors").show();
+        //console.log( key , erro[key] );
 
-        //console.log("Start: " + $dateClicked + ' ' + sHM + " End: " + formatDate(new Date(curDay.getTime() + (2 * 24 * 60 * 60 * 1000))) + ' ' + eHM);
-
-        var newEvent = {
-            id: guid(),
-            title: $employeeName,
-            isAllDay: false,
-            start: new Date(moment(formatDate(myDate) + ' ' + sHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
-            end: new Date(moment(formatDate(dateAdd) + ' ' + eHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
-            description: '',
-            employeeId: $employeeId
-        };
-        $storedCalendar.fullCalendar('addEventSource', [newEvent]);
     }
 
 }
@@ -290,12 +312,15 @@ function dayClick(xDate, xEvent)
 
     var ymd = formatDate(datet);
     $('#addModal #dateClicked').val(ymd);
+
+    $("#addModal #displayErrors").hide();
+    $("#addModal #displaySuccesses").hide();
+
     $("#addModal").modal('show');
 }
 
 function scheduleClick(xDate, xEvent)
 {
-
 
     //console.log(xEvent.start.toString());
     var sDate = new Date(xEvent.start.toString());
@@ -315,5 +340,58 @@ function scheduleClick(xDate, xEvent)
     //alert(xEvent.employeeId);
     // Set global var so we can get it when we edit.
     globStoredEvent = xEvent;
+
+    $("#editModal #displayErrors").hide();
+    $("#editModal #displaySuccesses").hide();
     $("#editModal").modal('show');
+}
+
+function ModalValidation(modal){
+
+    $shour = parseInt($(modal + ' #sHour').val());
+    $smin = parseInt($(modal + ' #sMin').val());
+
+    $ehour = parseInt($(modal + ' #eHour').val());
+    $emin = parseInt($(modal + ' #eMin').val());
+
+    var arrayErrors = [];
+    if(!$.isNumeric($shour) || !$.isNumeric($ehour)){
+        arrayErrors.push("Please enter some valid numbers");
+    } else {
+        if($shour >= 0 && $shour <= 24 && $ehour >= 0 && $ehour <= 24) {
+            if ($.isNumeric($smin)) {
+                if ($smin > 59 || $smin < 0) {
+                    arrayErrors.push("The number of minutes must be between 0 and 59")
+                }
+            } else {
+                if ($(modal + ' #sMin').val() == "") {
+                    $smin = 0;
+                } else {
+                    arrayErrors.push("The number of minutes for start is not valid")
+                }
+            }
+            if ($.isNumeric($emin)) {
+                if ($emin > 59 || $emin < 0) {
+                    arrayErrors.push("The number of minutes must be between 0 and 59")
+                }
+            } else {
+                if ($(modal + ' #eMin').val() == "") {
+                    $emin = 0;
+                } else {
+                    arrayErrors.push("The number of minutes for end is not valid")
+                }
+            }
+        } else {
+            arrayErrors.push("Please select hours between 0 and 24")
+        }
+    }
+
+    var timeObj = {
+        shour: $shour,
+        smin: $smin,
+        ehour: $ehour,
+        emin: $emin
+    };
+    var ValidationResult = {time:timeObj, errors:arrayErrors};
+    return ValidationResult;
 }

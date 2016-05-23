@@ -67,10 +67,14 @@ class DisponibilityController extends Controller
 
 
                     $date = new DateTime();
+                    $startDatewithTMZ =  date_create($date->format('Y-m-d'), timezone_open('America/Montreal'));
+                    $startOffset = date_offset_get($startDatewithTMZ);
+                    $offsetInHourFormat = ($startOffset /60) /60;
+
                     $date->modify('Sunday last week +' . $dayNumber . ' days');
 
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. $offsetInHourFormat);
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. $offsetInHourFormat);
 
                     if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));
@@ -139,11 +143,15 @@ class DisponibilityController extends Controller
 
 
                     $date = new DateTime();
+                    $startDatewithTMZ =  date_create($date->format('Y-m-d'), timezone_open('America/Montreal'));
+                    $startOffset = date_offset_get($startDatewithTMZ);
+                    $offsetInHourFormat = ($startOffset /60) /60;
+
                     $date->modify('Sunday last week +' . $dayNumber . ' days');
                     //$date->add(new DateInterval('P' . $i .'D'));
 
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
+                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. $offsetInHourFormat);
+                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. $offsetInHourFormat);
 
                     if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
                         $dispoEnd->add(new DateInterval('P1D'));
