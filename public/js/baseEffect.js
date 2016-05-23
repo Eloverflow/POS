@@ -227,8 +227,6 @@ function arrowClick(currentTableChoiceList, currentTableChoiceListArrow, tableIt
         if(currentTableChoiceListArrow.html() == '<span class="glyphicon glyphicon-chevron-down"></span>'){
             autoHeightAnimate(currentTableChoiceList, 300);
 
-            setTimeout(function() { pageScroll.resize(); }, 300);
-
             currentTableChoiceListArrow.html('<span class="glyphicon glyphicon-chevron-up"></span>');
 
         }else{
@@ -242,7 +240,6 @@ function arrowClick(currentTableChoiceList, currentTableChoiceListArrow, tableIt
 
 
             currentTableChoiceList.animate({height: 80 }, 300);
-            pageScroll.resize();
             currentTableChoiceListArrow.html('<span class="glyphicon glyphicon-chevron-down"></span>');
         }
     });
