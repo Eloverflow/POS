@@ -5,7 +5,7 @@
     <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>
 @stop
 
-@section('patate')
+@section('calendar')
     <div class="panel panel-default calendar-fix">
         <div class="panel-body">
             {!! $calendar->calendar() !!}
