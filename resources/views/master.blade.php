@@ -35,7 +35,7 @@
                 <span class="icon-bar"></span>
             </button>
 
-            <a class="navbar-brand" href="#"><span>Easy</span>Pos</a>
+            <a class="navbar-brand" href="#"><span>Pos</span>Io</a>
 @if (Auth::check())
             <ul class="user-menu">
                 <li class="dropdown pull-right">
@@ -119,32 +119,11 @@ $userMenuTabs = array
 </div>
 
 
+
 <div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 
     <div class="row">
-        @if(!empty($title))
-        <div class="col-md-6">
-            <h1 class="page-header">{{$title}}</h1>
-        </div>
-        <div class="col-md-6">
-            <div class="vcenter">
-                @if(!empty($_SERVER['HTTP_REFERER']))
-                    <?php $path = $_SERVER['HTTP_REFERER'];?>
-                    <?php $pathArray = explode('/', $path) ?>
-                    <a class="btn btn-danger pull-right" href="{{@URL::to($path)}}" >Back to @if($pathArray[count($pathArray)-1] == "") Home @else {{$pathArray[count($pathArray)-1]}} @endif</a>
-                @endif
-
-                <?php $path = Request::path();
-                    $pathArray = explode('/', $path);
-                    if( count($pathArray) > 1 && ($pathArray[count($pathArray)-2] === 'view' || $pathArray[count($pathArray)-2] === 'edit')){
-                        $path = dirname(dirname($path));
-                    }
-                    ;?>
-                <a class="btn btn-primary pull-right" href="{{ @URL::to($path. '/create') }}">Add to {{$title}}</a>
-
-            </div>
-        </div>
-        @endif
+        @yield('titleSection')
     </div>
     <div class="row">
         <div class="col-lg-12">
@@ -157,33 +136,16 @@ $userMenuTabs = array
                     </div>
                 </div>
             @endif
+
             @yield('content')
 
-            {{-- Maybe to remove--}}
-            @if(!empty($previousTableRow) || !empty($nextTableRow))
-                <?php $path = dirname(Request::path()); ?>
-                <nav>
-                    <ul class="pager">
-                        @if($previousTableRow->slug)
-                            <li class="previous"><a href="{{@URL::to( $path ) }}/{{ $previousTableRow->slug }}"><span aria-hidden="true">&larr;</span> {{ $previousTableRow->slug }}</a></li>
-                        @elseif($previousTableRow->id)
-                            <li class="previous"><a href="{{@URL::to( $path ) }}/{{ $previousTableRow->id }}"><span aria-hidden="true">&larr;</span> {{ $previousTableRow->id }}</a></li>
-                        @endif
-
-                        @if($nextTableRow->slug)
-                            <li class="next"><a href="{{@URL::to( $path ) }}/{{ $nextTableRow->slug }}">{{ $nextTableRow->slug }} <span aria-hidden="true">&rarr;</span></a></li>
-                        @elseif($nextTableRow->id)
-                            <li class="next"><a href="{{@URL::to( $path ) }}/{{ $nextTableRow->id }}">{{ $nextTableRow->id }} <span aria-hidden="true">&rarr;</span></a></li>
-                        @endif
-                    </ul>
-                </nav>
-            @endif
+            @yield('afterContent')
         </div>
     </div>
 
 </div>
 
-@yield('patate')
+@yield('calendar')
 
 {{--Script call--}}
 <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
