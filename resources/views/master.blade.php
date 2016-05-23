@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EASYPOS @foreach(Request::segments() as $segment){{ ' | ' . ucwords( str_replace('_', ' ', $segment))}}@endforeach</title>
+    <title>EXPRESSPOS @foreach(Request::segments() as $segment){{ ' | ' . ucwords( str_replace('_', ' ', $segment))}}@endforeach</title>
 {{--<script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>--}}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 @yield('csrfToken')
@@ -34,6 +34,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
+
             <a class="navbar-brand" href="#"><span>Easy</span>Pos</a>
 @if (Auth::check())
             <ul class="user-menu">
