@@ -456,8 +456,8 @@ li.addTable .glyphicon{
 
 .tableChoiceList{
 	visibility: hidden;
-	overflow-y: hidden;
-	height: 80px;
+	overflow-y: scroll;
+	height: 150px;
 	margin-bottom: 0;
 }
 
@@ -471,8 +471,11 @@ li.addTable .glyphicon{
 	float: right;*/
 }
 
+.tableChoiceList h2 {
+	display: inline-block;
+}
 .tableChoice{
-	height: 80px;
+	height: 60px;
 	transition: color 0.5s, background-color 0.5s;
 	cursor: pointer;
 }
@@ -750,3 +753,6 @@ li.addTable .glyphicon{
 	padding: 0 !important;
 }
 
+.labelBtn {
+	height: 45px;
+}
