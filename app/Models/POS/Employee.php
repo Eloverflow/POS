@@ -24,4 +24,10 @@ class Employee extends Model
             ->select(\DB::raw('employees.id as idEmployee, firstName, lastName, email, hireDate'))
             ->get();
     }
+
+
+    public function user()
+    {
+        return $this->hasOne('App\Models\Auth\User', 'id', 'userId');
+    }
 }

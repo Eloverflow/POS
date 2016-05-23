@@ -592,6 +592,29 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         $scope.showDivideBillModal = !$scope.showDivideBillModal;
     };
 
+    $scope.authenticateEmployee = function(){
+
+        $url = 'http://pos.mirageflow.com/employee/authenticate/'+ $scope.newUserId;
+        $data = {password: $scope.newUserPassword };
+
+        var $callbackFunction = function(response){
+
+            if(!response.hasOwnProperty('error')){
+                console.log("User is valid :");
+                console.log(response);
+                $scope.currentEmploye = response;
+            }
+            else{
+                console.log("User is invalid :");
+                console.log(response.error);
+            }
+
+
+            $scope.toggleEmployeeModal();
+        };
+
+        postReq.send($url, $data, null, $callbackFunction);
+    }
 
     $scope.changeEmployee = function() {
         $scope.toggleEmployeeModal();
@@ -617,12 +640,13 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                 break;
             case 'ent':
                 if($scope.validation){
+                    $scope.newUserPassword = $scope.mainText;
 
+                    $scope.authenticateEmployee();
 
-
-                    $scope.toggleEmployeeModal();
                 }
                 else{
+                    $scope.newUserId = $scope.mainText;
                     $scope.numPadMsg = "Entrez votre mot de passe";
 
                     /*We need to validate*/
@@ -801,11 +825,12 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
     $scope.bills[0] = [];
     $scope.movingBillItem = false;
 
-
-    $scope.currentEmploye = {
-        name: "Jean",
-        number: 2
-        };
+    $scope.currentEmploye = {};
+    /*$scope.currentEmploye = {
+        firstName: "Jean",
+        lastName: "Fortin-Moreau",
+        id: 2
+        };*/
 
     var amt = 100;
 
@@ -979,6 +1004,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
             /*End of loading screen*/
             window.loading_screen.finish();
+
+            $scope.numPadMsg = "Entrez votre numeros d'employe"
+            $scope.authenticateEmployee();
 
         };
 

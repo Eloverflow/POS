@@ -79,6 +79,8 @@ Route::post('/employee/create',  ['uses' => 'POS\EmployeeController@postcreate',
 
 Route::get('/employee/details/{id}',  ['uses' => 'POS\EmployeeController@details', 'middleware' => 'auth']);
 
+Route::post('/employee/authenticate/{id}',  ['uses' => 'POS\EmployeeController@authenticateEmployee']);
+
 Route::get('/employee/titles',  ['uses' => 'POS\EmployeeTitleController@index', 'middleware' => 'auth']);
 Route::post('/employee/title/create',  ['uses' => 'POS\EmployeeTitleController@postCreate', 'middleware' => 'auth']);
 Route::post('/employee/title/edit',  ['uses' => 'POS\EmployeeTitleController@postEdit', 'middleware' => 'auth']);

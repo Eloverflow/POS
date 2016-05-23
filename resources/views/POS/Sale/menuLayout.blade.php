@@ -52,7 +52,7 @@
 
                 <li  class="dropdown pull-right">
                     <a href="#" ng-click="changeEmployee()" ><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg>
-                        Employé #<% currentEmploye.number %></a>
+                        Employé #<% currentEmploye.id %></a>
                 </li>
             </ul>
             <ul class="user-menu tableNumber">
@@ -103,9 +103,9 @@
         </div>
     </div>
 </modal>
-<modal title="Changement d'employee" class="center-modal" visible="showEmployeeModal">
+<modal title="Changement d'employee" class="center-modal employee-modal" visible="showEmployeeModal">
         <div>
-        <% currentEmploye.name %>
+        Employee courant : <% currentEmploye.firstName %> <% currentEmploye.lastName %>
             <table id="keyboard">
                 <tbody>
                 <tr>

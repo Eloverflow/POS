@@ -829,6 +829,19 @@ body{
 
 }
 
+/*.employee-modal{
+	background-color: #FFF;
+}*/
+
+.employee-modal .modal-content{
+	background-color: #444;
+	opacity: 0.9;
+}
+.employee-modal #displayMessage{
+	font-size: 20px;
+	color: white;
+	font-weight: bold;
+}
 
 
 body > .inner {
