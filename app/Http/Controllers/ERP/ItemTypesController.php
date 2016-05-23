@@ -54,7 +54,7 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         /*Main table row to retrieve from DB*/
         $tableRow = ItemType::whereSlug($slug)->first();
         /*Main table desired column to display*/
-        $tableColumns = array('type', 'field_names');
+        $tableColumns = array('type', 'field_names', 'size_names');
 
 
         /*$tableChoiceListTable = ItemType::all();*/

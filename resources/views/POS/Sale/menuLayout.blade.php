@@ -11,6 +11,7 @@
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/styles.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('css/mainSale.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/menuSale.css') }}" rel="stylesheet">
     {{--End of Stylesheet call--}}
 
@@ -50,18 +51,8 @@
             <ul class="user-menu">
 
                 <li  class="dropdown pull-right">
-                    <a style="cursor: not-allowed"  href="#" class="dropdown-toggle" data-toggle="{{--dropdown--}}" aria-expanded="false"><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg>
-                        Employé #<% currentEmploye %>
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu">
-
-
-                        <li><a href="#"><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg> Profile</a></li>
-
-                        <li><a href="#"><svg class="glyph stroked gear"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-gear"></use></svg> Settings</a></li>
-
-                        <li><a href="http://mirageflow.com/auth/logout"><svg class="glyph stroked cancel"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-cancel"></use></svg> Logout</a></li>
-                    </ul>
+                    <a href="#" ng-click="changeEmployee()" ><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg>
+                        Employé #<% currentEmploye.number %></a>
                 </li>
             </ul>
             <ul class="user-menu tableNumber">
@@ -110,6 +101,50 @@
         <div style="background-color: grey; cursor: default" ng-click="divideBill()" class="divideBillChoice">
             Diviser manuellement
         </div>
+    </div>
+</modal>
+<modal title="Changement d'employee" class="center-modal" visible="showEmployeeModal">
+        <div>
+        <% currentEmploye.name %>
+            <table id="keyboard">
+                <tbody>
+                <tr>
+                    <td colspan="4" id="displayMessage"><% numPadMsg %></td>
+                </tr>
+                <tr>
+                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"></td>
+                </tr>
+                <tr>
+                    <td colspan="2"><button class="button" ng-click="padClick('dl')">Del</button></td>
+                    <td colspan="2"><button class="button" ng-click="padClick('cl')">Clear</button></td>
+                </tr>
+
+                <tr>
+                    <td><button class="button" ng-click="padClick(7)">7</button></td>
+                    <td><button class="button" ng-click="padClick(8)">8</button></td>
+                    <td><button class="button" ng-click="padClick(9)">9</button></td>
+                    <td rowspan="2"><button class="button" ng-click="padClick('clk')">Clock in/out</button></td>
+                </tr>
+
+                <tr>
+                    <td><button class="button" ng-click="padClick(4)">4</button></td>
+                    <td><button class="button" ng-click="padClick(5)">5</button></td>
+                    <td><button class="button" ng-click="padClick(6)">6</button></td>
+                </tr>
+
+                <tr>
+                    <td><button class="button" ng-click="padClick(1)">1</button></td>
+                    <td><button class="button" ng-click="padClick(2)">2</button></td>
+                    <td><button class="button" ng-click="padClick(3)">3</button></td>
+                    <td rowspan="2"><button class="button" ng-click="padClick('ent')">Ent</button></td>
+                </tr>
+
+                <tr>
+                    <td colspan="2"><button class="button" ng-click="padClick(0)">0</button></td>
+                    <td><button class="button" ng-click="padClick('pt')">.</button></td>
+                </tr>
+                </tbody>
+            </table>
     </div>
 </modal>
 
