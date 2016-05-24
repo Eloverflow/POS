@@ -8,9 +8,12 @@
 @section('title', $title)
 
 @section('content')
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">Create Item</h1>
+    <div class="col-md-6">
+        <h1 class="page-header">Create Item</h1>
+    </div>
+    <div class="col-md-6">
+        <div class="vcenter">
+            <a class="btn btn-danger pull-right" href="{{ @URL::to('items') }}"> Back to items </a>
         </div>
     </div>
     <div class="row">
@@ -47,6 +50,8 @@
 
                         <button type="submit" class="btn btn-primary pull-right">Create</button>
                     </form>
+                </div>
+                <div class="col-md-6">
                 </div>
             </div>
         </div>
@@ -150,5 +155,8 @@
             postAddItemsType();
 
         });
+        $("#tableChoiceList1 span").on("click", function() {
+            alert("span click !");
+        })
     </script>
 @stop

@@ -264,16 +264,16 @@ class ItemsTableSeeder extends Seeder {
             'description' => 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem.',
             'slug' => 'keith',
             'img_id' => 'Alexander Keith.jpg',
-            'custom_fields_array' => serialize(array('Alexander Keith','Red','5')),
-            'size_prices_array' => serialize(array('6.25','8.12','16.75','175.99' ))]);
+            'custom_fields_array' => json_encode(array('Alexander Keith','Red','5'), JSON_UNESCAPED_UNICODE),
+            'size_prices_array' => json_encode(array('6.25','8.12','16.75','175.99' ), JSON_UNESCAPED_UNICODE )]);
 
         Item::create([
             'item_type_id' => '1',
             'name' => 'Blue', 'description' => 'Tous mes sens sont émus d\'une volupté douce et pure.',
             'slug' => 'blue',
             'img_id' => 'Labatt Blue.jpg',
-            'custom_fields_array' => serialize(array('Labatt','Dry','5.6')),
-            'size_prices_array' => serialize(array('5.25','7.15','14.95','135.98' ))]);
+            'custom_fields_array' => json_encode(array('Labatt','Dry','5.6'), JSON_UNESCAPED_UNICODE),
+            'size_prices_array' => json_encode(array('5.25','7.15','14.95','135.98' ), JSON_UNESCAPED_UNICODE)]);
 
 
         Item::create(['item_type_id' => '1',
@@ -281,8 +281,8 @@ class ItemsTableSeeder extends Seeder {
             'description' => 'Voyez ce jeu exquis wallon, de graphie en kit mais bref.',
             'slug' => 'coorslight',
             'img_id' => 'Labatt Blue.jpg',
-            'custom_fields_array' => serialize(array('Coors','Light','4.5')),
-            'size_prices_array' => serialize(array('5.25','7.15','14.95','135.98' ))]);
+            'custom_fields_array' => json_encode(array('Coors','Light','4.5'), JSON_UNESCAPED_UNICODE),
+            'size_prices_array' => json_encode(array('5.25','7.15','14.95','135.98' ), JSON_UNESCAPED_UNICODE)]);
 
 
         Item::create([
@@ -291,8 +291,8 @@ class ItemsTableSeeder extends Seeder {
             'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. ',
             'slug' => 'mydrinkname',
             'img_id' => 'drink.jpg',
-            'custom_fields_array' => serialize(array('Sour','green','Jino', '20')),
-            'size_prices_array' => serialize(array('2.25','5.00','7.95' ))]);
+            'custom_fields_array' => json_encode(array('Sour','green','Jino', '20'), JSON_UNESCAPED_UNICODE),
+            'size_prices_array' => json_encode(array('2.25','5.00','7.95' ), JSON_UNESCAPED_UNICODE)]);
 
         Item::create([
             'item_type_id' => '2',
@@ -300,8 +300,8 @@ class ItemsTableSeeder extends Seeder {
             'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
             'slug' => 'Vodka-jus-orange',
             'img_id' => '',
-            'custom_fields_array' => serialize(array('Warming','Orange','Some Guy', '25')),
-            'size_prices_array' => serialize(array('3.25','5.50','8.35' ))]);
+            'custom_fields_array' => json_encode(array('Warming','Orange','Some Guy', '25'), JSON_UNESCAPED_UNICODE),
+            'size_prices_array' => json_encode(array('3.25','5.50','8.35' ), JSON_UNESCAPED_UNICODE)]);
 
         Item::create([
             'item_type_id' => '3',
@@ -309,8 +309,8 @@ class ItemsTableSeeder extends Seeder {
             'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
             'slug' => 'poutine-cote-leve',
             'img_id' => '',
-            'custom_fields_array' => serialize(array('BBQ','Montery Jack','Côte Levée')),
-            'size_prices_array' => serialize(array('4.50','6.40','8.15' ))]);
+            'custom_fields_array' => json_encode(array('BBQ','Montery Jack','Côte Levée'), JSON_UNESCAPED_UNICODE),
+            'size_prices_array' => json_encode(array('4.50','6.40','8.15' ), JSON_UNESCAPED_UNICODE)]);
 
         Item::create([
             'item_type_id' => '4',
@@ -318,8 +318,8 @@ class ItemsTableSeeder extends Seeder {
             'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
             'slug' => 'grilled-cheeze-bacon',
             'img_id' => '',
-            'custom_fields_array' => serialize(array('White','4 Fromage')),
-            'size_prices_array' => serialize(array('3.90','6.00' ))]);
+            'custom_fields_array' => json_encode(array('White','4 Fromage'), JSON_UNESCAPED_UNICODE),
+            'size_prices_array' => json_encode(array('3.90','6.00' ), JSON_UNESCAPED_UNICODE)]);
 
 
         Item::create([
@@ -328,8 +328,8 @@ class ItemsTableSeeder extends Seeder {
             'description' => 'Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa.',
             'slug' => 'nachos-chili-bacon',
             'img_id' => '',
-            'custom_fields_array' => serialize(array('Nachos','4 Fromage', 'Bacon')),
-            'size_prices_array' => serialize(array('4.95','7.70' ))]);
+            'custom_fields_array' => json_encode(array('Nachos','4 Fromage', 'Bacon'), JSON_UNESCAPED_UNICODE),
+            'size_prices_array' => json_encode(array('4.95','7.70' ), JSON_UNESCAPED_UNICODE)]);
 
         $this->command->info('Items table seeded!');
     }
