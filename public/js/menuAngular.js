@@ -281,7 +281,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
             $scope.numPadMsg = "Entrez votre numeros d'employe"
             $scope.authenticateEmployee();
 
-            $('#changeEmployee').prepend('<div id="windowModalBlocker" style=" background-color: #fff; opacity:0; width: 100%; height: 100%; position: absolute;"></div>')
+            var modalChangeEmployee = $('#changeEmployee');
+            modalChangeEmployee.prepend('<div id="windowModalBlocker" style=" background-color: #fff; opacity:0; width: 100%; height: 100%; position: absolute;"></div>')
+            modalChangeEmployee.find('#closeModal').remove();
 
             /*$('#changeEmployee').on('click',function(){
                 alert('test')});
