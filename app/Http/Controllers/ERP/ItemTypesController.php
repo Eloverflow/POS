@@ -65,7 +65,8 @@ class ItemTypesController extends \App\Http\Controllers\Controller
             $itemType = ItemType::create([
                 'type' => \Input::get('typeName'),
                 'field_names' => \Input::get('fieldNames'),
-                'size_names' => \Input::get('sizeNames')
+                'size_names' => \Input::get('sizeNames'),
+                'slug' => \Input::get('typeName')
             ]);
 
 

@@ -61,7 +61,7 @@ class ItemsController extends Controller
         $tableChildren = array($tableChild1);
 
 
-        return view('shared.list',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
+        return view('shared.listItems',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
     }
 
     public function liste()
