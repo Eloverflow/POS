@@ -184,7 +184,7 @@ class UserTableSeeder extends Seeder {
         User::create(['name' => 'Jean Fortin-Moreau', 'email' => 'jfortin-moreau@outlook.com', 'password' => 'inpensable', 'remember_token' => 'ozk5AuCDzT6yoE1AdNiQ0KlaYc76bMzNLSoOWF8kVUj36vIi8H3V3bU2xbm3']);
         User::create(['name' => 'root', 'email' => 'maype.isaelblais@gmail.com', 'password' => '$2y$10$601HfwtJ9k36ih7iUIBVgeSZaWeEjacAjl1wdbHB.kNrpOf2Em8Xu']);
         User::create(['name' => 'Visiteur(es) Adncomm', 'email' => 'visiteur@adncomm.com', 'password' => 'Adncomm1337!', 'remember_token' => 'l6JMhYJSwbQj8791LCAhPdkrryYMQQkjbwkqd13MhgEeAyUj3yAfoEXvzmTL']);
-        User::create(['name' => 'user_employee', 'email' => 'test-mflow@yopmail.com', 'password' => '$2y$10$apaI1Zlmkijcvvh79RGRYeQu/N7rBToOxsxt3nYGFeHZVCxQCnfhq']);
+        User::create(['name' => 'user_employee', 'email' => 'test-mflow@yopmail.com', 'password' => '11']);
 
         $this->command->info('Users table seeded!');
     }

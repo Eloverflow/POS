@@ -128,13 +128,13 @@ class ItemsController extends Controller
 
         if(Input::get('custom_fields_array') != null){
 
-            Input::merge(array('custom_fields_array' =>  serialize(Input::get('custom_fields_array'))));
+            Input::merge(array('custom_fields_array' =>  json_encode(Input::get('custom_fields_array'))));
 
         }
 
         if(Input::get('size_prices_array') != null){
 
-            Input::merge(array('size_prices_array' =>  serialize(Input::get('size_prices_array'))));
+            Input::merge(array('size_prices_array' =>  json_encode(Input::get('size_prices_array'))));
 
         }
 
