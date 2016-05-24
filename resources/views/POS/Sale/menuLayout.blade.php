@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PUBALEX @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
+    <title>POSIO @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
 
     {{--Stylesheet call--}}
     <link href="{{ @URL::to('Framework/Bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -35,7 +35,7 @@
 <script type="text/javascript" src="{{ URL::to('Framework/please-wait/please-wait.min.js')  }}"></script>
 <script type="text/javascript">
     window.loading_screen = window.pleaseWait({
-        logo: "{{ URL::to('Framework/please-wait/easypos.png')  }}",
+        logo: "{{ URL::to('Framework/please-wait/posio.png')  }}",
         backgroundColor: '#222',
         loadingHtml: "<div class='spinner'><div class='rect1'></div> <div class='rect2'></div> <div class='rect3'></div> <div class='rect4'></div> <div class='rect5'></div> </div>"
     });
@@ -47,7 +47,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span>Facture</span> <span class="glyphicon glyphicon-barcode"></span>
             </button>
-            <a class="navbar-brand" href="{{@URL::to('/menu/start')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>EASY</span>POS</a>
+            <a class="navbar-brand" href="{{@URL::to('/menu/start')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pos</span>Io</a>
             <ul class="user-menu">
 
                 <li  class="dropdown pull-right">

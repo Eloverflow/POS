@@ -31,7 +31,7 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span>Facture</span> <span class="glyphicon glyphicon-barcode"></span>
             </button>
-            <a class="navbar-brand" href="{{@URL::to('/')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pub</span>Alex</a>
+            <a class="navbar-brand" href="{{@URL::to('/')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pos</span>Io</a>
 
         </div>
 
