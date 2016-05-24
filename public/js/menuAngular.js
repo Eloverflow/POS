@@ -270,9 +270,22 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 /*
             console.log($scope.menuItemsExtended);*/
 
+            /*No longer automaticly load command*/
+/*
+            $scope.getCommand();*/
 
-            $scope.getCommand();
+            /*End of loading screen*/
+            window.loading_screen.finish();
 
+
+            $scope.numPadMsg = "Entrez votre numeros d'employe"
+            $scope.authenticateEmployee();
+
+            $('#changeEmployee').prepend('<div id="windowModalBlocker" style=" background-color: #fff; opacity:0; width: 100%; height: 100%; position: absolute;"></div>')
+
+            /*$('#changeEmployee').on('click',function(){
+                alert('test')});
+*/
         };
 
         getReq.send($url, null ,$callbackFunction);
@@ -586,6 +599,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         $scope.showTableModal = !$scope.showTableModal;
     };
 
+    $scope.showPlanModal = false;
+    $scope.togglePlanModal = function(){
+        $scope.showPlanModal = !$scope.showPlanModal;
+    };
+
 
     $scope.showDivideBillModal = false;
     $scope.toggleDivideBillModal = function(){
@@ -603,6 +621,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                 console.log("User is valid :");
                 console.log(response);
                 $scope.currentEmploye = response;
+                $scope.getCommand();
             }
             else{
                 console.log("User is invalid :");
@@ -643,6 +662,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                     $scope.newUserPassword = $scope.mainText;
 
                     $scope.authenticateEmployee();
+
+                    $('#windowModalBlocker').remove();
 
                 }
                 else{
@@ -865,7 +886,61 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
     };
 
+    var elem = document.body; // Make the body go full screen.
+    var fullscreenFlag = false;
+    var splashFullScreen = $('#splashFullScreen');
+    $scope.toogleFullscreen = function () {
+        fullscreenFlag = !fullscreenFlag;
+        if(fullscreenFlag){
+            fullscreen();
+        }else {
+            console.log('etst')
+            cancelFullScreen();
+        }
 
+    }
+    
+    function fullscreen(){
+        splashFullScreen.fadeTo( 0, 800, function() {
+            splashFullScreen.css("visibility","visible");
+            splashFullScreen.css("font-size","50px");
+        });
+
+        requestFullScreen();
+        splashFullScreen.delay(300).fadeTo( 800, 0, function() {
+            splashFullScreen.css("visibility","hidden");
+            splashFullScreen.css("font-size","30px");
+        });
+
+    }
+
+    function requestFullScreen() {
+        // Supports most browsers and their versions.
+        var requestMethod = elem.requestFullScreen || elem.webkitRequestFullScreen || elem.mozRequestFullScreen || elem.msRequestFullscreen;
+
+        if (requestMethod) { // Native full screen.
+            requestMethod.call(elem);
+        } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript !== null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+    }
+
+    function cancelFullScreen() {
+        // Supports most browsers and their versions.
+        var requestMethod = document.cancelFullScreen || document.webkitCancelFullScreen || document.mozCancelFullScreen || document.msCancelFullscreen;
+
+        if (requestMethod) { // Native full screen.
+            requestMethod.call(document);
+        } else if (typeof window.ActiveXObject !== "undefined") { // Older IE.
+            var wscript = new ActiveXObject("WScript.Shell");
+            if (wscript !== null) {
+                wscript.SendKeys("{F11}");
+            }
+        }
+    }
 
     $scope.getCommand = function(){
         $url = 'http://pos.mirageflow.com/menu/getCommand';/*
@@ -1002,11 +1077,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
             console.log("The command as been loaded and confirmation received inside response - Success or Not ?");
 
 
-            /*End of loading screen*/
-            window.loading_screen.finish();
-
+            /*/!*End of loading screen*!/
+            window.loading_screen.finish();*/
+/*
             $scope.numPadMsg = "Entrez votre numeros d'employe"
-            $scope.authenticateEmployee();
+            $scope.authenticateEmployee();*/
 
         };
 

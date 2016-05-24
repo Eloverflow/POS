@@ -71,8 +71,15 @@
             </ul>
             <ul class="user-menu">
                 <li>
-                    <a style="cursor: not-allowed" href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
+                    <a href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
                         Plan
+                    </a>
+                </li>
+            </ul>
+            <ul class="user-menu">
+                <li>
+                    <a href="#" ng-click="toogleFullscreen()"><span class="glyphicon glyphicon-fullscreen"></span>
+                        Plein écran
                     </a>
                 </li>
             </ul>
@@ -103,7 +110,7 @@
         </div>
     </div>
 </modal>
-<modal title="Changement d'employee" class="center-modal employee-modal" visible="showEmployeeModal">
+<modal title="Changement d'employee" id="changeEmployee" class="center-modal employee-modal" visible="showEmployeeModal">
         <div>
         Employee courant : <% currentEmploye.firstName %> <% currentEmploye.lastName %>
             <table id="keyboard">
@@ -112,7 +119,8 @@
                     <td colspan="4" id="displayMessage"><% numPadMsg %></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"></td>
+                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"><br><em style="color: white">Utilisez : 9 : 111</em></td>
+
                 </tr>
                 <tr>
                     <td colspan="2"><button class="button" ng-click="padClick('dl')">Del</button></td>
@@ -151,6 +159,55 @@
 
 @yield('content')
 
+<div  id="planModal"  style=" background-color: #333; z-index: 1000; position: absolute; width: 100%; height: 100%;" ng-show="showPlanModal">
+    <canvas style="margin: 0;" id="myCanvas" width="0" height="0" />
+    <script>
+
+
+        var canva = $('#myCanvas');
+        var planModal =$('#planModal');
+
+        canva.attr('width', planModal.width());
+        canva.attr('height', planModal.height());
+
+
+        var elem = document.getElementById('myCanvas'),
+                elemLeft = elem.offsetLeft,
+                elemTop = 50,
+                context = elem.getContext('2d'),
+                elements = [];
+                /*50 is header size*/
+
+        // Add event listener for `click` events.
+        elem.addEventListener('click', function(event) {
+            var x = event.pageX - elemLeft,
+                    y = event.pageY - elemTop;
+            console.log(x, y);
+            elements.forEach(function(element) {
+                if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
+                    alert('clicked an element : ' + element.name);
+                }
+            });
+
+        }, false);
+
+        // Add element.
+        elements.push({
+            name: 'test',
+            colour: '#05EFFF',
+            width: 150,
+            height: 100,
+            top: 20,
+            left: 15
+        });
+
+        // Render elements.
+        elements.forEach(function(element) {
+            context.fillStyle = element.colour;
+            context.fillRect(element.left, element.top, element.width, element.height);
+        });
+    </script>
+</div>
 
 <div id="billWindow">
     <h1>Factures</h1>
