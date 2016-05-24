@@ -282,8 +282,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
             $scope.authenticateEmployee();
 
             var modalChangeEmployee = $('#changeEmployee');
-            modalChangeEmployee.prepend('<div id="windowModalBlocker" style=" background-color: #fff; opacity:0; width: 100%; height: 100%; position: absolute;"></div>')
-            modalChangeEmployee.find('#closeModal').remove();
+            modalChangeEmployee.prepend('<div id="windowModalBlocker" style=" background-color: #fff; opacity:0; width: 100%; height: 100%; position: absolute;"></div>');
+            /* modalChangeEmployee.find('#closeModal');*/
+
 
             /*$('#changeEmployee').on('click',function(){
                 alert('test')});
@@ -448,7 +449,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
      /*   $('#footPanel').height(300);*/
 
 
-        var size_prices_array = unserialize(item['size_prices_array']);
+        var size_prices_array = JSON.parse(item['size_prices_array']);
 
         var size_names = item['itemtype']['size_names'];
 
@@ -970,7 +971,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
 
                     if($scope.commandClient[f+1].notes != "")
-                    $scope.commandClient[f+1].notes = unserialize($scope.commandClient[f+1].notes)
+                    $scope.commandClient[f+1].notes = JSON.parse($scope.commandClient[f+1].notes)
 
                     $scope.commandClient[f+1].commandItems = response.commands[f]['commandline'];
 
@@ -999,7 +1000,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
                         if($scope.commandClient[f+1].commandItems[p].notes != ""){
                             try {
-                                notes = unserialize($scope.commandClient[f+1].commandItems[p].notes);
+                                notes = JSON.parse($scope.commandClient[f+1].commandItems[p].notes);
                             }
                             catch(err) {
                                 //There was an error we flush the notes
@@ -1012,7 +1013,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
                         $scope.commandClient[f+1].commandItems[p] = angular.copy($.grep($scope.menuItems, function(e){return e.id == $scope.commandClient[f+1].commandItems[p].item_id})[0]);
 
-                        var size_prices_array = unserialize($scope.commandClient[f+1].commandItems[p]['size_prices_array']);
+                        var size_prices_array = JSON.parse($scope.commandClient[f+1].commandItems[p]['size_prices_array']);
 
                         var size_names = $scope.commandClient[f+1].commandItems[p]['itemtype']['size_names'];
 

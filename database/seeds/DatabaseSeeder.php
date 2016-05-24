@@ -181,9 +181,10 @@ class UserTableSeeder extends Seeder {
         DB::table('users')->delete();
 
         User::create(['name' => 'Labatt', 'email' => 'labatt@email.com', 'password' => 'pass12345']);
-        User::create(['name' => 'Jean Fortin-Moreau', 'email' => 'jfortin-moreau@outlook.com', 'password' => '$2y$10$NJ68bQ91.vX8hVRBOukU7.8HMoHG7zwA./80l0gOheSH5lbfdFBSi', 'remember_token' => 'ozk5AuCDzT6yoE1AdNiQ0KlaYc76bMzNLSoOWF8kVUj36vIi8H3V3bU2xbm3']);
+        User::create(['name' => 'Jean Fortin-Moreau', 'email' => 'jfortin-moreau@outlook.com', 'password' => 'inpensable', 'remember_token' => 'ozk5AuCDzT6yoE1AdNiQ0KlaYc76bMzNLSoOWF8kVUj36vIi8H3V3bU2xbm3']);
         User::create(['name' => 'root', 'email' => 'maype.isaelblais@gmail.com', 'password' => '$2y$10$601HfwtJ9k36ih7iUIBVgeSZaWeEjacAjl1wdbHB.kNrpOf2Em8Xu']);
-        User::create(['name' => 'Visiteur(es) Adncomm', 'email' => 'visiteur@adncomm.com', 'password' => '$2y$10$1CVTIzsYQpL83uvYo/SFBO/0i9rj6w6ifW9FB9uNZeocnCnEszmNi', 'remember_token' => 'l6JMhYJSwbQj8791LCAhPdkrryYMQQkjbwkqd13MhgEeAyUj3yAfoEXvzmTL']);
+        User::create(['name' => 'Visiteur(es) Adncomm', 'email' => 'visiteur@adncomm.com', 'password' => 'Adncomm1337!', 'remember_token' => 'l6JMhYJSwbQj8791LCAhPdkrryYMQQkjbwkqd13MhgEeAyUj3yAfoEXvzmTL']);
+        User::create(['name' => 'user_employee', 'email' => 'test-mflow@yopmail.com', 'password' => '$2y$10$apaI1Zlmkijcvvh79RGRYeQu/N7rBToOxsxt3nYGFeHZVCxQCnfhq']);
 
         $this->command->info('Users table seeded!');
     }
@@ -409,7 +410,21 @@ class EmployeeSeeder extends Seeder {
             'state' => 'Quebec',
             'pc' => 'g0w0w3',
             'nas' => '123456789',
-            'userId' => 1,
+            'userId' => 2,
+            'bonusSalary' => 1,
+            'birthDate' => date('2016-01-01'),
+            'hireDate' => date('2016-01-01')
+        ]);
+        Employee::create([
+            'firstName' => 'firstName',
+            'lastName' => 'lastName',
+            'streetAddress' => 'streetAddress',
+            'phone' => 'none',
+            'city' => 'Quebec',
+            'state' => 'Quebec',
+            'pc' => 'a1a1a1',
+            'nas' => '123456789',
+            'userId' => 5,
             'bonusSalary' => 1,
             'birthDate' => date('2016-01-01'),
             'hireDate' => date('2016-01-01')

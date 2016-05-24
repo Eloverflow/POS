@@ -111,15 +111,15 @@
     </div>
 </modal>
 <modal title="Changement d'employee" id="changeEmployee" class="center-modal employee-modal" visible="showEmployeeModal">
-        <div>
-        Employee courant : <% currentEmploye.firstName %> <% currentEmploye.lastName %>
+        <div>{{--
+        Employee courant : <% currentEmploye.firstName %> <% currentEmploye.lastName %>--}}
             <table id="keyboard">
                 <tbody>
                 <tr>
                     <td colspan="4" id="displayMessage"><% numPadMsg %></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"><br><em style="color: white">Utilisez : 9 : 111</em></td>
+                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"><em style="color: white">Utilisez : 3 : 11</em></td>
 
                 </tr>
                 <tr>

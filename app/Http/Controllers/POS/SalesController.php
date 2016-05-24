@@ -243,7 +243,7 @@ class SalesController extends Controller
                     /*We gotta update the command too now*/
                     if(!empty($inputCommand['notes']))
                     {
-                        $command['notes'] = serialize($inputCommand['notes']);
+                        $command['notes'] = json_encode($inputCommand['notes']); 
                         $command->update();
                     }
 /*
@@ -287,12 +287,12 @@ class SalesController extends Controller
                             if(!empty($commandLine->first())){
                                 $result['msg'] .= " - Succeeded at finding the command line";/*
                                 $result['inputItem'] = $inputItem;*/
-                                $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => serialize($inputItem['notes'])]);
+                                $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes'])]);
                                 $result['msg'] .= " - Command line normally updated";
                             }
                             else{
                                 $result['msg'] .= " - Failed at finding the command line";
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => serialize($inputItem['notes']) ]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']) ]);
 
                                 if($commandLine == ""){
                                     $result['msg'] .= " - Failed at recording command line";
@@ -325,7 +325,7 @@ class SalesController extends Controller
 
                     $notes = "";
                     if(!empty($inputCommand['notes']))
-                    $notes = serialize($inputCommand['notes']);
+                    $notes = json_encode($inputCommand['notes']);
 
                     $command = Command::create([
                         'table_id' => $inputs['table']['id'],
@@ -353,7 +353,7 @@ class SalesController extends Controller
                                     $result['msg'] .= " - Succeeded at finding the command line";
 
                                     //Serialization of notes
-                                    $inputItem['notes'] = serialize($inputItem['notes']);
+                                    $inputItem['notes'] = json_encode($inputItem['notes']);
 
                                     $commandLine->update($inputItem);
                                     $result['msg'] .= " - Command line normally updated";
@@ -363,7 +363,7 @@ class SalesController extends Controller
 
                                     $notes = "";
                                     if(!empty($inputCommand['notes']))
-                                        $notes = serialize($inputItem['notes']);
+                                        $notes = json_encode($inputItem['notes']);
 
                                     $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => $notes]);
 
@@ -389,7 +389,7 @@ class SalesController extends Controller
                                 /* var_dump($command);*/
 
 
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => serialize($inputItem['notes'])]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes'])]);
 
                                 if($commandLine == ""){
                                     $result['msg'] .= " - Failed at command line";
