@@ -40,23 +40,23 @@
                                     {!! Form::label('password', "Password" ) !!}
                                     @if($errors->has('password'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('password', null, array('class' => 'form-control')) !!}
+                                            {!! Form::input('number','password', null, array('class' => 'form-control')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('password', null, array('class' => 'form-control')) !!}
+                                        {!! Form::input('number','password', null, array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
 
-                                <div class="form-group">
+                                {{--<div class="form-group">
                                     {!! Form::label('confirmPassword', "Confirm Password" ) !!}
                                     @if($errors->has('confirmPassword'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('confirmPassword', null, array('class' => 'form-control')) !!}
+                                            {!! Form::input('number', 'confirmPassword', null, array('class' => 'form-control')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('confirmPassword', null, array('class' => 'form-control')) !!}
+                                        {!! Form::input('number', 'confirmPassword', null, array('class' => 'form-control') ) !!}
                                     @endif
-                                </div>
+                                </div>--}}
                             </div>
                         </fieldset>
                         <fieldset>

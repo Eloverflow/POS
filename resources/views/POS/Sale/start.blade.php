@@ -21,7 +21,7 @@
 @section('myjsfile')
     <script type="text/javascript">
         window.loading_screen = window.pleaseWait({
-            logo: "{{ URL::to('Framework/please-wait/easypos.png')  }}",
+            logo: "{{ URL::to('Framework/please-wait/posio.png')  }}",
             backgroundColor: '#222',
             loadingHtml: "<div class='spinner'>" +
             "<a href='{{ @URL::to('/menu') }}'><button type='button' class='btn btn-primary'>Lancer</button></a>" +

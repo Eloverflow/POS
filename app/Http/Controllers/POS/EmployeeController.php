@@ -146,14 +146,13 @@ class EmployeeController extends Controller
         }
         else
         {
-            $salt = Hash::make(\Input::get('password'));
-
             $user = User::create([
                 'name' => 'user_employee',
                 'email' => \Input::get('email'),
-                'password' => crypt(\Input::get('password'), $salt)
-
+                'password' => \Input::get('password')
             ]);
+
+            $user->save();
 
             $employee = Employee::create([
                 'firstName' => \Input::get('firstName'),
@@ -188,15 +187,30 @@ class EmployeeController extends Controller
         return $view;
     }
 
-    public function getEmployee($id)
+    public function authenticateEmployee($id)
     {
-        \Input::get('password');
+        $password = \Input::get('password');
 
-        $employee = Employee::GetById($id);
+        $employee = Employee::whereId($id)->first();
 
-        if($employee['password'])
+        if($employee != ""){
+            $employee->load('user');
 
-        return ;
+            $hashCheck = Hash::check($password, $employee->user->password);
+            $employee['hashCheck'] = $hashCheck;
+
+            if($hashCheck)
+            {
+                /*Password match*/
+            }else {
+                $employee['error'] = "Password does't match";
+            }
+        }
+        else{
+            $employee['error'] = "No employee found";
+        }
+
+        return $employee;
     }
 
 

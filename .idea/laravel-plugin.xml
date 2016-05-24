@@ -3,6 +3,7 @@
   <component name="LaravelPluginSettings">
     <option name="pluginEnabled" value="true" />
     <option name="useAutoPopup" value="true" />
+    <option name="routerNamespace" value="" />
     <option name="templatePaths">
       <list>
         <templatePath namespace="" path="vendor/barryvdh" />

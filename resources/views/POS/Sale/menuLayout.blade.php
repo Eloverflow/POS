@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>PUBALEX @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
+    <title>POSIO @foreach(Request::segments() as $segment) {{ ' | ' . ucwords( str_replace('_', ' ', $segment))}} @endforeach</title>
 
     {{--Stylesheet call--}}
     <link href="{{ @URL::to('Framework/Bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet">
@@ -35,7 +35,7 @@
 <script type="text/javascript" src="{{ URL::to('Framework/please-wait/please-wait.min.js')  }}"></script>
 <script type="text/javascript">
     window.loading_screen = window.pleaseWait({
-        logo: "{{ URL::to('Framework/please-wait/easypos.png')  }}",
+        logo: "{{ URL::to('Framework/please-wait/posio.png')  }}",
         backgroundColor: '#222',
         loadingHtml: "<div class='spinner'><div class='rect1'></div> <div class='rect2'></div> <div class='rect3'></div> <div class='rect4'></div> <div class='rect5'></div> </div>"
     });
@@ -47,12 +47,12 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span>Facture</span> <span class="glyphicon glyphicon-barcode"></span>
             </button>
-            <a class="navbar-brand" href="{{@URL::to('/menu/start')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>EASY</span>POS</a>
+            <a class="navbar-brand" href="{{@URL::to('/menu/start')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pos</span>Io</a>
             <ul class="user-menu">
 
                 <li  class="dropdown pull-right">
                     <a href="#" ng-click="changeEmployee()" ><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg>
-                        Employé #<% currentEmploye.number %></a>
+                        Employé #<% currentEmploye.id %></a>
                 </li>
             </ul>
             <ul class="user-menu tableNumber">
@@ -71,8 +71,15 @@
             </ul>
             <ul class="user-menu">
                 <li>
-                    <a style="cursor: not-allowed" href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
+                    <a href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
                         Plan
+                    </a>
+                </li>
+            </ul>
+            <ul class="user-menu">
+                <li>
+                    <a href="#" ng-click="toogleFullscreen()"><span class="glyphicon glyphicon-fullscreen"></span>
+                        Plein écran
                     </a>
                 </li>
             </ul>
@@ -103,16 +110,17 @@
         </div>
     </div>
 </modal>
-<modal title="Changement d'employee" class="center-modal" visible="showEmployeeModal">
+<modal title="Changement d'employee" id="changeEmployee" class="center-modal employee-modal" visible="showEmployeeModal">
         <div>
-        <% currentEmploye.name %>
+        Employee courant : <% currentEmploye.firstName %> <% currentEmploye.lastName %>
             <table id="keyboard">
                 <tbody>
                 <tr>
                     <td colspan="4" id="displayMessage"><% numPadMsg %></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"></td>
+                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"><br><em style="color: white">Utilisez : 9 : 111</em></td>
+
                 </tr>
                 <tr>
                     <td colspan="2"><button class="button" ng-click="padClick('dl')">Del</button></td>
@@ -151,6 +159,55 @@
 
 @yield('content')
 
+<div  id="planModal"  style=" background-color: #333; z-index: 1000; position: absolute; width: 100%; height: 100%;" ng-show="showPlanModal">
+    <canvas style="margin: 0;" id="myCanvas" width="0" height="0" />
+    <script>
+
+
+        var canva = $('#myCanvas');
+        var planModal =$('#planModal');
+
+        canva.attr('width', planModal.width());
+        canva.attr('height', planModal.height());
+
+
+        var elem = document.getElementById('myCanvas'),
+                elemLeft = elem.offsetLeft,
+                elemTop = 50,
+                context = elem.getContext('2d'),
+                elements = [];
+                /*50 is header size*/
+
+        // Add event listener for `click` events.
+        elem.addEventListener('click', function(event) {
+            var x = event.pageX - elemLeft,
+                    y = event.pageY - elemTop;
+            console.log(x, y);
+            elements.forEach(function(element) {
+                if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
+                    alert('clicked an element : ' + element.name);
+                }
+            });
+
+        }, false);
+
+        // Add element.
+        elements.push({
+            name: 'test',
+            colour: '#05EFFF',
+            width: 150,
+            height: 100,
+            top: 20,
+            left: 15
+        });
+
+        // Render elements.
+        elements.forEach(function(element) {
+            context.fillStyle = element.colour;
+            context.fillRect(element.left, element.top, element.width, element.height);
+        });
+    </script>
+</div>
 
 <div id="billWindow">
     <h1>Factures</h1>
