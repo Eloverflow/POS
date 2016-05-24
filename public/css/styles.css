@@ -756,3 +756,19 @@ li.addTable .glyphicon{
 .labelBtn {
 	height: 45px;
 }
+
+.parentSeparation
+{
+	height: 40px;
+	margin-top: 40px;
+}
+
+.separation
+{
+	left: 0;
+	position: absolute;
+	border: 1px solid #D8DFED;
+	height: 1px;
+	width: 100%;/*
+	margin: 20px 0 20px 0;*/
+}

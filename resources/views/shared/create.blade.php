@@ -10,7 +10,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Create</h1>
+            <h1 class="page-header">Create Item</h1>
         </div>
     </div>
     <div class="row">
@@ -57,65 +57,69 @@
             <div class="modal-content">
                 <!-- dialog body -->
                 <div class="modal-header">
+
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div class="col-md-12">
-                        <div class="form-group">
-                            {!! Form::label('name', "Name" ) !!}
-                            {!! Form::text('name', old('name'), array('class' => 'form-control', 'id' => 'name')) !!}
-                        </div>
-                        <div class="form-group">
-                            <div class="labelBtn">
-                                <div class="col-md-6">
-                                    <label>Fields name</label>
-                                </div>
-                                <div class="col-md-4">
-                                    {!! Form::text('fieldName', null, array('class' => 'form-control', 'id' => 'fieldName', 'placeholder' => 'Field Name')) !!}
-                                </div>
-                                <div class="col-md-2">
-                                    <a class="btn btn-success pull-right" id="btnAddFieldName" href="#"> Add </a>
-                                </div>
-                            </div>
-                            <table id="tbl-fields-name" class="table">
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="form-group">
-                            <div class="labelBtn">
-                                <div class="col-md-2">
-                                    <label>Sizes name</label>
-                                </div>
-                                <div class="col-md-4">
-                                    {!! Form::text('sizeName', null, array('class' => 'form-control', 'id' => 'sizeName', 'placeholder' => 'Size Name')) !!}
-                                </div>
-                                <div class="col-md-4">
-                                    {!! Form::text('price', null, array('class' => 'form-control', 'id' => 'price', 'placeholder' => 'Price')) !!}
-                                </div>
-                                <div class="col-md-2">
-                                    <a class="btn btn-success pull-right" id="btnAddSizeName" href="#"> Add </a>
-                                </div>
-                            </div>
-                            <table id="tbl-sizes-name" class="table">
-                                <thead>
-                                <tr>
-                                    <th>Name</th>
-                                    <th>Price</th>
-                                    <th></th>
-                                </tr>
-                                </thead>
-                                <tbody>
-
-                                </tbody>
-                            </table>
-                        </div>
+                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                        <strong>Whoops!</strong><br><br>
+                        <ul id="errors"></ul>
                     </div>
+
+                    <div class="form-group">
+                        {!! Form::label('typeName', "Type name" ) !!}
+                        {!! Form::text('typeName', null, array('class' => 'form-control', 'id' => 'typeName')) !!}
+                    </div>
+                    <div class="form-group">
+                        <div class="labelBtn">
+                            <div class="col-md-6">
+                                <label>Fields name</label>
+                            </div>
+                            <div class="col-md-4">
+                                {!! Form::text('fieldName', null, array('class' => 'form-control', 'id' => 'fieldName', 'placeholder' => 'Field Name')) !!}
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-success pull-right" id="btnAddFieldName" href="#"> Add </a>
+                            </div>
+                        </div>
+                        <table id="tbl-fields-name" class="table">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="parentSeparation">
+                        <div class="separation"></div>
+                    </div>
+                    <div class="form-group">
+                        <div class="labelBtn">
+                            <div class="col-md-6">
+                                <label>Sizes name</label>
+                            </div>
+                            <div class="col-md-4">
+                                {!! Form::text('sizeName', null, array('class' => 'form-control', 'id' => 'sizeName', 'placeholder' => 'Size Name')) !!}
+                            </div>
+                            <div class="col-md-2">
+                                <a class="btn btn-success pull-right" id="btnAddSizeName" href="#"> Add </a>
+                            </div>
+                        </div>
+                        <table id="tbl-sizes-name" class="table">
+                            <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+
                 </div>
 
                 <!-- dialog buttons -->
@@ -134,11 +138,11 @@
         });
 
         $("#btnAddFieldName").click(function () {
-
+            addItemToFieldTable();
         });
 
         $("#btnAddSizeName").click(function () {
-
+            addItemToSizeTable();
         });
 
         $('#btnCreateItemType').click(function(e) {

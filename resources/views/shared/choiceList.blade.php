@@ -4,7 +4,7 @@
 @foreach($tableChoiceLists as $tableChoiceList)
 
     <div class="labelBtn">
-        <label for="{{ $tableChoiceList['dbColumn'] }}">{{ $tableChoiceList["title"] }}</label>
+        <label>Item type</label>
         <a class="btn btn-success pull-right" id="btnAddItemType" href="#"> Add </a>
     </div>
     <input class="form-control input{{$tableIteration}}" type="hidden" id="{{ $tableChoiceList['dbColumn'] }}" name="{{ $tableChoiceList['dbColumn'] }}" value="@if(isset($tableRow)){{ $tableRow->$tableChoiceList['dbColumn'] }} @endif">
