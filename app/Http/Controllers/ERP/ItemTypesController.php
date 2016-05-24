@@ -36,7 +36,44 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         return $tableRows;
     }
 
+    public function postCreate()
+    {
+        $inputs = \Input::all();
 
+        $rules = array(
+            'fieldNames' => 'required',
+            'sizeNames' => 'required',
+            'typeName' => 'required'
+        );
+
+        $message = array(
+            'required' => 'The :attribute is required !'
+        );
+
+        $validation = \Validator::make($inputs, $rules, $message);
+        if($validation -> fails())
+        {
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
+
+        }
+        else
+        {
+
+            $itemType = ItemType::create([
+                'type' => \Input::get('typeName'),
+                'field_names' => \Input::get('fieldNames'),
+                'size_names' => \Input::get('sizeNames')
+            ]);
+
+
+            return \Response::json([
+                'success' => "The Item type " . \Input::get('typeName') . " has been successfully created !"
+            ], 201);
+        }
+    }
 
     /*public  function type($type)
     {

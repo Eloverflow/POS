@@ -56,6 +56,8 @@ Route::get('/itemtypes/list',  ['uses' => 'ERP\ItemTypesController@liste', 'midd
 Route::get('/itemtypes/edit/{slug}',  ['uses' => 'ERP\ItemTypesController@edit', 'middleware' => 'auth']);
 Route::post('/itemtypes/edit/{slug}',  ['uses' => 'ERP\ItemTypesController@update', 'middleware' => 'auth']);
 
+Route::post('/item/type/create',  ['uses' => 'ERP\ItemTypesController@postCreate', 'middleware' => 'auth']);
+
 Route::get('/items',  ['uses' => 'ERP\ItemsController@index', 'middleware' => 'auth']);
 Route::get('/items/create',  ['uses' => 'ERP\ItemsController@create', 'middleware' => 'auth']);
 Route::post('/items/create',  ['uses' => 'ERP\ItemsController@postCreate', 'middleware' => 'auth']);
