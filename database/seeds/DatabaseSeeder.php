@@ -410,7 +410,21 @@ class EmployeeSeeder extends Seeder {
             'state' => 'Quebec',
             'pc' => 'g0w0w3',
             'nas' => '123456789',
-            'userId' => 1,
+            'userId' => 2,
+            'bonusSalary' => 1,
+            'birthDate' => date('2016-01-01'),
+            'hireDate' => date('2016-01-01')
+        ]);
+        Employee::create([
+            'firstName' => 'firstName',
+            'lastName' => 'lastName',
+            'streetAddress' => 'streetAddress',
+            'phone' => 'none',
+            'city' => 'Quebec',
+            'state' => 'Quebec',
+            'pc' => 'a1a1a1',
+            'nas' => '123456789',
+            'userId' => 5,
             'bonusSalary' => 1,
             'birthDate' => date('2016-01-01'),
             'hireDate' => date('2016-01-01')
