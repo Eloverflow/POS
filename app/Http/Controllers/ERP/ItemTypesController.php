@@ -71,7 +71,8 @@ class ItemTypesController extends \App\Http\Controllers\Controller
 
 
             return \Response::json([
-                'success' => "The Item type " . \Input::get('typeName') . " has been successfully created !"
+                'success' => "The Item type " . \Input::get('typeName') . " has been successfully created !",
+                'object' => $itemType->id
             ], 201);
         }
     }

@@ -58,10 +58,7 @@ $("input[type=file]").on('change',function(){
 
 var tableItaration = 1;
 
-
-while(document.getElementById('tableChoiceList'+tableItaration) !=null){
-
-
+$(document).ready(function() {
     var sumbitOneAction = $('.choiceList'+tableItaration+'.sumbit-one.action');
 
     sumbitOneActionClick(sumbitOneAction, tableItaration);
@@ -91,7 +88,7 @@ while(document.getElementById('tableChoiceList'+tableItaration) !=null){
     currentTableChoiceList.prepend(currentTableChoiceActive);
 
     tableItaration++;
-}
+});
 
 
 function sumbitOneActionClick(sumbitOneAction, tableItaration){
@@ -200,6 +197,21 @@ function currentTableChoiceAdd(currentTableChoiceFocus, tableItaration){
 
 }
 
+// Bind
+function ChoiceClickAnimate(objChoice) {
+    var allCurrentTableChoice = $('.tableChoice.choiceList1');
+    choiceClick(allCurrentTableChoice, 1);
+}
+
+
+function UnselectAllChoices(objChoiceList){
+
+        var spanElement = objChoiceList.find('span');
+        for(var i = 0; i < spanElement.length; i++){
+            $(spanElement[i]).removeClass("active");
+        }
+
+}
 
 function choiceClick(allCurrentTableChoice, tableItaration){
     allCurrentTableChoice.click(function(){

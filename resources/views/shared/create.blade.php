@@ -21,7 +21,6 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-
                     <form METHOD="POST" action="{{ @URL::to(Request::path()) }}">
 
                             @foreach($tableColumns as $column)
@@ -52,6 +51,9 @@
                     </form>
                 </div>
                 <div class="col-md-6">
+                    <div id="formShowing">
+
+                    </div>
                 </div>
             </div>
         </div>
@@ -156,7 +158,13 @@
 
         });
         $("#tableChoiceList1 span").on("click", function() {
-            alert("span click !");
-        })
+            //alert("span click !");
+
+
+            drawFillingForms(this);
+
+
+        });
+
     </script>
 @stop

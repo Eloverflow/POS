@@ -28,8 +28,8 @@ function postAddItemsType() {
         }
     }
 
-    alert($fieldNames);
-    alert($sizeNames);
+    //alert($fieldNames);
+    //alert($sizeNames);
     //$('#frmDispoCreate').submit();
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
@@ -59,9 +59,32 @@ function postAddItemsType() {
             $("#displayErrors").show();
         },
         success: function(xhr) {
-            [].forEach.call( Object.keys( xhr ), function( key ) {
-                alert(xhr[key]);
+
+                var spani = $('<span id="' + xhr["object"] + '" data-field-names="' + $fieldNames + '" data-size-names="' + $sizeNames + '" class="list-group-item tableChoice choiceList1 active">'+
+                '<a class="view" href="http://pos.mirageflow.com/itemtypes/edit/' + $itemTypeName + '"><span class="glyphicon glyphicon-pencil"></span></a>' +
+                '<h2 class="list-group-item-heading">' + $itemTypeName + '</h2>' +
+                '</span>');
+
+            spani.click(function(xEvent){
+                //var currentTableChoiceFocus = $('#tableChoiceList1 #' + xhr["object"] + '.focus');
+
+                //currentTableChoiceAdd(currentTableChoiceFocus, 1);
+                //alert("CRISS");
+
+                var focusElem = $('#tableChoiceList1 #' + xhr["object"] + ' .focus');
+                console.log(focusElem);
+                ChoiceClickAnimate(focusElem);
+                drawFillingForms(xEvent);
             });
+
+            UnselectAllChoices($("#tableChoiceList1"));
+            $("#tableChoiceList1").append(spani);
+
+            alert(xhr["success"]);
+            $("#addModal").modal('hide');
+            /*[].forEach.call( Object.keys( xhr ), function( key ) {
+                alert(xhr[key]);
+            });*/
         }
     });
 
@@ -166,3 +189,36 @@ var delItemToSizeTable = function(lethis) {
     parentParent.remove();
 
 };
+
+function drawFillingForms(xEvent) {
+
+    var itemFields = $(xEvent).attr("data-field-names");
+
+    var arrFields =  itemFields.split(",");
+
+    $("#formShowing").empty();
+
+    $("#formShowing").append('<h4>Fields</h4>');
+
+    for(var i = 0; i < arrFields.length; i++){
+        var fieldName = arrFields[i].trim();
+        $("#formShowing").append('<div class="form-group">' +
+            '<label for="' + fieldName + '">' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + '</label>' +
+            '<input class="form-control" name="' + fieldName + '" type="text" id="' + fieldName + '">' +
+            '</div>');
+    }
+
+    var itemSizes = $(xEvent).attr("data-size-names");
+
+    var arrSizes =  itemSizes.split(",");
+
+    $("#formShowing").append('<h4>Prices</h4>');
+
+    for(var j = 0; j < arrSizes.length; j++){
+        var sizeName = arrSizes[j].trim();
+        $("#formShowing").append('<div class="form-group">' +
+            '<label for="' + sizeName + '">' + sizeName.charAt(0).toUpperCase() + sizeName.slice(1) + '</label>' +
+            '<input class="form-control" name="' + sizeName + '" type="text" id="' + sizeName + '">' +
+            '</div>');
+    }
+}
