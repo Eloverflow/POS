@@ -41,42 +41,40 @@
     });
 </script>
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
                 <span class="sr-only">Toggle navigation</span>
                 <span>Facture</span> <span class="glyphicon glyphicon-barcode"></span>
             </button>
-            <a class="navbar-brand" href="{{@URL::to('/menu/start')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pos</span>Io</a>
-            <ul class="user-menu">
-
-                <li  class="dropdown pull-right">
-                    <a href="#" ng-click="changeEmployee()" ><svg class="glyph stroked male-user"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-male-user"></use></svg>
+            <a class="navbar-brand" href="{{@URL::to('/menu')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pos</span>Io</a>
+            <ul class="menu-option">
+                <li class="pull-right">
+                    <a href="#" ng-click="changeEmployee()" ><span class="glyphicon glyphicon-user"></span>
                         Employé #<% currentEmploye.id %></a>
                 </li>
             </ul>
-            <ul class="user-menu tableNumber">
+            <ul class="menu-option">
                 <li>
                     <a href="#" ng-click="toggleTableModal()"><span class="glyphicon glyphicon-unchecked"></span>
                         Table #<% currentTable.tblNumber %>
                        </a>
                 </li>
             </ul>
-            <ul class="user-menu">
+            <ul class="menu-option">
                 <li>
                     <a href="#" ng-click="openBill()"><span class="glyphicon glyphicon-bitcoin"></span>
                         Factures
                     </a>
                 </li>
             </ul>
-            <ul class="user-menu">
+            <ul class="menu-option">
                 <li>
                     <a href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
                         Plan
                     </a>
                 </li>
             </ul>
-            <ul class="user-menu">
+            <ul class="menu-option">
                 <li>
                     <a href="#" ng-click="toogleFullscreen()"><span class="glyphicon glyphicon-fullscreen"></span>
                         Plein écran
@@ -86,7 +84,6 @@
 
         </div>
 
-    </div><!-- /.container-fluid -->
 </nav>
 <modal title="Selectionne une table" visible="showTableModal">
     <div ng-repeat="n in [] | floor:plan.nbFloor" >
@@ -111,15 +108,19 @@
     </div>
 </modal>
 <modal title="Changement d'employee" id="changeEmployee" class="center-modal employee-modal" visible="showEmployeeModal">
-        <div>{{--
+        <div>
+            {{--
         Employee courant : <% currentEmploye.firstName %> <% currentEmploye.lastName %>--}}
+            <span ng-click="changeEmployeeStepBack()" ng-show="validation" style="margin: 10px 0 0 20px ; cursor:pointer; padding: 10px; background-color: #222; border-radius: 50%; font-size: 25px; float: left; color: #fff; position: absolute" class='glyphicon glyphicon-arrow-left'></span>
+            <a ng-show="!validation" href="/"><span id="quit-emplye-modal" class='glyphicon glyphicon-remove-sign'></span></a>
+            <div style="width: 100%; text-align: center; padding-top: 10px"><span style="color: red; font-size: 15px;"><% numPadErrMsg %></span></div>
             <table id="keyboard">
                 <tbody>
                 <tr>
                     <td colspan="4" id="displayMessage"><% numPadMsg %></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"><em style="color: white">Utilisez : 3 : 11</em></td>
+                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"><em style="color: white; font-size: 18px;">Utilisez : 3 : 11</em></td>
 
                 </tr>
                 <tr>

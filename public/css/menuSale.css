@@ -123,7 +123,7 @@ div.saleTextZone input:focus{
 }
 
 #contentPanel{
-	margin-top: 83px!important;
+	margin-top: 0!important;
 	background-color: #fff;
 	font-size: 28px;
 
@@ -159,17 +159,25 @@ div.saleTextZone input:focus{
 */
 
 
-.menu-filter{overflow-y: hidden;
-	height: 82px;
+.menu-filter{
+
+	position: absolute;
+	width: 2000px;
+	height: 80px;
 	background-color: rgba(0,0,0,0.8);
-	/*border-radius: 4px!important;*//*
-	margin-top: 2px;*//*
-	border: 1px solid rgba(44,44,44,0.5);
-	border-radius: 10px;*//*
-	box-shadow: 0 3px 6px rgba(0,0,0,0.5);
-	background-color: #333;*/
-	/*padding-left: 15px;*/
-	/*box-shadow: 0 4px 8px rgba(0,0,0,0.8);*/
+/*
+	width:2040px;
+	height:100%;*/
+	float:left;
+	padding:0;
+}
+
+#filter-wrapper {
+	position:absolute; z-index:1;
+	top:0; bottom:0; left:0;
+	width:100%;
+	background-color: rgba(0,0,0,0.5);
+	overflow:hidden;
 }
 
 
@@ -349,6 +357,56 @@ div.saleTextZone input:focus{
 	bottom: 99px;
 }
 
+.div-bill-sub-total{
+	border-top: 2px solid #222;
+	padding-top: 1px;
+	background-color: #393939;/*
+	height: 40px;*/
+}
+
+.sidebar.bill-bottom{
+	top : 78%;
+	height: 22%;
+	position: fixed;/*
+	top: 110%;*/
+
+}
+
+.bill-bottom{/*
+	box-sizing: border-box;
+	position: absolute;
+	height: 200px;
+	bottom:-200px;
+	left: 0;
+	width: 100%;*/
+}
+
+.div-bill-sub-total h2{
+	margin: 3px;
+	float: left;
+}
+
+.div-bill-sub-total .right{
+	border-left: 1px #222 solid;
+	width: 50%;
+	height: 40px;
+	float: right;
+}
+
+
+.div-bill-sub-total .right h3{
+	margin: 5px;
+	display: inline-block;
+}
+
+.div-bill-sub-total .right h3 span.number{
+	font-size: 20px;
+}
+
+span.number{
+	color: #00a5ff;
+}
+
 .bill-separation{
 	width: 100%;
 	border-top: 2px solid #222;
@@ -480,15 +538,11 @@ div.saleTextZone input:focus{
 }
 
 .sidebar{
-	padding-bottom: 180px;
+	height: 78%;
 }
 
 
 
-.pagination-sm.pagination.ng-isolate-scope.ng-valid{
-	margin-top: 0;
-	margin-bottom: 0;
-}
 
 
 .pagination-next.ng-scope a{
@@ -570,23 +624,17 @@ pre{
 .fixed{/*
 	width: 0;*/
 	margin-left: 0;
-	margin-right: 1px;
-	margin-top: 44px;
+	margin-right: 1px;/*
+	margin-top: 44px;*/
 }
 
-#contentPanel .beer-items{
-
-	min-height: 1000px;
-	border: 1px solid rgba(44,44,44,0.5);
-	background-color: #232323;
-	margin-top: 125px;
-}
+/*
 
 #sidebar-collapse{
-	margin-top: 44px;
+	margin-top: 40px;
 }
 
-
+*/
 .pagination>li>a, .pagination>li>span{
 
 	background: none;
@@ -789,12 +837,84 @@ body{
 	box-shadow: 0 6px 12px rgba(0,0,0,0.9);
 }
 
+/*
 .tableNumber{
 	padding: 6px;
+}
+*/
+
+.menu-option {
+	margin-top: 14px;
+	margin-left: 10px;
+	display: inline-block;/*
+	margin-top: 14px;
+	margin-right: 10px;*/
+	float: left;
+	list-style: none;
+	padding: 0;
+	cursor: pointer;
+}
+
+.menu-option a{
+	color: #fff;
+}
+.menu-option a:hover,.menu-option a:focus{
+	color: #00a5ff;
+	text-decoration: none;
+}
+
+
+
+.navbar-brand, .navbar-toggle.collapsed{
+	height: 40px;
+}
+
+
+
+.pagination-sm.pagination.ng-isolate-scope.ng-valid{
+	margin-top: 10%;
+	margin-bottom: 0;
+}
+
+
+#contentPanel .beer-items{
+
+	min-height: 1000px;
+	border: 1px solid rgba(44,44,44,0.5);
+	background-color: #232323;
+}
+
+#quit-emplye-modal{
+	z-index:1;
+	margin: 3px 0 0 6px ;
+	cursor:pointer;
+	font-size: 35px;
+	float: left;
+	color: red;
+	position: absolute
 }
 
 
 @media only screen and (min-width : 450px) {
+
+	#quit-emplye-modal{
+		font-size: 45px;
+		margin: 10px 0 0 20px ;
+	}
+
+	.div-filter{
+		height: 82px;
+		position: fixed;
+		padding: 0;
+		z-index: 999;
+	}
+
+
+
+	.pagination-sm.pagination.ng-isolate-scope.ng-valid{
+		margin-top: 7%;
+	}
+
 	.tableNumber{
 		padding: 0;
 		margin-right: 40px;
@@ -828,6 +948,20 @@ body{
 	}*/
 
 }
+
+@media only screen and (min-width : 800px) {
+	.pagination-sm.pagination.ng-isolate-scope.ng-valid{
+		margin-top: 1%;
+	}
+
+	.menu-option {
+		font-size: 19px;
+		float: right;
+		margin-left: 0;
+		margin-right: 15px;
+	}
+}
+
 
 /*.employee-modal{
 	background-color: #FFF;
