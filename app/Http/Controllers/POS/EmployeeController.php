@@ -203,11 +203,11 @@ class EmployeeController extends Controller
             {
                 /*Password match*/
             }else {
-                $employee['error'] = "Password does't match";
+                $employee['error'] = "Mauvais mot de passe";
             }
         }
         else{
-            $employee['error'] = "No employee found";
+            $employee['error'] = "Aucun employé trouvé avec cet ID";
         }
 
         return $employee;

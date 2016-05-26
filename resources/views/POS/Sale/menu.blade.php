@@ -1,10 +1,13 @@
 @extends('POS.Sale.menuLayout')
 
 @section('csrfToken')
+
+
     <script src="{{ @URL::to('Framework/Angular/angular-route.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-ui-router.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-idle.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Bootstrap/js/ui-bootstrap-tpls-1.2.5.min.js') }}"></script>
     <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-count-to.js') }}"></script>
@@ -83,9 +86,16 @@
                 </div>
             </li>
         </ul>
+    </div>
+
+    <div class="col-sm-3 col-lg-5 sidebar bill-bottom">
+
+        <div class="div-bill-sub-total">
+            <h2>Sous total : <span class="number"><% subTotalBill | number:2 %></span></h2><div class="right"><h3 ng-repeat="taxe in taxes"><% taxe.name %> : <span class="number"><% taxe.total | number:2 %></span></h3></div>
+        </div>
 
         <div class="div-bill-total">
-            <h1 class="bill-total">Total = <% totalBill | number:2 %></h1>
+            <h1 class="bill-total">Total = <span class="number"><% totalBill | number:2 %></span></h1>
 
             <button ng-show="commandItemTimeToggle" href="#" ng-click="toggleCommandTime()"
                     style="background-color: #8ad919" type="button" class="btn btn-success"><span
@@ -103,18 +113,21 @@
             <button ng-click="toggleDivideBillModal()" type="button" class="btn btn-success btn-facture">Diviser Factures</button>
         </div>
         <uib-progressbar class="progress-striped active" animate="true" max="100" value="progressValue" type="success">
-            <i><%savingMessage%>{{-- <span count-to="5" duration="5" count-from="0"></span>/5 secondes--}}</i>
+            <i><%savingMessage%> {{--<span count-to="5" duration="5" count-from="0"></span>/5 secondes--}}</i>
         </uib-progressbar>
 
+    </div>
 
-    </div><!--/.sidebar-->
+    <!--/.sidebar-->
 
-    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 main">
-        <div class="row fixed">
-            <div class="row menu-filter">
-                {{-- <button  ng-click="filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary" ><span class="glyphicon glyphicon-star"></span> Favorites</button>--}}
+    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 div-filter">
+        {{--<div style="background-color: #444; width: 200px; height: 80px"> </div>--}}
+
+        <div id="filter-wrapper" style="overflow: hidden;">
+
+            <div class="menu-filter">
                 <button ng-click="filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary"><span
-                            class="glyphicon glyphicon-star"></span> Favorie
+                            class="glyphicon glyphicon-star"></span> Tout
                 </button>
                 <button ng-repeat="itemType in menuItemTypes" ng-click="filters.itemtype.type = itemType.type"
                         type="button" class="btn btn-primary"><% itemType.type %></button>
@@ -220,6 +233,16 @@
 
 
 
+    </script>
+    <script type="application/javascript" src="{{ @URL::to('Framework/iscroll.js') }}"></script>
+    <script type="text/javascript">
+        var myScroll;
+
+            myScroll = new iScroll('filter-wrapper', {
+                hideScrollbar: true
+            });
+
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
     </script>
 @stop

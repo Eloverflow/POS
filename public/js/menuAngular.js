@@ -1,10 +1,19 @@
-var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpolateProvider, uibPaginationConfig) {
+var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function($interpolateProvider, uibPaginationConfig,IdleProvider,KeepaliveProvider) {
     $interpolateProvider.startSymbol('<%');
     $interpolateProvider.endSymbol('%>');
     uibPaginationConfig.previousText='Précédent';
     uibPaginationConfig.nextText='Suivant';
 
+    // configure Idle settings
+    IdleProvider.idle(20); // in seconds
+    IdleProvider.timeout(20); // in seconds
+    KeepaliveProvider.interval(2); // in seconds
+
 })
+.run(function(Idle){
+        // start watching when the app runs. also starts the Keepalive service by default.
+        Idle.watch();
+    })
 
 .filter('floor', function() {
     return function(input, total) {
@@ -51,7 +60,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                 method: "POST",
                 data: $data
             }).success(function (data) {
-                console.log(data);
+                /*console.log(data);*/
 
                 if($callbackPath)
                     $location.path($callbackPath);
@@ -68,9 +77,22 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 })
 
 
-.controller('menuController', function($scope, getReq, postReq, $log, $filter, $timeout)
+.controller('menuController', function($scope, getReq, postReq, $log, $filter, $timeout, Idle)
 {
-
+    $scope.$on('IdleStart', function() {
+        console.log('Idle')
+        if(!$scope.showEmployeeModal){
+            $scope.commandClient = [];
+            $scope.commandItems = [];
+            $scope.bills = [];
+            $scope.taxe = [0,0];
+            $scope.totalBill = 0;
+            $scope.changeEmployee();
+            var modalChangeEmployee = $('#changeEmployee');
+            modalChangeEmployee.prepend(windowModalBlockerHtml);
+            modalChangeEmployee.find('#closeModal').hide();
+        }
+    });
 
     $scope.commandItems = [];
 
@@ -203,7 +225,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                             }
 
 
-                            console.log(currentColor + " - Inverted to : " + invertedColor);
+                            /*console.log(currentColor + " - Inverted to : " + invertedColor);*/
 
                             sizeColorForName[count] = currentColor;
                             sizeColorText[count] = invertedColor;
@@ -260,7 +282,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
                     size_array[x].color = getRandomColor(size_name_array_now[x]);
 
-                    console.log(size_array[x].color);
+                    /*console.log(size_array[x].color);*/
                 }
 
 
@@ -275,15 +297,19 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
             $scope.getCommand();*/
 
             /*End of loading screen*/
+
             window.loading_screen.finish();
 
-
-            $scope.numPadMsg = "Entrez votre numeros d'employe"
-            $scope.authenticateEmployee();
+            $scope.numPadMsg = msgEnterEmployeeNumber;
+            $('#mainText').attr('type', 'text');
+            $('#mainText').attr('placeholder', 'Numéro d\'employé');
+            /*
+            $scope.authenticateEmployee();*/
+            $scope.changeEmployee();
 
             var modalChangeEmployee = $('#changeEmployee');
-            modalChangeEmployee.prepend('<div id="windowModalBlocker" style=" background-color: #fff; opacity:0; width: 100%; height: 100%; position: absolute;"></div>');
-            /* modalChangeEmployee.find('#closeModal');*/
+            modalChangeEmployee.prepend(windowModalBlockerHtml);
+            modalChangeEmployee.find('#closeModal').hide();
 
 
             /*$('#changeEmployee').on('click',function(){
@@ -294,6 +320,19 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         getReq.send($url, null ,$callbackFunction);
 
     };
+
+    var windowModalBlockerHtml = '<div id="windowModalBlocker" class="pg-loading-screen pg-loading" style=" background-color: #222; opacity:1; width: 100%; height: 100%; position: absolute; z-index: -1;">' +
+        '<div class="pg-loading-inner">'+
+        '<div class="pg-loading-center-outer">'+
+        '<div style="padding-bottom:140px;vertical-align: bottom" class="pg-loading-center-middle">'+
+        '<img class="pg-loading-logo" src="http://pos.mirageflow.com/Framework/please-wait/posio.png">'+
+        '</div>'+
+        '</div>'+
+        '</div>'+
+        '</div>';
+    /*var windowModalBlockerHtml = '<div id="windowModalBlocker" style=" background-color: #222; opacity:1; width: 100%; height: 100%; position: absolute; z-index: -1;">' +
+        '</div>';
+*/
 
 
 
@@ -314,6 +353,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
 
     $scope.totalBill = 0;
+    $scope.taxe = [0,0];
 
     $scope.selectSize = function(size) {
         $scope.sizeProp.value = size;
@@ -416,8 +456,28 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
     };
 
+    $scope.taxes = [
+        {
+            value: 0.05,
+            total: 0,
+            name: 'TPS'
+        },
+        {
+            value: 0.09975,
+            total: 0,
+            name: 'TVQ'
+        }
+
+    ]
+
     $scope.updateTotal = function(){
+
+        var subTotal = 0;
         var total = 0;
+        var taxTotal = 0;
+        for(var j = 0; j < $scope.taxes.length; j++){
+            $scope.taxes[j].total = 0;
+        }
 
         if(typeof $scope.commandClient[$scope.bigCurrentPage] === 'undefined' || $scope.commandClient[$scope.bigCurrentPage] === null ){
 
@@ -427,15 +487,25 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
         }
 
         if($scope.commandClient[$scope.bigCurrentPage].commandItems.length > 0){
-            for(i = 0; i < $scope.commandClient[$scope.bigCurrentPage].commandItems.length; i++){
-                total +=  $scope.commandClient[$scope.bigCurrentPage].commandItems[i].quantity *  $scope.commandClient[$scope.bigCurrentPage].commandItems[i].size.price
+            for(var i = 0; i < $scope.commandClient[$scope.bigCurrentPage].commandItems.length; i++){
+                subTotal +=  $scope.commandClient[$scope.bigCurrentPage].commandItems[i].quantity *  $scope.commandClient[$scope.bigCurrentPage].commandItems[i].size.price
             }
 
-            $scope.totalBill = total;
+            for(j = 0; j < $scope.taxes.length; j++){
+                $scope.taxes[j].total  = subTotal*$scope.taxes[j].value;
+                taxTotal += $scope.taxes[j].total;
+            }
+
+            $scope.subTotalBill = subTotal;
+            $scope.totalBill = subTotal + taxTotal;
         }
         else
         {
-            $scope.totalBill = 0
+            for(j = 0; j < $scope.taxes.length; j++) {
+                $scope.taxes[j].total = 0;
+            }
+            $scope.subTotalBill = 0;
+            $scope.totalBill = 0;
         }
     };
 
@@ -625,26 +695,61 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                 console.log(response);
                 $scope.currentEmploye = response;
                 $scope.getCommand();
+
+                var modalChangeEmployee = $('#changeEmployee');
+                modalChangeEmployee.find('#windowModalBlocker').fadeOut(300,function() {
+                    $(this).remove();
+                })
+
+                $scope.showEmployeeModal = false;
             }
             else{
                 console.log("User is invalid :");
                 console.log(response.error);
+
+
+                $scope.validation = false;
+                $scope.numPadMsg = msgEnterEmployeeNumber;
+                $('#mainText').attr('type', 'text');
+                $('#mainText').attr('placeholder', 'Numéro d\'employé');
+                $scope.numPadErrMsg = response.error;
+                $scope.showEmployeeModal = true;
+                $scope.mainText = '';
             }
 
 
-            $scope.toggleEmployeeModal();
         };
 
         postReq.send($url, $data, null, $callbackFunction);
     }
 
     $scope.changeEmployee = function() {
-        $scope.toggleEmployeeModal();
+        if(!$scope.showEmployeeModal){
+            $scope.toggleEmployeeModal();
 
-        $scope.numPadMsg = "Entrez votre numero d'employee";
+
+            $scope.numPadErrMsg = ''
+            $scope.numPadMsg = msgEnterEmployeeNumber;
+            $('#mainText').attr('type', 'text');
+            $('#mainText').attr('placeholder', 'Numéro d\'employé');
+            $scope.mainText = '';
+            $scope.validation = false;
+        }
+    }
+
+    $scope.changeEmployeeStepBack = function () {
+
+        $scope.numPadMsg = msgEnterEmployeeNumber;
+        $('#mainText').attr('type', 'text');
+        $('#mainText').attr('placeholder', 'Numéro d\'employé');
         $scope.mainText = '';
         $scope.validation = false;
+        $scope.numPadErrMsg = ''
+
     }
+
+    var msgEnterEmployeeNumber = "Entrez votre numéro d'employé";
+    var msgEnterEmployeePassword = "Entrez votre mot de passe";
 
     $scope.mainText ="";
     $scope.padClick = function($value) {
@@ -666,12 +771,14 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
                     $scope.authenticateEmployee();
 
-                    $('#windowModalBlocker').remove();
-
                 }
                 else{
+
+                    $scope.numPadErrMsg = ''
                     $scope.newUserId = $scope.mainText;
-                    $scope.numPadMsg = "Entrez votre mot de passe";
+                    $scope.numPadMsg = msgEnterEmployeePassword;
+                    $('#mainText').attr('placeholder', 'Mot de passe');
+                    $('#mainText').attr('type', 'password');
 
                     /*We need to validate*/
                     $scope.validation = true;
@@ -992,9 +1099,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
                         var size = $scope.commandClient[f+1].commandItems[p].size;
                         var quantity = $scope.commandClient[f+1].commandItems[p].quantity;
 
-
+/*
                         console.log('Notes')
-                        console.log($scope.commandClient[f+1].commandItems[p].notes);
+                        console.log($scope.commandClient[f+1].commandItems[p].notes);*/
 
                         var notes = [];
 
@@ -1055,7 +1162,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo'], function($interpola
 
 
 
-                    console.log($scope.commandClient[f+1]);
+                    /*console.log($scope.commandClient[f+1]);*/
                 }
 
             }
