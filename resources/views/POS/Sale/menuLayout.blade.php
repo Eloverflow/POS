@@ -111,7 +111,7 @@
         <div>
             {{--
         Employee courant : <% currentEmploye.firstName %> <% currentEmploye.lastName %>--}}
-            <span ng-click="changeEmployeeStepBack()" ng-show="validation" style="margin: 10px 0 0 20px ; cursor:pointer; padding: 10px; background-color: #222; border-radius: 50%; font-size: 25px; float: left; color: #fff; position: absolute" class='glyphicon glyphicon-arrow-left'></span>
+            <span ng-click="changeEmployeeStepBack()" ng-show="validation" style="margin: 10px 0 0 20px ; cursor:pointer; padding: 10px; background-color: #444; border-radius: 50%; font-size: 25px; float: left; color: #fff; position: absolute" class='glyphicon glyphicon-arrow-left'></span>
             <a ng-show="!validation" href="/"><span id="quit-emplye-modal" class='glyphicon glyphicon-remove-sign'></span></a>
             <div style="width: 100%; text-align: center; padding-top: 10px"><span style="color: red; font-size: 15px;"><% numPadErrMsg %></span></div>
             <table id="keyboard">

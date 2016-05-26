@@ -238,7 +238,9 @@
     <script type="text/javascript">
         var myScroll;
 
-            myScroll = new iScroll('filter-wrapper');
+            myScroll = new iScroll('filter-wrapper', {
+                hideScrollbar: true
+            });
 
         document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 

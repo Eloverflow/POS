@@ -176,7 +176,7 @@ div.saleTextZone input:focus{
 	position:absolute; z-index:1;
 	top:0; bottom:0; left:0;
 	width:100%;
-	background-color: rgba(0,0,0,0.5);
+	background-color: rgba(0,0,0,0.9);
 	overflow:hidden;
 }
 
@@ -538,7 +538,7 @@ span.number{
 }
 
 .sidebar{
-	height: 78%;
+	height: 73%;
 }
 
 
@@ -895,6 +895,7 @@ body{
 }
 
 
+
 @media only screen and (min-width : 450px) {
 
 	#quit-emplye-modal{
@@ -907,8 +908,14 @@ body{
 		position: fixed;
 		padding: 0;
 		z-index: 999;
-	}
-
+	}/*
+	#keyboard{
+		margin-top: 60px;
+		background-color: #222;
+		border-radius: 4px;
+		width: 75%;
+		margin-bottom: 50px;
+	}*/
 
 
 	.pagination-sm.pagination.ng-isolate-scope.ng-valid{
@@ -934,7 +941,7 @@ body{
 	}
 
 	#contentPanel .beer-items{
-		margin-top: 0;
+		margin-top: 80px;
 	}
 
 	.pagination>li>a, .pagination>li>span{
@@ -968,7 +975,7 @@ body{
 }*/
 
 .employee-modal .modal-content{
-	background-color: #444;
+	background-color: #222;
 	opacity: 0.9;
 }
 .employee-modal #displayMessage{

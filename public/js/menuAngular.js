@@ -60,7 +60,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                 method: "POST",
                 data: $data
             }).success(function (data) {
-                console.log(data);
+                /*console.log(data);*/
 
                 if($callbackPath)
                     $location.path($callbackPath);
@@ -225,7 +225,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                             }
 
 
-                            console.log(currentColor + " - Inverted to : " + invertedColor);
+                            /*console.log(currentColor + " - Inverted to : " + invertedColor);*/
 
                             sizeColorForName[count] = currentColor;
                             sizeColorText[count] = invertedColor;
@@ -282,7 +282,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
                     size_array[x].color = getRandomColor(size_name_array_now[x]);
 
-                    console.log(size_array[x].color);
+                    /*console.log(size_array[x].color);*/
                 }
 
 
@@ -300,7 +300,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
             window.loading_screen.finish();
 
-            $scope.numPadMsg = msgEnterEmplyeeNumber;/*
+            $scope.numPadMsg = msgEnterEmployeeNumber;
+            $('#mainText').attr('type', 'text');
+            $('#mainText').attr('placeholder', 'Numéro d\'employé');
+            /*
             $scope.authenticateEmployee();*/
             $scope.changeEmployee();
 
@@ -706,7 +709,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
 
                 $scope.validation = false;
-                $scope.numPadMsg = msgEnterEmplyeeNumber;
+                $scope.numPadMsg = msgEnterEmployeeNumber;
+                $('#mainText').attr('type', 'text');
+                $('#mainText').attr('placeholder', 'Numéro d\'employé');
                 $scope.numPadErrMsg = response.error;
                 $scope.showEmployeeModal = true;
                 $scope.mainText = '';
@@ -724,7 +729,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
 
             $scope.numPadErrMsg = ''
-            $scope.numPadMsg = msgEnterEmplyeeNumber;
+            $scope.numPadMsg = msgEnterEmployeeNumber;
+            $('#mainText').attr('type', 'text');
+            $('#mainText').attr('placeholder', 'Numéro d\'employé');
             $scope.mainText = '';
             $scope.validation = false;
         }
@@ -732,14 +739,17 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
     $scope.changeEmployeeStepBack = function () {
 
-        $scope.numPadMsg = msgEnterEmplyeeNumber;
+        $scope.numPadMsg = msgEnterEmployeeNumber;
+        $('#mainText').attr('type', 'text');
+        $('#mainText').attr('placeholder', 'Numéro d\'employé');
         $scope.mainText = '';
         $scope.validation = false;
         $scope.numPadErrMsg = ''
 
     }
 
-    var msgEnterEmplyeeNumber = "Entrez votre numero d'employee";
+    var msgEnterEmployeeNumber = "Entrez votre numéro d'employé";
+    var msgEnterEmployeePassword = "Entrez votre mot de passe";
 
     $scope.mainText ="";
     $scope.padClick = function($value) {
@@ -766,7 +776,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
                     $scope.numPadErrMsg = ''
                     $scope.newUserId = $scope.mainText;
-                    $scope.numPadMsg = "Entrez votre mot de passe";
+                    $scope.numPadMsg = msgEnterEmployeePassword;
+                    $('#mainText').attr('placeholder', 'Mot de passe');
+                    $('#mainText').attr('type', 'password');
 
                     /*We need to validate*/
                     $scope.validation = true;
@@ -1087,9 +1099,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                         var size = $scope.commandClient[f+1].commandItems[p].size;
                         var quantity = $scope.commandClient[f+1].commandItems[p].quantity;
 
-
+/*
                         console.log('Notes')
-                        console.log($scope.commandClient[f+1].commandItems[p].notes);
+                        console.log($scope.commandClient[f+1].commandItems[p].notes);*/
 
                         var notes = [];
 
@@ -1150,7 +1162,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
 
 
-                    console.log($scope.commandClient[f+1]);
+                    /*console.log($scope.commandClient[f+1]);*/
                 }
 
             }
