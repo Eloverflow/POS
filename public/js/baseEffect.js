@@ -213,6 +213,17 @@ function UnselectAllChoices(objChoiceList){
 
 }
 
+function GetSelectedItem(objChoiceList){
+
+    var spanElement = objChoiceList.find('span');
+    for(var i = 0; i < spanElement.length; i++){
+        if($(spanElement[i]).hasClass("active")){
+            return spanElement[i];
+        }
+    }
+
+}
+
 function choiceClick(allCurrentTableChoice, tableItaration){
     allCurrentTableChoice.click(function(){
 
@@ -222,7 +233,7 @@ function choiceClick(allCurrentTableChoice, tableItaration){
 
         this.className = this.className + " active";
 
-        $('.input'+tableItaration).attr("value", this.id);
+        $('#selectedItem').attr("value", this.id);
 
     });
 

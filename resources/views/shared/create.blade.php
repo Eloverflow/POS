@@ -21,7 +21,6 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-                    <form METHOD="POST" action="{{ @URL::to(Request::path()) }}">
 
                             @foreach($tableColumns as $column)
                                 <div class="form-group">
@@ -47,8 +46,8 @@
 
                             <input type="hidden" name="_token" value="{{ csrf_token() }}" />
 
-                        <button type="submit" class="btn btn-primary pull-right">Create</button>
-                    </form>
+                        <button id="btnCreateItem" class="btn btn-primary pull-right">Create</button>
+
                 </div>
                 <div class="col-md-6">
                     <div id="formShowing">
@@ -138,6 +137,7 @@
 
 @section("myjsfile")
     <script src="{{ @URL::to('js/utils.js') }}"></script>
+    <script src="{{ @URL::to('js/itemsManage.js') }}"></script>
     <script src="{{ @URL::to('js/itemTypesManage.js') }}"></script>
     <script type="text/javascript">
         $("#btnAddItemType").click(function () {
@@ -157,6 +157,11 @@
             postAddItemsType();
 
         });
+
+        $("#btnCreateItem").click(function(e) {
+            postCreateItem();
+        });
+
         $("#tableChoiceList1 span").on("click", function() {
             //alert("span click !");
 

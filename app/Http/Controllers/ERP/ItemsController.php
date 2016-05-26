@@ -249,11 +249,10 @@ class ItemsController extends Controller
 
         $rules = array(
             'name' => 'required',
-            'description' => 'required'
+            'description' => 'required',
+            'itemTypeId' => 'required'
         );
 
-        if(!Input::get('item_type_id'))
-        Input::merge(array('item_type_id' =>  1));
 
         $message = array(
             'required' => 'The :attribute is required !'
@@ -262,22 +261,29 @@ class ItemsController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            return Redirect::action('ERP\ItemsController@create')->withErrors($validation)
-                ->withInput();
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
+
         }
         else
         {
 
-            Item::create([
+            $varItem = Item::create([
                 'name' =>  Input::get('name'),
                 'description' => Input::get('description'),
                 'slug' => Input::get('name') . rand(10, 10000),
-                'item_type_id' => Input::get('item_type_id'),
-                'item_field_list_id' => Input::get('item_type_id')
+                'item_type_id' => Input::get('itemTypeId'),
+                'custom_fields_array' => Input::get('fieldValues'),
+                'size_prices_array' => Input::get('sizeValues')
             ]);
 
+            return \Response::json([
+                'success' => "The Item " . \Input::get('name') . " has been successfully created !",
+                'object' => $varItem->id
+            ], 201);
 
-            return Redirect::back();
         }
     }
 }

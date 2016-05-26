@@ -21,7 +21,7 @@ function postAddItemsType() {
     }
 
     for (var j = 0; j < sizeRows.length; j++){
-        if((sizeRows.length - 1) == i) {
+        if((sizeRows.length - 1) == j) {
             $sizeNames += $(sizeRows[i]).find('td:first').text().trim()
         } else {
             $sizeNames += $(sizeRows[j]).find('td:first').text().trim() + ",";
@@ -72,13 +72,14 @@ function postAddItemsType() {
                 //alert("CRISS");
 
                 var focusElem = $('#tableChoiceList1 #' + xhr["object"] + ' .focus');
-                console.log(focusElem);
+
                 ChoiceClickAnimate(focusElem);
-                drawFillingForms(xEvent);
+                drawFillingForms(this);
             });
 
             UnselectAllChoices($("#tableChoiceList1"));
             $("#tableChoiceList1").append(spani);
+            drawFillingForms(spani);
 
             alert(xhr["success"]);
             $("#addModal").modal('hide');
@@ -198,27 +199,35 @@ function drawFillingForms(xEvent) {
 
     $("#formShowing").empty();
 
-    $("#formShowing").append('<h4>Fields</h4>');
+    var fieldsFormHTML = '<h4>Fields</h4><div id="fieldsContainer">';
 
     for(var i = 0; i < arrFields.length; i++){
         var fieldName = arrFields[i].trim();
-        $("#formShowing").append('<div class="form-group">' +
+        fieldsFormHTML += '<div class="form-group">' +
             '<label for="' + fieldName + '">' + fieldName.charAt(0).toUpperCase() + fieldName.slice(1) + '</label>' +
             '<input class="form-control" name="' + fieldName + '" type="text" id="' + fieldName + '">' +
-            '</div>');
+            '</div>';
     }
+
+    fieldsFormHTML += '</div>';
+
+    $("#formShowing").append(fieldsFormHTML);
 
     var itemSizes = $(xEvent).attr("data-size-names");
 
     var arrSizes =  itemSizes.split(",");
 
-    $("#formShowing").append('<h4>Prices</h4>');
+    var sizesFormHTML = '<h4>Sizes</h4><div id="sizesContainer">';
 
     for(var j = 0; j < arrSizes.length; j++){
         var sizeName = arrSizes[j].trim();
-        $("#formShowing").append('<div class="form-group">' +
+        sizesFormHTML += '<div class="form-group">' +
             '<label for="' + sizeName + '">' + sizeName.charAt(0).toUpperCase() + sizeName.slice(1) + '</label>' +
             '<input class="form-control" name="' + sizeName + '" type="text" id="' + sizeName + '">' +
-            '</div>');
+            '</div>';
     }
+
+    sizesFormHTML += '</div>';
+
+    $("#formShowing").append(sizesFormHTML);
 }
