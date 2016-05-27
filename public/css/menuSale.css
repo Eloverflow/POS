@@ -358,6 +358,7 @@ div.saleTextZone input:focus{
 }
 
 .div-bill-sub-total{
+	height: 100%;
 	border-top: 2px solid #222;
 	padding-top: 1px;
 	background-color: #393939;/*
@@ -389,7 +390,7 @@ div.saleTextZone input:focus{
 .div-bill-sub-total .right{
 	border-left: 1px #222 solid;
 	width: 50%;
-	height: 40px;
+	height: 100%;
 	float: right;
 }
 
@@ -537,8 +538,9 @@ span.number{
 	padding: 0;
 }
 
-.sidebar{
-	height: 73%;
+#sidebar-collapse{/*
+	height: 73%;*/
+	padding-bottom: 20%;
 }
 
 
@@ -869,6 +871,10 @@ body{
 	height: 40px;
 }
 
+#planModal{
+	background-color: #333; z-index: 1000; position: fixed; width: 100%; height: 100%;
+
+}
 
 
 .pagination-sm.pagination.ng-isolate-scope.ng-valid{

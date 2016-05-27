@@ -160,54 +160,13 @@
 
 @yield('content')
 
-<div  id="planModal"  style=" background-color: #333; z-index: 1000; position: absolute; width: 100%; height: 100%;" ng-show="showPlanModal">
-    <canvas style="margin: 0;" id="myCanvas" width="0" height="0" />
-    <script>
-
-
-        var canva = $('#myCanvas');
-        var planModal =$('#planModal');
-
-        canva.attr('width', planModal.width());
-        canva.attr('height', planModal.height());
-
-
-        var elem = document.getElementById('myCanvas'),
-                elemLeft = elem.offsetLeft,
-                elemTop = 50,
-                context = elem.getContext('2d'),
-                elements = [];
-                /*50 is header size*/
-
-        // Add event listener for `click` events.
-        elem.addEventListener('click', function(event) {
-            var x = event.pageX - elemLeft,
-                    y = event.pageY - elemTop;
-            console.log(x, y);
-            elements.forEach(function(element) {
-                if (y > element.top && y < element.top + element.height && x > element.left && x < element.left + element.width) {
-                    alert('clicked an element : ' + element.name);
-                }
-            });
-
-        }, false);
-
-        // Add element.
-        elements.push({
-            name: 'test',
-            colour: '#05EFFF',
-            width: 150,
-            height: 100,
-            top: 20,
-            left: 15
-        });
-
-        // Render elements.
-        elements.forEach(function(element) {
-            context.fillStyle = element.colour;
-            context.fillRect(element.left, element.top, element.width, element.height);
-        });
-    </script>
+<div  id="planModal" ng-show="showPlanModal">
+    <span id="zoomout" style="transition: all 0.2s; cursor: pointer; color: #30a5ff; background-color: #fff; border-radius: 50%; padding: 10px; opacity:0.8; font-size: 36px; position:fixed; right: 4%; top: 10%; z-index: 1051;" class="glyphicon glyphicon-refresh"></span>
+    <div class="parent">
+        <div class="panzoom">
+            <canvas style="margin: 0;" id="myCanvas" width="0" height="0" />
+        </div>
+    </div>
 </div>
 
 <div id="billWindow">

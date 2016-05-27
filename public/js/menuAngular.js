@@ -129,17 +129,288 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
         }
     }
 
+    $scope.getPlan = function () {
+        $url = 'http://pos.mirageflow.com/api/table-plan/1';
+        var $callbackFunction = function(response){
 
-    $url = 'http://pos.mirageflow.com/api/table-plan/1';
-    var $callbackFunction = function(response){
+            $scope.plan = response;
 
-        $scope.plan = response;
+            $scope.currentTable = $scope.plan.table[0];
 
-        $scope.currentTable = $scope.plan.table[0];
+            console.log('Plan:');
+            console.log($scope.plan);
+
+
+        }
+        getReq.send($url, null ,$callbackFunction);
+    }
+    $scope.getPlan();
+
+    var $section = $('#planModal');
+    var $panzoom = $section.find('.panzoom').panzoom({$reset: $section.find("#zoomout")});
+    var zoomout = $('#zoomout');
+    var increment = 0.5;
+    $scope.totalIncrement = 1;
+
+    $section.find("#zoomout").on('click', function () {
+        $scope.totalIncrement = 1;
+    });
+
+    (function() {
+        $panzoom.parent().on('dblclick', function( e ) {
+            e.preventDefault();
+
+            var offset = this.getClientRects()[0];
+
+            /*Fix the margin error*/
+            var eWithOffset = e;
+            eWithOffset.clientX = (e.clientX - offset.left);
+            eWithOffset.clientY = (e.clientY - offset.top)-300;
+
+            console.log(eWithOffset);
+
+            $panzoom.panzoom('zoom', false, {
+                increment: increment,
+                focal: eWithOffset
+            });
+
+            /*Allow click to work by following the zoom effect on the Div*/
+            $scope.totalIncrement += increment;
+        });
+    })();
+
+    var biggerX = 0;
+    var biggerY = 0;
+    var xProportion = 0;
+    var yProportion = 0;
+    var wallPoints;
+    $scope.planCanva= function () {
+        var canvas = $('#myCanvas');
+        var planModal =$('#planModal');
+
+        var canvasWidth = window.innerWidth;
+        var canvasHeight = window.innerHeight-50;
+        canvas.attr('width', canvasWidth);
+        canvas.attr('height', canvasHeight);
+
+        var elem = document.getElementById('myCanvas'),
+            context = elem.getContext('2d'),
+            elements = [];
+
+        // Add event listener for `click` events.
+        elem.addEventListener('click', function(event) {
+
+            var offset = this.getClientRects()[0];
+
+            var x = (event.clientX - offset.left),
+                y = (event.clientY - offset.top);
+
+            /*Adjust with the zoom*/
+            x /= $scope.totalIncrement;
+            y /= $scope.totalIncrement;
+
+
+            elements.forEach(function(element) {
+                var top = element.top,
+                    left = element.left,
+                    height = element.height,
+                    width = element.width,
+                    angle = element.angle;
+
+                /*Rotation begin*/
+                var originX = left + width/2,
+                    originY = top + height/2;
+                // translate mouse point values to origin
+                var dx = x - originX, dy = y - originY;
+                // distance between the point and the center of the rectangle
+                var h1 = Math.sqrt(dx*dx + dy*dy);
+                var currA = Math.atan2(dy,dx);
+                // Angle of point rotated around origin of rectangle in opposition
+                var newA = currA - angle; //45 rad here
+                // New position of mouse point when rotated
+                var x2 = Math.cos(newA) * h1;
+                var y2 = Math.sin(newA) * h1;
+                /*Rotation end*/
+
+                // Check relative to center of rectangle after rotation
+                if (x2 > -0.5 * width && x2 < 0.5 * width && y2 > -0.5 * height && y2 < 0.5 * height){
+                    console.log('Clicked table : ' + element.name);
+
+                    var selectedTable = $filter("filter")($scope.plan.table, {id : element.id});
+
+                    $scope.changeTable(selectedTable[0])
+                    $scope.togglePlanModal();
+                }
+            });
+
+        }, false);
+
+         biggerX = 0;
+         biggerY = 0;
+         xProportion = 0;
+         yProportion = 0;
+        wallPoints = $scope.plan.wallPoints;
+        var onePoint = wallPoints.split(",");
+        if(onePoint != ""){
+
+            for (var m = 0; m < onePoint.length; m++) {
+                var coordonate = onePoint[m].split(":");
+
+                var x1 = parseInt(coordonate[0]);
+                var y1 = parseInt(coordonate[1]);
+
+                if(x1 > biggerX){
+                    biggerX = x1;
+                }
+
+                if(y1 > biggerY){
+                    biggerY = y1;
+                }
+            }
+
+            // 99 for small margin
+            xProportion =  0.99 / (biggerX / canvas.attr('width'));
+            yProportion = 0.99 / (biggerY / canvas.attr('height'));
+
+            context.beginPath();
+            context.strokeStyle = "#222"
+            context.lineWidth=8;
+            context.lineJoin = 'round';
+            for (m = 0; m < onePoint.length; m++) {
+                coordonate = onePoint[m].split(":");
+
+                x1 = parseInt(coordonate[0]);
+                y1 = parseInt(coordonate[1]);
+
+                x1 *= xProportion;
+                y1 *= yProportion;
+
+
+                if(m == 0)
+                    context.moveTo(x1, y1);
+                else
+                    context.lineTo(x1, y1);
+            }
+            context.closePath();
+            context.fillStyle = '#444';
+            context.fill();
+            context.stroke();
+            context.clip();
+
+        }
+
+
+
+        for(var i = 0; i < $scope.plan.table.length; i++){
+
+            var width = 60 * xProportion;
+            var height = 30 * yProportion;
+            var angle = parseFloat($scope.plan.table[i].angle.substring(0, 4));
+            console.log(angle)
+
+
+            // Add element.
+            elements.push({
+                id: $scope.plan.table[i].id,
+                name: $scope.plan.table[i].tblNumber,
+                type: $scope.plan.table[i].type,
+                status : $scope.plan.table[i].status,
+                angle : angle,/*
+                angle : 90,*/
+                colour: '#00a5ff',
+                width: width,
+                height: height,
+                top: parseInt($scope.plan.table[i].yPos) * yProportion+width/2,
+                left: parseInt($scope.plan.table[i].xPos) * xProportion+height/2
+            });
+        }
+
+
+
+        // Render elements.
+        elements.forEach(function(element) {
+            context.save();
+            context.beginPath();
+            context.fillStyle = element.colour;
+            context.translate( element.left+element.width/2, element.top+element.height/2 );
+            context.rotate(element.angle);
+            context.fillRect(-element.width /2, -element.height / 2, element.width, element.height );
+
+            paint_centered(document.getElementById('myCanvas'), -element.width /2, -element.height / 2, element.width, element.height, element.name);
+            context.restore();
+        });
+
 
     }
-    getReq.send($url, null ,$callbackFunction);
 
+    /**
+     * @param canvas : The canvas object where to draw .
+     *                 This object is usually obtained by doing:
+     *                 canvas = document.getElementById('canvasId');
+     * @param x     :  The x position of the rectangle.
+     * @param y     :  The y position of the rectangle.
+     * @param w     :  The width of the rectangle.
+     * @param h     :  The height of the rectangle.
+     * @param text  :  The text we are going to centralize
+     */
+    paint_centered = function(canvas, x, y, w, h, text) {
+        // The painting properties
+        // Normally I would write this as an input parameter
+        var Paint = {
+            RECTANGLE_STROKE_STYLE : '#222',
+            RECTANGLE_LINE_WIDTH : 3,
+            VALUE_FONT : '28px Arial',
+            VALUE_FILL_STYLE : 'white'
+        }
+
+        // Obtains the context 2d of the canvas
+        // It may return null
+        var ctx2d = canvas.getContext('2d');
+
+        if (ctx2d) {
+            // draw rectangular
+            ctx2d.strokeStyle=Paint.RECTANGLE_STROKE_STYLE;
+            ctx2d.lineWidth = Paint.RECTANGLE_LINE_WIDTH;
+            ctx2d.strokeRect(x, y, w, h);
+
+
+            var width = w/4,
+            height =  h/2;
+
+
+            /*Bottom*/
+                ctx2d.strokeRect(x+w/2+width, y+h*1.2, width, height);
+                ctx2d.strokeRect(x+w/2/2+width/2, y+h*1.2, width, height);
+                ctx2d.strokeRect(x+w/2/2-width, y+h*1.2, width, height);
+
+            /*Top*/
+                ctx2d.strokeRect(x+w/2+width, y * 2.4, width, height);
+                ctx2d.strokeRect(x+w/2/2+width/2, y * 2.4, width, height);
+                ctx2d.strokeRect(x+w/2/2-width, y * 2.4, width, height);
+
+
+
+/*
+
+            /!*Right*!/
+            if(left < canvas.getAttribute('width') && top < canvas.getAttribute('width') + width){
+
+            }
+*/
+
+            // draw text (this.val)
+            ctx2d.textBaseline = "middle";
+            ctx2d.font = Paint.VALUE_FONT;
+            ctx2d.fillStyle = Paint.VALUE_FILL_STYLE;
+            // ctx2d.measureText(text).width/2
+            // returns the text width (given the supplied font) / 2
+            textX = x+w/2-ctx2d.measureText(text).width/2;
+            textY = y+h/2;
+            ctx2d.fillText(text, textX, textY);
+        } else {
+            // Do something meaningful
+        }
+    }
 
 
     $scope.filters = { };
@@ -702,6 +973,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                 })
 
                 $scope.showEmployeeModal = false;
+                $scope.planCanva();
             }
             else{
                 console.log("User is invalid :");
