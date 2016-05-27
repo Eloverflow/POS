@@ -246,15 +246,13 @@ class ScheduleController extends Controller
                     }
 
                     $availableColor = "";
-
-                    if(!isset($usedColors[$weekDispos[$i][$j]->idEmployee]) ||
-                        $usedColors[$weekDispos[$i][$j]->idEmployee] == null ){
-
+                    $employeeColor = $this->GetEmployeeColor($usedColors,$weekDispos[$i][$j]->idEmployee);
+                    if($employeeColor == ""){
                         $availableColors = $this->GetAvailableColors($usedColors);
                         $availableColor = $availableColors[0];
-                        $usedColors[$weekDispos[$i][$j]->idEmployee] = $availableColor;
+                        $usedColors[] = array("idEmployee" => $weekDispos[$i][$j]->idEmployee, "color" => $availableColor);
                     } else {
-                        $availableColor = $usedColors[$weekDispos[$i][$j]->idEmployee];
+                        $availableColor = $employeeColor;
                     }
 
                     $events[] = \Calendar::event(
@@ -321,8 +319,7 @@ class ScheduleController extends Controller
             6 => Schedule::GetDaySchedules($id, 6),
         );
 
-
-
+        $usedColors = [];
 
         $events = [];
 
@@ -354,7 +351,16 @@ class ScheduleController extends Controller
                         $dispoEnd->add(new DateInterval('P1D'));
                     }
 
-                    //$hexColor =
+                    $availableColor = "";
+                    $employeeColor = $this->GetEmployeeColor($usedColors,$weekDispos[$i][$j]->idEmployee);
+                    if($employeeColor == ""){
+                        $availableColors = $this->GetAvailableColors($usedColors);
+                        $availableColor = $availableColors[0];
+                        $usedColors[] = array("idEmployee" => $weekDispos[$i][$j]->idEmployee, "color" => $availableColor);
+                    } else {
+                        $availableColor = $employeeColor;
+                    }
+
                     $events[] = \Calendar::event(
                         $weekDispos[$i][$j]->firstName . " " . $weekDispos[$i][$j]->lastName,
                         false,
@@ -363,7 +369,7 @@ class ScheduleController extends Controller
                         $weekDispos[$i][$j]->id,
                         [
                             'employeeId' => $employeeId,
-
+                            'color' => $availableColor
                         ]
                     );
                 }
@@ -569,6 +575,18 @@ class ScheduleController extends Controller
         return $view;
     }
 
+    public function GetEmployeeColor($usedColors, $idEmployee)
+    {
+        $emplColor = "";
+        foreach($usedColors  as $usedColor){
+            if($usedColor["idEmployee"] == $idEmployee){
+                $emplColor = $usedColor["color"];
+            }
+        }
+
+        return $emplColor;
+    }
+
     public function GetAvailableColors($usedColors)
     {
         $availableColors = array();
@@ -590,12 +608,10 @@ class ScheduleController extends Controller
             for($i = 0; $i < count($niceColors); $i++){
 
                 $colorFound = false;
-                $j = 0;
-                while($colorFound == false && $j <= count($usedColors)){
-                    if($niceColors[$i] != $usedColors[$j]){
+                foreach($usedColors  as $usedColor){
+                    if($niceColors[$i] == $usedColor["color"]){
                         $colorFound = true;
                     }
-                    $j++;
                 }
 
                 if(!$colorFound){
