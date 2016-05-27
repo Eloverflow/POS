@@ -60,7 +60,7 @@ Route::post('/item/type/create',  ['uses' => 'ERP\ItemTypesController@postCreate
 
 Route::get('/items',  ['uses' => 'ERP\ItemsController@index', 'middleware' => 'auth']);
 Route::get('/items/create',  ['uses' => 'ERP\ItemsController@create', 'middleware' => 'auth']);
-Route::post('/items/create',  ['uses' => 'ERP\ItemsController@postCreate', 'middleware' => 'auth']);
+Route::post('/item/create',  ['uses' => 'ERP\ItemsController@postCreate', 'middleware' => 'auth']);
 Route::get('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@edit', 'middleware' => 'auth']);
 Route::post('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@update', 'middleware' => 'auth']);
 Route::get('/items/liste',  ['uses' => 'ERP\ItemsController@liste', 'middleware' => 'auth']);
