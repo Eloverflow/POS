@@ -214,7 +214,7 @@ class ScheduleController extends Controller
             6 => Schedule::GetDaySchedules($id, 6),
         );
 
-
+        $usedColors = [];
 
         $events = [];
 
@@ -245,12 +245,27 @@ class ScheduleController extends Controller
                         $dispoEnd->add(new DateInterval('P1D'));
                     }
 
+                    $availableColor = "";
+
+                    if(!isset($usedColors[$weekDispos[$i][$j]->idEmployee]) ||
+                        $usedColors[$weekDispos[$i][$j]->idEmployee] == null ){
+
+                        $availableColors = $this->GetAvailableColors($usedColors);
+                        $availableColor = $availableColors[0];
+                        $usedColors[$weekDispos[$i][$j]->idEmployee] = $availableColor;
+                    } else {
+                        $availableColor = $usedColors[$weekDispos[$i][$j]->idEmployee];
+                    }
+
                     $events[] = \Calendar::event(
-                        $weekDispos[$i][$j]->firstName,
+                        $weekDispos[$i][$j]->firstName . " " . $weekDispos[$i][$j]->lastName,
                         false, //full day event?
                         $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
                         $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                        $weekDispos[$i][$j]->id
+                        $weekDispos[$i][$j]->id,
+                        [
+                            'color' => $availableColor
+                        ]
                     );
                 }
             }
@@ -308,6 +323,7 @@ class ScheduleController extends Controller
 
 
 
+
         $events = [];
 
         /*For each day of disponibility*/
@@ -338,14 +354,16 @@ class ScheduleController extends Controller
                         $dispoEnd->add(new DateInterval('P1D'));
                     }
 
+                    //$hexColor =
                     $events[] = \Calendar::event(
-                        $weekDispos[$i][$j]->firstName,
+                        $weekDispos[$i][$j]->firstName . " " . $weekDispos[$i][$j]->lastName,
                         false,
                         $dispoBegin,
                         $dispoEnd,
                         $weekDispos[$i][$j]->id,
                         [
-                            'employeeId' => $employeeId
+                            'employeeId' => $employeeId,
+
                         ]
                     );
                 }
@@ -551,4 +569,45 @@ class ScheduleController extends Controller
         return $view;
     }
 
+    public function GetAvailableColors($usedColors)
+    {
+        $availableColors = array();
+        $niceColors = array(
+            0 => "#6AA4C1",
+            1 => "#800000",
+            2 => "#520043",
+            3 => "#33044D",
+            4 => "#1A094F",
+            5 => "#0C0C50",
+            6 => "#00502A",
+            7 => "#256500",
+            8 => "#737300"
+        );
+
+        if(count($usedColors) == 0){
+            $availableColors[] = $niceColors[0];
+        } else {
+            for($i = 0; $i < count($niceColors); $i++){
+
+                $colorFound = false;
+                $j = 0;
+                while($colorFound == false && $j <= count($usedColors)){
+                    if($niceColors[$i] != $usedColors[$j]){
+                        $colorFound = true;
+                    }
+                    $j++;
+                }
+
+                if(!$colorFound){
+                    $availableColors[] = $niceColors[$i];
+                }
+            }
+
+            if(count($availableColors) == 0){
+                $availableColors[] = $niceColors[0];
+            }
+        }
+
+        return $availableColors;
+    }
 }
