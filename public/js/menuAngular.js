@@ -6,8 +6,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
     // configure Idle settings
     IdleProvider.idle(20); // in seconds
-    IdleProvider.timeout(20); // in seconds
+    IdleProvider.timeout(5); // in seconds
     KeepaliveProvider.interval(2); // in seconds
+    IdleProvider.windowInterrupt('focus');
 
 })
 .run(function(Idle){
@@ -82,17 +83,45 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
     $scope.$on('IdleStart', function() {
         console.log('Idle')
         if(!$scope.showEmployeeModal){
-            $scope.commandClient = [];
-            $scope.commandItems = [];
-            $scope.bills = [];
-            $scope.taxe = [0,0];
-            $scope.totalBill = 0;
             $scope.changeEmployee();
-            var modalChangeEmployee = $('#changeEmployee');
-            modalChangeEmployee.prepend(windowModalBlockerHtml);
-            modalChangeEmployee.find('#closeModal').hide();
         }
     });
+
+    $scope.$on('IdleWarn', function(e, countdown) {
+        if(countdown == 1){
+            console.log('End if idle to trigger')
+        }
+    });
+
+    $scope.$on('IdleTimeout', function() {
+        console.log('IdleTimeout')
+        $scope.commandClient = [];
+        $scope.commandItems = [];
+        $scope.bills = [];
+        $scope.taxe = [0,0];
+        $scope.totalBill = 0;
+        var modalChangeEmployee = $('#changeEmployee');
+        $(windowModalBlockerHtml).hide().prependTo(modalChangeEmployee).fadeIn("fast");
+
+        modalChangeEmployee.find('#closeModal').hide();
+
+        Idle.watch();
+    });
+
+  /*  $scope.$on('IdleEnd', function() {
+        console.log('IdleEnd')
+        Idle.watch();
+    });
+
+    $scope.$on('Keepalive', function() {
+        console.log('Keepalive')
+        Idle.watch();
+    });*/
+
+   /* $scope.$watch('idle', function(value) {
+        if (value !== null) Idle.setIdle(value);
+    });*/
+
 
     $scope.commandItems = [];
 
@@ -306,8 +335,6 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             var width = 60 * xProportion;
             var height = 30 * yProportion;
             var angle = parseFloat($scope.plan.table[i].angle.substring(0, 4));
-            console.log(angle)
-
 
             // Add element.
             elements.push({
@@ -377,26 +404,23 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             var width = w/4,
             height =  h/2;
 
-
+            /*Seats*/
             /*Bottom*/
-                ctx2d.strokeRect(x+w/2+width, y+h*1.2, width, height);
-                ctx2d.strokeRect(x+w/2/2+width/2, y+h*1.2, width, height);
-                ctx2d.strokeRect(x+w/2/2-width, y+h*1.2, width, height);
+            ctx2d.strokeRect(x+w/2+width, y+h*1.1, width, height);
+            ctx2d.strokeRect(x+w/2/2+width/2, y+h*1.1, width, height);
+            ctx2d.strokeRect(x+w/2/2-width, y+h*1.1, width, height);
 
             /*Top*/
-                ctx2d.strokeRect(x+w/2+width, y * 2.4, width, height);
-                ctx2d.strokeRect(x+w/2/2+width/2, y * 2.4, width, height);
-                ctx2d.strokeRect(x+w/2/2-width, y * 2.4, width, height);
+            ctx2d.strokeRect(x+w/2+width, y * 2.2, width, height);
+            ctx2d.strokeRect(x+w/2/2+width/2, y * 2.2, width, height);
+            ctx2d.strokeRect(x+w/2/2-width, y * 2.2, width, height);
 
+            /*Left*/
+            ctx2d.strokeRect(x-(h/2)*1.2, y+(h/2/1.9), height, width);
 
-
-/*
-
-            /!*Right*!/
-            if(left < canvas.getAttribute('width') && top < canvas.getAttribute('width') + width){
-
-            }
-*/
+            /*Right*/
+            ctx2d.strokeRect(x+w/2+width*2.2, y+(h/2/1.9), height, width);
+            /*End Seats*/
 
             // draw text (this.val)
             ctx2d.textBaseline = "middle";

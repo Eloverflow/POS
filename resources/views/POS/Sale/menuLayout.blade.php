@@ -43,8 +43,12 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
+                <span class="sr-only">Toggle command</span>
+                <span>Commande</span> <span class="glyphicon glyphicon-barcode"></span>
+            </button>
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse2">
                 <span class="sr-only">Toggle navigation</span>
-                <span>Facture</span> <span class="glyphicon glyphicon-barcode"></span>
+                <span>Prix</span> <span class="glyphicon glyphicon-euro"></span>
             </button>
             <a class="navbar-brand" href="{{@URL::to('/menu')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pos</span>Io</a>
             <ul class="menu-option">

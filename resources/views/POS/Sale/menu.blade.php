@@ -27,7 +27,7 @@
 
 @section('content')
     <div id="splashFullScreen">Maintenant en mode plein écran.</div>
-    <div id="sidebar-collapse" class="col-sm-3 col-lg-5 sidebar">
+    <div id="sidebar-collapse" class="col-sm-5 col-lg-5 sidebar">
         <uib-pagination ng-change="pageChanged()" total-items="bigTotalItems" ng ng-model="bigCurrentPage"
                         max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"
                         rotate="false"></uib-pagination>
@@ -92,39 +92,41 @@
         </ul>
     </div>
 
-    <div class="col-sm-3 col-lg-5 sidebar bill-bottom">
+    <div id="sidebar-collapse2" class="col-sm-5 col-lg-5 sidebar bill-bottom">
 
         <div class="div-bill-sub-total">
-            <h2>Sous total : <span class="number"><% subTotalBill | number:2 %></span></h2><div class="right"><h3 ng-repeat="taxe in taxes"><% taxe.name %> : <span class="number"><% taxe.total | number:2 %></span></h3></div>
+            <h2>Sous-total : <span class="number"><% subTotalBill | number:2 %></span></h2><div class="right"><h3 ng-repeat="taxe in taxes"><% taxe.name %> : <span class="number"><% taxe.total | number:2 %></span></h3></div>
+            <div class="div-bill-total">
+                <h1 class="bill-total">Total : <span class="number"><% totalBill | number:2 %></span></h1>
+
+                <button ng-show="commandItemTimeToggle" href="#" ng-click="toggleCommandTime()"
+                        style="background-color: #8ad919" type="button" class="btn btn-success"><span
+                            class="glyphicon glyphicon-euro"></span>
+                    Afficher le montant
+                </button>
+                <button ng-hide="commandItemTimeToggle" href="#" ng-click="toggleCommandTime()" type="button"
+                        class="btn btn-success"><span class="glyphicon glyphicon-time"></span>
+                    Afficher le temps
+                </button>
+
+            </div>
+            <div class="div-btn-facture">
+                <button ng-click="" type="button" class="btn btn-success btn-facture">Imprimer Factures</button>
+                <button ng-click="toggleDivideBillModal()" type="button" class="btn btn-success btn-facture">Diviser Factures</button>
+            </div>
+            <uib-progressbar class="progress-striped active" animate="true" max="100" value="progressValue" type="success">
+                <i><%savingMessage%> {{--<span count-to="5" duration="5" count-from="0"></span>/5 secondes--}}</i>
+            </uib-progressbar>
+
         </div>
 
-        <div class="div-bill-total">
-            <h1 class="bill-total">Total = <span class="number"><% totalBill | number:2 %></span></h1>
 
-            <button ng-show="commandItemTimeToggle" href="#" ng-click="toggleCommandTime()"
-                    style="background-color: #8ad919" type="button" class="btn btn-success"><span
-                        class="glyphicon glyphicon-euro"></span>
-                Afficher le montant
-            </button>
-            <button ng-hide="commandItemTimeToggle" href="#" ng-click="toggleCommandTime()" type="button"
-                    class="btn btn-success"><span class="glyphicon glyphicon-time"></span>
-                Afficher le temps
-            </button>
-
-        </div>
-        <div class="div-btn-facture">
-            <button ng-click="" type="button" class="btn btn-success btn-facture">Imprimer Factures</button>
-            <button ng-click="toggleDivideBillModal()" type="button" class="btn btn-success btn-facture">Diviser Factures</button>
-        </div>
-        <uib-progressbar class="progress-striped active" animate="true" max="100" value="progressValue" type="success">
-            <i><%savingMessage%> {{--<span count-to="5" duration="5" count-from="0"></span>/5 secondes--}}</i>
-        </uib-progressbar>
 
     </div>
 
     <!--/.sidebar-->
 
-    <div class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 div-filter">
+    <div class="col-sm-9 col-sm-offset-5 col-lg-7 col-lg-offset-5 div-filter">
         {{--<div style="background-color: #444; width: 200px; height: 80px"> </div>--}}
 
         <div id="filter-wrapper" style="overflow: hidden;">
@@ -139,7 +141,7 @@
         </div>
     </div>
 
-    <div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-7 col-lg-offset-5 main">
+    <div id="contentPanel" class="col-sm-9 col-sm-offset-5 col-lg-7 col-lg-offset-5 main">
         {{--Content--}}
         <div class="row beer-items">
             <div ng-repeat="menuItems in menuItemsExtended | filter:filters">
@@ -160,48 +162,7 @@
             </div>
 
 
-            <div id="footPanel">
-                <div class="upLeft">
-                    <h1>
-                        <b>Size of </b>
-                    </h1>
-                </div>
-                <div class="upRight">
-                    <button ng-click="closeFoot()" type="button" class="btn btn-danger">FERMER</button>
-                </div>
 
-                <div class="bottomLeft">
-                    <div class="col-sm-6 col-md-3">
-                        <div class="beerItem">
-                            <div class="thumbnail">
-                                <h3><span class="beerName"><% selectedItemForSize.name %></span></h3>
-                                <img class="beerImage"
-                                     ng-src="{{ @URL::to('/img/item/')}}/<% selectedItemForSize.img_id %>">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <div class="beerItem">
-
-                            <select size="3" ng-model="sizeProp.value" ng-options="o.name for o in sizeProp.values"
-                                    ng-change="selectSize(sizeProp.value)"></select>
-
-                        </div>
-                    </div>
-                    <div class="col-sm-6 col-md-3">
-                        <div class="beerItem">
-                            <div class="priceBox"><label class="amount"><% sizeProp.value.price %></label><span
-                                        class="glyphicon glyphicon-usd"></span></div>
-                        </div>
-                    </div>
-
-                </div>
-
-                <div class="bottomRight">
-                    <button id="boutonAdd" ng-click="addItem()" type="button" class="btn btn-primary">AJOUTER</button>
-                </div>
-
-            </div>
         </div>
     </div>
 
@@ -209,34 +170,13 @@
 
 @section('myjsfile')
     <script>
-        /*    $('#calendar').datepicker({
-         });
-
-         !function ($) {
-         $(document).on("click","ul.nav li.parent > a > span.icon", function(){
-         $(this).find('em:first').toggleClass("glyphicon-minus");
-         });
-         $(".sidebar span.icon").find('em:first').addClass("glyphicon-plus");
-         }(window.jQuery);*/
 
         $(window).on('resize', function () {
-            if ($(window).width() > 768) $('#sidebar-collapse').collapse('show')
+            if ($(window).width() > 768) {$('#sidebar-collapse').collapse('show'); $('#sidebar-collapse2').collapse('show')}
         })
         $(window).on('resize', function () {
-            if ($(window).width() <= 767) $('#sidebar-collapse').collapse('hide')
+            if ($(window).width() <= 767) {$('#sidebar-collapse').collapse('hide'); $('#sidebar-collapse2').collapse('hide')}
         })
-
-       /* if ($(window).width() > 450)
-        $(document).on('click', function(){
-
-            fullscreen();
-            $(document).unbind();
-
-            console.log("Here we go fullscreen");
-        });*/
-
-
-
     </script>
     <script type="application/javascript" src="{{ @URL::to('Framework/iscroll.js') }}"></script>
     <script type="text/javascript">
@@ -245,8 +185,8 @@
             myScroll = new iScroll('filter-wrapper', {
                 hideScrollbar: true
             });
-
-        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+/*
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);*/
 
     </script>
 @stop

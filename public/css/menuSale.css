@@ -11,7 +11,7 @@
 
 .menu-sale{
 	border-top: 2px solid #222;
-	font-size: 1.4vw;
+	font-size: 1.3em;
 }
 
 .menu-sale li.sale-item{
@@ -39,7 +39,7 @@
 
 .sidebar span.glyphicon{
 	transition: font-size 0.1s;
-	font-size: 20px;
+	font-size: 1.2em;
 	cursor: pointer;
 }
 
@@ -60,7 +60,7 @@
 }
 .sidebar span.glyphicon.glyphicon-remove{
 	/*margin-top: 10px;*/
-	font-size: 25px;
+	font-size: 1.4em;
 }
 
 .sidebar span.glyphicon.right{
@@ -79,7 +79,7 @@
 }
 
 .priceItems{
-	width: 14%;
+	width: 4.5em;
 	height:35px;
 	word-break: break-all;
 	text-overflow: clip;
@@ -88,6 +88,7 @@
 	color: #8ad919;
 	padding: 4px;
 	float: right;
+	text-align: center;
 }
 
 .timeItems{
@@ -101,20 +102,28 @@ div.saleTextZone{
 	text-align: center;
 	display: inline-block;
 	top: 40px!important;
-	width: 50%;/*
+	width: 9em;/*
 	word-wrap: break-word;*/
 }
 
 
 div.saleTextZone input{
-	margin-right: 40px;
+	margin-right: 1em;
 	float: left;
 	color: #333;
 	transition: border-color 0.3s;
-	width: 14%;
+	width: 2em;
 	text-align: center;
 	border: solid #30a5ff 4px;
 	border-radius: 2px;
+}
+
+
+div.saleTextZone input::-webkit-outer-spin-button,
+div.saleTextZone input::-webkit-inner-spin-button {
+	/* display: none; <- Crashes Chrome on hover */
+	-webkit-appearance: none;
+	margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
 }
 
 
@@ -143,7 +152,13 @@ div.saleTextZone input:focus{
 	border-width: 2px;
 	background-color: #333;
 }
-
+/*.popover-content button{
+	padding: 0;
+	height: 100%;
+}*/
+.popover-content button span.glyphicon{
+	margin: 2px!important;
+}
 
 .menu-filter button:hover{
 	border-color: black;
@@ -352,8 +367,8 @@ div.saleTextZone input:focus{
 	padding-top: 1px;
 	background-color: #333;
 	height: 60px;
-	width: 41.7%;
-	position: fixed;
+	width: 100%;
+	position: absolute;
 	bottom: 99px;
 }
 
@@ -383,6 +398,8 @@ div.saleTextZone input:focus{
 }
 
 .div-bill-sub-total h2{
+	width: 48%;
+	font-size: 2em;
 	margin: 3px;
 	float: left;
 }
@@ -396,6 +413,7 @@ div.saleTextZone input:focus{
 
 
 .div-bill-sub-total .right h3{
+	font-size: 1.6em;
 	margin: 5px;
 	display: inline-block;
 }
@@ -509,13 +527,15 @@ span.number{
 }
 
 .bill-total{
+	width: 40%;
+	font-size: 2.1em;
 	position: absolute;
 }
 
 .div-bill-total button{
 	margin: 8px;
 	background-color: #30a5ff;
-	font-size: 20px;
+	font-size: 1.2em;
 	float: right;
 }
 
@@ -525,13 +545,13 @@ span.number{
 	border-top: 2px solid #222;
 	background-color: #333;
 	height: 50px;
-	width: 41.7%;
-	position: fixed;
+	width: 100%;
+	position: absolute;
 	bottom: 49px;
 }
 
 .btn-facture{
-	font-size: 25px;
+	font-size: 1.7em;
 	height: 100%;
 	width: 49.5%;
 	display: inline;
@@ -640,7 +660,7 @@ pre{
 .pagination>li>a, .pagination>li>span{
 
 	background: none;
-	font-size: 11px;
+	font-size: 1em;
 	font-weight: bold;
 	height: 50px;
 	}
@@ -657,7 +677,7 @@ pre{
 
 .note:hover{
 	color: red;
-	font-size: 32px;
+	font-size: 1.4em
 }
 
 
@@ -667,7 +687,7 @@ pre{
 
 .note span{
 	width: 15%!important;
-	font-size: 28px!important;
+	font-size: 1.3em!important;
 	padding: 5px;
 }
 
@@ -700,9 +720,10 @@ pre{
 }*/
 
 .progress {
-	width: 41.7%;
-	position: fixed;
-	bottom: -20px;
+	width: 100%;
+	position: absolute;
+	bottom: 0;
+	margin: 0;
 	height: 3.5em;
 }
 .progress i {
@@ -719,7 +740,7 @@ pre{
 	float: left;
 	display: inline-block;
 	width: 45%;
-	font-size: 30px;
+	font-size: 1.8em;
 	margin: 5px;
 	box-shadow: 0 4px 8px rgba(0,0,0,0.8);
 }
@@ -820,13 +841,13 @@ body{
 	text-shadow: 0 4px 8px rgba(0,0,0,0.8);
 	border: 1px solid rgba(44,44,44,0.5);
 	transition: background-color 0.1s;
-	font-size: 40px;
+	font-size: 3.5vh;
 	color: white;
 	box-shadow: 0 4px 8px rgba(0,0,0,0.8);
 	opacity: 0.9;
 	margin-top:10px;
 	border-radius: 10px;
-	height: 200px;
+	height: 160px;
 	padding-top: 60px;
 	display: inline-block;
 	width: 100%;
@@ -900,9 +921,38 @@ body{
 	position: absolute
 }
 
+#sidebar-collapse2{
+	z-index: 1000;
+	top: 65%;
+	height: 35%;
+}
 
+
+/*.div-filter{
+	top: -60px;
+}*/
+
+#keyboard tr td {
+	height: 60px;
+}
+
+.bill-total{
+	margin: 0!important;
+}
 
 @media only screen and (min-width : 450px) {
+	.bill-total{
+		margin-top: 10px!important;
+	}
+
+	#keyboard tr td {
+		height: 90px;
+	}
+
+	#sidebar-collapse2{
+		top: 78%;
+		height: 22%;
+	}
 
 	#quit-emplye-modal{
 		font-size: 45px;
