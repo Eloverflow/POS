@@ -217,8 +217,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
         var canvas = $('#myCanvas');
         var planModal =$('#planModal');
 
+        /*50 is the menu header*/
         var canvasWidth = window.innerWidth;
-        var canvasHeight = window.innerHeight-50;
+        var canvasHeight = window.innerHeight-51;
         canvas.attr('width', canvasWidth);
         canvas.attr('height', canvasHeight);
 
@@ -298,8 +299,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             }
 
             // 99 for small margin
-            xProportion =  0.99 / (biggerX / canvas.attr('width'));
-            yProportion = 0.99 / (biggerY / canvas.attr('height'));
+            /*xProportion =  0.99 / (biggerX / canvas.attr('width'));
+            yProportion = 0.99 / (biggerY / canvas.attr('height'));*/
+            xProportion =  1;
+            yProportion = 1;
 
             context.beginPath();
             context.strokeStyle = "#222"
@@ -332,8 +335,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
         for(var i = 0; i < $scope.plan.table.length; i++){
 
-            var width = 60 * xProportion;
-            var height = 30 * yProportion;
+            /*0.6 is a base reducer*/
+            var width = 95.8 *0.8 * xProportion;
+            var height = 45.8 *0.8 * yProportion;
             var angle = parseFloat($scope.plan.table[i].angle.substring(0, 4));
 
             // Add element.
@@ -347,11 +351,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                 colour: '#00a5ff',
                 width: width,
                 height: height,
-                top: parseInt($scope.plan.table[i].yPos) * yProportion+width/2,
-                left: parseInt($scope.plan.table[i].xPos) * xProportion+height/2
+                top: parseInt($scope.plan.table[i].yPos) * yProportion+height/2,
+                left: parseInt($scope.plan.table[i].xPos) * xProportion
             });
         }
-
 
 
         // Render elements.
@@ -359,7 +362,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             context.save();
             context.beginPath();
             context.fillStyle = element.colour;
-            context.translate( element.left+element.width/2, element.top+element.height/2 );
+            context.translate( element.left + element.width /2, element.top  + element.height /2);
             context.rotate(element.angle);
             context.fillRect(-element.width /2, -element.height / 2, element.width, element.height );
 

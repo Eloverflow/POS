@@ -267,6 +267,7 @@ bntEditWalls.click(function(){
     }
 });
 
+
 bntAddWalls.click(function () {
     tabControlContainers = $("#tabControl");
     wallToggle = !wallToggle;
