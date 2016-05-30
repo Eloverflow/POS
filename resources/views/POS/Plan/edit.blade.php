@@ -266,14 +266,14 @@
 
 
             /*Jean added starting here*/
-            var tblContainers = $(".tablesContainer .tables");
+            var tabControlContainers = $("#tabControl");
 
             var wallPoints = $("#wallPoints").text();
 
             var onePoint = wallPoints.split(",");
 
             if(onePoint != ""){
-                tblContainers.prepend('<canvas id="canvaWalls" width="' + tblContainers.width() + '" height="' + tblContainers.height() + '"<!-- style="position:absolute;"-->></canvas>')
+                tabControlContainers.prepend('<canvas id="canvaWalls" width="' + (tabControlContainers.width()) + '" height="' + (tabControlContainers.height()) + '" style="position:absolute;"></canvas>')
 
                 canvas = new fabric.Canvas('canvaWalls', {
                 selection: false,
@@ -337,7 +337,7 @@
                 canvas.renderAll();
 
                 observeCanvas();
-                var canvasContainer = tblContainers.find('.canvas-container')
+                var canvasContainer = tabControlContainers.find('.canvas-container')
                 canvasContainer.css({position: 'absolute'})
             }
 
