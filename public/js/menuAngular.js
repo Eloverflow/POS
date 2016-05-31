@@ -275,7 +275,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                     var selectedTable = $filter("filter")($scope.plan.table, {id : element.id});
 
                     $scope.changeTable(selectedTable[0])
-                    $scope.togglePlanModal();
+                    $scope.showPlanModal =false;
                 }
             });
 
@@ -347,6 +347,12 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             var width = tableWidth * xProportion;
             var height = tableHeight * yProportion;
             var angle = parseFloat($scope.plan.table[i].angle.substring(0, 4));
+            var color = '#00a5ff'
+
+            console.log(scope.plan.table[i].status)
+            if(scope.plan.table[i].status == 2)
+                color = 'ffa500'
+
 
             // Add element.
             elements.push({
@@ -356,7 +362,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                 status : $scope.plan.table[i].status,
                 angle : angle,/*
                 angle : 90,*/
-                colour: '#00a5ff',
+                colour: color,
                 width: width,
                 height: height,
                 top: parseInt($scope.plan.table[i].yPos) * yProportion+height/2,
