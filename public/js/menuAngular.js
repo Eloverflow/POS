@@ -5,7 +5,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
     uibPaginationConfig.nextText='Suivant';
 
     // configure Idle settings
-    IdleProvider.idle(20); // in seconds
+    IdleProvider.idle(200); // in seconds
     IdleProvider.timeout(5); // in seconds
     KeepaliveProvider.interval(2); // in seconds
     IdleProvider.windowInterrupt('focus');
@@ -362,9 +362,28 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             context.save();
             context.beginPath();
             context.fillStyle = element.colour;
-            context.translate( element.left + element.width /2, element.top  + element.height /2);
+            context.strokeStyle="red";
+            context.strokeRect(element.left,  element.top, width, height);
+
+            var angle = Math.abs(element.angle);
+
+            if(angle >= 3.12){
+                angle -= 3.12;
+            }
+            console.log('Table #'+ element.name)
+            console.log('Angle to fix : '+ angle)
+
+            if(angle >= 1.5 ){
+                var curHeight = element.height
+                if(angle >=2.15){ curHeight /= 2;}
+                context.translate( element.left+element.height /2, element.top+curHeight);
+
+            }else {
+                context.translate( element.left+element.width /2, element.top+element.height /2);
+            }
             context.rotate(element.angle);
             context.fillRect(-element.width /2, -element.height / 2, element.width, element.height );
+
 
             paint_centered(document.getElementById('myCanvas'), -element.width /2, -element.height / 2, element.width, element.height, element.name);
             context.restore();
@@ -406,24 +425,24 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
             var width = w/4,
             height =  h/2;
-
-            /*Seats*/
-            /*Bottom*/
+/*
+            /!*Seats*!/
+            /!*Bottom*!/
             ctx2d.strokeRect(x+w/2+width, y+h*1.1, width, height);
             ctx2d.strokeRect(x+w/2/2+width/2, y+h*1.1, width, height);
             ctx2d.strokeRect(x+w/2/2-width, y+h*1.1, width, height);
 
-            /*Top*/
+            /!*Top*!/
             ctx2d.strokeRect(x+w/2+width, y * 2.2, width, height);
             ctx2d.strokeRect(x+w/2/2+width/2, y * 2.2, width, height);
             ctx2d.strokeRect(x+w/2/2-width, y * 2.2, width, height);
 
-            /*Left*/
+            /!*Left*!/
             ctx2d.strokeRect(x-(h/2)*1.2, y+(h/2/1.9), height, width);
 
-            /*Right*/
+            /!*Right*!/
             ctx2d.strokeRect(x+w/2+width*2.2, y+(h/2/1.9), height, width);
-            /*End Seats*/
+            /!*End Seats*!/*/
 
             // draw text (this.val)
             ctx2d.textBaseline = "middle";
