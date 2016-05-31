@@ -213,6 +213,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
     var xProportion = 0;
     var yProportion = 0;
     var wallPoints;
+    var tableWidth = 95.8 *0.8;
+    var tableHeight = 45.8 *0.8;
     $scope.planCanva= function () {
         var canvas = $('#myCanvas');
         var planModal =$('#planModal');
@@ -299,10 +301,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             }
 
             // 99 for small margin
-            /*xProportion =  0.99 / (biggerX / canvas.attr('width'));
-            yProportion = 0.99 / (biggerY / canvas.attr('height'));*/
-            xProportion =  1;
-            yProportion = 1;
+            xProportion =  0.99 / (biggerX / canvas.attr('width'));
+            yProportion = 0.99 / (biggerY / canvas.attr('height'));
+            /*xProportion =  1;
+            yProportion = 1;*/
 
             context.beginPath();
             context.strokeStyle = "#222"
@@ -314,6 +316,9 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                 x1 = parseInt(coordonate[0]);
                 y1 = parseInt(coordonate[1]);
 
+                if(x1 > tableWidth/2){
+                    x1 -= tableWidth/2;
+                }
                 x1 *= xProportion;
                 y1 *= yProportion;
 
@@ -332,12 +337,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
         }
 
 
-
         for(var i = 0; i < $scope.plan.table.length; i++){
 
             /*0.6 is a base reducer*/
-            var width = 95.8 *0.8 * xProportion;
-            var height = 45.8 *0.8 * yProportion;
+            var width = tableWidth * xProportion;
+            var height = tableHeight * yProportion;
             var angle = parseFloat($scope.plan.table[i].angle.substring(0, 4));
 
             // Add element.
@@ -362,8 +366,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             context.save();
             context.beginPath();
             context.fillStyle = element.colour;
-            context.strokeStyle="red";
-            context.strokeRect(element.left,  element.top, width, height);
+
+            /*This represent the onClick listener detection*/
+            //context.strokeStyle="red";
+            //context.strokeRect(element.left,  element.top, width, height);
+            /*End of - This represent the onClick listener detection*/
 
             var angle = Math.abs(element.angle);
 
@@ -385,7 +392,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             context.fillRect(-element.width /2, -element.height / 2, element.width, element.height );
 
 
-            paint_centered(document.getElementById('myCanvas'), -element.width /2, -element.height / 2, element.width, element.height, element.name);
+            paint_centered(document.getElementById('myCanvas'), -element.width /2, -element.height / 2, element.width, element.height, element.name, element.angle);
             context.restore();
         });
 
@@ -402,7 +409,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
      * @param h     :  The height of the rectangle.
      * @param text  :  The text we are going to centralize
      */
-    paint_centered = function(canvas, x, y, w, h, text) {
+    paint_centered = function(canvas, x, y, w, h, text, angle) {
         // The painting properties
         // Normally I would write this as an input parameter
         var Paint = {
@@ -419,14 +426,56 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
         if (ctx2d) {
             // draw rectangular
             ctx2d.strokeStyle=Paint.RECTANGLE_STROKE_STYLE;
+            ctx2d.fillStyle="#222";
             ctx2d.lineWidth = Paint.RECTANGLE_LINE_WIDTH;
             ctx2d.strokeRect(x, y, w, h);
+            ctx2d.lineWidth = Paint.RECTANGLE_LINE_WIDTH+2;
+
+
 
 
             var width = w/4,
             height =  h/2;
-/*
-            /!*Seats*!/
+
+            /*Seats border background*/
+            /*Bottom*/
+            ctx2d.fillRect(x+w/2+width, y+h*1.1, width, height);
+            ctx2d.fillRect(x+w/2/2+width/2, y+h*1.1, width, height);
+            ctx2d.fillRect(x+w/2/2-width, y+h*1.1, width, height);
+
+            /*Top*/
+            ctx2d.fillRect(x+w/2+width, y * 2.2, width, height);
+            ctx2d.fillRect(x+w/2/2+width/2, y * 2.2, width, height);
+            ctx2d.fillRect(x+w/2/2-width, y * 2.2, width, height);
+
+            /*Left*/
+            ctx2d.fillRect(x-(h/2)*1.2, y+(h/2/1.9), height, width);
+
+            /*Right*/
+            ctx2d.fillRect(x+w/2+width*2.2, y+(h/2/1.9), height, width);
+            /*End Seats*/
+
+
+            ctx2d.fillStyle="#333";
+            /*Seats*/
+            /*Bottom*/
+            ctx2d.fillRect(x+w/2+width+2, y+h*1.1+2, width-4, height-4);
+            ctx2d.fillRect(x+w/2/2+width/2+2, y+h*1.1+2, width-4, height-4);
+            ctx2d.fillRect(x+w/2/2-width+2, y+h*1.1+2, width-4, height-4);
+
+            /*Top*/
+            ctx2d.fillRect(x+w/2+width+2, y * 2.2+2, width-4, height-4);
+            ctx2d.fillRect(x+w/2/2+width/2+2, y * 2.2+2, width-4, height-4);
+            ctx2d.fillRect(x+w/2/2-width+2, y * 2.2+2, width-4, height-4);
+
+            /*Left*/
+            ctx2d.fillRect(x-(h/2)*1.2+2, y+(h/2/1.9)+2, height-4, width-4);
+
+            /*Right*/
+            ctx2d.fillRect(x+w/2+width*2.2+2, y+(h/2/1.9)+2, height-4, width-4);
+            /*End Seats*/
+
+            /*/!*Seats border*!/
             /!*Bottom*!/
             ctx2d.strokeRect(x+w/2+width, y+h*1.1, width, height);
             ctx2d.strokeRect(x+w/2/2+width/2, y+h*1.1, width, height);
@@ -452,6 +501,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             // returns the text width (given the supplied font) / 2
             textX = x+w/2-ctx2d.measureText(text).width/2;
             textY = y+h/2;
+            ctx2d.rotate(-angle);
             ctx2d.fillText(text, textX, textY);
         } else {
             // Do something meaningful
