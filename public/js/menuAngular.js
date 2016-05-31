@@ -159,6 +159,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
     }
 
     $scope.getPlan = function () {
+        console.log('GetPlan');
         $url = 'http://pos.mirageflow.com/api/table-plan/1';
         var $callbackFunction = function(response){
 
@@ -166,8 +167,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
             $scope.currentTable = $scope.plan.table[0];
 
-            console.log('Plan:');
-            console.log($scope.plan);
+            $scope.planCanva();
+
 
 
         }
@@ -216,8 +217,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
     var tableWidth = 95.8 *0.8;
     var tableHeight = 45.8 *0.8;
     $scope.planCanva= function () {
-        var canvas = $('#myCanvas');
         var planModal =$('#planModal');
+        var canvas = $('#myCanvas');
+        canvas.remove();
+        planModal.find('.panzoom').append('<canvas style="margin: 0;" id="myCanvas" width="0" height="0" />');
+        canvas = $('#myCanvas');
 
         /*50 is the menu header*/
         var canvasWidth = window.innerWidth;
@@ -226,12 +230,16 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
         planModal.attr('width', canvasWidth);
         planModal.attr('height', canvasHeight);
 
+
         canvas.attr('width', canvasWidth);
         canvas.attr('height', canvasHeight);
 
         var elem = document.getElementById('myCanvas'),
             context = elem.getContext('2d'),
             elements = [];
+
+        context.clearRect(0, 0, canvas.width, canvas.height);
+        elements = [];
 
         // Add event listener for `click` events.
         elem.addEventListener('click', function(event) {
@@ -272,8 +280,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                 if (x2 > -0.5 * width && x2 < 0.5 * width && y2 > -0.5 * height && y2 < 0.5 * height){
                     console.log('Clicked table : ' + element.name);
 
-                    var selectedTable = $filter("filter")($scope.plan.table, {id : element.id});
+                    var selectedTable = $filter("filter")($scope.plan.table, {tblNumber : element.name});
 
+                    /*Wrong selection ?*/
+                    /*The change table work with the modal*/
+                    /*Work to do here */
                     $scope.changeTable(selectedTable[0])
                     $scope.showPlanModal =false;
                 }
@@ -349,10 +360,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             var angle = parseFloat($scope.plan.table[i].angle.substring(0, 4));
             var color = '#00a5ff'
 
-            console.log(scope.plan.table[i].status)
-            if(scope.plan.table[i].status == 2)
-                color = 'ffa500'
+            if($scope.plan.table[i].status == 2)
+                color = '#EC0033'
 
+            if($scope.plan.table[i].type == "plc")
+                width = height;
 
             // Add element.
             elements.push({
@@ -438,67 +450,89 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             ctx2d.strokeRect(x, y, w, h);
             ctx2d.lineWidth = Paint.RECTANGLE_LINE_WIDTH+2;
 
+            var width,
+                height;
+
+            /*If this is square, which also mean it is a plc and not a tbl*/
+            /*This impact the number of seat*/
+            if(w == h){
+                width = w/2;
+                height =  h/2;
+
+                /*Seats border background*/
+                /*Bottom*/
+                ctx2d.fillRect(x+w/2/2, y+h*1.1, width, height);
+
+                /*Top*/
+                ctx2d.fillRect(x+w/2/2, y * 2.2, width, height);
+
+                /*Left*/
+                ctx2d.fillRect(x-(h/2)*1.2, y+(h/2/1.9), height, width);
+
+                /*Right*/
+                ctx2d.fillRect(x+w/2+width*1.2, y+(h/2/1.9), height, width);
+                /*End Seats*/
 
 
+                ctx2d.fillStyle="#333";
+                /*Seats*/
+                /*Bottom*/
+                ctx2d.fillRect(x+w/2/2+2, y+h*1.1+2, width-4, height-4);
 
-            var width = w/4,
-            height =  h/2;
+                /*Top*/
+                ctx2d.fillRect(x+w/2/2+2, y * 2.2+2, width-4, height-4);
 
-            /*Seats border background*/
-            /*Bottom*/
-            ctx2d.fillRect(x+w/2+width, y+h*1.1, width, height);
-            ctx2d.fillRect(x+w/2/2+width/2, y+h*1.1, width, height);
-            ctx2d.fillRect(x+w/2/2-width, y+h*1.1, width, height);
+                /*Left*/
+                ctx2d.fillRect(x-(h/2)*1.2+2, y+(h/2/1.9)+2, height-4, width-4);
 
-            /*Top*/
-            ctx2d.fillRect(x+w/2+width, y * 2.2, width, height);
-            ctx2d.fillRect(x+w/2/2+width/2, y * 2.2, width, height);
-            ctx2d.fillRect(x+w/2/2-width, y * 2.2, width, height);
+                /*Right*/
+                ctx2d.fillRect(x+w/2+width*1.2+2, y+(h/2/1.9)+2, height-4, width-4);
+                /*End Seats*/
+            }
+            else{
+                width = w/4;
+                height =  h/2;
 
-            /*Left*/
-            ctx2d.fillRect(x-(h/2)*1.2, y+(h/2/1.9), height, width);
+                /*Seats border background*/
+                /*Bottom*/
+                ctx2d.fillRect(x+w/2+width, y+h*1.1, width, height);
+                ctx2d.fillRect(x+w/2/2+width/2, y+h*1.1, width, height);
+                ctx2d.fillRect(x+w/2/2-width, y+h*1.1, width, height);
 
-            /*Right*/
-            ctx2d.fillRect(x+w/2+width*2.2, y+(h/2/1.9), height, width);
-            /*End Seats*/
+                /*Top*/
+                ctx2d.fillRect(x+w/2+width, y * 2.2, width, height);
+                ctx2d.fillRect(x+w/2/2+width/2, y * 2.2, width, height);
+                ctx2d.fillRect(x+w/2/2-width, y * 2.2, width, height);
+
+                /*Left*/
+                ctx2d.fillRect(x-(h/2)*1.2, y+(h/2/1.9), height, width);
+
+                /*Right*/
+                ctx2d.fillRect(x+w/2+width*2.2, y+(h/2/1.9), height, width);
+                /*End Seats*/
 
 
-            ctx2d.fillStyle="#333";
-            /*Seats*/
-            /*Bottom*/
-            ctx2d.fillRect(x+w/2+width+2, y+h*1.1+2, width-4, height-4);
-            ctx2d.fillRect(x+w/2/2+width/2+2, y+h*1.1+2, width-4, height-4);
-            ctx2d.fillRect(x+w/2/2-width+2, y+h*1.1+2, width-4, height-4);
+                ctx2d.fillStyle="#333";
+                /*Seats*/
+                /*Bottom*/
+                ctx2d.fillRect(x+w/2+width+2, y+h*1.1+2, width-4, height-4);
+                ctx2d.fillRect(x+w/2/2+width/2+2, y+h*1.1+2, width-4, height-4);
+                ctx2d.fillRect(x+w/2/2-width+2, y+h*1.1+2, width-4, height-4);
 
-            /*Top*/
-            ctx2d.fillRect(x+w/2+width+2, y * 2.2+2, width-4, height-4);
-            ctx2d.fillRect(x+w/2/2+width/2+2, y * 2.2+2, width-4, height-4);
-            ctx2d.fillRect(x+w/2/2-width+2, y * 2.2+2, width-4, height-4);
+                /*Top*/
+                ctx2d.fillRect(x+w/2+width+2, y * 2.2+2, width-4, height-4);
+                ctx2d.fillRect(x+w/2/2+width/2+2, y * 2.2+2, width-4, height-4);
+                ctx2d.fillRect(x+w/2/2-width+2, y * 2.2+2, width-4, height-4);
 
-            /*Left*/
-            ctx2d.fillRect(x-(h/2)*1.2+2, y+(h/2/1.9)+2, height-4, width-4);
+                /*Left*/
+                ctx2d.fillRect(x-(h/2)*1.2+2, y+(h/2/1.9)+2, height-4, width-4);
 
-            /*Right*/
-            ctx2d.fillRect(x+w/2+width*2.2+2, y+(h/2/1.9)+2, height-4, width-4);
-            /*End Seats*/
+                /*Right*/
+                ctx2d.fillRect(x+w/2+width*2.2+2, y+(h/2/1.9)+2, height-4, width-4);
+                /*End Seats*/
+            }
 
-            /*/!*Seats border*!/
-            /!*Bottom*!/
-            ctx2d.strokeRect(x+w/2+width, y+h*1.1, width, height);
-            ctx2d.strokeRect(x+w/2/2+width/2, y+h*1.1, width, height);
-            ctx2d.strokeRect(x+w/2/2-width, y+h*1.1, width, height);
 
-            /!*Top*!/
-            ctx2d.strokeRect(x+w/2+width, y * 2.2, width, height);
-            ctx2d.strokeRect(x+w/2/2+width/2, y * 2.2, width, height);
-            ctx2d.strokeRect(x+w/2/2-width, y * 2.2, width, height);
-
-            /!*Left*!/
-            ctx2d.strokeRect(x-(h/2)*1.2, y+(h/2/1.9), height, width);
-
-            /!*Right*!/
-            ctx2d.strokeRect(x+w/2+width*2.2, y+(h/2/1.9), height, width);
-            /!*End Seats*!/*/
 
             // draw text (this.val)
             ctx2d.textBaseline = "middle";
@@ -1001,8 +1035,11 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
         var $callbackFunction = function(response){
 
             for(var f = 0; f < response.commands.length; f++){
-                $scope.commandClient[f+1].command_number = response.commands[f].command_number;
-                console.log($scope.commandClient[f+1]);
+                /*if(typeof $scope.commandClient[f+1] != 'undefined' && $scope.commandClient[f+1] != null)*/
+                    $scope.commandClient[f+1].command_number = response.commands[f].command_number+"";
+                    console.log($scope.commandClient[f+1]);
+
+
             }
 
 
@@ -1049,6 +1086,8 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
     $scope.showPlanModal = false;
     $scope.togglePlanModal = function(){
         $scope.showPlanModal = !$scope.showPlanModal;
+        if($scope.showPlanModal)
+            $scope.getPlan();
     };
 
 
@@ -1076,7 +1115,7 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
                 })
 
                 $scope.showEmployeeModal = false;
-                $scope.planCanva();
+                $scope.getPlan();
             }
             else{
                 console.log("User is invalid :");
@@ -1350,11 +1389,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
 
 
     $scope.changeTable = function(table){
-/*
-        console.log('Table command status');
-        console.log($scope.commandClient);*/
-
+        /* Table change wont happen until the current table is saved, the table change will be done on the callback*/
         var $callbackFunction = function(response){
+            console.log('table')
+            console.log(table)
             $scope.currentTable = table;
             $('#closeModal').click();
 
@@ -1362,13 +1400,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             $scope.getCommand();
         }
 
-        $scope.updateTable($callbackFunction);
-
-
-
-
-
-
+        if(timeoutHandle != null)
+            $scope.updateTable($callbackFunction);
+        else
+            $callbackFunction();
     };
 
     var elem = document.body; // Make the body go full screen.
