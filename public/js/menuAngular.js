@@ -222,6 +222,10 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
         /*50 is the menu header*/
         var canvasWidth = window.innerWidth;
         var canvasHeight = window.innerHeight-51;
+
+        planModal.attr('width', canvasWidth);
+        planModal.attr('height', canvasHeight);
+
         canvas.attr('width', canvasWidth);
         canvas.attr('height', canvasHeight);
 
@@ -372,26 +376,23 @@ var app = angular.module('menu', ['ui.bootstrap','countTo', 'ngIdle'], function(
             //context.strokeRect(element.left,  element.top, width, height);
             /*End of - This represent the onClick listener detection*/
 
+            /*This next part is to be able to rotate the rectangle using the corner only when needed*/
             var angle = Math.abs(element.angle);
-
             if(angle >= 3.12){
                 angle -= 3.12;
             }
-            console.log('Table #'+ element.name)
-            console.log('Angle to fix : '+ angle)
-
             if(angle >= 1.5 ){
                 var curHeight = element.height
                 if(angle >=2.15){ curHeight /= 2;}
                 context.translate( element.left+element.height /2, element.top+curHeight);
-
             }else {
                 context.translate( element.left+element.width /2, element.top+element.height /2);
             }
+
             context.rotate(element.angle);
             context.fillRect(-element.width /2, -element.height / 2, element.width, element.height );
 
-
+            /*A little suplement*/
             paint_centered(document.getElementById('myCanvas'), -element.width /2, -element.height / 2, element.width, element.height, element.name, element.angle);
             context.restore();
         });
