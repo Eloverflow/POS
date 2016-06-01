@@ -165,7 +165,12 @@
 @yield('content')
 
 <div  id="planModal" ng-show="showPlanModal">
-    <span id="zoomout" style="transition: all 0.2s; cursor: pointer; color: #30a5ff; background-color: #fff; border-radius: 50%; padding: 10px; opacity:0.8; font-size: 36px; position:fixed; right: 4%; top: 10%; z-index: 1051;" class="glyphicon glyphicon-refresh"></span>
+    <span id="floorNumber" >Étage #<% plan.currentFloor+1 %></span>
+    <div class="planRightButton">
+        <span id="zoomout" class="glyphicon glyphicon-zoom-out"></span>
+        <span ng-show="plan.currentFloor < plan.nbFloor-1"  ng-click="floorUp()"  id="floorup" class="glyphicon glyphicon-upload"></span>
+        <span ng-show="plan.currentFloor > 0" ng-click="floorDown()" id="floordown" class="glyphicon glyphicon-download"></span>
+    </div>
     <div class="parent">
         <div class="panzoom">
             <canvas style="margin: 0;" id="myCanvas" width="0" height="0" />

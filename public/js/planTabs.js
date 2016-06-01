@@ -196,95 +196,92 @@ var lastCircle;
 var line = [];
 var btnDeleteWalls = $("#btnDeleteWalls");
 var bntEditWalls = $("#btnEditWalls");
+var bntCancelEditWalls = $("#btnCancelEditWalls");
 var bntAddWalls = $("#btnAddWalls");
 var tabControlContainers;
+var follower = $("#follower");
 
-var bntSaveWalls = $("#btnSaveWalls").click(function(){
-    wallToggle = !wallToggle;
+
+var stateEditingWall = function () {
+
+    bntAddWalls.hide();
+    bntEditWalls.hide();
+    bntCancelEditWalls.show();
+    bntSaveWalls.show();
+    btnDeleteWalls.show();
+
+    follower.css('visibility', 'visible')
+
     var tabControlContainers = $("#tabControl");
-    bntAddWalls.css({backgroundColor: "#5bc0de"})
-    bntAddWalls.text('Add Walls')
-    tabControlContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-    $(window).unbind();
-    var follower = $("#follower");
-    follower.hide()
-
-    bntEditWalls.css({backgroundColor: "#5bc0de"})
-    bntEditWalls.text('Edit Walls')
-    tabControlContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-    btnDeleteWalls.css({visibility: 'hidden'});
-    bntSaveWalls.css({visibility: 'hidden'});
-});
-
-
-function deleteWall() {
-    var tabControlContainers = $("#tabControl");
-    canvas = new fabric.Canvas('canvaWalls', {selection: false, hoverCursor: 'move', defaultCursor: 'pointer'});
-
-    tabControlContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-    var follower = $("#follower");
-    follower.hide()
-
-    bntEditWalls.css({visibility: 'hidden'});
-    bntSaveWalls.css({visibility: 'hidden'});
-    btnDeleteWalls.css({visibility: 'hidden'});
-    bntAddWalls.css({visibility: 'visible'});
+    tabControlContainers.css({backgroundColor: "rgba(0,0,0,0.5)"})
 
 }
 
-btnDeleteWalls.click(function(){
+var stateDisableEditingWall = function () {
+
+    $(window).unbind();
+    bntEditWalls.show();
+    bntCancelEditWalls.hide();
+    bntSaveWalls.hide();
+    btnDeleteWalls.hide();
+
+    follower.css('visibility', 'hidden')
+
+    var tabControlContainers = $("#tabControl");
+    tabControlContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
+}
+
+var stateHasNoWall = function () {
+    bntEditWalls.hide();
+    bntCancelEditWalls.hide();
+    bntSaveWalls.hide();
+    btnDeleteWalls.hide();
+    bntAddWalls.show();
+
+}
+
+var stateHasWall = function () {
+    bntAddWalls.hide();
+    bntEditWalls.show();
+};
+
+$(document).ready(function () {
+    stateDisableEditingWall();
+})
+
+function deleteWall() {
     line = []
     circle = []
-    wallToggle = !wallToggle;
+    canvas = new fabric.Canvas('canvaWalls', {selection: false, hoverCursor: 'move', defaultCursor: 'pointer'});
+}
+
+var bntSaveWalls = $("#btnSaveWalls").click(function(){
+    stateDisableEditingWall();
+    stateHasWall()
+});
+
+btnDeleteWalls.click(function(){
     deleteWall();
+    stateDisableEditingWall();
+    stateHasNoWall();
 });
 
 bntEditWalls.click(function(){
-    tabControlContainers = $("#tabControl");
-    wallToggle = !wallToggle;
+    customizeWall();
+    stateEditingWall();
+});
 
-    if(wallToggle) {
-        bntEditWalls.css({backgroundColor: "#884444"})
-        bntEditWalls.text('Cancel Edit Walls')
-        tabControlContainers.css({backgroundColor: "rgba(0,0,0,0.5)"})
 
-        bntSaveWalls.css({visibility: 'visible'});
-        btnDeleteWalls.css({visibility: 'visible'});
-        follower = $("#follower");
-        follower.hide()
-
-        customizeWall();
-    }
-    else{
-        bntEditWalls.css({backgroundColor: "#5bc0de"})
-        bntEditWalls.text('Edit Walls')
-        tabControlContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-        follower = $("#follower");
-        follower.hide()
-
-        bntSaveWalls.css({visibility: 'hidden'});
-        btnDeleteWalls.css({visibility: 'hidden'});
-    }
+bntCancelEditWalls.click(function () {
+    stateDisableEditingWall();
 });
 
 
 bntAddWalls.click(function () {
+    stateEditingWall();
     tabControlContainers = $("#tabControl");
-    wallToggle = !wallToggle;
-
 
     var tableContainers = $(".tablesContainer .tables");
-
-    if(wallToggle) {
-
-        bntAddWalls.css({backgroundColor: "#884444"})
-        bntAddWalls.text('Cancel Add Walls')
-        tabControlContainers.css({backgroundColor: "rgba(0,0,0,0.5)"})
-
-        bntSaveWalls.css({visibility: 'visible'});
-        btnDeleteWalls.css({visibility: 'visible'});
-
-        console.log(tableContainers.width())
 
         /*For old wall*/
         $('.canvas-container').remove();
@@ -331,20 +328,7 @@ bntAddWalls.click(function () {
         observeCanvas();
         /*By looking into Git history we could plug back the listener to had a junction remover inside the canva*/
 
-        customizeWall()
-    }
-    else{
-        bntAddWalls.css({backgroundColor: "#5bc0de"})
-        bntAddWalls.text('Add Walls')
-        tabControlContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-        $(window).unbind();
-        var follower = $("#follower");
-        follower.hide()
-
-        deleteWall()
-
-    }
-
+        customizeWall();
 });
 
 /*Make a circle inside a canva with "link1" been the source line and "link2" been the destination line */
@@ -378,6 +362,8 @@ function makeLine(coords, link1, link2) {
     l.hasControls = l.hasBorders = false;
     return l;
 }
+
+
 
 
 function customizeWall(){
@@ -417,7 +403,7 @@ function customizeWall(){
                 //console.log('Click event')
                 /*Inside*/
 
-                var junctionScore = 99999;
+                var junctionScore = 99999999;
                 var lastBestJunction;
 
                 var boxX = parseInt(e.pageX-offsetTab.left);
@@ -435,8 +421,10 @@ function customizeWall(){
 
                 }
 
-                //console.log(circle[lastBestJunction].link1.top)
-                //console.log(circle[lastBestJunction].link1.left)
+                console.log('Top & Left')
+                console.log(circle[lastBestJunction].link1.top)
+                console.log(circle[lastBestJunction].link1.left)
+                console.log('')
 
                 var closestCircle = circle[lastBestJunction];
                 var linkList = [{

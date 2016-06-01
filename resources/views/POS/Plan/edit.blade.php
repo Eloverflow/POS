@@ -13,6 +13,7 @@
     <link rel="stylesheet" type="text/css" href="{{ @URL::to('css/easy-responsive-tabs.css') }}"/>
 @stop
 
+
 @section('content')
     <div id="displayErrors" style="display:none;" class="alert alert-danger">
         <strong>Whoops!</strong> There were some problems with your input.<br><br>
@@ -29,11 +30,12 @@
         <a id="btnNewTable" class="btn btn-primary" href="#"> New Table </a>
         <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
         <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
-        <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
-        <a class="btn btn-info" id="btnAddWalls" style="visibility: hidden; position: absolute" href="#"> Add Walls </a>
-        <a class="btn btn-info" id="btnEditWalls" href="#"> Edit Walls </a>
-        <a class="btn btn-success" id="btnSaveWalls" style="visibility: hidden" href="#"> Save Walls </a>
-        <a class="btn btn-danger" id="btnDeleteWalls" style="visibility: hidden" href="#"> Delete Walls </a>
+        <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a><br>
+        <a class="btn btn-info" id="btnAddWalls" href="#"> Add Walls </a>
+        <a class="btn btn-info" id="btnEditWalls" href="#"> Edit Walls </a>{{--
+        <a class="btn btn-danger" id="btnCancelEditWalls" href="#">Cancel Edit Walls </a>--}}
+        <a class="btn btn-success" id="btnSaveWalls" href="#"> Save Walls </a>
+        <a class="btn btn-danger" id="btnDeleteWalls"  href="#"> Delete Walls </a>
         <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
     </div>
     <div hidden id="follower"><span class="glyphicon glyphicon-plus"></span></div>
@@ -270,80 +272,87 @@
 
             var wallPoints = $("#wallPoints").text();
 
-            var onePoint = wallPoints.split(",");
+            if(wallPoints != ""){
+                stateHasWall();
 
-            if(onePoint != ""){
-                tabControlContainers.prepend('<canvas id="canvaWalls" width="' + (tabControlContainers.width()) + '" height="' + (tabControlContainers.height()) + '" style="position:absolute;"></canvas>')
+                var onePoint = wallPoints.split(",");
 
-                canvas = new fabric.Canvas('canvaWalls', {
-                selection: false,
-                hoverCursor: 'move',
-                defaultCursor: 'pointer',
-                position: 'absolute'
-            });
+                if(onePoint != ""){
+                    tabControlContainers.prepend('<canvas id="canvaWalls" width="' + (tabControlContainers.width()) + '" height="' + (tabControlContainers.height()) + '" style="position:absolute;"></canvas>')
 
-            fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
+                    canvas = new fabric.Canvas('canvaWalls', {
+                        selection: false,
+                        hoverCursor: 'move',
+                        defaultCursor: 'pointer',
+                        position: 'absolute'
+                    });
 
-            var lastCircle;
-            var firstCircle;
-            var lastLine;
-            line = [];
-            circle = [];
+                    fabric.Object.prototype.originX = fabric.Object.prototype.originY = 'center';
 
-                for (var m = onePoint.length - 1; m >= 0; m--) {
-                    var coordonate = onePoint[m].split(":");
+                    var lastCircle;
+                    var firstCircle;
+                    var lastLine;
+                    line = [];
+                    circle = [];
 
-                    var x1 = parseInt(coordonate[0]);
-                    var y1 = parseInt(coordonate[1]);
+                    for (var m = onePoint.length - 1; m >= 0; m--) {
+                        var coordonate = onePoint[m].split(":");
 
-                    if (m < onePoint.length - 1) {
-                        line.push(lastLine = makeLine([lastCircle.left, lastCircle.top, x1, y1]));
+                        var x1 = parseInt(coordonate[0]);
+                        var y1 = parseInt(coordonate[1]);
 
-                        circle.push(lastCircle = makeCircle(x1, y1));
+                        if (m < onePoint.length - 1) {
+                            line.push(lastLine = makeLine([lastCircle.left, lastCircle.top, x1, y1]));
 
-                        canvas.add(lastCircle, lastLine)
-                    }
-                    else {
-                        circle.push(lastCircle = makeCircle(x1, y1));
-                        firstCircle = lastCircle;
-                        canvas.add(lastCircle)
-                    }
+                            circle.push(lastCircle = makeCircle(x1, y1));
 
-                    if (m == 0) {
+                            canvas.add(lastCircle, lastLine)
+                        }
+                        else {
+                            circle.push(lastCircle = makeCircle(x1, y1));
+                            firstCircle = lastCircle;
+                            canvas.add(lastCircle)
+                        }
+
+                        if (m == 0) {
+                            canvas.sendToBack(lastLine);
+                            line.push(lastLine = makeLine([x1, y1, firstCircle.left, firstCircle.top]));
+                            canvas.add(lastLine)
+                        }
+
                         canvas.sendToBack(lastLine);
-                        line.push(lastLine = makeLine([x1, y1, firstCircle.left, firstCircle.top]));
-                        canvas.add(lastLine)
+                        canvas.bringToFront(lastCircle);
                     }
 
-                    canvas.sendToBack(lastLine);
-                    canvas.bringToFront(lastCircle);
+                    /*Building links between circle and line*/
+                    for (var m = 0; m < onePoint.length; m++) {
+                        line[m].link1 = circle[m];
+
+                        if (m < onePoint.length - 1)
+                            line[m].link2 = circle[m + 1];
+
+                        if (m > 0)
+                            circle[m].link1 = line[m - 1];
+
+                        circle[m].link2 = line[m]
+                    }
+
+                    line[line.length - 1].link2 = circle[circle.length - 1];
+                    circle[0].link1 = line[line.length - 1];
+                    canvas.renderAll();
+
+                    observeCanvas();
+                    var canvasContainer = tabControlContainers.find('.canvas-container')
+                    canvasContainer.css({position: 'absolute'})
                 }
-
-                /*Building links between circle and line*/
-                for (var m = 0; m < onePoint.length; m++) {
-                    line[m].link1 = circle[m];
-
-                    if (m < onePoint.length - 1)
-                        line[m].link2 = circle[m + 1];
-
-                    if (m > 0)
-                        circle[m].link1 = line[m - 1];
-
-                    circle[m].link2 = line[m]
-                }
-
-                line[line.length - 1].link2 = circle[circle.length - 1];
-                circle[0].link1 = line[line.length - 1];
-                canvas.renderAll();
-
-                observeCanvas();
-                var canvasContainer = tabControlContainers.find('.canvas-container')
-                canvasContainer.css({position: 'absolute'})
+            }
+            else {
+                stateHasNoWall();
             }
 
-
         });
-        /*Jean added starting here*/
+
+        /*Jean added ending here*/
 
 
     </script>

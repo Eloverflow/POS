@@ -928,6 +928,31 @@ body{
 }
 
 
+.planRightButton{
+	position: absolute;
+	right: 0;
+	padding: 20px;
+}
+
+#planModal .glyphicon{
+	transition: all 0.2s; cursor: pointer; color: #30a5ff; background-color: #fff; border-radius: 50%; padding: 10px; opacity:0.8; font-size: 36px; z-index: 1051; margin: 3px;
+}
+
+#floorNumber{
+	position: absolute; z-index: 1051; margin: 10px; color: white; font-size: 24px;
+}
+
+#zoomout{
+	float: right;
+}
+
+#floorup{
+	float: right;
+}
+#floordown{
+	float: right;
+}
+
 /*.div-filter{
 	top: -60px;
 }*/
