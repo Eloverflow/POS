@@ -17,12 +17,7 @@
 
     <link href="{{ URL::to('Framework/please-wait/please-wait.css') }}" rel="stylesheet">
 
-    <!--Icons-->
-    <script src="{{ @URL::to('Framework/LuminoAdmin/js/lumino.glyphs.js') }}"></script>
-
-
     <script src="{{ @URL::to('Framework/Angular/angular.min.js') }}"></script>
-
 
     <!--[if lt IE 9]>
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/html5shiv.js') }}"></script>
@@ -120,11 +115,14 @@
             <div style="width: 100%; text-align: center; padding-top: 10px"><span style="color: red; font-size: 15px;"><% numPadErrMsg %></span></div>
             <table id="keyboard">
                 <tbody>
-                <tr>
-                    <td colspan="4" id="displayMessage"><% numPadMsg %></td>
+                <tr id="rowTitle">
+                    <td colspan="4" id="displayTitle"><% numPadMsg %></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"><em style="color: white; font-size: 18px;">Utilisez : 3 : 11</em></td>
+                    <td colspan="4" id="displayMessage">
+                        <input type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText">
+                        <em style="color: white; font-size: 18px;">Utilisez : 3 : 11</em>
+                    </td>
 
                 </tr>
                 <tr>

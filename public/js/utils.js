@@ -12,7 +12,7 @@ function getSuccessMessage($message)
         '<use xlink:href=\"#stroked-checkmark\"></use>' +
         '</svg>' +
         $message +
-        '<a href=\"#\" class=\"pull-right\">' +
+        '<a href=\"#\" data-dismiss=\"alert\" aria-label=\"close\" class=\"pull-right close\">' +
         '<span class=\"glyphicon glyphicon-remove\"></span>' +
         '</a>' +
         '</div>';
@@ -25,7 +25,7 @@ function getErrorMessage($message)
         '<use xlink:href=\"#stroked-cancel\"></use>' +
         '</svg>' +
         $message +
-        '<a href=\"#\" class=\"pull-right\">' +
+        '<a href=\"#\" data-dismiss=\"alert\" aria-label=\"close\" class=\"pull-right close\">' +
         '<span class=\"glyphicon glyphicon-remove\"></span>' +
         '</a>' +
         '</div>';

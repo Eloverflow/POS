@@ -1059,12 +1059,25 @@ body{
 	background-color: #222;
 	opacity: 0.9;
 }
-.employee-modal #displayMessage{
+.employee-modal #displayTitle{
+	height: 30px;
 	font-size: 20px;
 	color: white;
 	font-weight: bold;
+	padding: 4px;
 }
 
+
+#displayMessage .alert {
+	font-size: 20px;
+	padding: 10px;
+	margin-bottom: 15px;
+}
+
+#displayMessage .glyphicon{
+	color: black;
+	font-size: 30px;
+}
 
 body > .inner {
 	display: none;
