@@ -49,7 +49,7 @@
                 <span class="sr-only">Toggle options</span>
                 <span>Options</span> <span class="glyphicon glyphicon-list-alt"></span>
             </button>
-            <a class="navbar-brand" href="{{@URL::to('/menu')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pos</span>Io</a>
+            <a class="navbar-brand" href="{{@URL::to('/menu')}}"><span>Pos</span>Io</a>
             <div ng-show="showHeaderOptions" id="header-options">
                 <span class="menu-option">
                     <a href="#" ng-click="changeEmployee()" ><span class="glyphicon glyphicon-user"></span>

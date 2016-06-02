@@ -104,7 +104,7 @@ div.saleTextZone{
 	text-align: center;
 	display: inline-block;
 	top: 40px!important;
-	width: 8.5em;/*
+	width: 6em;/*
 	word-wrap: break-word;*/
 }
 
@@ -992,6 +992,10 @@ body{
 	padding: 15px;
 }
 
+.navbar-brand{
+	padding-right: 0;
+}
+
 @media only screen and (min-width : 450px) {
 
 
@@ -1087,16 +1091,26 @@ body{
 		padding: 0;
 	}
 
-	div.saleTextZone{
-		width: 13em;/*
-	word-wrap: break-word;*/
-	}
 
 
 	.pagination-sm.pagination.ng-isolate-scope.ng-valid{
 		margin-top: 1%;
 	}
 
+}
+
+@media only screen and (min-width : 1300px) {
+	div.saleTextZone{
+		width: 13em;
+	}
+
+}
+
+@media only screen and (min-width : 1500px) {
+	div.saleTextZone {
+		width: 17em;
+
+	}
 }
 
 
