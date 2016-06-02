@@ -45,45 +45,42 @@
                 <span class="sr-only">Toggle navigation</span>
                 <span>Prix</span> <span class="glyphicon glyphicon-euro"></span>
             </button>
+            <button type="button" class="navbar-toggle collapsed" ng-click="toggleHeaderOptions()">
+                <span class="sr-only">Toggle options</span>
+                <span>Options</span> <span class="glyphicon glyphicon-list-alt"></span>
+            </button>
             <a class="navbar-brand" href="{{@URL::to('/menu')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pos</span>Io</a>
-            <ul class="menu-option">
-                <li class="pull-right">
+            <div ng-show="showHeaderOptions" id="header-options">
+                <span class="menu-option">
                     <a href="#" ng-click="changeEmployee()" ><span class="glyphicon glyphicon-user"></span>
                         Employé #<% currentEmploye.id %></a>
-                </li>
-            </ul>
-            <ul class="menu-option">
-                <li>
+                </span>
+                <span class="menu-option">
                     <a href="#" ng-click="toggleTableModal()"><span class="glyphicon glyphicon-unchecked"></span>
                         Table #<% currentTable.tblNumber %>
-                       </a>
-                </li>
-            </ul>
-            <ul class="menu-option">
-                <li>
+                    </a>
+                </span>
+                <span class="menu-option">
                     <a href="#" ng-click="openBill()"><span class="glyphicon glyphicon-bitcoin"></span>
                         Factures
                     </a>
-                </li>
-            </ul>
-            <ul class="menu-option">
-                <li>
+                </span>
+                <span class="menu-option">
                     <a href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
                         Plan
                     </a>
-                </li>
-            </ul>
-            <ul class="menu-option">
-                <li>
+                </span>
+                <span class="menu-option">
                     <a href="#" ng-click="toogleFullscreen()"><span class="glyphicon glyphicon-fullscreen"></span>
                         Plein écran
                     </a>
-                </li>
-            </ul>
-
+                </span>
+            </div>
         </div>
 
+
 </nav>
+
 <modal title="Selectionne une table" visible="showTableModal">
     <div ng-repeat="n in [] | floor:plan.nbFloor" >
         <span class="floor">Étage <% n+1 %></span>

@@ -1103,6 +1103,18 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
             $scope.showDivideBillModal = !$scope.showDivideBillModal;
         };
 
+        $scope.showHeaderOptions =true;
+        $scope.toggleHeaderOptions = function () {
+            $scope.showHeaderOptions = !$scope.showHeaderOptions
+        }
+
+        $(window).on('resize', function () {
+            if ($(window).width() > 768) {$('#sidebar-collapse').collapse('show'); $('#sidebar-collapse2').collapse('show'); $scope.showHeaderOptions = true}
+        })
+        $(window).on('resize', function () {
+            if ($(window).width() <= 767) {$('#sidebar-collapse').collapse('hide'); $('#sidebar-collapse2').collapse('hide'); $scope.showHeaderOptions = false}
+        })
+
         $scope.authenticateEmployee = function () {
 
             $url = 'http://pos.mirageflow.com/employee/authenticate/' + $scope.newUserId;

@@ -169,15 +169,6 @@
 @stop
 
 @section('myjsfile')
-    <script>
-
-        $(window).on('resize', function () {
-            if ($(window).width() > 768) {$('#sidebar-collapse').collapse('show'); $('#sidebar-collapse2').collapse('show')}
-        })
-        $(window).on('resize', function () {
-            if ($(window).width() <= 767) {$('#sidebar-collapse').collapse('hide'); $('#sidebar-collapse2').collapse('hide')}
-        })
-    </script>
     <script type="application/javascript" src="{{ @URL::to('Framework/iscroll.js') }}"></script>
     <script type="text/javascript">
         var myScroll;

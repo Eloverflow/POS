@@ -92,6 +92,8 @@
 }
 
 .timeItems{
+	text-align: center;
+	width: 4.5em;
 	color: #30a5ff;
 	padding: 4px;
 	float: right;
@@ -102,7 +104,7 @@ div.saleTextZone{
 	text-align: center;
 	display: inline-block;
 	top: 40px!important;
-	width: 9em;/*
+	width: 8.5em;/*
 	word-wrap: break-word;*/
 }
 
@@ -518,6 +520,7 @@ span.number{
 
 
 #billWindow{
+	top:50px;
 	width: 100%;
 	height: 100%;
 	position: fixed;
@@ -867,15 +870,20 @@ body{
 */
 
 .menu-option {
-	margin-top: 14px;
-	margin-left: 10px;
-	display: inline-block;/*
+	font-size: 20px;
+	margin-top: 4px;/*
 	margin-top: 14px;
 	margin-right: 10px;*/
-	float: left;
 	list-style: none;
-	padding: 0;
+	display: block;
+	padding: 5px;
 	cursor: pointer;
+	border-top: 1px white solid;
+}
+
+.menu-option:hover{
+	border-color: #00a5ff;
+	color: #00a5ff;
 }
 
 .menu-option a{
@@ -893,6 +901,7 @@ body{
 }
 
 #planModal{
+	top:50px;
 	background-color: #333; z-index: 1000; position: fixed;
 
 }
@@ -965,7 +974,30 @@ body{
 	margin: 0!important;
 }
 
+.navbar.navbar-inverse.navbar-fixed-top{
+	height: 51px;
+}
+
+.navbar-header{
+	height: 51px;
+}
+
+.navbar-toggle{
+	margin-right: 5px;
+}
+
+#header-options{
+	margin-top: 51px;
+	background-color: #222;
+	padding: 15px;
+}
+
 @media only screen and (min-width : 450px) {
+
+
+
+
+
 	.bill-total{
 		margin-top: 10px!important;
 	}
@@ -1038,16 +1070,33 @@ body{
 }
 
 @media only screen and (min-width : 800px) {
+
+	.menu-option {
+		margin-right: 5px;
+		margin-left: 10px;
+		float: right;
+		font-size: 17px;
+		border-radius: 5px;
+		padding: 6px;
+		border: 1px white solid;
+	}
+
+
+	#header-options {
+		margin-top: 3px;
+		padding: 0;
+	}
+
+	div.saleTextZone{
+		width: 13em;/*
+	word-wrap: break-word;*/
+	}
+
+
 	.pagination-sm.pagination.ng-isolate-scope.ng-valid{
 		margin-top: 1%;
 	}
 
-	.menu-option {
-		font-size: 19px;
-		float: right;
-		margin-left: 0;
-		margin-right: 15px;
-	}
 }
 
 
