@@ -188,8 +188,10 @@
                 <li>test</li>
             </ul>--}}
 
-            <div ng-repeat="bill in bills"  class="bill" >
+            <div ng-repeat="bill in bills" class="bill" >
 
+                <span ng-show="bill.checked"  ng-click="checkBill(bill)" class="glyphicon glyphicon-check move-bill-check"></span>
+                <span ng-hide="bill.checked"  ng-click="checkBill(bill)" class="glyphicon glyphicon-unchecked move-bill-check"></span>
             <h2>Facture <% bill.number %></h2>
             <ul>
 
@@ -211,11 +213,14 @@
                     <span class="glyphicon glyphicon-plus"></span>
                 </li>
 
-                <li ng-show="movingBillItem" class="move-bill-item">
+                <li ng-show="movingBillItem" ng-click="moveToBill(bill)" class="move-bill-item">
                     <span class="glyphicon glyphicon glyphicon-share"></span>
                 </li>
             </ul>
-                <h3>Total: $ <% bill.total | number:2 %></h3>
+                <h3>Sous-total : <span class="number"><% bill.subTotal | number:2 %></span></h3>
+                <h3 ng-repeat="taxe in bill.taxes"><% taxe.name %> : <span class="number"><% taxe.total | number:2 %></span></h3>
+                <h2>Total: <span class="number"><% bill.total | number:2 %></span></h2>
+
             </div>
         </div>
     </div>

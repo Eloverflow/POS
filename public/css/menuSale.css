@@ -100,12 +100,11 @@
 }
 
 div.saleTextZone{
-
 	text-align: center;
 	display: inline-block;
 	top: 40px!important;
-	width: 6em;/*
-	word-wrap: break-word;*/
+	width: 6em;
+	/* word-wrap: break-word; */
 }
 
 
@@ -473,8 +472,13 @@ span.number{
 
 }
 
-.move-bill-item-check{
+.move-bill-item-check,.move-bill-check{
 	float: right;
+}
+
+.move-bill-check{
+	font-size: 36px;
+	cursor: pointer;
 }
 
 .move-bill-item{
