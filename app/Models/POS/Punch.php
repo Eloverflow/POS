@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Punch extends Model
 {
     //
-    protected $fillable = ['inout', 'employee_id', 'created_at'];
+    protected $fillable = ['inout', 'isIn', 'employee_id', 'created_at'];
 
     public static function GetLatestPunch($idEmployee)
     {

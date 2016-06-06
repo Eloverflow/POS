@@ -13,8 +13,7 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         //
-        'addon/*',
-        'schedule/*',
+        /*'addon/*',
         'disponibility/*',
         'item/*',
         'work/*',
@@ -22,6 +21,6 @@ class VerifyCsrfToken extends BaseVerifier
         'inventory/*',
         'menu/*',
         'employee/*',
-        'plan/*'
+        'plan/*'*/
     ];
 }

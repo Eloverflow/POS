@@ -21,7 +21,7 @@ class Employee extends Model
     {
         return \DB::table('employees')
             ->join('users', 'employees.userId', '=', 'users.id')
-            ->select(\DB::raw('employees.id as idEmployee, firstName, lastName, email, hireDate'))
+            ->select(\DB::raw('employees.id as idEmployee, firstName, lastName, email, hireDate, (SELECT a.isIn FROM punches a WHERE a.employee_id=employees.id order by a.created_at desc limit 1) AS isWorking'))
             ->get();
     }
 

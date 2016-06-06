@@ -174,3 +174,7 @@ Route::get('/disponibility/details/{id}',  ['uses' => 'POS\DisponibilityControll
 
 /* End Punch */
 
+/*  Start Statistics */
+Route::get('/stats',  ['uses' => 'POS\StatsController@index', 'middleware' => 'auth']);
+
+/* End Statistics */
