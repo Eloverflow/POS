@@ -19,10 +19,10 @@ function punchEmployee() {
         success: function (data) {
             console.log(data);
             if (data["status"] == "Error") {
-                $('#displayMessage').html(getErrorMessage(data["message"]));
+                $('#displayMessage').prepend(getErrorMessage(data["message"]));
             }
             else {
-                $('#displayMessage').html(getSuccessMessage(data["message"]));
+                $('#displayMessage').prepend(getSuccessMessage(data["message"]));
             }
         }
     });

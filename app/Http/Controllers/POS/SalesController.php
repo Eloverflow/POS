@@ -8,6 +8,7 @@ use App\Models\POS\Command;
 use App\Models\POS\CommandLine;
 use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
+use App\Models\POS\Table;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -338,6 +339,11 @@ class SalesController extends Controller
 
                     if ($command != "") {
                         $result['msg'] .= " - Also created the command";
+                        /*We can now change the table status*/
+                        $commandTable = Table::where('id', $inputs['table']['id'])->first();
+                        $commandTable['status'] = 2;
+                        $commandTable->save();
+
                         array_push($result['commands'], $command);
 
 

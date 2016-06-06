@@ -196,93 +196,96 @@ var lastCircle;
 var line = [];
 var btnDeleteWalls = $("#btnDeleteWalls");
 var bntEditWalls = $("#btnEditWalls");
+var bntCancelEditWalls = $("#btnCancelEditWalls");
 var bntAddWalls = $("#btnAddWalls");
-var tblContainers;
-
-var bntSaveWalls = $("#btnSaveWalls").click(function(){
-    wallToggle = !wallToggle;
-    var tblContainers = $(".tablesContainer .tables");
-    bntAddWalls.css({backgroundColor: "#5bc0de"})
-    bntAddWalls.text('Add Walls')
-    tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-    $(window).unbind();
-    var follower = $("#follower");
-    follower.hide()
-
-    bntEditWalls.css({backgroundColor: "#5bc0de"})
-    bntEditWalls.text('Edit Walls')
-    tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-    btnDeleteWalls.css({visibility: 'hidden'});
-    bntSaveWalls.css({visibility: 'hidden'});
-});
+var tabControlContainers;
+var follower = $("#follower");
 
 
-function deleteWall() {
-    var tblContainers = $(".tablesContainer .tables");
-    canvas = new fabric.Canvas('canvaWalls', {selection: false, hoverCursor: 'move', defaultCursor: 'pointer'});
+var stateEditingWall = function () {
 
-    tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-    var follower = $("#follower");
-    follower.hide()
+    bntAddWalls.hide();
+    bntEditWalls.hide();
+    bntCancelEditWalls.show();
+    bntSaveWalls.show();
+    btnDeleteWalls.show();
 
-    bntEditWalls.css({visibility: 'hidden'});
-    bntSaveWalls.css({visibility: 'hidden'});
-    btnDeleteWalls.css({visibility: 'hidden'});
-    bntAddWalls.css({visibility: 'visible'});
+    follower.css('visibility', 'visible')
+
+    var tabControlContainers = $("#tabControl");
+    tabControlContainers.css({backgroundColor: "rgba(0,0,0,0.5)"})
 
 }
 
-btnDeleteWalls.click(function(){
+var stateDisableEditingWall = function () {
+
+    $(window).unbind();
+    bntEditWalls.show();
+    bntCancelEditWalls.hide();
+    bntSaveWalls.hide();
+    btnDeleteWalls.hide();
+
+    follower.css('visibility', 'hidden')
+
+    var tabControlContainers = $("#tabControl");
+    tabControlContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
+}
+
+var stateHasNoWall = function () {
+    bntEditWalls.hide();
+    bntCancelEditWalls.hide();
+    bntSaveWalls.hide();
+    btnDeleteWalls.hide();
+    bntAddWalls.show();
+
+}
+
+var stateHasWall = function () {
+    bntAddWalls.hide();
+    bntEditWalls.show();
+};
+
+$(document).ready(function () {
+    stateDisableEditingWall();
+})
+
+function deleteWall() {
     line = []
     circle = []
-    wallToggle = !wallToggle;
+    canvas = new fabric.Canvas('canvaWalls', {selection: false, hoverCursor: 'move', defaultCursor: 'pointer'});
+}
+
+var bntSaveWalls = $("#btnSaveWalls").click(function(){
+    stateDisableEditingWall();
+    stateHasWall()
+});
+
+btnDeleteWalls.click(function(){
     deleteWall();
+    stateDisableEditingWall();
+    stateHasNoWall();
 });
 
 bntEditWalls.click(function(){
-    tblContainers = $(".tablesContainer .tables");
-    wallToggle = !wallToggle;
-
-    if(wallToggle) {
-        bntEditWalls.css({backgroundColor: "#884444"})
-        bntEditWalls.text('Cancel Edit Walls')
-        tblContainers.css({backgroundColor: "rgba(0,0,0,0.5)"})
-
-        bntSaveWalls.css({visibility: 'visible'});
-        btnDeleteWalls.css({visibility: 'visible'});
-        follower = $("#follower");
-        follower.hide()
-
-        customizeWall();
-    }
-    else{
-        bntEditWalls.css({backgroundColor: "#5bc0de"})
-        bntEditWalls.text('Edit Walls')
-        tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-        follower = $("#follower");
-        follower.hide()
-
-        bntSaveWalls.css({visibility: 'hidden'});
-        btnDeleteWalls.css({visibility: 'hidden'});
-    }
+    customizeWall();
+    stateEditingWall();
 });
 
+
+bntCancelEditWalls.click(function () {
+    stateDisableEditingWall();
+});
+
+
 bntAddWalls.click(function () {
-    tblContainers = $(".tablesContainer .tables");
-    wallToggle = !wallToggle;
+    stateEditingWall();
+    tabControlContainers = $("#tabControl");
 
-    if(wallToggle) {
-
-        bntAddWalls.css({backgroundColor: "#884444"})
-        bntAddWalls.text('Cancel Add Walls')
-        tblContainers.css({backgroundColor: "rgba(0,0,0,0.5)"})
-
-        bntSaveWalls.css({visibility: 'visible'});
-        btnDeleteWalls.css({visibility: 'visible'});
+    var tableContainers = $(".tablesContainer .tables");
 
         /*For old wall*/
         $('.canvas-container').remove();
-        tblContainers.prepend('<canvas id="canvaWalls" width="' + tblContainers.width() + '" height="' + tblContainers.height() + '" style="border:1px solid #ccc"></canvas>')
+        tabControlContainers.prepend('<canvas id="canvaWalls" width="' + tableContainers.width() + '" height="' + tableContainers.height() + '" style="border:1px solid #ccc"></canvas>')
         canvaWall = $('#canvaWalls')
 
 
@@ -325,20 +328,7 @@ bntAddWalls.click(function () {
         observeCanvas();
         /*By looking into Git history we could plug back the listener to had a junction remover inside the canva*/
 
-        customizeWall()
-    }
-    else{
-        bntAddWalls.css({backgroundColor: "#5bc0de"})
-        bntAddWalls.text('Add Walls')
-        tblContainers.css({backgroundColor: "#FFFFFF", opacity: 1})
-        $(window).unbind();
-        var follower = $("#follower");
-        follower.hide()
-
-        deleteWall()
-
-    }
-
+        customizeWall();
 });
 
 /*Make a circle inside a canva with "link1" been the source line and "link2" been the destination line */
@@ -374,13 +364,15 @@ function makeLine(coords, link1, link2) {
 }
 
 
+
+
 function customizeWall(){
-    tblContainers = $(".tablesContainer .tables");
+    tabControlContainers = $("#tabControl");
     follower = $("#follower");
 
     /*Make a follower behind canva to show an action is possible*/
     $(window).mousemove(function(e){
-        if(e.pageX > tblContainers.offset().left+5 && e.pageY > tblContainers.offset().top+5)
+        if(e.pageX > tabControlContainers.offset().left+5 && e.pageY > tabControlContainers.offset().top+5)
         {
             follower.offset({
                 left: e.pageX-20,
@@ -395,7 +387,7 @@ function customizeWall(){
 
     /*Find the best place to cut between the wall and cut*/
     $(window).click(function(e){
-        if(e.pageX > tblContainers.offset().left+5 && e.pageY > tblContainers.offset().top+5)
+        if(e.pageX > tabControlContainers.offset().left+5 && e.pageY > tabControlContainers.offset().top+5)
         {
 
             var $info = $('#nested-tabInfo');
@@ -403,7 +395,7 @@ function customizeWall(){
             var curTab = $("[aria-labelledby='" + $tabItemID.text() + "'] .tables");
             var offsetTab = curTab.offset();
 
-            var canvaUpper = tblContainers.find('.upper-canvas');
+            var canvaUpper = tabControlContainers.find('.upper-canvas');
 
             /*Do not add wall while moving them*/
             if(canvaUpper.css('cursor') != "move"){
@@ -411,7 +403,7 @@ function customizeWall(){
                 //console.log('Click event')
                 /*Inside*/
 
-                var junctionScore = 99999;
+                var junctionScore = 99999999;
                 var lastBestJunction;
 
                 var boxX = parseInt(e.pageX-offsetTab.left);
@@ -429,8 +421,10 @@ function customizeWall(){
 
                 }
 
-                //console.log(circle[lastBestJunction].link1.top)
-                //console.log(circle[lastBestJunction].link1.left)
+                console.log('Top & Left')
+                console.log(circle[lastBestJunction].link1.top)
+                console.log(circle[lastBestJunction].link1.left)
+                console.log('')
 
                 var closestCircle = circle[lastBestJunction];
                 var linkList = [{
@@ -500,21 +494,21 @@ function customizeWall(){
 
 /*Watching bondairies and circle movement to addapt line*/
 function observeCanvas(){
-    var tblContainers = $(".tablesContainer .tables");
+    var tabControlContainers = $("#tabControl");
     canvas.observe("object:moving", function(e){
         var obj = e.target;
         if(obj.top < 0){
             obj.top = Math.max(obj.top, 5);
         }
-        else if(obj.top > tblContainers.height()){
-            obj.top = Math.min(obj.top, tblContainers.height()-5  );
+        else if(obj.top > tabControlContainers.height()){
+            obj.top = Math.min(obj.top, tabControlContainers.height()-5  );
         }
 
         if(obj.left < 0){
             obj.left = Math.max(obj.left , 5)
         }
-        else if(obj.left > tblContainers.width() ){
-            obj.left = Math.min(obj.left, tblContainers.width()-5 )
+        else if(obj.left > tabControlContainers.width() ){
+            obj.left = Math.min(obj.left, tabControlContainers.width()-5 )
         }
 
         obj.link1 && obj.link1.set({'x2': obj.left, 'y2': obj.top});

@@ -17,12 +17,7 @@
 
     <link href="{{ URL::to('Framework/please-wait/please-wait.css') }}" rel="stylesheet">
 
-    <!--Icons-->
-    <script src="{{ @URL::to('Framework/LuminoAdmin/js/lumino.glyphs.js') }}"></script>
-
-
     <script src="{{ @URL::to('Framework/Angular/angular.min.js') }}"></script>
-
 
     <!--[if lt IE 9]>
     <script src="{{ @URL::to('Framework/LuminoAdmin/js/html5shiv.js') }}"></script>
@@ -43,48 +38,49 @@
 <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span>Facture</span> <span class="glyphicon glyphicon-barcode"></span>
+                <span class="sr-only">Toggle command</span>
+                <span>Commande</span> <span class="glyphicon glyphicon-barcode"></span>
             </button>
-            <a class="navbar-brand" href="{{@URL::to('/menu')}}"> <span class="glyphicon glyphicon-circle-arrow-left"></span> <span>Pos</span>Io</a>
-            <ul class="menu-option">
-                <li class="pull-right">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#sidebar-collapse2">
+                <span class="sr-only">Toggle navigation</span>
+                <span>Prix</span> <span class="glyphicon glyphicon-euro"></span>
+            </button>
+            <button type="button" class="navbar-toggle collapsed" ng-click="toggleHeaderOptions()">
+                <span class="sr-only">Toggle options</span>
+                <span>Options</span> <span class="glyphicon glyphicon-list-alt"></span>
+            </button>
+            <a class="navbar-brand" href="{{@URL::to('/menu')}}"><span>Pos</span>Io</a>
+            <div ng-show="showHeaderOptions" id="header-options">
+                <span class="menu-option">
                     <a href="#" ng-click="changeEmployee()" ><span class="glyphicon glyphicon-user"></span>
                         Employé #<% currentEmploye.id %></a>
-                </li>
-            </ul>
-            <ul class="menu-option">
-                <li>
+                </span>
+                <span class="menu-option">
                     <a href="#" ng-click="toggleTableModal()"><span class="glyphicon glyphicon-unchecked"></span>
                         Table #<% currentTable.tblNumber %>
-                       </a>
-                </li>
-            </ul>
-            <ul class="menu-option">
-                <li>
+                    </a>
+                </span>
+                <span class="menu-option">
                     <a href="#" ng-click="openBill()"><span class="glyphicon glyphicon-bitcoin"></span>
                         Factures
                     </a>
-                </li>
-            </ul>
-            <ul class="menu-option">
-                <li>
+                </span>
+                <span class="menu-option">
                     <a href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
                         Plan
                     </a>
-                </li>
-            </ul>
-            <ul class="menu-option">
-                <li>
+                </span>
+                <span class="menu-option">
                     <a href="#" ng-click="toogleFullscreen()"><span class="glyphicon glyphicon-fullscreen"></span>
                         Plein écran
                     </a>
-                </li>
-            </ul>
-
+                </span>
+            </div>
         </div>
 
+
 </nav>
+
 <modal title="Selectionne une table" visible="showTableModal">
     <div ng-repeat="n in [] | floor:plan.nbFloor" >
         <span class="floor">Étage <% n+1 %></span>
@@ -116,11 +112,14 @@
             <div style="width: 100%; text-align: center; padding-top: 10px"><span style="color: red; font-size: 15px;"><% numPadErrMsg %></span></div>
             <table id="keyboard">
                 <tbody>
-                <tr>
-                    <td colspan="4" id="displayMessage"><% numPadMsg %></td>
+                <tr id="rowTitle">
+                    <td colspan="4" id="displayTitle"><% numPadMsg %></td>
                 </tr>
                 <tr>
-                    <td colspan="4"><input id="mainText" type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText"><em style="color: white; font-size: 18px;">Utilisez : 3 : 11</em></td>
+                    <td colspan="4" id="displayMessage">
+                        <input type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText">
+                        <em style="color: white; font-size: 18px;">Utilisez : 3 : 11</em>
+                    </td>
 
                 </tr>
                 <tr>
@@ -161,7 +160,12 @@
 @yield('content')
 
 <div  id="planModal" ng-show="showPlanModal">
-    <span id="zoomout" style="transition: all 0.2s; cursor: pointer; color: #30a5ff; background-color: #fff; border-radius: 50%; padding: 10px; opacity:0.8; font-size: 36px; position:fixed; right: 4%; top: 10%; z-index: 1051;" class="glyphicon glyphicon-refresh"></span>
+    <span id="floorNumber" >Étage #<% plan.currentFloor+1 %></span>
+    <div class="planRightButton">
+        <span id="zoomout" class="glyphicon glyphicon-zoom-out"></span>
+        <span ng-show="plan.currentFloor < plan.nbFloor-1"  ng-click="floorUp()"  id="floorup" class="glyphicon glyphicon-upload"></span>
+        <span ng-show="plan.currentFloor > 0" ng-click="floorDown()" id="floordown" class="glyphicon glyphicon-download"></span>
+    </div>
     <div class="parent">
         <div class="panzoom">
             <canvas style="margin: 0;" id="myCanvas" width="0" height="0" />
@@ -184,8 +188,10 @@
                 <li>test</li>
             </ul>--}}
 
-            <div ng-repeat="bill in bills"  class="bill" >
+            <div ng-repeat="bill in bills" class="bill" >
 
+                <span ng-show="bill.checked"  ng-click="checkBill(bill)" class="glyphicon glyphicon-check move-bill-check"></span>
+                <span ng-hide="bill.checked"  ng-click="checkBill(bill)" class="glyphicon glyphicon-unchecked move-bill-check"></span>
             <h2>Facture <% bill.number %></h2>
             <ul>
 
@@ -207,11 +213,14 @@
                     <span class="glyphicon glyphicon-plus"></span>
                 </li>
 
-                <li ng-show="movingBillItem" class="move-bill-item">
+                <li ng-show="movingBillItem" ng-click="moveToBill(bill)" class="move-bill-item">
                     <span class="glyphicon glyphicon glyphicon-share"></span>
                 </li>
             </ul>
-                <h3>Total: $ <% bill.total | number:2 %></h3>
+                <h3>Sous-total : <span class="number"><% bill.subTotal | number:2 %></span></h3>
+                <h3 ng-repeat="taxe in bill.taxes"><% taxe.name %> : <span class="number"><% taxe.total | number:2 %></span></h3>
+                <h2>Total: <span class="number"><% bill.total | number:2 %></span></h2>
+
             </div>
         </div>
     </div>

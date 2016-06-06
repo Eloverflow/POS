@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>EXPRESSPOS @foreach(Request::segments() as $segment){{ ' | ' . ucwords( str_replace('_', ' ', $segment))}}@endforeach</title>
+    <title>POSIO @foreach(Request::segments() as $segment){{ ' | ' . ucwords( str_replace('_', ' ', $segment))}}@endforeach</title>
 {{--<script src="{{ @URL::to('js/jquery-2.1.4.min.js') }}"></script>--}}
     <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
 @yield('csrfToken')
