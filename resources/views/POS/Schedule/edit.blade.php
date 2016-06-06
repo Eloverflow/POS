@@ -131,7 +131,7 @@
                                         @if(old('employeeSelect') == $employee->idEmployee)
                                             {{ "selected" }}
                                                 @endif
-                                            @endif >{{ $employee->firstName }}</option>
+                                            @endif >{{ $employee->firstName . " " . $employee->lastName}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -204,7 +204,7 @@
                                         @if(old('employeeSelect') == $employee->idEmployee)
                                             {{ "selected" }}
                                                 @endif
-                                            @endif >{{ $employee->firstName }}</option>
+                                            @endif >{{ $employee->firstName . " " . $employee->lastName}}</option>
                                 @endforeach
                             </select>
                         </div>

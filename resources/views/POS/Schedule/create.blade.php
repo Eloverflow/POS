@@ -126,7 +126,7 @@
                             <select id="employeeSelect" name="employeeSelect" class="form-control">
                                 @foreach ($ViewBag['employees'] as $employee)
 
-                                    <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                                    <option value="{{ $employee->idEmployee }}">{{ $employee->firstName . " " . $employee->lastName}}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -195,7 +195,7 @@
                             <h3>Employee</h3>
                             <select id="employeeSelect" name="employeeSelect" class="form-control">
                                 @foreach ($ViewBag['employees'] as $employee)
-                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName . " " . $employee->lastName}}</option>
                                 @endforeach
                             </select>
                         </div>

@@ -130,7 +130,7 @@ function editEvent($storedCalendar){
 
     $dDayNumber = $( "#editModal #dayNumber option:selected" ).val();
     $employeeText = $( "#editModal #employeeSelect option:selected" ).text();
-    $employeeId = $( "#editModal #employeeSelect option:selected" ).val();
+    $employeeId = parseInt($( "#editModal #employeeSelect option:selected" ).val());
 
     var ValidationResult = ModalValidation("#editModal");
     //console.log(ValidationResult.errors);
@@ -159,7 +159,22 @@ function editEvent($storedCalendar){
         globStoredEvent.title = $employeeText;
         globStoredEvent.start = new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
         globStoredEvent.end = new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format());
-        globStoredEvent.employeeId = $employeeId;
+
+        // ici a voir
+        if(globStoredEvent.employeeId != $employeeId){
+            $availableColor = "";
+            $employeeColor = GetEmployeeColor($employeeId);
+            if($employeeColor == ""){
+                $availableColors = GetAvailableColors();
+                $availableColor = $availableColors[0];
+                globStoredEvent.color = $availableColor;
+            } else {
+                $availableColor = $employeeColor;
+                globStoredEvent.color = $availableColor;
+            }
+        }
+
+
 
         $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
 
@@ -192,7 +207,7 @@ function deleteEvent($storedCalendar){
 function addEvent($storedCalendar){
 
     $dDayNumber = $("#addModal #dayNumber option:selected" ).val();
-    $employeeId = $("#addModal #employeeSelect option:selected" ).val()
+    $employeeId = parseInt($("#addModal #employeeSelect option:selected" ).val());
     $employeeName = $("#addModal #employeeSelect option:selected" ).text()
 
 
@@ -222,6 +237,16 @@ function addEvent($storedCalendar){
                     dateAdd = startDate;
                 }
 
+                $availableColor = "";
+                $employeeColor = GetEmployeeColor($employeeId);
+                if($employeeColor == ""){
+                    $availableColors = GetAvailableColors();
+                    $availableColor = $availableColors[0];
+                } else {
+                    $availableColor = $employeeColor;
+                }
+
+
                 var newEvent = {
                     id: guid(),
                     title: $employeeName,
@@ -233,7 +258,8 @@ function addEvent($storedCalendar){
                         .tz(globTimeZoneAMontreal)
                         .format()),
                     description: '',
-                    employeeId: $employeeId
+                    employeeId: $employeeId,
+                    color: $availableColor
                 };
 
                 $storedCalendar.fullCalendar('addEventSource', [newEvent]);
@@ -250,21 +276,30 @@ function addEvent($storedCalendar){
             } else {
                 dateAdd = myDate;
             }
-            console.log(new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format()));
-            console.log(new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format()));
 
-            //console.log("Start: " + $dateClicked + ' ' + sHM + " End: " + formatDate(new Date(curDay.getTime() + (2 * 24 * 60 * 60 * 1000))) + ' ' + eHM);
+            $availableColor = "";
+            $employeeColor = GetEmployeeColor($employeeId);
+            if($employeeColor == ""){
+                $availableColors = GetAvailableColors();
+                $availableColor = $availableColors[0];
+            } else {
+                $availableColor = $employeeColor;
+            }
+            
+
 
             var newEvent = {
                 id: guid(),
                 title: $employeeName,
+                color: $availableColor,
                 isAllDay: false,
                 start: new Date(moment(formatDate(myDate) + ' ' + sHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
                 end: new Date(moment(formatDate(dateAdd) + ' ' + eHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
                 description: '',
                 employeeId: $employeeId
             };
-            $storedCalendar.fullCalendar('addEventSource', [newEvent]);
+
+            globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
 
             $("#addModal #displayErrors").hide();
 
@@ -394,4 +429,74 @@ function ModalValidation(modal){
     };
     var ValidationResult = {time:timeObj, errors:arrayErrors};
     return ValidationResult;
+}
+
+function GetEmployeeColor(idEmployee)
+{
+    var emplColor = "";
+    //console.log(globUsedColors);
+    var allEvents = globStoredCalendar.fullCalendar('clientEvents');
+    for(var i = 0; i < allEvents.length; i++)
+    {
+        //console.log(globUsedColors[i]["idEmployee"]);
+        if (allEvents[i].employeeId == idEmployee) {
+            emplColor = allEvents[i].color;
+        }
+    }
+
+    return emplColor;
+}
+
+function GetAvailableColors()
+{
+    var availableColors = [];
+    var allEvents = globStoredCalendar.fullCalendar('clientEvents');
+
+    var niceColors = [
+        "#6AA4C1",
+        "#800000",
+        "#520043",
+        "#33044D",
+        "#1A094F",
+        "#0C0C50",
+        "#00502A",
+        "#256500",
+        "#737300"
+        ];
+
+
+    if(allEvents.length == 0){
+        availableColors.push(niceColors[0]);
+    } else {
+        for(var i = 0; i < niceColors.length; i++){
+
+            /*var colorFound = false;
+            for(var j = 0; j < globUsedColors.length; j++){
+                if(niceColors[i] == globUsedColors[j]["color"]){
+                    colorFound = true;
+                }
+            }*/
+
+
+            var colorFound = false;
+            for (var j = 0; j < allEvents.length; j++){
+
+                if(niceColors[i] == allEvents[j].color){
+                    colorFound = true;
+                }
+                //console.log(allEvents[j].color);
+
+            }
+
+            if(colorFound == false){
+                availableColors.push(niceColors[i]);
+            }
+        }
+
+        if(availableColors.length == 0){
+            availableColors.push(niceColors[0]) ;
+        }
+    }
+
+    return availableColors;
 }
