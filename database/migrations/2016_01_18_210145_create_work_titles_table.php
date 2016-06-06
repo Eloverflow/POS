@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateEmployeeTitlesTable extends Migration
+class CreateWorkTitlesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateEmployeeTitlesTable extends Migration
      */
     public function up()
     {
-        Schema::create('employee_titles', function (Blueprint $table) {
+        Schema::create('work_titles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
             $table->decimal('baseSalary');
@@ -27,6 +27,6 @@ class CreateEmployeeTitlesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('employee_titles');
+        Schema::drop('work_titles');
     }
 }

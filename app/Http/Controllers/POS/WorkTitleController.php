@@ -4,7 +4,7 @@ namespace App\Http\Controllers\POS;
 
 use App\Http\Controllers\Controller;
 use App\Models\POS\Employee;
-use App\Models\POS\EmployeeTitle;
+use App\Models\POS\WorkTitle;
 use App\Models\POS\Punch;
 use App\Models\Project;
 use App\Models\POS\Title_Employees;
@@ -16,21 +16,21 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
-class EmployeeTitleController extends Controller
+class WorkTitleController extends Controller
 {
     public function index()
     {
-        $employeeTitles = EmployeeTitle::getAll();
+        $workTitles = WorkTitle::getAll();
         $employeesList = Employee::GetAll();
 
-        for($i = 0; $i < count($employeeTitles); $i++){
-            $employees = EmployeeTitle::getEmployeesByTitleId($employeeTitles[$i]->emplTitleId);
-            $employeeTitles[$i]->{"cntEmployees"} = $employees;
+        for($i = 0; $i < count($workTitles); $i++){
+            $employees = WorkTitle::getEmployeesByTitleId($workTitles[$i]->emplTitleId);
+            $workTitles[$i]->{"cntEmployees"} = $employees;
         }
 
-        $view = \View::make('POS.EmployeeTitle.index')
+        $view = \View::make('POS.WorkTitle.index')
             ->with('ViewBag', array (
-                'employeeTitles' => $employeeTitles,
+                'workTitles' => $workTitles,
                 'employees' => $employeesList
             ));
         return $view;
@@ -60,7 +60,7 @@ class EmployeeTitleController extends Controller
         {
 
             $empl =  Employee::GetById(\Input::get('emplId'));
-            $emplTitle  = EmployeeTitle::getById(\Input::get('emplTitleId'));
+            $emplTitle  = WorkTitle::getById(\Input::get('emplTitleId'));
 
             Title_Employees::where("id", "=", \Input::get('titleEmployeeId'))
                 ->delete();
@@ -97,7 +97,7 @@ class EmployeeTitleController extends Controller
             $checkTitleEmployee = Title_Employees::getByEmployeeAndTitleId(\Input::get('emplId'), \Input::get('emplTitleId'));
             if($checkTitleEmployee == null){
                 $empl =  Employee::GetById(\Input::get('emplId'));
-                $emplTitle  = EmployeeTitle::getById(\Input::get('emplTitleId'));
+                $emplTitle  = WorkTitle::getById(\Input::get('emplTitleId'));
 
                 $titleEmployee = Title_Employees::create([
                     'employee_id' => \Input::get('emplId'),
@@ -211,7 +211,7 @@ class EmployeeTitleController extends Controller
         else
         {
 
-            EmployeeTitle::where('id', \Input::get('emplTitleId'))
+            WorkTitle::where('id', \Input::get('emplTitleId'))
             ->update([
                 'name' => \Input::get('emplTitleName'),
                 'baseSalary' => \Input::get('emplTitleBaseSalary')

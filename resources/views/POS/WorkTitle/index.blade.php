@@ -13,7 +13,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-6">
-            <h1 class="page-header">Employee Titles</h1>
+            <h1 class="page-header">Work Titles</h1>
         </div>
         <div class="col-md-6">
             <div class="vcenter">
@@ -29,15 +29,15 @@
                         {{ $success }}
                     @endif
                         <div id="accordion">
-                            @foreach ($ViewBag['employeeTitles'] as $employeeTitle)
+                            @foreach ($ViewBag['workTitles'] as $workTitle)
                                 <div>
 
                                     <div class="viewShow">
-                                        <span><h6 id="emplTitleName" class="hsize">{{ $employeeTitle->name }}</h6> <span id="emplTitleBaseSalary">{{ $employeeTitle->baseSalary}}</span>{{ "/h" }}</span>
+                                        <span><h6 id="emplTitleName" class="hsize">{{ $workTitle->name }}</h6> <span id="emplTitleBaseSalary">{{ $workTitle->baseSalary}}</span>{{ "/h" }}</span>
                                         <span class="editEmplTitle pull-right glyphicon glyphicon-pencil"></span>
                                     </div>
                                     <div class="viewHide">
-                                           <span id="emplTitleId" class="hidden">{{ $employeeTitle->emplTitleId }}</span>
+                                           <span id="emplTitleId" class="hidden">{{ $workTitle->emplTitleId }}</span>
                                            <div class="cont-block">
                                                 <label for="emplTitleName">Title Name :</label>
                                                 <br />
@@ -58,8 +58,8 @@
                                 </div>
 
                                 <div>
-                                    <button data-emplTitleId="{{ $employeeTitle->emplTitleId }}" type="button" class="btn btn-success pull-right btnAddEmployee">Add Employee</button>
-                                        <table id="tbl-{{ $employeeTitle->emplTitleId }}" class="table">
+                                    <button data-emplTitleId="{{ $workTitle->emplTitleId }}" type="button" class="btn btn-success pull-right btnAddEmployee">Add Employee</button>
+                                        <table id="tbl-{{ $workTitle->emplTitleId }}" class="table">
                                             <thead>
                                                 <tr>
                                                     <th>#</th>
@@ -69,8 +69,8 @@
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                            @if($employeeTitle->cntEmployees != null || count($employeeTitle->cntEmployees) > 0)
-                                                @foreach($employeeTitle->cntEmployees as $employee)
+                                            @if($workTitle->cntEmployees != null || count($workTitle->cntEmployees) > 0)
+                                                @foreach($workTitle->cntEmployees as $employee)
                                                     <tr>
                                                         <td>{{ $employee->idTitleEmployee }}</td>
                                                         <td>{{ $employee->firstName . " " . $employee->lastName}}</td>
@@ -139,7 +139,7 @@
                 var titleEmployee = parentParent.find("td").eq(0).text();
 
                 $.ajax({
-                    url: '/employee/title/del/employee',
+                    url: '/work/title/del/employee',
                     type: 'DELETE',
                     async: true,
                     data: {
@@ -181,7 +181,7 @@
                 var emplId =  $("#employeeSelect").val();
                 var emplTitleId = $("#frmTitleId").val();
                 $.ajax({
-                    url: '/employee/title/add/employee',
+                    url: '/work/title/add/employee',
                     type: 'POST',
                     async: true,
                     data: {
@@ -294,9 +294,9 @@
                 var emplTitleName = inptTitleName;
                 var emplTitleBaseSalary = inptBaseSalary;
 
-                console.log()
+
                 $.ajax({
-                    url: '/employee/title/edit',
+                    url: '/work/title/edit',
                     type: 'POST',
                     async: true,
                     data: {

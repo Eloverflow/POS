@@ -22,7 +22,7 @@ use App\Models\POS\Day_Disponibilities;
 use App\Models\POS\Disponibility;
 use App\Models\Auth\User;
 use App\Models\POS\Employee;
-use App\Models\POS\EmployeeTitle;
+use App\Models\POS\WorkTitle;
 use App\Models\POS\Schedule;
 use App\Models\POS\Day_Schedules;
 use App\Models\POS\Punch;
@@ -52,7 +52,7 @@ class DatabaseSeeder extends Seeder
         $this->call(RfidTableRequestSeeder::class);
         //$this->call(RfidTableBeerSeeder::class);
 
-        $this->call(EmployeeTitleSeeder::class);
+        $this->call(WorkTitleSeeder::class);
         $this->call(EmployeeSeeder::class);
 
         $this->call(DisponibilitiesTableSeeder::class);
@@ -435,24 +435,24 @@ class EmployeeSeeder extends Seeder {
 }
 
 
-class EmployeeTitleSeeder extends Seeder {
+class WorkTitleSeeder extends Seeder {
     public function run()
     {
-        DB::table('employee_titles')->delete();
+        DB::table('work_titles')->delete();
 
-        EmployeeTitle::create([
+        WorkTitle::create([
             'name' => 'Barmaid',
             'baseSalary' => 12,
         ]);
-        EmployeeTitle::create([
+        WorkTitle::create([
             'name' => 'Livreur',
             'baseSalary' => 12,
         ]);
-        EmployeeTitle::create([
+        WorkTitle::create([
             'name' => 'Plongeur',
             'baseSalary' => 12,
         ]);
-        EmployeeTitle::create([
+        WorkTitle::create([
             'name' => 'Cuisinier',
             'baseSalary' => 12,
         ]);

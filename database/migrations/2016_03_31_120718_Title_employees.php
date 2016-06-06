@@ -17,8 +17,8 @@ class TitleEmployees extends Migration
             $table->increments('id');
             $table->integer('employee_id')->unsigned();
             $table->foreign('employee_id')->references('id')->on('employees');
-            $table->integer('employee_titles_id')->unsigned();
-            $table->foreign('employee_titles_id')->references('id')->on('employee_titles');
+            $table->integer('work_titles_id')->unsigned();
+            $table->foreign('work_titles_id')->references('id')->on('work_titles');
             $table->timestamps();
         });
     }

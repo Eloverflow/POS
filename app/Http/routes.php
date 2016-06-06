@@ -83,11 +83,11 @@ Route::get('/employee/details/{id}',  ['uses' => 'POS\EmployeeController@details
 
 Route::post('/employee/authenticate/{id}',  ['uses' => 'POS\EmployeeController@authenticateEmployee']);
 
-Route::get('/employee/titles',  ['uses' => 'POS\EmployeeTitleController@index', 'middleware' => 'auth']);
-Route::post('/employee/title/create',  ['uses' => 'POS\EmployeeTitleController@postCreate', 'middleware' => 'auth']);
-Route::post('/employee/title/edit',  ['uses' => 'POS\EmployeeTitleController@postEdit', 'middleware' => 'auth']);
-Route::post('/employee/title/add/employee',  ['uses' => 'POS\EmployeeTitleController@addEmployee', 'middleware' => 'auth']);
-Route::delete('/employee/title/del/employee',  ['uses' => 'POS\EmployeeTitleController@delEmployee', 'middleware' => 'auth']);
+Route::get('/work/titles',  ['uses' => 'POS\WorkTitleController@index', 'middleware' => 'auth']);
+Route::post('/work/title/create',  ['uses' => 'POS\WorkTitleController@postCreate', 'middleware' => 'auth']);
+Route::post('/work/title/edit',  ['uses' => 'POS\WorkTitleController@postEdit', 'middleware' => 'auth']);
+Route::post('/work/title/add/employee',  ['uses' => 'POS\WorkTitleController@addEmployee', 'middleware' => 'auth']);
+Route::delete('/work/title/del/employee',  ['uses' => 'POS\WorkTitleController@delEmployee', 'middleware' => 'auth']);
 
 
 Route::get('/employee/edit/{id}',  ['uses' => 'POS\EmployeeController@edit', 'middleware' => 'auth']);

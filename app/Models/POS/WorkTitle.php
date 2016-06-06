@@ -4,23 +4,23 @@ namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
 
-class EmployeeTitle extends Model
+class WorkTitle extends Model
 {
-    protected $table = 'employee_titles';
+    protected $table = 'work_titles';
     protected $fillable = ['name', 'baseSalary' ];
 
     public static function getById($id)
     {
-        return \DB::table('employee_titles')
-            ->select(\DB::raw('employee_titles.*'))
+        return \DB::table('work_titles')
+            ->select(\DB::raw('work_titles.*'))
             ->where('id', '=', $id)
             ->first();
     }
 
     public static function getAll()
     {
-        return \DB::table('employee_titles')
-            ->select(\DB::raw('employee_titles.id as emplTitleId, name, baseSalary'))
+        return \DB::table('work_titles')
+            ->select(\DB::raw('work_titles.id as emplTitleId, name, baseSalary'))
             ->get();
     }
 
@@ -29,7 +29,7 @@ class EmployeeTitle extends Model
         return \DB::table('title_employees')
         ->join('employees', 'title_employees.employee_id', '=', 'employees.id')
         ->select(\DB::raw('employees.id as idEmployee, title_employees.id as idTitleEmployee, employees.bonusSalary, streetAddress, phone, firstName, lastName, city, nas, pc, state, birthDate, hireDate'))
-        ->where('employee_titles_id', '=', $id)
+        ->where('work_titles_id', '=', $id)
         ->get();
     }
 

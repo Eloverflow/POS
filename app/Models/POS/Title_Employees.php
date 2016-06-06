@@ -8,16 +8,16 @@ class Title_Employees extends Model
 {
     //
     protected $table = 'title_employees';
-    protected $fillable = ['employee_id', 'employee_titles_id'];
+    protected $fillable = ['employee_id', 'work_titles_id'];
 
     public static function getByEmployeeId($employeeId)
     {
         return \DB::table('title_employees')
-            ->join('employee_titles', 'title_employees.employee_titles_id', '=', 'employee_titles.id')
+            ->join('work_titles', 'title_employees.work_titles_id', '=', 'work_titles.id')
             ->select(\DB::raw('title_employees.id as idTitleEmployees,
-            employee_titles.id as idEmployeeTitles,
-            employee_titles.name,
-            employee_titles.baseSalary
+            work_titles.id as idEmployeeTitles,
+            work_titles.name,
+            work_titles.baseSalary
             '))
             ->where('title_employees.employee_id', '=', $employeeId)
             ->get();
@@ -26,14 +26,14 @@ class Title_Employees extends Model
     public static function getByEmployeeAndTitleId($employeeId, $employeeTitleId)
     {
         return \DB::table('title_employees')
-            ->join('employee_titles', 'title_employees.employee_titles_id', '=', 'employee_titles.id')
+            ->join('work_titles', 'title_employees.work_titles_id', '=', 'work_titles.id')
             ->select(\DB::raw('title_employees.id as idTitleEmployees,
-            employee_titles.id as idEmployeeTitles,
-            employee_titles.name,
-            employee_titles.baseSalary
+            work_titles.id as idEmployeeTitles,
+            work_titles.name,
+            work_titles.baseSalary
             '))
             ->where('title_employees.employee_id', '=', $employeeId)
-            ->where('title_employees.employee_titles_id', '=', $employeeTitleId)
+            ->where('title_employees.work_titles_id', '=', $employeeTitleId)
             ->first();
     }
 
