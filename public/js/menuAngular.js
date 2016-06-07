@@ -5,7 +5,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
         uibPaginationConfig.nextText = 'Suivant';
 
         // configure Idle settings
-        IdleProvider.idle(200); // in seconds
+        IdleProvider.idle(60); // in seconds
         IdleProvider.timeout(5); // in seconds
         KeepaliveProvider.interval(2); // in seconds
         IdleProvider.windowInterrupt('focus');
@@ -95,9 +95,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
             console.log('IdleTimeout')
             $scope.commandClient = [];
             $scope.commandItems = [];
-            $scope.bills = [];
+            /*$scope.bills = [];
             $scope.taxe = [0, 0];
-            $scope.totalBill = 0;
+            $scope.totalBill = 0;*/
             var modalChangeEmployee = $('#changeEmployee');
             $(windowModalBlockerHtml).hide().prependTo(modalChangeEmployee).fadeIn("fast");
 
@@ -1237,8 +1237,39 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
         $scope.moveToBill =function (bill) {
 
             for(var d = 0; d < $scope.bills.length; d++){
-                var checkedItems = $filter("filter")($scope.bills[d], {checked: "true"});
+                if($scope.bills[d].checked){
 
+                    console.log($scope.bills[d])
+
+                    for(var l = 0; l < $scope.bills[d].items.length; l++){
+
+                        var subTotal = $scope.bills[d].items[l].size.price * $scope.bills[d].items[l].quantity;
+                        var total = subTotal;
+                        /*Copy the taxes and change its total to 0*/
+                        var taxes = angular.copy($scope.taxes);
+                        for (var j = 0; j < taxes.length; j++) {
+                            taxes[j].total = subTotal*taxes[j].value;
+                            total+=taxes[j].total;
+                        }
+
+                        $scope.bills[d].subTotal -= subTotal;
+                        bill.subTotal += subTotal;
+                        $scope.bills[d].total -= total;
+                        bill.total += total;
+                        for (j = 0; j < taxes.length; j++) {
+                            $scope.bills[d].taxes[j].total -= taxes[j].total;
+                            bill.taxes[j].total += taxes[j].total;
+                        }
+                        bill.push($scope.bills[d][l]);
+
+                        var index = $scope.bills[d].indexOf($scope.bills[d].items[l]);
+                        $scope.bills[d].splice(index, 1)
+                    }
+                    $scope.bills[d].checked = false;
+                }
+                else {
+
+                var checkedItems = $filter("filter")($scope.bills, {checked: "true"});
                 for(var f = 0; f < checkedItems.length; f++){
 
                     var subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
@@ -1268,7 +1299,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
                 }
                 $scope.movingBillItem = false;
 
-                /*We need to recalculate subtotal, taxes, total of each bill*/
+                /*We needed* to recalculate subtotal, taxes, total of each bill*/
+                }
             }
 
         }
@@ -1285,7 +1317,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
         $scope.oneBill = function () {
             $scope.toggleDivideBillModal();
 
-            $scope.bills = [];
+            $scope.bills = {};
             var bill = [];
             var subTotal = 0;
             var taxTotal = 0;
@@ -1302,7 +1334,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
                     for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
                         var item = angular.copy($scope.commandClient[f + 1].commandItems[p])
                         item.checked = false
-                        bill.push(item);
+                        bill.item.push(item);
                         subTotal += item.size.price * item.quantity
                     }
                 }
@@ -1335,8 +1367,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
         $scope.perClientBill = function () {
             $scope.toggleDivideBillModal();
 
-            $scope.bills = [];
-            var bill = [];
+            $scope.bills = {item :[]};
+            var bill;
 
             for (var f = 0; f < $scope.commandClient.length; f++) {
                 if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandItems.length > 0 ) {
@@ -1362,7 +1394,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
                         taxes[j].total = subTotal * taxes[j].value;
                         taxTotal += taxes[j].total;
                     }
-                $scope.bills[f] = bill;
+                $scope.bills[f].item = bill;
                 $scope.bills[f].number = f + 1;
                 $scope.bills[f].subTotal = subTotal;
                 $scope.bills[f].taxes = taxes;
