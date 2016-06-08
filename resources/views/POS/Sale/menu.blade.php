@@ -4,15 +4,13 @@
 
 
     <script src="{{ @URL::to('Framework/Angular/angular-route.min.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Angular/angular-ui-router.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Angular/angular-ui-router.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-animate.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-touch.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Angular/angular-idle.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Bootstrap/js/ui-bootstrap-tpls-1.2.5.min.js') }}"></script>
     <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Angular/angular-count-to.js') }}"></script>
     <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
-    <script src="{{ @URL::to('js/unserialize.js') }}"></script>
     <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
 
 
@@ -20,7 +18,7 @@
     <script src="{{ @URL::to('js/punchEmployee.js') }}"></script>
 
 
-    <script src="{{ @URL::to('js/jquery/panzoom.js') }}"></script>
+    <script src="{{ @URL::to('js/jquery/panzoom.min.js') }}"></script>
     <script src="{{ @URL::to('js/jquery/pointertouch.js') }}"></script>
 @stop
 

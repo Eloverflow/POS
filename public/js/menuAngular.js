@@ -1,4 +1,4 @@
-var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function ($interpolateProvider, uibPaginationConfig, IdleProvider, KeepaliveProvider) {
+var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpolateProvider, uibPaginationConfig, IdleProvider, KeepaliveProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
         uibPaginationConfig.previousText = 'Précédent';
@@ -165,7 +165,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
 
                 if(typeof $scope.plan != "undefined" && $scope.plan != null )
                     floor = $scope.plan.currentFloor;
-                
+
                 $scope.plan = response;
 
                 $scope.plan.currentFloor = floor;
@@ -1233,18 +1233,42 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
 
         }
 
-        /*Need to be addapted when the Bill is checked*/
         $scope.moveToBill =function (bill) {
 
             for(var d = 0; d < $scope.bills.length; d++){
                 if($scope.bills[d].checked){
 
-                    console.log($scope.bills[d])
+                    for(var l = 0; l < $scope.bills[d].length; l++){
 
-                    for(var l = 0; l < $scope.bills[d].items.length; l++){
-
-                        var subTotal = $scope.bills[d].items[l].size.price * $scope.bills[d].items[l].quantity;
+                        var subTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
                         var total = subTotal;
+                        /*Copy the taxes and change its total to 0*/
+                        var taxes = angular.copy($scope.taxes);
+                        for (var j = 0; j < taxes.length; j++) {
+                            taxes[j].total = subTotal*taxes[j].value;
+                            total+=taxes[j].total;
+                        }
+
+                        bill.subTotal += subTotal;
+                        bill.total += total;
+                        for (j = 0; j < taxes.length; j++) {
+                            bill.taxes[j].total += taxes[j].total;
+                        }
+                        bill.push($scope.bills[d][l]);
+
+                    }
+
+                    $scope.bills[d] = [];
+
+                }
+                else {
+
+                    var checkedItems = $filter("filter")($scope.bills[d], {checked: "true"});
+                    for(var f = 0; f < checkedItems.length; f++){
+
+                        var subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
+                        var total = subTotal;
+
                         /*Copy the taxes and change its total to 0*/
                         var taxes = angular.copy($scope.taxes);
                         for (var j = 0; j < taxes.length; j++) {
@@ -1260,46 +1284,28 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
                             $scope.bills[d].taxes[j].total -= taxes[j].total;
                             bill.taxes[j].total += taxes[j].total;
                         }
-                        bill.push($scope.bills[d][l]);
 
-                        var index = $scope.bills[d].indexOf($scope.bills[d].items[l]);
-                        $scope.bills[d].splice(index, 1)
+                        checkedItems[f].checked = false
+                        bill.push(checkedItems[f])
+
+                        var index = $scope.bills[d].indexOf(checkedItems[f]);
+                            $scope.bills[d].splice(index, 1)
                     }
-                    $scope.bills[d].checked = false;
+                    $scope.movingBillItem = false;
+
+                    /*We needed* to recalculate subtotal, taxes, total of each bill*/
                 }
-                else {
 
-                var checkedItems = $filter("filter")($scope.bills, {checked: "true"});
-                for(var f = 0; f < checkedItems.length; f++){
+            }
 
-                    var subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
-                    var total = subTotal;
-
-                    /*Copy the taxes and change its total to 0*/
-                    var taxes = angular.copy($scope.taxes);
-                    for (var j = 0; j < taxes.length; j++) {
-                        taxes[j].total = subTotal*taxes[j].value;
-                        total+=taxes[j].total;
-                    }
-
-                    $scope.bills[d].subTotal -= subTotal;
-                    bill.subTotal += subTotal;
-                    $scope.bills[d].total -= total;
-                    bill.total += total;
-                    for (j = 0; j < taxes.length; j++) {
-                        $scope.bills[d].taxes[j].total -= taxes[j].total;
-                        bill.taxes[j].total += taxes[j].total;
-                    }
-
-                    checkedItems[f].checked = false
-                    bill.push(checkedItems[f])
-
-                    var index = $scope.bills[d].indexOf(checkedItems[f]);
-                        $scope.bills[d].splice(index, 1)
-                }
-                $scope.movingBillItem = false;
-
-                /*We needed* to recalculate subtotal, taxes, total of each bill*/
+            /*Clear empty bill*/
+            for(d = 0; d < $scope.bills.length; d++) {
+                /*Re-order bill number*/
+                $scope.bills[d].number = d+1;
+                if($scope.bills[d].length == 0){
+                    var index = $scope.bills.indexOf($scope.bills[d]);
+                    $scope.bills.splice(index, 1)
+                    d--;
                 }
             }
 
@@ -1317,7 +1323,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
         $scope.oneBill = function () {
             $scope.toggleDivideBillModal();
 
-            $scope.bills = {};
+            $scope.bills = [];
             var bill = [];
             var subTotal = 0;
             var taxTotal = 0;
@@ -1334,7 +1340,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
                     for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
                         var item = angular.copy($scope.commandClient[f + 1].commandItems[p])
                         item.checked = false
-                        bill.item.push(item);
+                        bill.push(item);
                         subTotal += item.size.price * item.quantity
                     }
                 }
@@ -1351,9 +1357,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
             $scope.bills[0].taxes = taxes;
             $scope.bills[0].total = subTotal + taxTotal;
             subTotal = 0;
-
-
-            $scope.bills[1] = {};
+/*
+            $scope.bills[1] = [];*/
 
             console.log('Bills')
             console.log($scope.bills[0])
@@ -1367,8 +1372,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
         $scope.perClientBill = function () {
             $scope.toggleDivideBillModal();
 
-            $scope.bills = {item :[]};
-            var bill;
+            $scope.bills = [];
+            var bill = [];
 
             for (var f = 0; f < $scope.commandClient.length; f++) {
                 if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandItems.length > 0 ) {
@@ -1394,7 +1399,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
                         taxes[j].total = subTotal * taxes[j].value;
                         taxTotal += taxes[j].total;
                     }
-                $scope.bills[f].item = bill;
+                $scope.bills[f] = bill;
                 $scope.bills[f].number = f + 1;
                 $scope.bills[f].subTotal = subTotal;
                 $scope.bills[f].taxes = taxes;
@@ -1403,8 +1408,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
                 bill = [];
                 }
             }
-
-            $scope.bills[$scope.bills.length] = {};
+/*
+            $scope.bills[$scope.bills.length] = [];*/
 
 
             console.log('Bills')
@@ -1417,6 +1422,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
 
         $scope.checkBill = function (bill) {
 
+
             bill.checked = !bill.checked;
 
 
@@ -1424,11 +1430,16 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
                 $scope.movingBillItem = true;
             }
             else {
-
                 var checkedItems = $filter("filter")($scope.bills, {checked: "true"})[0];
 
                 if (typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0)
                     $scope.movingBillItem = false;
+
+                for(var d = 0; d < $scope.bills.length; d++) {
+                    if ($scope.bills[d].checked) {
+                        $scope.movingBillItem = true;
+                    }
+                }
             }
 
         }
@@ -1447,6 +1458,12 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
 
                 if (typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0)
                     $scope.movingBillItem = false;
+
+                for(var d = 0; d < $scope.bills.length; d++) {
+                    if ($scope.bills[d].checked) {
+                        $scope.movingBillItem = true;
+                    }
+                }
             }
 
             /*
@@ -1456,16 +1473,24 @@ var app = angular.module('menu', ['ui.bootstrap', 'countTo', 'ngIdle'], function
 
         }
 
+        $scope.showBillWindow = false;
         $scope.openBill = function () {
-            console.log($scope.bills)
-            if (typeof $scope.bills != 'undefined' && $scope.bills != null && $scope.bills[0].length == 0)
-                $scope.toggleDivideBillModal();
-
-
+            $scope.showBillWindow = true;
             $('#billWindow').slideDown(400);
         }
 
+        $scope.toggleBill = function () {
+            if (typeof $scope.bills != 'undefined' && $scope.bills != null && $scope.bills[0].length == 0)
+                $scope.toggleDivideBillModal();
+
+            if(!$scope.showBillWindow)
+                $scope.openBill()
+            else
+                $scope.closeBill();
+        }
+
         $scope.closeBill = function () {
+            $scope.showBillWindow = false;
             $('#billWindow').slideUp(250);
         }
 
