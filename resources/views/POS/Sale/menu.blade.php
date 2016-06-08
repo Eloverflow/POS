@@ -26,21 +26,21 @@
 @section('content')
     <div id="splashFullScreen">Maintenant en mode plein écran.</div>
     <div id="sidebar-collapse" class="col-sm-5 col-lg-5 sidebar">
-        <uib-pagination ng-change="pageChanged()" total-items="bigTotalItems" ng ng-model="bigCurrentPage"
-                        max-size="maxSize" class="pagination-sm" boundary-link-numbers="true"
+        <uib-pagination ng-change="pageChanged()" total-items="clientPagerTotalItems" ng ng-model="commandCurrentClient"
+                        max-size="clientPagerMaxSize" class="pagination-sm" boundary-link-numbers="true"
                         rotate="false"></uib-pagination>
 
         <ul class="ng-binding nav menu menu-sale">
-            <li><h2>Commande - Client: #<% bigCurrentPage %></h2>
+            <li><h2>Commande - Client: #<% commandCurrentClient %></h2>
 
                 <div uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
                      popover-placement="<%placement.selected%>" popover-trigger="outsideClick" class="note"><span
                             class="">Note</span><span class=" glyphicon glyphicon-comment"></span>
-                    <span style="position: absolute; right: 6px; top:6px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandClient[bigCurrentPage].notes.length %></span>
+                    <span style="position: absolute; right: 6px; top:6px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandClient[commandCurrentClient].notes.length %></span>
                 </div>
             </li>
-            <div ng-show="commandClient[bigCurrentPage].notes.length != 0" class="itemNoteSeparation command">
-                <p ng-repeat="currentNote in commandClient[bigCurrentPage].notes"><% currentNote.note %> <span
+            <div ng-show="commandClient[commandCurrentClient].notes.length != 0" class="itemNoteSeparation command">
+                <p ng-repeat="currentNote in commandClient[commandCurrentClient].notes"><% currentNote.note %> <span
                             ng-click="deleteItemNote(currentNote)" class="glyphicon glyphicon-remove right"></span></p>
             </div>
             <script type="text/ng-template" id="notePopover.html">
@@ -64,12 +64,12 @@
                 </div>
             </script>
 
-            <li ng-repeat="commandItem in commandClient[bigCurrentPage].commandItems"
+            <li ng-repeat="commandItem in commandClient[commandCurrentClient].commandItems"
                 id="commandItem<% commandItem.id %>" class="sale-item">
                 <span ng-click="increase(commandItem)" class="glyphicon glyphicon-plus"></span>
                 <span ng-click="decrease(commandItem)" class="glyphicon glyphicon-minus"></span>
 
-                <div class="saleTextZone"><input id="" type="number" ng-change="updateBill()"
+                <div class="saleTextZone"><input id="" type="number" ng-change="updateCommand()"
                                                  ng-model="commandItem.quantity" value=""><span
                             class="sale-item-name"><% commandItem.size.name + " " + commandItem.name%></span></div>
                 <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right special"></span>
