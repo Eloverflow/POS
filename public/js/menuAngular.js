@@ -296,9 +296,6 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                         var selectedTable = $filter("filter")($scope.plan.table, {id: element.id});
 
-                        /*Wrong selection ?*/
-                        /*The change table work with the modal*/
-                        /*Work to do here */
                         $scope.changeTable(selectedTable[0])
                         $scope.showPlanModal = false;
                     }
@@ -1026,6 +1023,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         $scope.updateTable = function ($updateTableCallBack) {
 
+            console.log('Updated table')
+
             $url = 'http://pos.mirageflow.com/menu/command';
             /*
              $data = $scope.commandClient[$scope.bigCurrentPage].commandItems;*/
@@ -1557,7 +1556,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         $scope.changeTable = function (table) {
             /* Table change wont happen until the current table is saved, the table change will be done on the callback*/
             var $callbackFunction = function (response) {
-                console.log('table')
+                console.log('Changed to table #' + table.tblNumber)
                 console.log(table)
                 $scope.currentTable = table;
                 $('#closeModal').click();
@@ -1568,8 +1567,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             if (timeoutHandle != null)
                 $scope.updateTable($callbackFunction);
-            else
+            else{
                 $callbackFunction();
+            }
         };
 
         var elem = document.body; // Make the body go full screen.
