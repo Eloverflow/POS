@@ -56,6 +56,7 @@ class Schedule extends Model
             ->where('schedule_id', '=', $scheduleId)
             ->delete();
     }
+
     public static function getAll()
     {
         return  \DB::table('schedules')
@@ -68,21 +69,21 @@ class Schedule extends Model
             ->get();
     }
 
-
-
-    public static function GetScheduleEmployees($id)
+    public static function GetScheduleEmployees($scheduleId)
     {
 
         return \DB::table('schedules')
             ->select(\DB::raw('day_schedules.*,
+            schedules.id as idSchedule,
+            employees.id as idEmployee,
             employees.phone,
             employees.firstName,
             employees.lastName'))
             ->join('day_schedules', 'schedules.id', '=', 'day_schedules.schedule_id')
             ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
-            ->where('schedules.id', '=', $id)
+            ->where('schedules.id', '=', $scheduleId)
             ->orderBy('employees.id', 'asc')
-            ->orderBy('day_schedules.day_number', 'asc')
+            ->orderBy('day_schedules.startTime', 'asc')
             ->get();
     }
 }

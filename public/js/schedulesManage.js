@@ -20,7 +20,6 @@ function postAddSchedules() {
         var myArray = {
             StartTime: allEvents[i].start.toString(),
             EndTime: allEvents[i].end.toString(),
-            dayIndex: dDate.getDay(),
             employeeId:allEvents[i].employeeId
         };
         arr.push(myArray)
@@ -77,7 +76,7 @@ function postEditSchedules() {
 
     for (var i = 0; i < allEvents.length; i++){
         var dDate  = new Date(allEvents[i].start.toString());
-        var myArray = {StartTime: allEvents[i].start.toString(), EndTime: allEvents[i].end.toString(), dayIndex: dDate.getDay(), employeeId:allEvents[i].employeeId};
+        var myArray = {StartTime: allEvents[i].start.toString(), EndTime: allEvents[i].end.toString(), employeeId:allEvents[i].employeeId};
         arr.push(myArray)
     }
 

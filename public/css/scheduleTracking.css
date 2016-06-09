@@ -1,0 +1,7 @@
+#tracking-display .employee h2{
+	display: inline-block;
+}
+
+#tracking-display .content {
+	padding-left: 45px;
+}

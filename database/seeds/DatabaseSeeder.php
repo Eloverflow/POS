@@ -148,21 +148,18 @@ class Day_SchedulesTableSeeder extends Seeder {
         DB::table('day_schedules')->delete();
 
         Day_Schedules::create(['schedule_id' => 1,
-            'day_number' => 0,
             'employee_id' => 1,
             'startTime' => date('2016-06-06 15:00:00'),
             'endTime' => date('2016-06-06 17:00:00')
         ]);
 
         Day_Schedules::create(['schedule_id' => 1,
-            'day_number' => 0,
             'employee_id' => 1,
             'startTime' => date('2016-06-07 18:00:00'),
             'endTime' => date('2016-06-07 19:55:00')
         ]);
 
         Day_Schedules::create(['schedule_id' => 1,
-            'day_number' => 3,
             'employee_id' => 1,
             'startTime' => date('2016-06-09 20:00:00'),
             'endTime' => date('2016-06-10 03:00:00')

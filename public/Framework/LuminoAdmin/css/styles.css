@@ -837,6 +837,7 @@ h1.page-header {
 
 .fixed-table-container tbody td {
 	border: 1px solid #eee;
+	/*text-align: center;*/
 }
 
 .fixed-table-container tbody td:last-child {
@@ -846,6 +847,7 @@ h1.page-header {
 .table>thead>tr>th {
 	border-bottom: 1px solid #e6e7e8;
 	vertical-align: middle;
+	/*text-align: center;*/
 	height: 50px;
 }
 
