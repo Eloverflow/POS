@@ -19,8 +19,8 @@ class CreateDaySchedulesTable extends Migration
             $table->integer('employee_id')->unsigned();
             $table->foreign('employee_id')->references('id')->on('employees');
             $table->integer('day_number')->unsigned();
-            $table->time('startTime');
-            $table->time('endTime');
+            $table->dateTime('startTime');
+            $table->dateTime('endTime');
             $table->timestamps();
         });
     }

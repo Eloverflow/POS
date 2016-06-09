@@ -239,14 +239,14 @@
         });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
-            postEditSchedules(globStoredCalendar);
+            postEditSchedules();
 
         });
         $("#btnEditEvent").click(function(){
-            editEvent(globStoredCalendar);
+            editEvent();
         });
         $("#btnAddEvent").click(function() {
-            addEvent(globStoredCalendar);
+            addEvent();
         });
         $( "#startDate" ).change(function() {
 

@@ -230,18 +230,18 @@
         });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
-            postAddSchedules(globStoredCalendar);
+            postAddSchedules();
 
         });
         $("#btnDelEvent").click(function(){
-            deleteEvent(globStoredCalendar);
+            deleteEvent();
             $("#editModal").modal('hide');
         });
         $("#btnEditEvent").click(function(){
-            editEvent(globStoredCalendar);
+            editEvent();
         });
         $("#btnAddEvent").click(function() {
-            addEvent(globStoredCalendar);
+            addEvent();
         });
 
         $( "#startDate" ).change(function() {

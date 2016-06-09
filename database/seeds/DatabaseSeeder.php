@@ -134,7 +134,7 @@ class SchedulesTableSeeder extends Seeder {
     public function run()
     {
         DB::table('schedules')->delete();
-        Schedule::create(['name' => 'Schedules 1', 'startDate' => '2016-02-07', 'endDate' => '2016-02-13']);
+        Schedule::create(['name' => 'Schedules 1', 'startDate' => '2016-06-05', 'endDate' => '2016-06-11']);
 
         $this->command->info('Schedules table seeded!');
     }
@@ -150,22 +150,22 @@ class Day_SchedulesTableSeeder extends Seeder {
         Day_Schedules::create(['schedule_id' => 1,
             'day_number' => 0,
             'employee_id' => 1,
-            'startTime' => date('15:00:00'),
-            'endTime' => date('17:00:00')
+            'startTime' => date('2016-06-06 15:00:00'),
+            'endTime' => date('2016-06-06 17:00:00')
         ]);
 
         Day_Schedules::create(['schedule_id' => 1,
             'day_number' => 0,
             'employee_id' => 1,
-            'startTime' => date('18:00:00'),
-            'endTime' => date('19:55:00')
+            'startTime' => date('2016-06-07 18:00:00'),
+            'endTime' => date('2016-06-07 19:55:00')
         ]);
 
         Day_Schedules::create(['schedule_id' => 1,
             'day_number' => 3,
             'employee_id' => 1,
-            'startTime' => date('20:00:00'),
-            'endTime' => date('03:00:00')
+            'startTime' => date('2016-06-09 20:00:00'),
+            'endTime' => date('2016-06-10 03:00:00')
         ]);
         $this->command->info('Day Schedules table seeded!');
     }

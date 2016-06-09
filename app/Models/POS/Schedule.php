@@ -23,6 +23,33 @@ class Schedule extends Model
             ->first();
     }
 
+    // Good Ones
+    public static function GetScheduleMoments($scheduleId)
+    {
+        return \DB::table('day_schedules')
+            ->select(\DB::raw('day_schedules.*,
+            employees.id as idEmployee,
+            employees.firstName,
+            employees.lastName'))
+            ->where('schedule_id', '=', $scheduleId)
+            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
+            ->get();
+    }
+
+    //Good One
+    public static function GetScheduleMomentsForEmployee($scheduleId, $employeeId)
+    {
+        $matches = ['schedule_id' => $scheduleId, 'employees.id' => $employeeId];
+        return \DB::table('day_schedules')
+            ->select(\DB::raw('day_schedules.*,
+            employees.id as idEmployee,
+            employees.firstName,
+            employees.lastName'))
+            ->where($matches)
+            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
+            ->get();
+    }
+
     public static function DeleteDaySchedules($scheduleId)
     {
         return \DB::table('day_schedules')
@@ -41,40 +68,6 @@ class Schedule extends Model
             ->get();
     }
 
-    public static function getAllScheduleEmployees($id)
-    {
-        return  \DB::table('day_schedules')
-            ->select(\DB::raw('day_schedules.id as idSchedule, employees.id as idEmployee, day_schedules.employee_id, employees.firstName, employees.phone, employees.lastName, count(day_schedules.id) as shifts'))
-            ->where('day_schedules.schedule_id', '=', $id)
-            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
-            ->groupBy('day_schedules.employee_id')
-            ->get();
-    }
-
-    public static function GetDaySchedules($id, $day_number)
-    {
-        $matches = ['schedule_id' => $id, 'day_number' => $day_number];
-        return \DB::table('day_schedules')
-            ->select(\DB::raw('day_schedules.*,
-            employees.id as idEmployee,
-            employees.firstName,
-            employees.lastName'))
-            ->where($matches)
-            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
-            ->get();
-    }
-
-    public static function GetDaySchedulesForEmployee($id, $day_number, $employeeId)
-    {
-        $matches = ['schedule_id' => $id, 'day_number' => $day_number, 'employees.id' => $employeeId];
-        return \DB::table('day_schedules')
-            ->select(\DB::raw('day_schedules.*,
-            employees.firstName,
-            employees.lastName'))
-            ->where($matches)
-            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
-            ->get();
-    }
 
 
     public static function GetScheduleEmployees($id)
