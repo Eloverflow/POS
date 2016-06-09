@@ -51,27 +51,27 @@
             </button>
             <a class="navbar-brand" href="{{@URL::to('/menu')}}"><span>Pos</span>Io</a>
             <div ng-show="showHeaderOptions" id="header-options">
-                <span class="menu-option">
-                    <a href="#" ng-click="changeEmployee()" ><span class="glyphicon glyphicon-user"></span>
+                <span  ng-click="changeEmployee()"  class="menu-option">
+                    <a href="#"><span class="glyphicon glyphicon-user"></span>
                         Employé #<% currentEmploye.id %></a>
                 </span>
-                <span class="menu-option">
-                    <a href="#" ng-click="toggleTableModal()"><span class="glyphicon glyphicon-unchecked"></span>
+                <span  ng-click="toggleTableModal()" class="menu-option">
+                    <a href="#"><span class="glyphicon glyphicon-unchecked"></span>
                         Table #<% currentTable.tblNumber %>
                     </a>
                 </span>
-                <span class="menu-option">
-                    <a href="#" ng-click="openBill()"><span class="glyphicon glyphicon-bitcoin"></span>
+                <span ng-click="toggleBill()" class="menu-option">
+                    <a href="#" ><span class="glyphicon glyphicon-bitcoin"></span>
                         Factures
                     </a>
                 </span>
-                <span class="menu-option">
-                    <a href="#" ng-click="togglePlanModal()"><span class="glyphicon glyphicon-map-marker"></span>
+                <span ng-click="togglePlanModal()" class="menu-option">
+                    <a href="#" ><span class="glyphicon glyphicon-map-marker"></span>
                         Plan
                     </a>
                 </span>
-                <span class="menu-option">
-                    <a href="#" ng-click="toogleFullscreen()"><span class="glyphicon glyphicon-fullscreen"></span>
+                <span  ng-click="toogleFullscreen()" class="menu-option">
+                    <a href="#"><span class="glyphicon glyphicon-fullscreen"></span>
                         Plein écran
                     </a>
                 </span>
@@ -98,7 +98,7 @@
             Une Seule Facture
         </div>
 
-        <div style="background-color: grey; cursor: default" ng-click="divideBill()" class="divideBillChoice">
+        <div  ng-click="manualBill()" class="divideBillChoice">
             Diviser manuellement
         </div>
     </div>
@@ -162,13 +162,13 @@
 <div  id="planModal" ng-show="showPlanModal">
     <span id="floorNumber" >Étage #<% plan.currentFloor+1 %></span>
     <div class="planRightButton">
-        <span id="zoomout" class="glyphicon glyphicon-zoom-out"></span>
+        <span id="planZoomout" class="glyphicon glyphicon-zoom-out"></span>
         <span ng-show="plan.currentFloor < plan.nbFloor-1"  ng-click="floorUp()"  id="floorup" class="glyphicon glyphicon-upload"></span>
         <span ng-show="plan.currentFloor > 0" ng-click="floorDown()" id="floordown" class="glyphicon glyphicon-download"></span>
     </div>
     <div class="parent">
         <div class="panzoom">
-            <canvas style="margin: 0;" id="myCanvas" width="0" height="0" />
+            <canvas style="margin: 0;" id="planCanvas" width="0" height="0" />
         </div>
     </div>
 </div>
@@ -200,7 +200,7 @@
 
                     <span ng-show="commandItem.checked" class="glyphicon glyphicon-check move-bill-item-check"></span>
                     <span ng-hide="commandItem.checked" class="glyphicon glyphicon-unchecked move-bill-item-check"></span>
-                    <div class="saleTextZone">
+                    <div class="billTextZone">
                         <span><%commandItem.quantity%></span> x
                         <span class="sale-item-name"> <% commandItem.size.name + " " + commandItem.name%></span></div>
                     <span class="">$ <% (commandItem.size.price*commandItem.quantity | number:2) %></span>
@@ -209,18 +209,27 @@
                         <p ng-repeat="item in commandItem.notes"><% item.note %></p>
                     </div>
                 </li>
-                <li class="add-bill-item">
+
+                <li ng-click="toggleBillDemo()" ng-show="bill.total == 0 && !movingBillItem" class="add-bill-item">
                     <span class="glyphicon glyphicon-plus"></span>
+                </li>
+                <li style="text-align: center" ng-show="showBillDemo" ng-click="moveToBill(bill)">
+                    <span ng-show="bill.number != 1" style="float: left" class="glyphicon glyphicon-arrow-left"></span>
+                    <span ng-show="bill.number === bills.length" style=" font-size:30px; float: right" class="glyphicon glyphicon-arrow-up"></span>
+                    <span ng-hide="bill.number === bills.length" style=" float: right" class="glyphicon glyphicon-arrow-up"></span>
+                    <span style=" font-size:30px;" >Selectionnez !</span><br>
+                    <span style=" font-size:24px; color: #00a5ff" >Cliquez sur le bouton.</span>
                 </li>
 
                 <li ng-show="movingBillItem" ng-click="moveToBill(bill)" class="move-bill-item">
-                    <span class="glyphicon glyphicon glyphicon-share"></span>
+                    <span class="glyphicon glyphicon-share"></span>
                 </li>
             </ul>
+                <div ng-show="bill.total > 0">
                 <h3>Sous-total : <span class="number"><% bill.subTotal | number:2 %></span></h3>
                 <h3 ng-repeat="taxe in bill.taxes"><% taxe.name %> : <span class="number"><% taxe.total | number:2 %></span></h3>
                 <h2>Total: <span class="number"><% bill.total | number:2 %></span></h2>
-
+                </div>
             </div>
         </div>
     </div>

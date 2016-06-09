@@ -187,6 +187,7 @@ class EmployeeController extends Controller
         return $view;
     }
 
+
     public function authenticateEmployee($id)
     {
         $password = \Input::get('password');

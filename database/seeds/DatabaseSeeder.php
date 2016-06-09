@@ -185,6 +185,7 @@ class UserTableSeeder extends Seeder {
         User::create(['name' => 'root', 'email' => 'maype.isaelblais@gmail.com', 'password' => 'dollaswag']);
         User::create(['name' => 'Visiteur(es) Adncomm', 'email' => 'visiteur@adncomm.com', 'password' => 'Adncomm1337!', 'remember_token' => 'l6JMhYJSwbQj8791LCAhPdkrryYMQQkjbwkqd13MhgEeAyUj3yAfoEXvzmTL']);
         User::create(['name' => 'user_employee', 'email' => 'test-mflow@yopmail.com', 'password' => '11']);
+        User::create(['name' => 'Visiteur', 'email' => 'visiteur@mirageflow.com', 'password' => 'Visiteur!']);
 
         $this->command->info('Users table seeded!');
     }

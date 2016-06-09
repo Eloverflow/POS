@@ -107,6 +107,13 @@ div.saleTextZone{
 	/* word-wrap: break-word; */
 }
 
+div.billTextZone{
+	text-align: center;
+	display: inline-block;
+	top: 40px!important;
+	width: 14em;
+}
+
 
 div.saleTextZone input{
 	margin-right: 1em;
@@ -529,7 +536,7 @@ span.number{
 	height: 100%;
 	position: fixed;
 	background-color: #333;
-	z-index: 9999;
+	z-index: 1000;
 	visibility: hidden;
 }
 
@@ -955,7 +962,7 @@ body{
 	position: absolute; z-index: 1051; margin: 10px; color: white; font-size: 24px;
 }
 
-#zoomout{
+#planZoomout{
 	float: right;
 }
 
