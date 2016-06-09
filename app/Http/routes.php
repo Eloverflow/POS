@@ -131,11 +131,13 @@ Route::get('/schedule/{scheduleid}/pdf',  ['uses' => 'POS\ScheduleController@Get
 Route::get('/schedule/{scheduleid}/employee/{employeeid}/pdf',  ['uses' => 'POS\ScheduleController@GetScheduleForEmployeePDF', 'middleware' => 'auth']);
 
 Route::get('/schedule/details/{id}',  ['uses' => 'POS\ScheduleController@details', 'middleware' => 'auth']);
+Route::get('/schedule/track/{id}',  ['uses' => 'POS\ScheduleController@track', 'middleware' => 'auth']);
 
 Route::post('/schedule/AjaxFindDispos',  ['uses' => 'POS\ScheduleController@AjaxFindDispos', 'middleware' => 'auth']);
 Route::post('/schedule/AjaxGetEmployeeDaySchedules',  ['uses' => 'POS\ScheduleController@AjaxGetEmployeeDaySchedules', 'middleware' => 'auth']);
 
 /* End schedule */
+
 
 
 /* Start Punch */

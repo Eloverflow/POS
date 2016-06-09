@@ -44,69 +44,48 @@ class ScheduleController extends Controller
         ));
         return $view;
     }
-    // Attention a employee et employees ci-dessous.
-    // Employees sort plus la liste des employeee pour un schedule
-    public function employeesSchedule($scheduleid)
-    {
-        $schedule = Schedule::GetById($scheduleid);
-        $employees = Schedule::getAllScheduleEmployees($scheduleid);
-        $view = \View::make('POS.Schedule.employees')->with('ViewBag', array(
-                'schedule' => $schedule,
-                'employees' => $employees
-            )
-        );
-        return $view;
-    }
+
 
     public function employeeSchedule($scheduleid, $employeeId)
     {
-        $schedule = Schedule::getById($scheduleid);
-        $weekDispos = array(
-            0 => Schedule::GetDaySchedulesForEmployee($scheduleid, 0, $employeeId),
-            1 => Schedule::GetDaySchedulesForEmployee($scheduleid, 1, $employeeId),
-            2 => Schedule::GetDaySchedulesForEmployee($scheduleid, 2, $employeeId),
-            3 => Schedule::GetDaySchedulesForEmployee($scheduleid, 3, $employeeId),
-            4 => Schedule::GetDaySchedulesForEmployee($scheduleid, 4, $employeeId),
-            5 => Schedule::GetDaySchedulesForEmployee($scheduleid, 5, $employeeId),
-            6 => Schedule::GetDaySchedulesForEmployee($scheduleid, 6, $employeeId),
-        );
+        $schedule = Schedule::GetById($scheduleid);
 
+        $daySchedulesEMpl = Schedule::GetScheduleMomentsForEmployee($scheduleid, $employeeId);
 
+        $usedColors = [];
 
         $events = [];
 
-        /*For each day of disponibility*/
-        for($i = 0; $i < count($weekDispos); $i++) {
+        for($i = 0; $i < count($daySchedulesEMpl); $i++){
 
+            $startDatewithTMZ =  date_create($daySchedulesEMpl[$i]->startTime, timezone_open('America/Montreal'));
+            $startOffset = date_offset_get($startDatewithTMZ);
+            $offsetInHourFormat = ($startOffset /60) /60;
 
-            /*If there are disponibility today */
-            if (count($weekDispos[$i])) {
-
-
-                /*For each disponibility*/
-                for ($j = 0; $j < count($weekDispos[$i]); $j++) {
-                    $startTime = $weekDispos[$i][$j]->startTime;
-                    $endTime = $weekDispos[$i][$j]->endTime;
-
-                    $date = new DateTime($schedule->startDate);
-                    $date->add(new DateInterval('P' . $i .'D'));
-
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. '-04:00');
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. '-04:00');
-
-                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
-                        $dispoEnd->add(new DateInterval('P1D'));
-                    }
-
-                    $events[] = \Calendar::event(
-                        $weekDispos[$i][$j]->firstName,
-                        false, //full day event?
-                        $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
-                        $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                        $weekDispos[$i][$j]->id
-                    );
-                }
+            $availableColor = "";
+            $employeeColor = $this->GetEmployeeColor($usedColors,$daySchedulesEMpl[$i]->idEmployee);
+            if($employeeColor == ""){
+                $availableColors = $this->GetAvailableColors($usedColors);
+                $availableColor = $availableColors[0];
+                $usedColors[] = array("idEmployee" => $daySchedulesEMpl[$i]->idEmployee, "color" => $availableColor);
+            } else {
+                $availableColor = $employeeColor;
             }
+
+            $momentStart = new DateTime($daySchedulesEMpl[$i]->startTime . $offsetInHourFormat);
+            $momentEnd = new DateTime($daySchedulesEMpl[$i]->endTime . $offsetInHourFormat);
+
+            $events[] = \Calendar::event(
+                $daySchedulesEMpl[$i]->firstName . " " . $daySchedulesEMpl[$i]->lastName,
+                false, //full day event?
+                $momentStart, //start time, must be a ateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                $momentEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+                $daySchedulesEMpl[$i]->id,
+                [
+                    'color' => $availableColor
+                ]
+            );
+
         }
 
         $calendarSettings = array('left' => '',
@@ -204,69 +183,42 @@ class ScheduleController extends Controller
     {
         $schedule = Schedule::GetById($id);
 
-        $weekDispos = array(
-            0 => Schedule::GetDaySchedules($id, 0),
-            1 => Schedule::GetDaySchedules($id, 1),
-            2 => Schedule::GetDaySchedules($id, 2),
-            3 => Schedule::GetDaySchedules($id, 3),
-            4 => Schedule::GetDaySchedules($id, 4),
-            5 => Schedule::GetDaySchedules($id, 5),
-            6 => Schedule::GetDaySchedules($id, 6),
-        );
+        $daySchedules = Schedule::GetScheduleMoments($id);
 
         $usedColors = [];
 
         $events = [];
 
-        /*For each day of disponibility*/
-        for($i = 0; $i < count($weekDispos); $i++) {
+        for($i = 0; $i < count($daySchedules); $i++){
 
+            $startDatewithTMZ =  date_create($daySchedules[$i]->startTime, timezone_open('America/Montreal'));
+            $startOffset = date_offset_get($startDatewithTMZ);
+            $offsetInHourFormat = ($startOffset /60) /60;
 
-            /*If there are disponibility today */
-            if (count($weekDispos[$i])) {
-
-
-                /*For each disponibility*/
-                for ($j = 0; $j < count($weekDispos[$i]); $j++) {
-                    $startTime = $weekDispos[$i][$j]->startTime;
-                    $endTime = $weekDispos[$i][$j]->endTime;
-
-                    $date = new DateTime($schedule->startDate);
-                    $startDatewithTMZ =  date_create($schedule->startDate, timezone_open('America/Montreal'));
-                    $startOffset = date_offset_get($startDatewithTMZ);
-                    $offsetInHourFormat = ($startOffset /60) /60;
-
-                    $date->add(new DateInterval('P' . $i .'D'));
-
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime. $offsetInHourFormat);
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime. $offsetInHourFormat);
-
-                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
-                        $dispoEnd->add(new DateInterval('P1D'));
-                    }
-
-                    $availableColor = "";
-                    $employeeColor = $this->GetEmployeeColor($usedColors,$weekDispos[$i][$j]->idEmployee);
-                    if($employeeColor == ""){
-                        $availableColors = $this->GetAvailableColors($usedColors);
-                        $availableColor = $availableColors[0];
-                        $usedColors[] = array("idEmployee" => $weekDispos[$i][$j]->idEmployee, "color" => $availableColor);
-                    } else {
-                        $availableColor = $employeeColor;
-                    }
-
-                    $events[] = \Calendar::event(
-                        $weekDispos[$i][$j]->firstName . " " . $weekDispos[$i][$j]->lastName,
-                        false, //full day event?
-                        $dispoBegin, //start time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
-                        $dispoEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
-                        $weekDispos[$i][$j]->id,
-                        [
-                            'color' => $availableColor
-                        ]
-                    );
-                }
+            $availableColor = "";
+            $employeeColor = $this->GetEmployeeColor($usedColors,$daySchedules[$i]->idEmployee);
+            if($employeeColor == ""){
+                $availableColors = $this->GetAvailableColors($usedColors);
+                $availableColor = $availableColors[0];
+                $usedColors[] = array("idEmployee" => $daySchedules[$i]->idEmployee, "color" => $availableColor);
+            } else {
+                $availableColor = $employeeColor;
             }
+
+            $momentStart = new DateTime($daySchedules[$i]->startTime . $offsetInHourFormat);
+            $momentEnd = new DateTime($daySchedules[$i]->endTime . $offsetInHourFormat);
+
+            $events[] = \Calendar::event(
+                $daySchedules[$i]->firstName . " " . $daySchedules[$i]->lastName,
+                false, //full day event?
+                $momentStart, //start time, must be a ateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                $momentEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+                $daySchedules[$i]->id,
+                [
+                    'color' => $availableColor
+                ]
+            );
+
         }
 
         $strCalendar = "[Semaine du " . $schedule->startDate . " au " . $schedule->endDate . "]";
@@ -294,10 +246,6 @@ class ScheduleController extends Controller
 
     public function edit($id)
     {
-        //$events = [];
-
-       // $schedule = Schedule::GetById($id);
-
 
         $date = new DateTime();
         $date->modify('Sunday last week');
@@ -309,71 +257,43 @@ class ScheduleController extends Controller
 
         $schedule = Schedule::GetById($id);
 
-        $weekDispos = array(
-            0 => Schedule::GetDaySchedules($id, 0),
-            1 => Schedule::GetDaySchedules($id, 1),
-            2 => Schedule::GetDaySchedules($id, 2),
-            3 => Schedule::GetDaySchedules($id, 3),
-            4 => Schedule::GetDaySchedules($id, 4),
-            5 => Schedule::GetDaySchedules($id, 5),
-            6 => Schedule::GetDaySchedules($id, 6),
-        );
+        $daySchedules = Schedule::GetScheduleMoments($id);
 
         $usedColors = [];
 
         $events = [];
 
-        /*For each day of disponibility*/
-        for($i = 0; $i < count($weekDispos); $i++) {
+        for($i = 0; $i < count($daySchedules); $i++){
 
+            $startDatewithTMZ =  date_create($daySchedules[$i]->startTime, timezone_open('America/Montreal'));
+            $startOffset = date_offset_get($startDatewithTMZ);
+            $offsetInHourFormat = ($startOffset /60) /60;
 
-            /*If there are disponibility today */
-            if (count($weekDispos[$i])) {
-
-
-                /*For each disponibility*/
-                for ($j = 0; $j < count($weekDispos[$i]); $j++) {
-                    $startTime = $weekDispos[$i][$j]->startTime;
-                    $endTime = $weekDispos[$i][$j]->endTime;
-                    $employeeId = $weekDispos[$i][$j]->employee_id;
-
-                    $date = new DateTime($schedule->startDate);
-                    $startDatewithTMZ =  date_create($schedule->startDate, timezone_open('America/Montreal'));
-                    $startOffset = date_offset_get($startDatewithTMZ);
-                    $offsetInHourFormat = ($startOffset /60) /60;
-
-                    $date->add(new DateInterval('P' . $i .'D'));
-
-                    $dispoBegin = new DateTime($date->format('Y-m-d') . " " . $startTime . $offsetInHourFormat);
-                    $dispoEnd = new DateTime($date->format('Y-m-d') . " " . $endTime . $offsetInHourFormat);
-
-                    if($dispoBegin->format('%H') > $dispoEnd->format('%H')){
-                        $dispoEnd->add(new DateInterval('P1D'));
-                    }
-
-                    $availableColor = "";
-                    $employeeColor = $this->GetEmployeeColor($usedColors,$weekDispos[$i][$j]->idEmployee);
-                    if($employeeColor == ""){
-                        $availableColors = $this->GetAvailableColors($usedColors);
-                        $availableColor = $availableColors[0];
-                        $usedColors[] = array("idEmployee" => $weekDispos[$i][$j]->idEmployee, "color" => $availableColor);
-                    } else {
-                        $availableColor = $employeeColor;
-                    }
-
-                    $events[] = \Calendar::event(
-                        $weekDispos[$i][$j]->firstName . " " . $weekDispos[$i][$j]->lastName,
-                        false,
-                        $dispoBegin,
-                        $dispoEnd,
-                        $weekDispos[$i][$j]->id,
-                        [
-                            'employeeId' => $employeeId,
-                            'color' => $availableColor
-                        ]
-                    );
-                }
+            $availableColor = "";
+            $employeeColor = $this->GetEmployeeColor($usedColors,$daySchedules[$i]->idEmployee);
+            if($employeeColor == ""){
+                $availableColors = $this->GetAvailableColors($usedColors);
+                $availableColor = $availableColors[0];
+                $usedColors[] = array("idEmployee" => $daySchedules[$i]->idEmployee, "color" => $availableColor);
+            } else {
+                $availableColor = $employeeColor;
             }
+
+            $momentStart = new DateTime($daySchedules[$i]->startTime . $offsetInHourFormat);
+            $momentEnd = new DateTime($daySchedules[$i]->endTime . $offsetInHourFormat);
+
+            $events[] = \Calendar::event(
+                $daySchedules[$i]->firstName . " " . $daySchedules[$i]->lastName,
+                false, //full day event?
+                $momentStart, //start time, must be a ateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                $momentEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+                $daySchedules[$i]->id,
+                [
+                    'color' => $availableColor,
+                    'employeeId' => $daySchedules[$i]->idEmployee
+                ]
+            );
+
         }
 
         $strCalendar = "[Semaine du " . $schedule->startDate . " au " . $schedule->endDate . "]";
@@ -435,8 +355,8 @@ class ScheduleController extends Controller
 
             Schedule::where('id',\Input::get('scheduleId'))
                 ->update([
-                    'startDate' => \Input::get('startDate'),
-                    'endDate' => \Input::get('endDate'),
+                    /*'startDate' => \Input::get('startDate'),
+                    'endDate' => \Input::get('endDate'),*/
                     'name' => \Input::get('name')
                 ]);
 
@@ -444,19 +364,16 @@ class ScheduleController extends Controller
 
             $jsonArray = json_decode(\Input::get('events'), true);
             for ($i = 0; $i < count($jsonArray); $i++) {
-                //$jsonObj = json_decode(\Input::get('events')[$i], true);
-                $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
-                $resStart = $dateStart->format('H:i:s');
-                $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
-                $resStop = $dateStop->format('H:i:s');
 
-                //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
+                $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
+                $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
+
                 Day_Schedules::create([
                     "schedule_id" => \Input::get('scheduleId'),
                     'employee_id' => $jsonArray[$i]["employeeId"],
                     "day_number" => $jsonArray[$i]["dayIndex"],
-                    "startTime" => $resStart,
-                    "endTime" => $resStop
+                    "startTime" => $dateStart,
+                    "endTime" => $dateStop
                 ]);
 
             }
@@ -543,21 +460,16 @@ class ScheduleController extends Controller
             $jsonArray = json_decode(\Input::get('events'), true);
             for($i = 0; $i < count($jsonArray); $i++)
             {
-                //$jsonObj = json_decode(\Input::get('events')[$i], true);
                 $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
-                $resStart = $dateStart->format('H:i:s');
                 $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
-                $resStop = $dateStop->format('H:i:s');
-
                 $employeeId = $jsonArray[$i]["employeeId"];
 
-                //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
                 Day_Schedules::create([
                     "schedule_id" => $schedule->id,
                     'employee_id' => $employeeId,
                     "day_number" => $jsonArray[$i]["dayIndex"],
-                    "startTime" => $resStart,
-                    "endTime" => $resStop
+                    "startTime" => $dateStart,
+                    "endTime" => $dateStop
                 ]);
 
             }

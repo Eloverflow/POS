@@ -8,10 +8,10 @@ var globRefEventId = null;
 var globTimeZoneAMontreal = "America/Montreal";
 moment.tz.add("America/Montreal|EST EDT EWT EPT|50 40 40 40|01010101010101010101010101010101010101010101012301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-28tR0 bV0 2m30 1in0 121u 1nb0 1g10 11z0 1o0u 11zu 1o0u 11zu 3VAu Rzu 1qMu WLu 1qMu WLu 1qKu WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 4kO0 8x40 iv0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0");
 
-function postAddSchedules($storedCalendar) {
+function postAddSchedules() {
 
 
-    var allEvents = $storedCalendar.fullCalendar('clientEvents');
+    var allEvents = globStoredCalendar.fullCalendar('clientEvents');
 
     var arr = [];
 
@@ -69,9 +69,9 @@ function postAddSchedules($storedCalendar) {
     });
 
 }
-function postEditSchedules($storedCalendar) {
+function postEditSchedules() {
 
-    var allEvents = $storedCalendar.fullCalendar('clientEvents');
+    var allEvents = globStoredCalendar.fullCalendar('clientEvents');
 
     var arr = [];
 
@@ -126,7 +126,7 @@ function postEditSchedules($storedCalendar) {
 
 }
 
-function editEvent($storedCalendar){
+function editEvent(){
 
     $dDayNumber = $( "#editModal #dayNumber option:selected" ).val();
     $employeeText = $( "#editModal #employeeSelect option:selected" ).text();
@@ -174,9 +174,9 @@ function editEvent($storedCalendar){
             }
         }
 
+        globStoredEvent.employeeId = $employeeId;
 
-
-        $storedCalendar.fullCalendar('updateEvent', globStoredEvent)
+        globStoredCalendar.fullCalendar('updateEvent', globStoredEvent)
 
         $("#editModal #displayErrors").hide();
 
@@ -200,11 +200,11 @@ function editEvent($storedCalendar){
     }
 }
 
-function deleteEvent($storedCalendar){
-    $storedCalendar.fullCalendar('removeEvents', globStoredEvent.id);
+function deleteEvent(){
+    globStoredCalendar.fullCalendar('removeEvents', globStoredEvent.id);
 }
 
-function addEvent($storedCalendar){
+function addEvent(){
 
     $dDayNumber = $("#addModal #dayNumber option:selected" ).val();
     $employeeId = parseInt($("#addModal #employeeSelect option:selected" ).val());
@@ -262,7 +262,7 @@ function addEvent($storedCalendar){
                     color: $availableColor
                 };
 
-                $storedCalendar.fullCalendar('addEventSource', [newEvent]);
+                globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
 
             }
 

@@ -32,7 +32,6 @@
                             <th data-field="startDate"  data-sortable="true">Start Date</th>
                             <th data-field="endDate" data-sortable="true">End Date</th>
                             <th data-field="nbEmployees"  data-sortable="true">Employees</th>
-                            <th data-field="status"  data-sortable="true">Status</th>
                             <th data-field="createdAt" data-sortable="true">Created At</th>
                             <th data-field="actions" data-sortable="true"></th>
                         </tr>
@@ -53,6 +52,9 @@
                                     <a href="{{ URL::to('schedule/edit', $schedule->idSchedule) }}">Edit</a>
                                     <a href="{{ URL::to('schedule/delete', $schedule->idSchedule) }}">Delete</a>
                                     <a href="{{ URL::to('schedule', $schedule->idSchedule) . "/pdf" }}">Download</a></td>
+                                <td>
+                                    <a href="{{ URL::to('schedule/track', $schedule->idSchedule) }}">Track</a>
+                                </td>
                             </tr>
                         @endforeach
 
