@@ -117,7 +117,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.taxes = [{value: 0.05,total: 0,name: 'TPS' },{value: 0.09975,total: 0,name: 'TVQ'}] // Current command taxes
             //
             var timeoutHandle; //On finish will normaly execute a function that update the current table'commands' - To avoid request overcharge
-            var billTimeoutHandle // Same thing but for the bills
+            var billTimeoutHandle; // Same thing but for the bills
             //Msg on employee auth panel
             var msgEnterEmployeeNumber = "Entrez votre numéro d'employé";
             var msgEnterEmployeePassword = "Entrez votre mot de passe";
@@ -911,6 +911,10 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 for (var f = 0; f < response.commands.length; f++) {
                     /*if(typeof $scope.commandClient[f+1] != 'undefined' && $scope.commandClient[f+1] != null)*/
                     $scope.commandClient[f + 1].command_number = response.commands[f].command_number + "";
+
+                    for (var g = 0; g < response.commandLineIdMat[f].length; g++) {
+                        $scope.commandClient[f + 1].commandItems[g].commandLineId = response.commandLineIdMat[f][g]
+                    }
                 }
 
                 $timeout(function () {
@@ -927,6 +931,45 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             /*
              $scope.commandClient[$scope.commandCurrentClient].commandItems = [];
              $scope.updateCommand();*/
+
+            postReq.send($url, $data, null, $callbackFunction);
+
+        }
+
+        /*Will send a request to update the bills and then execute the callbackFunction*/
+        $scope.updateBills = function ($updateTableCallBack) {
+
+
+            $url = 'http://pos.mirageflow.com/menu/bill';
+
+            $data = {
+                bills: $scope.bills,
+                table: $scope.currentTable,
+                employee: $scope.currentEmploye
+            };
+
+
+            var $callbackFunction = function (response) {
+                console.log('Updated bills')
+                for (var f = 0; f < response.saleLineIdMat.length; f++) {
+
+                    for (var g = 0; g < response.saleLineIdMat[f].length; g++) {
+                        $scope.bills[f][g].saleLineId = response.saleLineIdMat[f][g];
+                        $scope.bills[f][g].sale_id = response.saleIdArray[f];
+                    }
+                }
+
+                $timeout(function () {
+                    $scope.progressValue = 100;
+                    $('.progress-bar').addClass('progress-bar-success');
+                    $scope.savingMessage = "Sauvegardé!"
+                }, 0);
+
+                console.log("The bill as been saved and confirmation received inside response - Success or Not ?");
+
+                if ($updateTableCallBack != null)
+                    $updateTableCallBack();
+            };
 
             postReq.send($url, $data, null, $callbackFunction);
 
@@ -998,6 +1041,73 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 cancelFullScreen();
             }
 
+        }
+
+        /*Send a request to get the bill*/
+        $scope.getBills = function () {
+
+            $scope.commandsId=[];
+            for(var h = 0; h< $scope.commandClient.length; h++){
+                if(typeof $scope.commandClient[h+1] != 'undefined' && $scope.commandClient[h+1] != null)
+                $scope.commandsId.push($scope.commandClient[h+1].id)
+            }
+
+            $url = 'http://pos.mirageflow.com/menu/getBills';
+            $data = {commandsId: $scope.commandsId};
+
+            var $callbackFunction = function (response) {
+
+                $scope.bills = [];
+
+                for (var k in response.bills){
+                    if (response.bills.hasOwnProperty(k)) {
+                        $scope.bills.push(response.bills[k][0])
+                        /*$scope.bills[$scope.bills.length-1] = bill;*/
+
+                        var subTotal = 0;
+                        var taxTotal = 0;
+
+                        for(var l =0; l < $scope.bills[$scope.bills.length-1].length; l++){
+                            subTotal += $scope.bills[$scope.bills.length-1][l].cost * $scope.bills[$scope.bills.length-1][l].quantity;
+                        }
+
+                        /*Copy the taxes and change its total to 0*/
+                        var taxes = angular.copy($scope.taxes);
+                        for (var j = 0; j < taxes.length; j++) {
+                            taxes[j].total = subTotal*taxes[j].value;
+                            taxTotal+=taxes[j].total;
+                        }
+
+                        $scope.bills[$scope.bills.length-1].number = $scope.bills.length;
+                        $scope.bills[$scope.bills.length-1].subTotal = subTotal;
+                        $scope.bills[$scope.bills.length-1].taxes = taxes;
+                        $scope.bills[$scope.bills.length-1].total = subTotal + taxTotal;
+
+
+                    }
+                }
+
+                $scope.newLastBill();
+                $('#billWindow').slideUp(0);
+                $('#billWindow').css('visibility', 'visible')
+
+
+                $scope.openBill();
+
+                console.log('$scope.bills')
+                console.log($scope.bills)
+
+                if (!response.hasOwnProperty('error')) {
+
+                    $scope.showEmployeeModal = false;
+                }
+                else {
+                    console.log("User is invalid :");
+                }
+
+
+            };
+            postReq.send($url, $data, null, $callbackFunction);
         }
 
         /*Send a request to authenticate the employee*/
@@ -1198,6 +1308,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             if($scope.bills[$scope.bills.length-1].length > 0)
                 $scope.newLastBill();
 
+
+            $scope.delayedUpdateBills();
         }
 
         /*Show panel to display bills division choice*/
@@ -1496,6 +1608,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                                 }
                             }
 
+                            var commandLineId = $scope.commandClient[f + 1].commandItems[p].id
+
                             $scope.commandClient[f + 1].commandItems[p] = angular.copy($.grep($scope.menuItems, function (e) {
                                 return e.id == $scope.commandClient[f + 1].commandItems[p].item_id
                             })[0]);
@@ -1530,6 +1644,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                             $scope.commandClient[f + 1].commandItems[p].time = time.getHours() + "H" + ((time.getMinutes().toString().length < 2) ? "0" : "") + time.getMinutes();
 
 
+                            $scope.commandClient[f + 1].commandItems[p].command_id = $scope.commandClient[f + 1].id;
+                            $scope.commandClient[f + 1].commandItems[p].command_line_id = commandLineId;
+
                         }
 
                         $scope.commandClient[f + 1].status = "1";
@@ -1555,6 +1672,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 }, 0);
 
                 console.log("The command as been loaded and confirmation received inside response - Success or Not ?");
+
+                $scope.getBills();
 
 
             };

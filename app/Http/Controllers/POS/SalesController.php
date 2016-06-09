@@ -106,12 +106,22 @@ class SalesController extends Controller
         $result['msg'] = "";
         $result['success'] = "false";
         $result['saleLineIdMat'] = [];
+        $result['saleIdArray'] = [];
 
         if (!empty($inputs)) {
             if (!empty($inputs['bills'])) {
                 foreach ($inputs['bills'] as $bill) {
 
-                    $command = Command::where('id', $bill['command_id'])->first();
+
+                    $billLineCommandId = '';
+                    foreach ($bill as $billLine){
+
+                        $billLineCommandId =  $billLine['command_id'];
+                        break;
+                    }/*
+                   var_dump($bill[0]['command_id']);*/
+
+                    $command = Command::where('id', $billLineCommandId)->first();
 
                     if (!empty($command)) {
                         $result['msg'] .= ' - Command Found';
@@ -121,17 +131,34 @@ class SalesController extends Controller
                         if (!empty($command->client)) {
                             $result['msg'] .= ' - Client Found';
 
-                            $sale = Sale::create(['client_id' => $command->client->id, 'sale_number' => Sale::all()->last()->sale_number + 1, 'command_id' => $bill['table_id']]);
+
+                            $sale = '';
+                            foreach ($bill as $billLine) {
+                                if(!empty($billLine['sale_id']))
+                                    $sale = Sale::where('id', $billLine['sale_id'])->first();
+                                break;
+                            }
+
+                            if(!empty($sale))
+                            {
+                                $result['msg'] .= ' - Sale Found';
+                            }
+                            else{
+                                $sale = Sale::create(['client_id' => $command['client']['id'], 'sale_number' => 1, 'command_id' => $bill[0]['command_id']]);
+                                if (!empty($sale)) {
+                                    $result['msg'] .= ' - Sale Created';
+                                }
+                            }
                             array_push($result['saleLineIdMat'], []);
 
                             if (!empty($sale)) {
-                                $result['msg'] .= ' - Sale Created';
-
+                                $result['success'] = "true";
+                                array_push($result['saleIdArray'], $sale->id);
                                 foreach ($bill as $billLine) {
                                     if(!empty($billLine['saleLineId'])){
                                         $saleLine = SaleLine::where('id', $billLine['saleLineId'])->first();
                                         if (!empty($saleLine)) {
-                                            $saleLine->update($billLine);
+                                            $saleLine->update(['sale_id' => $sale->id, 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id']]);
                                             $saleLine->save();
                                             $result['msg'] .= ' - SaleLine Updated';
                                         }
@@ -140,7 +167,7 @@ class SalesController extends Controller
                                         $saleLine = SaleLine::create(['sale_id' => $sale->id, 'item_id' => $billLine['id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id']]);
                                         if (!empty($saleLine)) {
                                             $result['msg'] .= ' - SaleLine Created';
-                                            array_push($result['saleLineIdMat'][$result['saleLineIdMat'].length - 1] ,$saleLine->id);
+                                            array_push($result['saleLineIdMat'][count($result['saleLineIdMat'])- 1] ,$saleLine->id);
                                         }
                                     }
                                 }
@@ -183,6 +210,34 @@ class SalesController extends Controller
     }
 
 
+    public function getBills()
+    {
+        $inputs = Input::except('_token');
+
+
+        $result['msg'] = "Messages\n ";
+        $result['success'] = "false";
+        $result['bills'] = [];
+
+        foreach ($inputs['commandsId'] as $commandsId){
+            $saleLine = SaleLine::where('command_id', $commandsId)->get();
+
+            if($saleLine != "")
+            {
+                if(empty($result['bills'][$saleLine[count($saleLine)-1]->sale_id ])){
+                    $result['bills'][$saleLine[count($saleLine)-1]->sale_id] = [];
+                }
+                array_push($result['bills'][$saleLine[count($saleLine)-1]->sale_id], $saleLine);
+
+                $result['success'] = "true";
+            }
+        }
+
+        return $result;
+        //If the post isn't empty
+    }
+
+
     public function updateCommand()
     {
         $inputs = Input::except('_token');
@@ -195,6 +250,7 @@ class SalesController extends Controller
         $result['success'] = "false";
         $result['commands'] = array();
         $result['commandLine'] = array();
+        $result['commandLineIdMat'] = [];
 
         //If the post isn't empty
         if (!empty($inputs)) {
@@ -205,6 +261,8 @@ class SalesController extends Controller
             for($clientNumber = 1; $clientNumber < count($inputs['commands']); $clientNumber++ ){
 
                 $result['msg'] .= "Client #" . $clientNumber . " :\n";
+
+                array_push($result['commandLineIdMat'], []);
 
                 $inputCommand = $inputs['commands'][$clientNumber];
 
@@ -261,6 +319,7 @@ class SalesController extends Controller
                                 $result['inputItem'] = $inputItem;*/
                                 $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes'])]);
                                 $result['msg'] .= " - Command line normally updated";
+                                array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->first()->id);
                             }
                             else{
                                 $result['msg'] .= " - Failed at finding the command line";
@@ -274,6 +333,7 @@ class SalesController extends Controller
                                 else
                                 {
                                     $result['msg'] .= " - Successfully recorded the command line";
+                                    array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->id);
                                     $result['success'] = "true";
                                 }
                             }
@@ -327,6 +387,8 @@ class SalesController extends Controller
 
 
                                 if($commandLine != ""){
+                                    array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->first()->id);
+
                                     $result['msg'] .= " - Succeeded at finding the command line";
 
                                     //Serialization of notes
@@ -352,6 +414,7 @@ class SalesController extends Controller
                                     else
                                     {
                                         $result['msg'] .= " - Successfully recorded the command line";
+                                        array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->id);
                                         $result['success'] = "true";
                                     }
                                 }
@@ -367,6 +430,7 @@ class SalesController extends Controller
 
 
                                 $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes'])]);
+                                array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->id);
 
                                 if($commandLine == ""){
                                     $result['msg'] .= " - Failed at command line";
