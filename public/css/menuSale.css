@@ -107,6 +107,13 @@ div.saleTextZone{
 	/* word-wrap: break-word; */
 }
 
+div.billTextZone{
+	text-align: center;
+	display: inline-block;
+	top: 40px!important;
+	width: 14em;
+}
+
 
 div.saleTextZone input{
 	margin-right: 1em;

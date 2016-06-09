@@ -128,6 +128,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.showPlanModal = false;
             $scope.showDivideBillModal = false;
             $scope.showHeaderOptions =true;
+            $scope.showBillDemo= false;
             //
             $scope.noteDynamicPopover = {
                 content: '',
@@ -929,6 +930,10 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         $scope.toggleTableModal = function () {
             $scope.showTableModal = !$scope.showTableModal;
         };
+        $scope.toggleBillDemo = function () {
+            $scope.showBillDemo = !$scope.showBillDemo;
+            $scope.movingBillItem = true;
+        };
         $scope.togglePlanModal = function () {
             $scope.showPlanModal = !$scope.showPlanModal;
             if ($scope.showPlanModal)
@@ -1083,30 +1088,42 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         /*Move the selected items or selected bills items to the given bill*/
         $scope.moveToBill =function (bill) {
+            $scope.showBillDemo = false;
             for(var d = 0; d < $scope.bills.length; d++){
                 if($scope.bills[d].checked){
+                    if($scope.bills[d] != bill)
+                    {
+                        for(var l = 0; l < $scope.bills[d].length; l++){
 
-                    for(var l = 0; l < $scope.bills[d].length; l++){
+                            if($scope.bills[d][l].checked){
+                                $scope.bills[d][l].checked = false;
+                            }
 
-                        var subTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
-                        var total = subTotal;
-                        /*Copy the taxes and change its total to 0*/
-                        var taxes = angular.copy($scope.taxes);
-                        for (var j = 0; j < taxes.length; j++) {
-                            taxes[j].total = subTotal*taxes[j].value;
-                            total+=taxes[j].total;
+                            var subTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
+                            var total = subTotal;
+                            /*Copy the taxes and change its total to 0*/
+                            var taxes = angular.copy($scope.taxes);
+                            for (var j = 0; j < taxes.length; j++) {
+                                taxes[j].total = subTotal*taxes[j].value;
+                                total+=taxes[j].total;
+                            }
+
+                            bill.subTotal += subTotal;
+                            bill.total += total;
+                            for (j = 0; j < taxes.length; j++) {
+                                bill.taxes[j].total += taxes[j].total;
+                            }
+                            bill.push($scope.bills[d][l]);
+
                         }
 
-                        bill.subTotal += subTotal;
-                        bill.total += total;
-                        for (j = 0; j < taxes.length; j++) {
-                            bill.taxes[j].total += taxes[j].total;
-                        }
-                        bill.push($scope.bills[d][l]);
-
+                        $scope.bills[d] = [];
+                    }
+                    else {
+                        $scope.bills[d].checked = false;
                     }
 
-                    $scope.bills[d] = [];
+
 
                 }
                 else {
@@ -1156,6 +1173,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     d--;
                 }
             }
+            
+            if($scope.bills[$scope.bills.length-1].length > 0)
+                $scope.newLastBill();
 
         }
 
@@ -1206,8 +1226,11 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.bills[0].taxes = taxes;
             $scope.bills[0].total = subTotal + taxTotal;
 
+            $scope.newLastBill();
+
             console.log('Bills')
             console.log($scope.bills[0])
+
 
             $('#billWindow').slideUp(0);
             $('#billWindow').css('visibility', 'visible')
@@ -1258,6 +1281,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.bills[$scope.bills.length] = [];
             */
 
+            $scope.newLastBill();
+
             console.log('Bills')
             console.log($scope.bills[0])
 
@@ -1265,6 +1290,62 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $('#billWindow').css('visibility', 'visible')
             $scope.openBill();
         };
+
+
+        $scope.newLastBill = function () {
+
+            if (typeof $scope.bills != 'undefined' && $scope.bills != null && $scope.bills[0].length > 0) {
+                $scope.bills[$scope.bills.length] = [];
+                $scope.bills[$scope.bills.length-1].total =0;
+                $scope.bills[$scope.bills.length-1].subTotal= 0;
+                $scope.bills[$scope.bills.length-1].number = $scope.bills.length
+                /*Copy the taxes and change its total to 0*/
+                var taxes = angular.copy($scope.taxes);
+                for (var j = 0; j < taxes.length; j++) {
+                    taxes[j].total = 0;
+                }
+                $scope.bills[$scope.bills.length-1].taxes = taxes;
+
+                console.log($scope.bills)
+
+            }
+        }
+
+
+        $scope.manualBill = function () {
+            $scope.toggleDivideBillModal();
+
+            var unasociatedCommandItem = [];
+
+            for (var f = 0; f < $scope.commandClient.length; f++) {
+                if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandItems.length > 0) {
+                    for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
+                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p])
+                        item.checked = false;
+                        unasociatedCommandItem.push(item);
+                    }
+                }
+            }
+
+            $scope.bills = [[]];
+            $scope.bills[0] = unasociatedCommandItem;
+            $scope.bills[0].total =0;
+            $scope.bills[0].subTotal= 0;
+            $scope.bills[0].number = " - Liste d'achat"
+            /*Copy the taxes and change its total to 0*/
+            var taxes = angular.copy($scope.taxes);
+            for (var j = 0; j < taxes.length; j++) {
+                taxes[j].total = 0;
+            }
+            $scope.bills[0].taxes = taxes;
+
+
+            $scope.newLastBill();
+
+            $('#billWindow').slideUp(0);
+            $('#billWindow').css('visibility', 'visible')
+            $scope.openBill();
+        }
 
         /*Function to change a bill checked flag - And also addapt the movingBillItem flag */
         $scope.checkBill = function (bill) {
