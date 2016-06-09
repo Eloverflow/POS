@@ -95,8 +95,9 @@ class SalesController extends Controller
     {
         return view('POS.Sale.start');
     }
-/*
-    public function payer(){
+
+    public function updateBill()
+    {
 
         $inputs = Input::except('_token');
 
@@ -104,89 +105,58 @@ class SalesController extends Controller
 
         $result['msg'] = "";
         $result['success'] = "false";
+        $result['saleLineIdMat'] = [];
 
-        if(!empty($inputs)) {
+        if (!empty($inputs)) {
+            if (!empty($inputs['bills'])) {
+                foreach ($inputs['bills'] as $bill) {
 
+                    $command = Command::where('id', $bill['command_id'])->first();
 
-            $client = Client::create(['slug' => rand(0, 99999999999)]);
-            $result['msg'] = "Successfully created the client";
+                    if (!empty($command)) {
+                        $result['msg'] .= ' - Command Found';
 
-            if($client != ""){
+                        $command->load('client');
 
+                        if (!empty($command->client)) {
+                            $result['msg'] .= ' - Client Found';
 
+                            $sale = Sale::create(['client_id' => $command->client->id, 'sale_number' => Sale::all()->last()->sale_number + 1, 'command_id' => $bill['table_id']]);
+                            array_push($result['saleLineIdMat'], []);
 
-                $sale = Sale::create(['client_id' => $client->id, 'sale_number' => Sale::all()->last()->sale_number + 1]);
-                $result['sale_number'] = $sale->sale_number;
+                            if (!empty($sale)) {
+                                $result['msg'] .= ' - Sale Created';
 
-                $total = 0;
-
-                $result['msg'] = "Successfully created the sale";
-
-                if ($sale != "") {
-                    foreach ($inputs as $input) {
-
-                        if($input['quantity'] > 0)
-                        {
-                            $saleline = SaleLine::create(['sale_id' => $sale->id, 'item_id' => $input['id'], 'cost' => $input['size']['price'], 'quantity' => $input['quantity']]);
-                            $result['msg'] = "Successfully created the sale line";
-
-                            $total += $input['size']['price'] * $input['quantity'];
-
-                            if($saleline == ""){
-                                $result['msg'] = "Failed at sale line";
-                                $result['success'] = "false";
-                                break;
-                            }
-                            else{
-                                $result['msg'] = "Successfully recorded the sale";
-                                $result['success'] = "true";
-
-                                $inventory = Inventory::where('item_id', $input['id'])->first();
-
-                                if($inventory != ""){
-                                    //Reducing inventory
-                                    Input::replace(array('quantity' =>  $inventory->quantity - $input['quantity']));
-                                    $inventory->update(Input::all());
-
-                                    $result['msg'] .= " - Successfully reduced the inventory";
+                                foreach ($bill as $billLine) {
+                                    if(!empty($billLine['saleLineId'])){
+                                        $saleLine = SaleLine::where('id', $billLine['saleLineId'])->first();
+                                        if (!empty($saleLine)) {
+                                            $saleLine->update($billLine);
+                                            $saleLine->save();
+                                            $result['msg'] .= ' - SaleLine Updated';
+                                        }
+                                    }
+                                    else{
+                                        $saleLine = SaleLine::create(['sale_id' => $sale->id, 'item_id' => $billLine['id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id']]);
+                                        if (!empty($saleLine)) {
+                                            $result['msg'] .= ' - SaleLine Created';
+                                            array_push($result['saleLineIdMat'][$result['saleLineIdMat'].length - 1] ,$saleLine->id);
+                                        }
+                                    }
                                 }
-                                else
-                                {
-                                    $result['msg'] .= " - Unsuccessfully reduced the inventory";
-                                }
-
                             }
                         }
-                        else
-                        {
-                            $result['msg'] .= " - There was 0 quantity for this item : " . $input['name'];
-                        }
-
                     }
-
-                    $sale->total = $total;
-                    $sale->save();
                 }
-                else{
-                    $result['msg'] = "Failed at sale";
-                }
+            } else {
+                $result['msg'] = "Inputs contain no Bills";
             }
-            else{
-                $result['msg'] = "Failled at client";
-            }
-        }
-        else{
+        } else {
             $result['msg'] = "No inputs or not enough";
         }
 
-
-
-
-
-
-
         return $result;
-    }*/
+    }
 
 
     public function getCommand()
@@ -197,6 +167,7 @@ class SalesController extends Controller
         $result['msg'] = "Messages\n ";
         $result['success'] = "false";
         $result['commands'] = array();
+
 
         $command = Command::where('table_id', $inputs['table']['id'])->where('status', '1')->get();
 
