@@ -34,6 +34,7 @@
                             <th data-field="nbEmployees"  data-sortable="true">Employees</th>
                             <th data-field="createdAt" data-sortable="true">Created At</th>
                             <th data-field="actions" data-sortable="true"></th>
+                            <th data-field="track" data-sortable="true"></th>
                         </tr>
                         </thead>
                         <tbody>

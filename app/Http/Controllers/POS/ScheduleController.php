@@ -38,6 +38,56 @@ class ScheduleController extends Controller
     {
         $schedule = Schedule::GetById($id);
         $scheduleInfos = Schedule::GetScheduleEmployees($id);
+
+        $lastEmpl = "";
+
+        $e = new DateTime('00:00');
+        $f = clone($e);
+
+        $numItems = count($scheduleInfos) - 1;
+
+        $startIndex = 0;
+        $lastEmpl = "";
+        for($i = 0; $i < count($scheduleInfos); $i++) {
+            $datetime1 = new DateTime($scheduleInfos[$i]->startTime);
+            $datetime2 = new DateTime($scheduleInfos[$i]->endTime);
+            $interval = $datetime1->diff($datetime2);
+
+            $scheduleInfos[$i]->interval = $interval;
+
+            if($lastEmpl == "") {
+                $lastEmpl = $scheduleInfos[$i]->idEmployee;
+                $e->add($interval);
+
+                if($i === $numItems){
+                    $scheduleInfos[$startIndex]->total = $f->diff($e);
+                }
+
+            } else if($lastEmpl == $scheduleInfos[$i]->idEmployee){
+                $e->add($interval);
+
+                if($i === $numItems){
+                    $scheduleInfos[$startIndex]->total = $f->diff($e);
+                }
+
+            } else {
+                // On vien de finir de parcourir un employee
+                $scheduleInfos[$startIndex]->total = $f->diff($e);
+
+                $startIndex = $i;
+                $e = new DateTime('00:00');
+
+                $lastEmpl = $scheduleInfos[$i]->idEmployee;
+                $e->add($interval);
+
+                if($i === $numItems){
+                    $scheduleInfos[$startIndex]->total = $f->diff($e);
+                }
+            }
+
+        }
+
+
         $view = \View::make('POS.Schedule.track')->with('ViewBag', array(
             'schedule' => $schedule,
             'scheduleInfos' => $scheduleInfos
@@ -371,7 +421,6 @@ class ScheduleController extends Controller
                 Day_Schedules::create([
                     "schedule_id" => \Input::get('scheduleId'),
                     'employee_id' => $jsonArray[$i]["employeeId"],
-                    "day_number" => $jsonArray[$i]["dayIndex"],
                     "startTime" => $dateStart,
                     "endTime" => $dateStop
                 ]);
@@ -467,7 +516,6 @@ class ScheduleController extends Controller
                 Day_Schedules::create([
                     "schedule_id" => $schedule->id,
                     'employee_id' => $employeeId,
-                    "day_number" => $jsonArray[$i]["dayIndex"],
                     "startTime" => $dateStart,
                     "endTime" => $dateStop
                 ]);
