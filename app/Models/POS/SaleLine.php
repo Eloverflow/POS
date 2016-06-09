@@ -8,8 +8,17 @@ class SaleLine extends Model
 {
     protected $table = 'sale_lines';
 
-    protected $fillable = array('item_id', 'sale_id', 'cost', 'quantity', 'slug');
+    protected $fillable = array('command_id', 'item_id', 'sale_id', 'cost', 'quantity', 'slug');
 
+    public function command()
+    {
+        return $this->hasOne('App\Models\POS\Command', 'id', 'command_id');
+    }
+
+    public function commandline()
+    {
+        return $this->hasOne('App\Models\POS\CommandLine', 'id', 'command_line_id');
+    }
 
     public function item()
     {

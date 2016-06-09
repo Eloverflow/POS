@@ -40,6 +40,7 @@ Route::get('/menu/start',  ['uses' => 'POS\SalesController@menuStart', 'middlewa
 Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware' => 'auth']);
 Route::post('/menu/command',  ['uses' => 'POS\SalesController@updateCommand', 'middleware' => 'auth']);
 Route::post('/menu/getCommand',  ['uses' => 'POS\SalesController@getCommand', 'middleware' => 'auth']);
+Route::post('/menu/bill',  ['uses' => 'POS\SalesController@updateBill', 'middleware' => 'auth']);
 
 Route::get('/inventory',  ['uses' => 'ERP\InventoriesController@index', 'middleware' => 'auth']);
 Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});

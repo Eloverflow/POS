@@ -6,7 +6,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         // configure Idle settings
         IdleProvider.idle(60); // in seconds
-        IdleProvider.timeout(5); // in seconds
+        IdleProvider.timeout(10); // in seconds
         KeepaliveProvider.interval(2); // in seconds
         IdleProvider.windowInterrupt('focus');
 
@@ -116,7 +116,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             //
             $scope.taxes = [{value: 0.05,total: 0,name: 'TPS' },{value: 0.09975,total: 0,name: 'TVQ'}] // Current command taxes
             //
-            var timeoutHandle; //On finish will normaly execute a function that update the current table - To avoid request overcharge
+            var timeoutHandle; //On finish will normaly execute a function that update the current table'commands' - To avoid request overcharge
+            var billTimeoutHandle // Same thing but for the bills
             //Msg on employee auth panel
             var msgEnterEmployeeNumber = "Entrez votre numéro d'employé";
             var msgEnterEmployeePassword = "Entrez votre mot de passe";
@@ -871,6 +872,26 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             }, 5000);
         }
+
+        /*Launch delayed function that can always be cancel - To update the current table*/
+        $scope.delayedUpdateBills = function () {
+            $scope.savingMessage = "Sauvegarde automatique.."
+
+            $timeout(function () {
+                $scope.progressValue = 50;
+                $('.progress-bar').removeClass('progress-bar-success');
+            }, 0);
+
+            // in your click function, call clearTimeout
+            window.clearTimeout(billTimeoutHandle);
+
+            // then call setTimeout again to reset the timer
+            billTimeoutHandle = window.setTimeout(function () {
+                $scope.updateBills();
+
+            }, 5000);
+        }
+
 
         /*Will send a request to update the table and then execute the callbackFunction*/
         $scope.updateTable = function ($updateTableCallBack) {

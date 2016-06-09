@@ -8,12 +8,12 @@ class Sale extends Model
 {
     protected $table = 'sales';
 
-    protected $fillable = array('command_id' , 'sale_number', 'total', 'cancelled', 'slug');
+    protected $fillable = array('table_id' , 'sale_number', 'total', 'cancelled', 'slug');
 
 
-    public function command()
+    public function table()
     {
-        return $this->hasOne('App\Models\POS\Command', 'id', 'command_id');
+        return $this->hasOne('App\Models\POS\Table', 'id', 'table_id');
     }
 
     public function saleline()
