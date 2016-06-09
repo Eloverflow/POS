@@ -142,9 +142,19 @@ class SalesController extends Controller
                             if(!empty($sale))
                             {
                                 $result['msg'] .= ' - Sale Found';
+                                $sale->update(['client_id' => $command['client']['id'], 'total' => $command['total'], 'subTotal' => $command['subTotal']]);
+                                $sale->save();
                             }
                             else{
-                                $sale = Sale::create(['client_id' => $command['client']['id'], 'sale_number' => 1, 'command_id' => $bill[0]['command_id']]);
+                                $saleNumber = Sale::all()->last();
+                                if(empty($saleNumber)){
+                                    $saleNumber = 0;
+                                }
+                                else{
+                                    $saleNumber = $saleNumber->sale_number;
+                                }
+                                $sale = Sale::create(['client_id' => $command['client']['id'], 'sale_number' => $saleNumber, 'total' => $command['total'], 'taxes' => $command['taxes'], 'subTotal' => $command['subTotal']]);
+
                                 if (!empty($sale)) {
                                     $result['msg'] .= ' - Sale Created';
                                 }
@@ -158,13 +168,13 @@ class SalesController extends Controller
                                     if(!empty($billLine['saleLineId'])){
                                         $saleLine = SaleLine::where('id', $billLine['saleLineId'])->first();
                                         if (!empty($saleLine)) {
-                                            $saleLine->update(['sale_id' => $sale->id, 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id']]);
+                                            $saleLine->update(['sale_id' => $sale->id, 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity']]);
                                             $saleLine->save();
                                             $result['msg'] .= ' - SaleLine Updated';
                                         }
                                     }
                                     else{
-                                        $saleLine = SaleLine::create(['sale_id' => $sale->id, 'item_id' => $billLine['id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id']]);
+                                        $saleLine = SaleLine::create(['sale_id' => $sale->id, 'item_id' => $billLine['id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity'], 'cost' => $billLine['size']['price'], 'taxes' => $sale->taxes]);
                                         if (!empty($saleLine)) {
                                             $result['msg'] .= ' - SaleLine Created';
                                             array_push($result['saleLineIdMat'][count($result['saleLineIdMat'])- 1] ,$saleLine->id);

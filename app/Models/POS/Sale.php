@@ -8,7 +8,7 @@ class Sale extends Model
 {
     protected $table = 'sales';
 
-    protected $fillable = array('sale_number', 'total', 'cancelled', 'slug');
+    protected $fillable = array('sale_number', 'cancelled', 'total', 'taxes', 'subTotal', 'slug');
 
 
     public function saleline()

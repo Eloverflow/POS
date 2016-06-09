@@ -1069,6 +1069,18 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                         for(var l =0; l < $scope.bills[$scope.bills.length-1].length; l++){
                             subTotal += $scope.bills[$scope.bills.length-1][l].cost * $scope.bills[$scope.bills.length-1][l].quantity;
+
+                            var itemWhereId = angular.copy($.grep($scope.menuItems, function (e) {
+                                return e.id == $scope.bills[$scope.bills.length - 1][l].item_id
+                            })[0]);
+
+
+                            for (var o in itemWhereId) {
+                                if (itemWhereId.hasOwnProperty(o)) {
+                                    $scope.bills[$scope.bills.length - 1][l][o] = itemWhereId[o];
+                                }
+                            }
+
                         }
 
                         /*Copy the taxes and change its total to 0*/

@@ -23,6 +23,8 @@ class CreateSaleLinesTable extends Migration
             $table->integer('item_id')->unsigned();
             $table->foreign('item_id')->references('id')->on('items')->nullable();
             $table->integer('quantity');
+            $table->string('size');
+            $table->json('taxes')->nullable();
             $table->float('cost');
             $table->timestamps();
         });
