@@ -49,7 +49,7 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::GetById($id);
-        $employeeTitles = EmployeeTitle::All();
+        $employeeTitles = Title_Employees::All();
 
         $employeeTitlesInUse = Title_Employees::getByEmployeeId($id);
         //DB::table('users')->get();
