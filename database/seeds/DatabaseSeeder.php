@@ -83,7 +83,7 @@ class MenuSettingsTableSeeder extends Seeder {
     {
         DB::table('settings')->delete();
 
-        Setting::create(['taxes' => "[{value: 0.05,total: 0,name: 'TPS' },{value: 0.09975,total: 0,name: 'TVQ'}]", 'plan_id'=>1, 'use_time_24'=>true, 'language'=>'Francais', 'timezone'=>'-05:00', 'daylight'=>true, 'ipaddress'=>'666.666.666.666', 'use_email'=>true]);
+        Setting::create(['taxes' => "[{value: 0.05,name: 'TPS' },{value: 0.09975,name: 'TVQ'}]", 'plan_id'=>1, 'use_time_24'=>true, 'language'=>'Francais', 'timezone'=>'Eastern Standard Time', 'daylight'=>true, 'ipaddress'=>'666.666.666.666', 'use_email'=>true]);
 
         $this->command->info('Menu Settings table seeded!');
     }

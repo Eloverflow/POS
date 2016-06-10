@@ -6,10 +6,12 @@ use App\Models\ERP\Inventory;
 use App\Models\POS\Client;
 use App\Models\POS\Command;
 use App\Models\POS\CommandLine;
+use App\Models\POS\Plan;
 use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
 use App\Models\POS\Setting;
 use App\Models\POS\Table;
+use DateTimeZone;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
@@ -100,8 +102,22 @@ class SalesController extends Controller
     public function menuSettings()
     {
         $menuSetting = Setting::all()->last();
-        return view('POS.Sale.settings', compact('menuSetting'));
+        $plans = Plan::all();
+        $timezones = json_decode(file_get_contents(app_path() . '/Helpers/timezones.json'), true);
+        return view('POS.Sale.settings', compact('menuSetting', 'plans', 'timezones'));
     }
+
+    public function applyMenuSettings()
+    {
+
+        $inputs = Input::except('_token');
+        $menuSetting = Setting::create($inputs);
+        $plans = Plan::all();
+        $timezones = json_decode(file_get_contents(app_path() . '/Helpers/timezones.json'), true);
+
+        return view('POS.Sale.settings', compact('menuSetting', 'plans', 'timezones'));
+    }
+
 
     public function updateBill()
     {

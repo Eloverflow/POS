@@ -17,7 +17,7 @@ class CreateSettingsTable extends Migration
             $table->json('taxes');
             $table->boolean('use_time_24');
             $table->string('language');
-            $table->json('timezone');
+            $table->string('timezone');
             $table->boolean('daylight');
             $table->string('ipaddress');
             $table->boolean('use_email');
