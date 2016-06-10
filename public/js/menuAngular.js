@@ -448,6 +448,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                     if ($scope.plan.table[i].status == 2)
                         color = '#EC0033'
+                    if ($scope.plan.table[i].status == 3)
+                        color = '#8ad919'
 
                     if ($scope.plan.table[i].type == "plc")
                         width = height;

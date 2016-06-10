@@ -11,6 +11,8 @@ use App\Models\ERP\Inventory;
 use App\Models\Addons\Rfid\TableRfid;
 use App\Models\Addons\Rfid\TableRfidRequest;
 use App\Models\POS\Client;
+use App\Models\POS\Command;
+use App\Models\POS\CommandLine;
 use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
 use App\Models\POS\Plan;
@@ -63,13 +65,15 @@ class DatabaseSeeder extends Seeder
         $this->call(Day_SchedulesTableSeeder::class);
 
         $this->call(ClientSeeder::class);
-        //$this->call(SaleSeeder::class);
-        //$this->call(SaleLineSeeder::class);
 
         $this->call(PunchesTableSeeder::class);
 
         $this->call(PlanSeeder::class);
         $this->call(TableSeeder::class);
+        $this->call(CommandSeeder::class);
+        $this->call(CommandLineSeeder::class);
+        $this->call(SaleSeeder::class);
+        $this->call(SaleLineSeeder::class);
         $this->call(MenuSettingsTableSeeder::class);
 
         Model::reguard();
@@ -481,7 +485,27 @@ class ClientSeeder extends Seeder {
     {
         DB::table('clients')->delete();
 
-        Client::create(['id' => '1', 'credit' => 10, 'rfid_card_code' => '2784390787',  'slug' => '2784390787']);
+        Client::create(['credit' => 10, 'rfid_card_code' => '2784390787',  'slug' => '2784390787']);
+        Client::create(['credit' => 20, 'rfid_card_code' => '2784390788',  'slug' => '2784390788']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000001']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000002']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000003']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000004']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000005']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000006']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000007']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000008']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000009']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000010']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000011']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000012']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000013']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000014']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000015']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000016']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000017']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000018']);
+        Client::create(['credit' => 0, 'rfid_card_code' => '',  'slug' => 'user-00000019']);
 
         $this->command->info('clients table seeded!');
     }
@@ -508,7 +532,7 @@ class TableSeeder extends Seeder {
 
     public function run()
     {
-        $preDoneTable = array(array('id' => '1','type' => 'tbl','tblNumber' => '1','noFloor' => '0','xPos' => '29','yPos' => '314','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '2','type' => 'tbl','tblNumber' => '2','noFloor' => '0','xPos' => '157','yPos' => '296','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '3','type' => 'tbl','tblNumber' => '3','noFloor' => '0','xPos' => '35','yPos' => '214','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '4','type' => 'tbl','tblNumber' => '4','noFloor' => '0','xPos' => '173','yPos' => '194','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '5','type' => 'tbl','tblNumber' => '5','noFloor' => '0','xPos' => '43','yPos' => '120','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '6','type' => 'tbl','tblNumber' => '6','noFloor' => '0','xPos' => '149','yPos' => '27','angle' => '1.56547rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '7','type' => 'tbl','tblNumber' => '7','noFloor' => '0','xPos' => '244','yPos' => '26','angle' => '1.59723rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '8','type' => 'tbl','tblNumber' => '8','noFloor' => '0','xPos' => '923','yPos' => '199','angle' => '1.58034rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:26:26'),array('id' => '9','type' => 'tbl','tblNumber' => '9','noFloor' => '0','xPos' => '1035','yPos' => '198','angle' => '1.57802rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:26:26'),array('id' => '10','type' => 'tbl','tblNumber' => '10','noFloor' => '0','xPos' => '39','yPos' => '650','angle' => '0.0108279rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '11','type' => 'tbl','tblNumber' => '11','noFloor' => '0','xPos' => '172','yPos' => '647','angle' => '-0.058568rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '12','type' => 'tbl','tblNumber' => '12','noFloor' => '0','xPos' => '168','yPos' => '552','angle' => '-0.0398922rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '13','type' => 'tbl','tblNumber' => '13','noFloor' => '0','xPos' => '41','yPos' => '555','angle' => '-0.0263365rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '14','type' => 'tbl','tblNumber' => '14','noFloor' => '0','xPos' => '42','yPos' => '458','angle' => '-0.0342332rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '15','type' => 'tbl','tblNumber' => '15','noFloor' => '0','xPos' => '179','yPos' => '449','angle' => '-0.0985259rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '16','type' => 'tbl','tblNumber' => '16','noFloor' => '0','xPos' => '314','yPos' => '398','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '17','type' => 'tbl','tblNumber' => '17','noFloor' => '0','xPos' => '418','yPos' => '358','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '18','type' => 'tbl','tblNumber' => '18','noFloor' => '0','xPos' => '518','yPos' => '315','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '19','type' => 'tbl','tblNumber' => '19','noFloor' => '0','xPos' => '550','yPos' => '221','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '20','type' => 'tbl','tblNumber' => '20','noFloor' => '0','xPos' => '565','yPos' => '114','angle' => '0.56906rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '21','type' => 'tbl','tblNumber' => '21','noFloor' => '0','xPos' => '441','yPos' => '56','angle' => '0.332999rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '22','type' => 'tbl','tblNumber' => '22','noFloor' => '0','xPos' => '323','yPos' => '10','angle' => '0.28873rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '23','type' => 'plc','tblNumber' => '1','noFloor' => '0','xPos' => '784','yPos' => '222','angle' => '0','plan_id' => '1','status' => '0','associated_employee_id' => NULL,'created_at' => '2016-05-31 16:26:26','updated_at' => '2016-05-31 16:26:26'));
+        $preDoneTable = array(array('id' => '1','type' => 'tbl','tblNumber' => '1','noFloor' => '0','xPos' => '29','yPos' => '314','angle' => '0.536766rad','plan_id' => '1','status' => '2','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '2','type' => 'tbl','tblNumber' => '2','noFloor' => '0','xPos' => '157','yPos' => '296','angle' => '0.536766rad','plan_id' => '1','status' => '3','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '3','type' => 'tbl','tblNumber' => '3','noFloor' => '0','xPos' => '35','yPos' => '214','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '4','type' => 'tbl','tblNumber' => '4','noFloor' => '0','xPos' => '173','yPos' => '194','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '5','type' => 'tbl','tblNumber' => '5','noFloor' => '0','xPos' => '43','yPos' => '120','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '6','type' => 'tbl','tblNumber' => '6','noFloor' => '0','xPos' => '149','yPos' => '27','angle' => '1.56547rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '7','type' => 'tbl','tblNumber' => '7','noFloor' => '0','xPos' => '244','yPos' => '26','angle' => '1.59723rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '8','type' => 'tbl','tblNumber' => '8','noFloor' => '0','xPos' => '923','yPos' => '199','angle' => '1.58034rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:26:26'),array('id' => '9','type' => 'tbl','tblNumber' => '9','noFloor' => '0','xPos' => '1035','yPos' => '198','angle' => '1.57802rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:26:26'),array('id' => '10','type' => 'tbl','tblNumber' => '10','noFloor' => '0','xPos' => '39','yPos' => '650','angle' => '0.0108279rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '11','type' => 'tbl','tblNumber' => '11','noFloor' => '0','xPos' => '172','yPos' => '647','angle' => '-0.058568rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '12','type' => 'tbl','tblNumber' => '12','noFloor' => '0','xPos' => '168','yPos' => '552','angle' => '-0.0398922rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '13','type' => 'tbl','tblNumber' => '13','noFloor' => '0','xPos' => '41','yPos' => '555','angle' => '-0.0263365rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '14','type' => 'tbl','tblNumber' => '14','noFloor' => '0','xPos' => '42','yPos' => '458','angle' => '-0.0342332rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '15','type' => 'tbl','tblNumber' => '15','noFloor' => '0','xPos' => '179','yPos' => '449','angle' => '-0.0985259rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '16','type' => 'tbl','tblNumber' => '16','noFloor' => '0','xPos' => '314','yPos' => '398','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '17','type' => 'tbl','tblNumber' => '17','noFloor' => '0','xPos' => '418','yPos' => '358','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '18','type' => 'tbl','tblNumber' => '18','noFloor' => '0','xPos' => '518','yPos' => '315','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '19','type' => 'tbl','tblNumber' => '19','noFloor' => '0','xPos' => '550','yPos' => '221','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '20','type' => 'tbl','tblNumber' => '20','noFloor' => '0','xPos' => '565','yPos' => '114','angle' => '0.56906rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '21','type' => 'tbl','tblNumber' => '21','noFloor' => '0','xPos' => '441','yPos' => '56','angle' => '0.332999rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '22','type' => 'tbl','tblNumber' => '22','noFloor' => '0','xPos' => '323','yPos' => '10','angle' => '0.28873rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '23','type' => 'plc','tblNumber' => '1','noFloor' => '0','xPos' => '784','yPos' => '222','angle' => '0','plan_id' => '1','status' => '0','associated_employee_id' => NULL,'created_at' => '2016-05-31 16:26:26','updated_at' => '2016-05-31 16:26:26'),array('id' => '24','type' => 'plc','tblNumber' => '23','noFloor' => '1','xPos' => '29','yPos' => '314','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'));
         DB::table('tables')->delete();
 
         foreach ($preDoneTable as $table){
@@ -524,7 +548,59 @@ class TableSeeder extends Seeder {
 
 }
 
-/*
+
+
+class CommandSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('commands')->delete();
+
+        $commands = array(
+            array('id' => '1','notes' => '[{"note":"Ne pas faire"}]','status' => '1','command_number' => '1','table_id' => '1','client_id' => '2','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:33:43'),
+            array('id' => '2','notes' => '','status' => '1','command_number' => '2','table_id' => '1','client_id' => '3','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:33:43'),
+            array('id' => '3','notes' => '','status' => '1','command_number' => '3','table_id' => '2','client_id' => '4','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:33:53'),
+            array('id' => '4','notes' => '','status' => '1','command_number' => '4','table_id' => '2','client_id' => '5','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:33:53')
+        );
+
+        foreach ($commands as $table){
+            Command::create($table);
+        }
+
+        $this->command->info('commands table seeded!');
+    }
+
+}
+
+class CommandLineSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('command_lines')->delete();
+
+        $command_lines = array(
+            array('id' => '1','command_id' => '1','item_id' => '1','size' => 'Verre','quantity' => '1','notes' => '[]','cost' => '6.25','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:34:21'),
+            array('id' => '2','command_id' => '1','item_id' => '2','size' => 'Pinte','quantity' => '1','notes' => '[]','cost' => '7.15','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:34:21'),
+            array('id' => '3','command_id' => '1','item_id' => '3','size' => 'Pinte','quantity' => '1','notes' => '[]','cost' => '7.15','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:34:21'),
+            array('id' => '4','command_id' => '2','item_id' => '1','size' => 'Verre','quantity' => '1','notes' => '[]','cost' => '6.25','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:34:21'),
+            array('id' => '5','command_id' => '2','item_id' => '2','size' => 'Pinte','quantity' => '1','notes' => '[]','cost' => '7.15','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:34:21'),
+            array('id' => '6','command_id' => '2','item_id' => '3','size' => 'Pichet','quantity' => '1','notes' => '[]','cost' => '14.95','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:34:21'),
+            array('id' => '7','command_id' => '3','item_id' => '1','size' => 'Verre','quantity' => '1','notes' => '[]','cost' => '6.25','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:34:19'),
+            array('id' => '8','command_id' => '3','item_id' => '2','size' => 'Pinte','quantity' => '1','notes' => '[]','cost' => '7.15','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:34:19'),
+            array('id' => '9','command_id' => '4','item_id' => '1','size' => 'Verre','quantity' => '1','notes' => '[]','cost' => '6.25','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:34:19'),
+            array('id' => '10','command_id' => '4','item_id' => '2','size' => 'Pinte','quantity' => '1','notes' => '[]','cost' => '7.15','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:34:19'),
+            array('id' => '11','command_id' => '4','item_id' => '3','size' => 'Pichet','quantity' => '1','notes' => '[]','cost' => '14.95','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:34:19')
+        );
+
+
+        foreach ($command_lines as $table){
+            CommandLine::create($table);
+        }
+
+        $this->command->info('command_lines table seeded!');
+    }
+
+}
 
 class SaleSeeder extends Seeder {
 
@@ -532,13 +608,25 @@ class SaleSeeder extends Seeder {
     {
         DB::table('sales')->delete();
 
-        Sale::create(['id' => '1', 'client_id' => '1' , 'sale_number' => '1', 'total' => 25.8]);
+        $sales = array(
+            array('id' => '1','cancelled' => '0','sale_number' => '0','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:20:03','updated_at' => '2016-06-10 18:20:03'),
+            array('id' => '2','cancelled' => '0','sale_number' => '0','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:20:03','updated_at' => '2016-06-10 18:20:03'),
+            array('id' => '3','cancelled' => '0','sale_number' => '0','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10'),
+            array('id' => '4','cancelled' => '0','sale_number' => '0','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10')
+        );
+
+
+        foreach ($sales as $table){
+            Sale::create($table);
+        }
+
+        /*
+        Sale::create(['id' => '1', 'client_id' => '1' , 'sale_number' => '1', 'total' => 25.8]);*/
 
         $this->command->info('sales table seeded!');
     }
 
 }
-
 
 class SaleLineSeeder extends Seeder {
 
@@ -546,10 +634,22 @@ class SaleLineSeeder extends Seeder {
     {
         DB::table('sale_lines')->delete();
 
-        SaleLine::create(['id' => '1', 'sale_id' => '1', 'item_id' => '1' , 'cost' => 3.78, 'quantity' => 5]);
-        SaleLine::create(['id' => '2', 'sale_id' => '1', 'item_id' => '2' , 'cost' => 3.45, 'quantity' => 2]);
+        $sale_lines = array(
+            array('id' => '2','sale_id' => '3','command_id' => '3','command_line_id' => '7','item_id' => '1','quantity' => '1','size' => 'Verre','taxes' => NULL,'cost' => '6.25','created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10'),
+            array('id' => '3','sale_id' => '3','command_id' => '3','command_line_id' => '8','item_id' => '2','quantity' => '1','size' => 'Pinte','taxes' => NULL,'cost' => '7.15','created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10'),
+            array('id' => '4','sale_id' => '3','command_id' => '4','command_line_id' => '11','item_id' => '3','quantity' => '1','size' => 'Pichet','taxes' => NULL,'cost' => '14.95','created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10'),
+            array('id' => '5','sale_id' => '4','command_id' => '4','command_line_id' => '9','item_id' => '1','quantity' => '1','size' => 'Verre','taxes' => NULL,'cost' => '6.25','created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10'),
+            array('id' => '6','sale_id' => '4','command_id' => '4','command_line_id' => '10','item_id' => '2','quantity' => '1','size' => 'Pinte','taxes' => NULL,'cost' => '7.15','created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10')
+        );
+
+        foreach ($sale_lines as $table){
+            SaleLine::create($table);
+        }
+
+       /* SaleLine::create(['id' => '1', 'sale_id' => '1', 'item_id' => '1' , 'cost' => 3.78, 'quantity' => 5]);
+        SaleLine::create(['id' => '2', 'sale_id' => '1', 'item_id' => '2' , 'cost' => 3.45, 'quantity' => 2]);*/
 
         $this->command->info('sale lines table seeded!');
     }
 
-}*/
+}
