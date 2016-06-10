@@ -6,9 +6,9 @@ use App\Models\ERP\Inventory;
 use App\Models\POS\Client;
 use App\Models\POS\Command;
 use App\Models\POS\CommandLine;
-use App\Models\POS\MenuSetting;
 use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
+use App\Models\POS\Setting;
 use App\Models\POS\Table;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -99,7 +99,7 @@ class SalesController extends Controller
 
     public function menuSettings()
     {
-        $menuSetting = MenuSetting::all()->last();
+        $menuSetting = Setting::all()->last();
         return view('POS.Sale.settings', compact('menuSetting'));
     }
 
