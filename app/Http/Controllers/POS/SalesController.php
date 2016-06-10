@@ -176,7 +176,7 @@ class SalesController extends Controller
                                 else{
                                     $saleNumber = $saleNumber->sale_number;
                                 }
-                                $sale = Sale::create(['client_id' => $command['client']['id'], 'sale_number' => $saleNumber, 'total' => $command['total'], 'taxes' => $command['taxes'], 'subTotal' => $command['subTotal']]);
+                                $sale = Sale::create(['client_id' => $command['client']['id'], 'sale_number' => $saleNumber, 'total' => $command['total'], 'subTotal' => $command['subTotal']]);
 
                                 if (!empty($sale)) {
                                     $result['msg'] .= ' - Sale Created';
@@ -191,13 +191,13 @@ class SalesController extends Controller
                                     if(!empty($billLine['saleLineId'])){
                                         $saleLine = SaleLine::where('id', $billLine['saleLineId'])->first();
                                         if (!empty($saleLine)) {
-                                            $saleLine->update(['sale_id' => $sale->id, 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity']]);
+                                            $saleLine->update(['sale_id' => $billLine['sale_id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity']]);
                                             $saleLine->save();
                                             $result['msg'] .= ' - SaleLine Updated';
                                         }
                                     }
                                     else{
-                                        $saleLine = SaleLine::create(['sale_id' => $sale->id, 'item_id' => $billLine['id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity'], 'cost' => $billLine['size']['price'], 'taxes' => $sale->taxes]);
+                                        $saleLine = SaleLine::create(['sale_id' => $sale->id, 'item_id' => $billLine['id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity'], 'cost' => $billLine['size']['price'] , 'size' => $billLine['size']['name'], 'taxes' => Setting::all()->last()['taxes']]);
                                         if (!empty($saleLine)) {
                                             $result['msg'] .= ' - SaleLine Created';
                                             array_push($result['saleLineIdMat'][count($result['saleLineIdMat'])- 1] ,$saleLine->id);
@@ -253,16 +253,18 @@ class SalesController extends Controller
         $result['bills'] = [];
 
         foreach ($inputs['commandsId'] as $commandsId){
-            $saleLine = SaleLine::where('command_id', $commandsId)->get();
+            $saleLines = SaleLine::where('command_id', $commandsId)->get();
 
-            if($saleLine != "")
-            {
-                if(empty($result['bills'][$saleLine[count($saleLine)-1]->sale_id ])){
-                    $result['bills'][$saleLine[count($saleLine)-1]->sale_id] = [];
+            foreach ($saleLines as $saleLine){
+                if($saleLine != "")
+                {
+                    if(empty($result['bills'][$saleLine->sale_id])){
+                        $result['bills'][$saleLine->sale_id ] = [];
+                    }
+                    array_push($result['bills'][$saleLine->sale_id], $saleLine);
+
+                    $result['success'] = "true";
                 }
-                array_push($result['bills'][$saleLine[count($saleLine)-1]->sale_id], $saleLine);
-
-                $result['success'] = "true";
             }
         }
 
@@ -302,6 +304,8 @@ class SalesController extends Controller
                 /*If the command Posted contain a commmand_number it mean that it already exist, so we gota update it instead of create it */
                 if(!empty($inputCommand['command_number'])){
                     $command = Command::where('command_number', $inputCommand['command_number'])->first();
+
+                    $command->save();
 
                     /*We gotta update the command too now*/
                     if(!empty($inputCommand['notes']))

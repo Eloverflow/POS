@@ -16,7 +16,6 @@ class CreateSalesTable extends Migration
             $table->increments('id');
             $table->boolean('cancelled');
             $table->integer('sale_number')->nullable();
-            $table->json('taxes')->nullable();
             $table->float('subTotal')->nullable();
             $table->float('total')->nullable();
             $table->timestamps();

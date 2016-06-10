@@ -762,10 +762,51 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         };
 
         /*Update the numbers for the current command*/
+        $scope.updateBillsTotal = function () {
+
+
+            for(var d = 0; d < $scope.bills.length; d++) {
+
+                var subTotal = 0;
+                var taxTotal = 0;
+
+                if ($scope.bills[d].length > 0) {
+                    for (var l = 0; l < $scope.bills[d].length; l++) {
+
+                        if($scope.bills[d][l].cost){
+                            $scope.bills[d][l].size = {
+                                name:$scope.bills[d][l].size,
+                                price: $scope.bills[d][l].cost
+                            };
+                        }
+
+                         subTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
+
+                    }
+
+                    for (j = 0; j < $scope.bills[d].taxes.length; j++) {
+
+                        $scope.bills[d].taxes[j].total = subTotal * $scope.bills[d].taxes[j].value;
+                        taxTotal += $scope.bills[d].taxes[j].total
+                    }
+
+                    console.log($scope.bills[d])
+                    console.log(subTotal)
+                    console.log(taxTotal)
+
+                    $scope.bills[d].subTotal = subTotal;
+                    $scope.bills[d].total =subTotal + taxTotal;
+                }
+            }
+
+        };
+
+        /*Update the numbers for the current command*/
         $scope.updateTotal = function () {
 
             var subTotal = 0;
             var taxTotal = 0;
+
             for (var j = 0; j < $scope.taxes.length; j++) {
                 $scope.taxes[j].total = 0;
             }
@@ -1010,7 +1051,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.showHeaderOptions = !$scope.showHeaderOptions
         }
         $scope.toggleBill = function () {
-            if (typeof $scope.bills != 'undefined' && $scope.bills != null && $scope.bills[0].length == 0)
+            if (typeof $scope.bills != 'undefined' && $scope.bills != null && typeof $scope.bills[0] != 'undefined' && $scope.bills[0].length == 0)
                 $scope.toggleDivideBillModal();
 
             if(!$scope.showBillWindow)
@@ -1059,63 +1100,70 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                 $scope.bills = [];
 
-                for (var k in response.bills){
-                    if (response.bills.hasOwnProperty(k)) {
-                        $scope.bills.push(response.bills[k][0])
-                        /*$scope.bills[$scope.bills.length-1] = bill;*/
+                if(response.success == "true"){
+                    for (var k in response.bills){
+                        if (response.bills.hasOwnProperty(k)) {
+                            $scope.bills.push(response.bills[k])
+                            /*$scope.bills[$scope.bills.length-1] = bill;*/
 
-                        var subTotal = 0;
-                        var taxTotal = 0;
+                            var subTotal = 0;
+                            var taxTotal = 0;
 
-                        for(var l =0; l < $scope.bills[$scope.bills.length-1].length; l++){
-                            subTotal += $scope.bills[$scope.bills.length-1][l].cost * $scope.bills[$scope.bills.length-1][l].quantity;
+                            for(var l =0; l < $scope.bills[$scope.bills.length-1].length; l++){
+                                subTotal += $scope.bills[$scope.bills.length-1][l].cost * $scope.bills[$scope.bills.length-1][l].quantity;
 
-                            var itemWhereId = angular.copy($.grep($scope.menuItems, function (e) {
-                                return e.id == $scope.bills[$scope.bills.length - 1][l].item_id
-                            })[0]);
+                                var itemWhereId = angular.copy($.grep($scope.menuItems, function (e) {
+                                    return e.id == $scope.bills[$scope.bills.length - 1][l].item_id
+                                })[0]);
+
+                                var id
 
 
-                            for (var o in itemWhereId) {
-                                if (itemWhereId.hasOwnProperty(o)) {
-                                    $scope.bills[$scope.bills.length - 1][l][o] = itemWhereId[o];
+                                id = $scope.bills[$scope.bills.length - 1][l].id;
+                                var sale_id = $scope.bills[$scope.bills.length - 1][l].sale_id;
+
+                                for (var o in itemWhereId) {
+                                    if (itemWhereId.hasOwnProperty(o)) {
+                                        $scope.bills[$scope.bills.length - 1][l][o] = itemWhereId[o];
+                                    }
                                 }
+
+
+                                $scope.bills[$scope.bills.length - 1][l].saleLineId = id;
+                                $scope.bills[$scope.bills.length - 1][l].sale_id = sale_id;
+
                             }
 
+                            /*Copy the taxes and change its total to 0*/
+                            var taxes = angular.copy($scope.taxes);
+                            for (var j = 0; j < taxes.length; j++) {
+                                taxes[j].total = subTotal*taxes[j].value;
+                                taxTotal+=taxes[j].total;
+                            }
+
+                            $scope.bills[$scope.bills.length-1].number = $scope.bills.length;
+                            $scope.bills[$scope.bills.length-1].subTotal = subTotal;
+                            $scope.bills[$scope.bills.length-1].taxes = taxes;
+                            $scope.bills[$scope.bills.length-1].total = subTotal + taxTotal;
+
+
+
+
                         }
-
-                        /*Copy the taxes and change its total to 0*/
-                        var taxes = angular.copy($scope.taxes);
-                        for (var j = 0; j < taxes.length; j++) {
-                            taxes[j].total = subTotal*taxes[j].value;
-                            taxTotal+=taxes[j].total;
-                        }
-
-                        $scope.bills[$scope.bills.length-1].number = $scope.bills.length;
-                        $scope.bills[$scope.bills.length-1].subTotal = subTotal;
-                        $scope.bills[$scope.bills.length-1].taxes = taxes;
-                        $scope.bills[$scope.bills.length-1].total = subTotal + taxTotal;
-
-
                     }
+                    $scope.updateBillsTotal();
+
+                    $scope.newLastBill();
+                    $('#billWindow').slideUp(0);
+                    $('#billWindow').css('visibility', 'visible')
+
+
+                    $scope.openBill();
+
+                    console.log('Bills')
+                    console.log($scope.bills)
                 }
 
-                $scope.newLastBill();
-                $('#billWindow').slideUp(0);
-                $('#billWindow').css('visibility', 'visible')
-
-
-                $scope.openBill();
-
-                console.log('$scope.bills')
-                console.log($scope.bills)
-
-                if (!response.hasOwnProperty('error')) {
-
-                    $scope.showEmployeeModal = false;
-                }
-                else {
-                    console.log("User is invalid :");
-                }
 
 
             };
@@ -1240,6 +1288,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                             if($scope.bills[d][l].checked){
                                 $scope.bills[d][l].checked = false;
+                                $scope.bills[d][l].sale_id = bill.sale_id;
                             }
 
                             var subTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
@@ -1258,6 +1307,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                             }
                             bill.push($scope.bills[d][l]);
 
+
                         }
 
                         $scope.bills[d] = [];
@@ -1273,6 +1323,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                     var checkedItems = $filter("filter")($scope.bills[d], {checked: "true"});
                     for(var f = 0; f < checkedItems.length; f++){
+
+                        checkedItems[f].sale_id = bill[0].sale_id;
 
                         var subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
                         var total = subTotal;
@@ -1439,7 +1491,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         $scope.newLastBill = function () {
 
-            if (typeof $scope.bills != 'undefined' && $scope.bills != null && $scope.bills[0].length > 0) {
+            if (typeof $scope.bills != 'undefined' && $scope.bills != null && typeof $scope.bills[0] != 'undefined' && $scope.bills[0].length > 0) {
                 $scope.bills[$scope.bills.length] = [];
                 $scope.bills[$scope.bills.length-1].total =0;
                 $scope.bills[$scope.bills.length-1].subTotal= 0;

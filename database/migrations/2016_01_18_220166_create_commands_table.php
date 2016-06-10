@@ -21,9 +21,6 @@ class CreateCommandsTable extends Migration
             $table->foreign('table_id')->references('id')->on('tables')->nullable();
             $table->integer('client_id')->unsigned();
             $table->foreign('client_id')->references('id')->on('clients')->nullable();
-            $table->json('taxes')->nullable();
-            $table->float('subTotal')->nullable();
-            $table->float('total')->nullable();
             $table->timestamps();
         });
     }

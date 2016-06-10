@@ -202,8 +202,10 @@
                     <span ng-hide="commandItem.checked" class="glyphicon glyphicon-unchecked move-bill-item-check"></span>
                     <div class="billTextZone">
                         <span><%commandItem.quantity%></span> x
-                        <span class="sale-item-name"> <% commandItem.size.name + " " + commandItem.name%></span></div>
-                    <span class="">$ <% (commandItem.size.price*commandItem.quantity | number:2) %></span>
+                        <span ng-show="commandItem.size.name"> <% commandItem.size.name + " de " + commandItem.name%></span>
+                        <span ng-hide="commandItem.size.name" class="sale-item-name"> <% commandItem.size + " de " + commandItem.name%></span></div>
+                    <span class="" ng-hide="commandItem.cost">$ <%(commandItem.size.price*commandItem.quantity | number:2) %></span>
+                    <span class="" ng-show="commandItem.cost">$ <% (commandItem.cost*commandItem.quantity | number:2) %></span>
 
                     <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
                         <p ng-repeat="item in commandItem.notes"><% item.note %></p>
