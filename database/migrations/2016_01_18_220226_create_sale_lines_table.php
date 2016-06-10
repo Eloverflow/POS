@@ -15,7 +15,7 @@ class CreateSaleLinesTable extends Migration
         Schema::create('sale_lines', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('sale_id')->unsigned();
-            $table->foreign('sale_id')->references('id')->on('sales')->nullable();
+            $table->foreign('sale_id')->references('id')->on('sales');
             $table->integer('command_id')->unsigned();
             $table->foreign('command_id')->references('id')->on('commands')->nullable();
             $table->integer('command_line_id')->unsigned();

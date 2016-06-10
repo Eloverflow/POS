@@ -6,6 +6,7 @@ use App\Models\ERP\Inventory;
 use App\Models\POS\Client;
 use App\Models\POS\Command;
 use App\Models\POS\CommandLine;
+use App\Models\POS\MenuSetting;
 use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
 use App\Models\POS\Table;
@@ -94,6 +95,12 @@ class SalesController extends Controller
     public function menuStart()
     {
         return view('POS.Sale.start');
+    }
+
+    public function menuSettings()
+    {
+        $menuSetting = MenuSetting::all()->last();
+        return view('POS.Sale.settings', compact('menuSetting'));
     }
 
     public function updateBill()

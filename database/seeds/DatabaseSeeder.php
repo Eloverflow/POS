@@ -14,6 +14,7 @@ use App\Models\POS\Client;
 use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
 use App\Models\POS\Plan;
+use App\Models\POS\Setting;
 use App\Models\POS\Table;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
@@ -69,10 +70,26 @@ class DatabaseSeeder extends Seeder
 
         $this->call(PlanSeeder::class);
         $this->call(TableSeeder::class);
+        $this->call(MenuSettingsTableSeeder::class);
 
         Model::reguard();
     }
 }
+
+
+class MenuSettingsTableSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('settings')->delete();
+
+        Setting::create(['taxes' => "[{value: 0.05,total: 0,name: 'TPS' },{value: 0.09975,total: 0,name: 'TVQ'}]", 'plan_id'=>1, 'use_time_24'=>true, 'language'=>'Francais', 'timezone'=>'-05:00', 'daylight'=>true, 'ipaddress'=>'666.666.666.666', 'use_email'=>true]);
+
+        $this->command->info('Menu Settings table seeded!');
+    }
+
+}
+
 
 class PunchesTableSeeder extends Seeder {
 

@@ -35,6 +35,7 @@ Route::get('/contact',  ['uses' => 'PagesController@contact', 'middleware' => 'a
 Route::get('/sales',  ['uses' => 'POS\SalesController@index', 'middleware' => 'auth']);
 Route::get('/sales/list',  ['uses' => 'POS\SalesController@liste', 'middleware' => 'auth']);
 Route::get('/menu',  ['uses' => 'POS\SalesController@menu', 'middleware' => 'auth']);
+Route::get('/menu-settings',  ['uses' => 'POS\SalesController@menuSettings', 'middleware' => 'auth']);
 
 Route::get('/menu/start',  ['uses' => 'POS\SalesController@menuStart', 'middleware' => 'auth']);
 Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware' => 'auth']);

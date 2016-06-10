@@ -23,7 +23,7 @@ class CreateEmployeesTable extends Migration
             $table->string('pc');
             $table->string('nas');
             $table->integer('userId')->unsigned();
-            $table->foreign('userId')->references('id')->on('users');
+            $table->foreign('userId')->references('id')->on('users')->onDelete('cascade');
             $table->decimal('bonusSalary');
             $table->date('birthDate');
             $table->date('hireDate');
