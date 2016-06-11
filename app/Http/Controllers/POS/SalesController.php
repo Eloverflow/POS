@@ -191,7 +191,11 @@ class SalesController extends Controller
                                     if(!empty($billLine['saleLineId'])){
                                         $saleLine = SaleLine::where('id', $billLine['saleLineId'])->first();
                                         if (!empty($saleLine)) {
-                                            $saleLine->update(['sale_id' => $billLine['sale_id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity']]);
+                                            $saleID = $billLine['sale_id'];
+                                            if(empty($saleID)){
+                                                $saleID = $sale->id;
+                                            }
+                                            $saleLine->update(['sale_id' => $saleID, 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity']]);
                                             $saleLine->save();
                                             $result['msg'] .= ' - SaleLine Updated';
                                         }

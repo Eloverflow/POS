@@ -1043,7 +1043,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         };
         $scope.toggleBillDemo = function () {
             $scope.showBillDemo = !$scope.showBillDemo;
-            $scope.movingBillItem = true;
+            $scope.movingBillItem = !$scope.movingBillItem;
         };
         $scope.togglePlanModal = function () {
             $scope.showPlanModal = !$scope.showPlanModal;
@@ -1330,7 +1330,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     var checkedItems = $filter("filter")($scope.bills[d], {checked: "true"});
                     for(var f = 0; f < checkedItems.length; f++){
 
-                        checkedItems[f].sale_id = bill[0].sale_id;
+                        if(bill[0]){
+
+                            checkedItems[f].sale_id = bill[0].sale_id;
+                        }
+                        else {
+                            checkedItems[f].sale_id = ''
+                        }
 
                         var subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
                         var total = subTotal;
@@ -1438,6 +1444,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $('#billWindow').slideUp(0);
             $('#billWindow').css('visibility', 'visible')
             $scope.openBill();
+            $scope.delayedUpdateBills();
         };
 
         /*PerClientBill choice will create a bill for every client*/
@@ -1492,6 +1499,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $('#billWindow').slideUp(0);
             $('#billWindow').css('visibility', 'visible')
             $scope.openBill();
+            $scope.delayedUpdateBills();
         };
 
 
@@ -1555,13 +1563,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             bill.checked = !bill.checked;
 
-            if (bill.checked) {
+            if (bill.checked && !$scope.showBillDemo) {
                 $scope.movingBillItem = true;
             }
             else {
                 var checkedItems = $filter("filter")($scope.bills, {checked: "true"})[0];
 
-                if (typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0)
+                if ((typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0) && !$scope.showBillDemo)
                     $scope.movingBillItem = false;
 
                 for(var d = 0; d < $scope.bills.length; d++) {
@@ -1578,13 +1586,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             commandItem.checked = !commandItem.checked;
 
-            if (commandItem.checked) {
+            if (commandItem.checked && !$scope.showBillDemo) {
                 $scope.movingBillItem = true;
             }
             else {
                 var checkedItems = $filter("filter")($scope.bills, {checked: "true"})[0];
 
-                if (typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0)
+                if ((typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0) && !$scope.showBillDemo)
                     $scope.movingBillItem = false;
 
                 for(var d = 0; d < $scope.bills.length; d++) {

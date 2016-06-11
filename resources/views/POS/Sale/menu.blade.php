@@ -169,13 +169,16 @@
 @section('myjsfile')
     <script type="application/javascript" src="{{ @URL::to('Framework/iscroll.js') }}"></script>
     <script type="text/javascript">
-        var myScroll;
+        var myScroll,myBillScroll;
 
             myScroll = new iScroll('filter-wrapper', {
                 hideScrollbar: true
             });
-/*
-        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);*/
+
+            myBillScroll = new iScroll('filter-wrapper-bill', {
+                hideScrollbar: true
+            });
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
 
     </script>
 @stop
