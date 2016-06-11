@@ -776,10 +776,14 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     for (var l = 0; l < $scope.bills[d].length; l++) {
 
                         if($scope.bills[d][l].cost){
-                            $scope.bills[d][l].size = {
-                                name:$scope.bills[d][l].size,
-                                price: $scope.bills[d][l].cost
-                            };
+
+                            if(!$scope.bills[d][l].size.name){
+                                $scope.bills[d][l].size = {
+                                    name:$scope.bills[d][l].size,
+                                    price: $scope.bills[d][l].cost
+                                };
+                            }
+
                         }
 
                          subTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
