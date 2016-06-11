@@ -1625,11 +1625,17 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 $scope.getCommand();
             }
 
+            if (billTimeoutHandle != null)
+                $scope.updateBills();
+
             if (timeoutHandle != null)
                 $scope.updateTable($callbackFunction);
             else{
                 $callbackFunction();
             }
+
+
+
         };
 
         /*Send a request to get the commands for the current table*/

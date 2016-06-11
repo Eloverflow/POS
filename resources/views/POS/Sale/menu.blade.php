@@ -178,7 +178,10 @@
             myBillScroll = new iScroll('filter-wrapper-bill', {
                 hideScrollbar: true
             });
-        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);
+
+        //This block cellphone touch
+        /*
+        document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);*/
 
     </script>
 @stop
