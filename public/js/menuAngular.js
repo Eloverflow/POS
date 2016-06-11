@@ -249,6 +249,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                 $scope.plan.currentFloor = floor;
 
+                if(typeof $scope.currentTable == 'undefined' || $scope.currentTable == null)
                 $scope.currentTable = $scope.plan.table[0];
 
                 $scope.planCanva();
@@ -1040,6 +1041,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         $scope.toggleTableModal = function () {
             $scope.showTableModal = !$scope.showTableModal;
+            if ($scope.showTableModal)
+                $scope.getPlan();
         };
         $scope.toggleBillDemo = function () {
             $scope.showBillDemo = !$scope.showBillDemo;
