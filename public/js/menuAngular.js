@@ -1169,6 +1169,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     console.log('Bills')
                     console.log($scope.bills)
                 }
+                else {
+                    $scope.closeBill();
+                }
 
 
 
