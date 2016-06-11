@@ -1057,13 +1057,16 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.showHeaderOptions = !$scope.showHeaderOptions
         }
         $scope.toggleBill = function () {
-            if (typeof $scope.bills != 'undefined' && $scope.bills != null && typeof $scope.bills[0] != 'undefined' && $scope.bills[0].length == 0)
+            if ($scope.bills == null || typeof $scope.bills != 'undefined' && $scope.bills != null && typeof $scope.bills[0] != 'undefined' && $scope.bills[0].length == 0)
                 $scope.toggleDivideBillModal();
+            else {
+                if(!$scope.showBillWindow)
+                    $scope.openBill()
+                else
+                    $scope.closeBill();
+            }
 
-            if(!$scope.showBillWindow)
-                $scope.openBill()
-            else
-                $scope.closeBill();
+
         }
         $scope.openBill = function () {
             $scope.showBillWindow = true;
@@ -1104,9 +1107,11 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             var $callbackFunction = function (response) {
 
-                $scope.bills = [];
+
+                $scope.bills = null;
 
                 if(response.success == "true"){
+                    $scope.bills = [];
                     for (var k in response.bills){
                         if (response.bills.hasOwnProperty(k)) {
                             $scope.bills.push(response.bills[k])
