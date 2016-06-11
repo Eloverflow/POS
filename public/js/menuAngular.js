@@ -157,7 +157,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             };
             //
             $scope.clientPagerMaxSize = 3; //This represent the number of page number to display in the middle of the client pager
-            $scope.clientPagerTotalItems = 200; // Total de page du client pager sous forme unitaire
+            $scope.clientPagerTotalItems = 10; // Total de page du client pager sous forme unitaire
             $scope.commandCurrentClient = 1; // Current client page
             //
             $scope.commandClient = []; // Array containing the list of command for the current table
@@ -1641,6 +1641,12 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         };
 
+        $scope.ajouterClient = function () {
+
+            $scope.clientPagerTotalItems += 10;
+            $scope.commandCurrentClient = $scope.clientPagerTotalItems/10
+        }
+
         /*Send a request to get the commands for the current table*/
         $scope.getCommand = function () {
             $url = 'http://pos.mirageflow.com/menu/getCommand';
@@ -1661,7 +1667,10 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                 if (response.commands.length > 0) {
 
+                    $scope.clientPagerTotalItems = 0;
+
                     for (var f = 0; f < response.commands.length; f++) {
+                        $scope.clientPagerTotalItems += 10;
                         $scope.commandClient[f + 1] = response.commands[f];
 
 

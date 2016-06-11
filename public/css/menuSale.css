@@ -611,12 +611,12 @@ span.number{
 
 
 
-
+/*
 .pagination-next.ng-scope a{
-	float: right;/*
+	float: right;!*
 	margin-right: 0;
-	margin-left: auto;*/
-}
+	margin-left: auto;*!
+}*/
 
 /*
 .pagination-prev.ng-scope a{
