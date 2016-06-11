@@ -790,6 +790,18 @@ pre{
 	box-shadow: 0 4px 8px rgba(0,0,0,0.8);
 }
 
+.btn-table.status1{
+	background-color: #30a5ff;
+}
+
+.btn-table.status2{
+	background-color: #f9243f;
+}
+
+.btn-table.status3{
+	background-color: #49d100;
+}
+
 #splashFullScreen{
 	z-index: 9999;
 	border-radius: 10px;
@@ -817,9 +829,9 @@ body{
 }
 
 .floor{
-	opacity: 0.9;
+	opacity: 1;
 	text-align: center;
-	background-color: #30a5ff;
+	background-color: #222;
 	border-radius: 3px;
 	color: whitesmoke;
 	float: left;

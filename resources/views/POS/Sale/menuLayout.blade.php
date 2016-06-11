@@ -85,7 +85,7 @@
     <div ng-repeat="n in [] | floor:plan.nbFloor" >
         <span class="floor">Étage <% n+1 %></span>
         <div ng-repeat="i in plan.table | filter:{noFloor: n}">
-            <button type="button" class="btn btn-success btn-table" ng-click="changeTable(i)" >Table #<% i.tblNumber %></button>
+            <button type="button" class="btn btn-success btn-table status<% i.status %>" ng-click="changeTable(i)" >Table #<% i.tblNumber %></button>
         </div>
     </div>
 </modal>
