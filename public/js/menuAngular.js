@@ -919,7 +919,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             timeoutHandle = window.setTimeout(function () {
                 $scope.updateTable();
 
-            }, 5000);
+            }, 2000);
         }
 
         /*Launch delayed function that can always be cancel - To update the current table*/
@@ -938,7 +938,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             billTimeoutHandle = window.setTimeout(function () {
                 $scope.updateBills();
 
-            }, 5000);
+            }, 2000);
         }
 
 
