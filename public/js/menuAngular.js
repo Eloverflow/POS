@@ -130,6 +130,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.showDivideBillModal = false;
             $scope.showHeaderOptions =true;
             $scope.showBillDemo= false;
+            $scope.showPanelOverwriteBill= false;
             //
             $scope.noteDynamicPopover = {
                 content: '',
@@ -1054,7 +1055,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 $scope.getPlan();
         };
         $scope.toggleDivideBillModal = function () {
+            if(typeof $scope.bills == 'undefined' || $scope.bills == null || $scope.showPanelOverwriteBill)
             $scope.showDivideBillModal = !$scope.showDivideBillModal;
+            else
+            $scope.showPanelOverwriteBill = true;
+        };
+        $scope.togglePanelOverwriteBill = function () {
+            $scope.showPanelOverwriteBill = !$scope.showPanelOverwriteBill;
         };
         $scope.toggleHeaderOptions = function () {
             $scope.showHeaderOptions = !$scope.showHeaderOptions

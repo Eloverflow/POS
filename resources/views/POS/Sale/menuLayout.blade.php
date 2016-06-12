@@ -103,6 +103,16 @@
         </div>
     </div>
 </modal>
+<modal title="Êtes-vous sure ?" class="center-modal" visible="showPanelOverwriteBill">
+    <div class="divideBillChoices" >
+        <div ng-click="toggleDivideBillModal();togglePanelOverwriteBill();" class="divideBillChoice">
+            Rediviser les factures
+        </div>
+        <div ng-click="togglePanelOverwriteBill();openBill();" class="divideBillChoice">
+            Voir les factures
+        </div>
+    </div>
+</modal>
 <modal title="Changement d'employee" id="changeEmployee" class="center-modal employee-modal" visible="showEmployeeModal">
         <div>
             {{--
