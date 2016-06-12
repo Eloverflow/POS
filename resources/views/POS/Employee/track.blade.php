@@ -1,11 +1,13 @@
 @extends('master')
 @section('csrfToken')
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <link rel="stylesheet" href="{{ @URL::to('css/fullcalendar.min.css') }}"/>
     <script src="{{ @URL::to('js/moment/moment.js') }}"></script>
     <script src="{{ @URL::to('js/moment/moment-timezone.js') }}"></script>
-    {{--WHAT the calisss the fuck ????--}}
-    <script src="{{ @URL::to('js/moment/moment-timezone-with-data.js') }}"></script>
-    <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>{{--
+    <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>--}}{{--
+    <script src="{{ @URL::to('js/fr-ca.js') }}"></script>--}}
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
 @section('content')
     <div class="row">
@@ -180,28 +182,31 @@
 @stop
 
 @section("myjsfile")
-    <script src="{{ @URL::to('js/utils.js') }}"></script>
+    <script src="{{ @URL::to('js/utils.js') }}"></script>{{--
+    <script src="{{ @URL::to('js/schedulesManage.js') }}"></script>--}}
+    <script src="{{ @URL::to('js/moment/moment-timezone-with-data.js') }}"></script>
     <script type="text/javascript">
-
         $(document).ready(function (e) {
 
-            $('a.editPunch').bind('click', function(e) {
-                /*$('#addModal #sHour').val("");
-                 $('#addModal #sMin').val("");*/
+         $('a.editPunch').bind('click', function(e) {
+         /*$('#addModal #sHour').val("");
+         $('#addModal #sMin').val("");*/
 
-                $("#addModal").modal('show');
-                e.preventDefault();
-            });
-            $('a.delPunch').bind('click', function(e) {
-                /*e.preventDefault();*/
+         $("#addModal").modal('show');
+         e.preventDefault();
+         });
+         $('a.delPunch').bind('click', function(e) {
+         /*e.preventDefault();*/
 
-                $("#editPunch").modal('show');
-                e.preventDefault();
-            });
-            $('#punchTimePicker').datetimepicker({
-                format: 'LT'
-            });
-        });
+         $("#editPunch").modal('show');
+         e.preventDefault();
+         });/*
+         $('#punchTimePicker').datetimepicker({
+         format: 'LT'
+         });*/
+         });
 
     </script>
+
+
 @stop
