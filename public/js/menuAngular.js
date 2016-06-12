@@ -117,7 +117,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.taxes = [{value: 0.05,total: 0,name: 'TPS' },{value: 0.09975,total: 0,name: 'TVQ'}] // Current command taxes
             //
             var timeoutHandle; //On finish will normaly execute a function that update the current table'commands' - To avoid request overcharge
-            var billTimeoutHandle // Same thing but for the bills
+            var billTimeoutHandle; // Same thing but for the bills
             //Msg on employee auth panel
             var msgEnterEmployeeNumber = "Entrez votre numéro d'employé";
             var msgEnterEmployeePassword = "Entrez votre mot de passe";
@@ -130,6 +130,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.showDivideBillModal = false;
             $scope.showHeaderOptions =true;
             $scope.showBillDemo= false;
+            $scope.showPanelOverwriteBill= false;
             //
             $scope.noteDynamicPopover = {
                 content: '',
@@ -157,7 +158,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             };
             //
             $scope.clientPagerMaxSize = 3; //This represent the number of page number to display in the middle of the client pager
-            $scope.clientPagerTotalItems = 200; // Total de page du client pager sous forme unitaire
+            $scope.clientPagerTotalItems = 10; // Total de page du client pager sous forme unitaire
             $scope.commandCurrentClient = 1; // Current client page
             //
             $scope.commandClient = []; // Array containing the list of command for the current table
@@ -249,6 +250,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                 $scope.plan.currentFloor = floor;
 
+                if(typeof $scope.currentTable == 'undefined' || $scope.currentTable == null)
                 $scope.currentTable = $scope.plan.table[0];
 
                 $scope.planCanva();
@@ -448,6 +450,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                     if ($scope.plan.table[i].status == 2)
                         color = '#EC0033'
+                    if ($scope.plan.table[i].status == 3)
+                        color = '#8ad919'
 
                     if ($scope.plan.table[i].type == "plc")
                         width = height;
@@ -762,10 +766,55 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         };
 
         /*Update the numbers for the current command*/
+        $scope.updateBillsTotal = function () {
+
+
+            for(var d = 0; d < $scope.bills.length; d++) {
+
+                var subTotal = 0;
+                var taxTotal = 0;
+
+                if ($scope.bills[d].length > 0) {
+                    for (var l = 0; l < $scope.bills[d].length; l++) {
+
+                        if($scope.bills[d][l].cost){
+
+                            if(!$scope.bills[d][l].size.name){
+                                $scope.bills[d][l].size = {
+                                    name:$scope.bills[d][l].size,
+                                    price: $scope.bills[d][l].cost
+                                };
+                            }
+
+                        }
+
+                         subTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
+
+                    }
+
+                    for (j = 0; j < $scope.bills[d].taxes.length; j++) {
+
+                        $scope.bills[d].taxes[j].total = subTotal * $scope.bills[d].taxes[j].value;
+                        taxTotal += $scope.bills[d].taxes[j].total
+                    }
+
+                    console.log($scope.bills[d])
+                    console.log(subTotal)
+                    console.log(taxTotal)
+
+                    $scope.bills[d].subTotal = subTotal;
+                    $scope.bills[d].total =subTotal + taxTotal;
+                }
+            }
+
+        };
+
+        /*Update the numbers for the current command*/
         $scope.updateTotal = function () {
 
             var subTotal = 0;
             var taxTotal = 0;
+
             for (var j = 0; j < $scope.taxes.length; j++) {
                 $scope.taxes[j].total = 0;
             }
@@ -870,7 +919,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             timeoutHandle = window.setTimeout(function () {
                 $scope.updateTable();
 
-            }, 5000);
+            }, 2000);
         }
 
         /*Launch delayed function that can always be cancel - To update the current table*/
@@ -889,7 +938,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             billTimeoutHandle = window.setTimeout(function () {
                 $scope.updateBills();
 
-            }, 5000);
+            }, 2000);
         }
 
 
@@ -911,6 +960,10 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 for (var f = 0; f < response.commands.length; f++) {
                     /*if(typeof $scope.commandClient[f+1] != 'undefined' && $scope.commandClient[f+1] != null)*/
                     $scope.commandClient[f + 1].command_number = response.commands[f].command_number + "";
+
+                    for (var g = 0; g < response.commandLineIdMat[f].length; g++) {
+                        $scope.commandClient[f + 1].commandItems[g].commandLineId = response.commandLineIdMat[f][g]
+                    }
                 }
 
                 $timeout(function () {
@@ -927,6 +980,45 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             /*
              $scope.commandClient[$scope.commandCurrentClient].commandItems = [];
              $scope.updateCommand();*/
+
+            postReq.send($url, $data, null, $callbackFunction);
+
+        }
+
+        /*Will send a request to update the bills and then execute the callbackFunction*/
+        $scope.updateBills = function ($updateTableCallBack) {
+
+
+            $url = 'http://pos.mirageflow.com/menu/bill';
+
+            $data = {
+                bills: $scope.bills,
+                table: $scope.currentTable,
+                employee: $scope.currentEmploye
+            };
+
+
+            var $callbackFunction = function (response) {
+                console.log('Updated bills')
+                for (var f = 0; f < response.saleLineIdMat.length; f++) {
+
+                    for (var g = 0; g < response.saleLineIdMat[f].length; g++) {
+                        $scope.bills[f][g].saleLineId = response.saleLineIdMat[f][g];
+                        $scope.bills[f][g].sale_id = response.saleIdArray[f];
+                    }
+                }
+
+                $timeout(function () {
+                    $scope.progressValue = 100;
+                    $('.progress-bar').addClass('progress-bar-success');
+                    $scope.savingMessage = "Sauvegardé!"
+                }, 0);
+
+                console.log("The bill as been saved and confirmation received inside response - Success or Not ?");
+
+                if ($updateTableCallBack != null)
+                    $updateTableCallBack();
+            };
 
             postReq.send($url, $data, null, $callbackFunction);
 
@@ -950,10 +1042,12 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         $scope.toggleTableModal = function () {
             $scope.showTableModal = !$scope.showTableModal;
+            if ($scope.showTableModal)
+                $scope.getPlan();
         };
         $scope.toggleBillDemo = function () {
             $scope.showBillDemo = !$scope.showBillDemo;
-            $scope.movingBillItem = true;
+            $scope.movingBillItem = !$scope.movingBillItem;
         };
         $scope.togglePlanModal = function () {
             $scope.showPlanModal = !$scope.showPlanModal;
@@ -961,19 +1055,28 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 $scope.getPlan();
         };
         $scope.toggleDivideBillModal = function () {
+            if(typeof $scope.bills == 'undefined' || $scope.bills == null || $scope.showPanelOverwriteBill)
             $scope.showDivideBillModal = !$scope.showDivideBillModal;
+            else
+            $scope.showPanelOverwriteBill = true;
+        };
+        $scope.togglePanelOverwriteBill = function () {
+            $scope.showPanelOverwriteBill = !$scope.showPanelOverwriteBill;
         };
         $scope.toggleHeaderOptions = function () {
             $scope.showHeaderOptions = !$scope.showHeaderOptions
         }
         $scope.toggleBill = function () {
-            if (typeof $scope.bills != 'undefined' && $scope.bills != null && $scope.bills[0].length == 0)
+            if ($scope.bills == null || typeof $scope.bills != 'undefined' && $scope.bills != null && typeof $scope.bills[0] != 'undefined' && $scope.bills[0].length == 0)
                 $scope.toggleDivideBillModal();
+            else {
+                if(!$scope.showBillWindow)
+                    $scope.openBill()
+                else
+                    $scope.closeBill();
+            }
 
-            if(!$scope.showBillWindow)
-                $scope.openBill()
-            else
-                $scope.closeBill();
+
         }
         $scope.openBill = function () {
             $scope.showBillWindow = true;
@@ -998,6 +1101,97 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 cancelFullScreen();
             }
 
+        }
+
+        /*Send a request to get the bill*/
+        $scope.getBills = function () {
+
+            $scope.commandsId=[];
+            for(var h = 0; h< $scope.commandClient.length; h++){
+                if(typeof $scope.commandClient[h+1] != 'undefined' && $scope.commandClient[h+1] != null)
+                $scope.commandsId.push($scope.commandClient[h+1].id)
+            }
+
+            $url = 'http://pos.mirageflow.com/menu/getBills';
+            $data = {commandsId: $scope.commandsId};
+
+            var $callbackFunction = function (response) {
+
+
+                $scope.bills = null;
+
+                if(response.success == "true"){
+                    $scope.bills = [];
+                    for (var k in response.bills){
+                        if (response.bills.hasOwnProperty(k)) {
+                            $scope.bills.push(response.bills[k])
+                            /*$scope.bills[$scope.bills.length-1] = bill;*/
+
+                            var subTotal = 0;
+                            var taxTotal = 0;
+
+                            for(var l =0; l < $scope.bills[$scope.bills.length-1].length; l++){
+                                subTotal += $scope.bills[$scope.bills.length-1][l].cost * $scope.bills[$scope.bills.length-1][l].quantity;
+
+                                var itemWhereId = angular.copy($.grep($scope.menuItems, function (e) {
+                                    return e.id == $scope.bills[$scope.bills.length - 1][l].item_id
+                                })[0]);
+
+                                var id
+
+
+                                id = $scope.bills[$scope.bills.length - 1][l].id;
+                                var sale_id = $scope.bills[$scope.bills.length - 1][l].sale_id;
+
+                                for (var o in itemWhereId) {
+                                    if (itemWhereId.hasOwnProperty(o)) {
+                                        $scope.bills[$scope.bills.length - 1][l][o] = itemWhereId[o];
+                                    }
+                                }
+
+
+                                $scope.bills[$scope.bills.length - 1][l].saleLineId = id;
+                                $scope.bills[$scope.bills.length - 1][l].sale_id = sale_id;
+
+                            }
+
+                            /*Copy the taxes and change its total to 0*/
+                            var taxes = angular.copy($scope.taxes);
+                            for (var j = 0; j < taxes.length; j++) {
+                                taxes[j].total = subTotal*taxes[j].value;
+                                taxTotal+=taxes[j].total;
+                            }
+
+                            $scope.bills[$scope.bills.length-1].number = $scope.bills.length;
+                            $scope.bills[$scope.bills.length-1].subTotal = subTotal;
+                            $scope.bills[$scope.bills.length-1].taxes = taxes;
+                            $scope.bills[$scope.bills.length-1].total = subTotal + taxTotal;
+
+
+
+
+                        }
+                    }
+                    $scope.updateBillsTotal();
+
+                    $scope.newLastBill();
+                    $('#billWindow').slideUp(0);
+                    $('#billWindow').css('visibility', 'visible')
+
+
+                    $scope.openBill();
+
+                    console.log('Bills')
+                    console.log($scope.bills)
+                }
+                else {
+                    $scope.closeBill();
+                }
+
+
+
+            };
+            postReq.send($url, $data, null, $callbackFunction);
         }
 
         /*Send a request to authenticate the employee*/
@@ -1118,6 +1312,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                             if($scope.bills[d][l].checked){
                                 $scope.bills[d][l].checked = false;
+                                $scope.bills[d][l].sale_id = bill.sale_id;
                             }
 
                             var subTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
@@ -1136,6 +1331,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                             }
                             bill.push($scope.bills[d][l]);
 
+
                         }
 
                         $scope.bills[d] = [];
@@ -1151,6 +1347,14 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                     var checkedItems = $filter("filter")($scope.bills[d], {checked: "true"});
                     for(var f = 0; f < checkedItems.length; f++){
+
+                        if(bill[0]){
+
+                            checkedItems[f].sale_id = bill[0].sale_id;
+                        }
+                        else {
+                            checkedItems[f].sale_id = ''
+                        }
 
                         var subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
                         var total = subTotal;
@@ -1198,6 +1402,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             if($scope.bills[$scope.bills.length-1].length > 0)
                 $scope.newLastBill();
 
+
+            $scope.delayedUpdateBills();
         }
 
         /*Show panel to display bills division choice*/
@@ -1256,6 +1462,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $('#billWindow').slideUp(0);
             $('#billWindow').css('visibility', 'visible')
             $scope.openBill();
+            $scope.delayedUpdateBills();
         };
 
         /*PerClientBill choice will create a bill for every client*/
@@ -1310,12 +1517,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $('#billWindow').slideUp(0);
             $('#billWindow').css('visibility', 'visible')
             $scope.openBill();
+            $scope.delayedUpdateBills();
         };
 
 
         $scope.newLastBill = function () {
 
-            if (typeof $scope.bills != 'undefined' && $scope.bills != null && $scope.bills[0].length > 0) {
+            if (typeof $scope.bills != 'undefined' && $scope.bills != null && typeof $scope.bills[0] != 'undefined' && $scope.bills[0].length > 0) {
                 $scope.bills[$scope.bills.length] = [];
                 $scope.bills[$scope.bills.length-1].total =0;
                 $scope.bills[$scope.bills.length-1].subTotal= 0;
@@ -1373,13 +1581,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             bill.checked = !bill.checked;
 
-            if (bill.checked) {
+            if (bill.checked && !$scope.showBillDemo) {
                 $scope.movingBillItem = true;
             }
             else {
                 var checkedItems = $filter("filter")($scope.bills, {checked: "true"})[0];
 
-                if (typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0)
+                if ((typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0) && !$scope.showBillDemo)
                     $scope.movingBillItem = false;
 
                 for(var d = 0; d < $scope.bills.length; d++) {
@@ -1396,13 +1604,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             commandItem.checked = !commandItem.checked;
 
-            if (commandItem.checked) {
+            if (commandItem.checked && !$scope.showBillDemo) {
                 $scope.movingBillItem = true;
             }
             else {
                 var checkedItems = $filter("filter")($scope.bills, {checked: "true"})[0];
 
-                if (typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0)
+                if ((typeof checkedItems == "undefined" || checkedItems == null || checkedItems.length == 0) && !$scope.showBillDemo)
                     $scope.movingBillItem = false;
 
                 for(var d = 0; d < $scope.bills.length; d++) {
@@ -1427,12 +1635,24 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 $scope.getCommand();
             }
 
+            if (billTimeoutHandle != null)
+                $scope.updateBills();
+
             if (timeoutHandle != null)
                 $scope.updateTable($callbackFunction);
             else{
                 $callbackFunction();
             }
+
+
+
         };
+
+        $scope.ajouterClient = function () {
+
+            $scope.clientPagerTotalItems += 10;
+            $scope.commandCurrentClient = $scope.clientPagerTotalItems/10
+        }
 
         /*Send a request to get the commands for the current table*/
         $scope.getCommand = function () {
@@ -1454,7 +1674,10 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                 if (response.commands.length > 0) {
 
+                    $scope.clientPagerTotalItems = 0;
+
                     for (var f = 0; f < response.commands.length; f++) {
+                        $scope.clientPagerTotalItems += 10;
                         $scope.commandClient[f + 1] = response.commands[f];
 
 
@@ -1496,6 +1719,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                                 }
                             }
 
+                            var commandLineId = $scope.commandClient[f + 1].commandItems[p].id
+
                             $scope.commandClient[f + 1].commandItems[p] = angular.copy($.grep($scope.menuItems, function (e) {
                                 return e.id == $scope.commandClient[f + 1].commandItems[p].item_id
                             })[0]);
@@ -1530,6 +1755,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                             $scope.commandClient[f + 1].commandItems[p].time = time.getHours() + "H" + ((time.getMinutes().toString().length < 2) ? "0" : "") + time.getMinutes();
 
 
+                            $scope.commandClient[f + 1].commandItems[p].command_id = $scope.commandClient[f + 1].id;
+                            $scope.commandClient[f + 1].commandItems[p].command_line_id = commandLineId;
+
                         }
 
                         $scope.commandClient[f + 1].status = "1";
@@ -1555,6 +1783,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 }, 0);
 
                 console.log("The command as been loaded and confirmation received inside response - Success or Not ?");
+
+                $scope.getBills();
 
 
             };

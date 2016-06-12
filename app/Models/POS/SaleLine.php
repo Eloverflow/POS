@@ -8,7 +8,7 @@ class SaleLine extends Model
 {
     protected $table = 'sale_lines';
 
-    protected $fillable = array('command_id', 'item_id', 'sale_id', 'cost', 'quantity', 'slug');
+    protected $fillable = array('command_id', 'command_line_id' , 'item_id', 'sale_id', 'cost', 'quantity', 'size', 'taxes', 'slug');
 
     public function command()
     {

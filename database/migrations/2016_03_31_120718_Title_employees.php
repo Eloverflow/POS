@@ -16,7 +16,7 @@ class TitleEmployees extends Migration
         Schema::create('title_employees', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('employee_id')->unsigned();
-            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->foreign('employee_id')->references('id')->on('employees')->onDelete('cascade');
             $table->integer('work_titles_id')->unsigned();
             $table->foreign('work_titles_id')->references('id')->on('work_titles');
             $table->timestamps();

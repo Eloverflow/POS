@@ -35,12 +35,16 @@ Route::get('/contact',  ['uses' => 'PagesController@contact', 'middleware' => 'a
 Route::get('/sales',  ['uses' => 'POS\SalesController@index', 'middleware' => 'auth']);
 Route::get('/sales/list',  ['uses' => 'POS\SalesController@liste', 'middleware' => 'auth']);
 Route::get('/menu',  ['uses' => 'POS\SalesController@menu', 'middleware' => 'auth']);
+Route::get('/menu-settings',  ['uses' => 'POS\SalesController@menuSettings', 'middleware' => 'auth']);
+Route::post('/menu-settings',  ['uses' => 'POS\SalesController@applyMenuSettings', 'middleware' => 'auth']);
 
 Route::get('/menu/start',  ['uses' => 'POS\SalesController@menuStart', 'middleware' => 'auth']);
 Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware' => 'auth']);
 Route::post('/menu/command',  ['uses' => 'POS\SalesController@updateCommand', 'middleware' => 'auth']);
 Route::post('/menu/getCommand',  ['uses' => 'POS\SalesController@getCommand', 'middleware' => 'auth']);
 Route::post('/menu/bill',  ['uses' => 'POS\SalesController@updateBill', 'middleware' => 'auth']);
+Route::post('/menu/getBills',  ['uses' => 'POS\SalesController@getBills', 'middleware' => 'auth']);
+
 
 Route::get('/inventory',  ['uses' => 'ERP\InventoriesController@index', 'middleware' => 'auth']);
 Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});

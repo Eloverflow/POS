@@ -29,7 +29,8 @@
         <uib-pagination ng-change="pageChanged()" total-items="clientPagerTotalItems" ng ng-model="commandCurrentClient"
                         max-size="clientPagerMaxSize" class="pagination-sm" boundary-link-numbers="true"
                         rotate="false"></uib-pagination>
-
+        <button style="background-color: #444; border-color: #444;position: absolute; right: 0; top:0; padding: 0 0 14px 14px; font-size: 25px; height: 44px; margin-top: 1%;margin-right: 1%;" href="#" ng-click="ajouterClient()" type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>
+        </button>
         <ul class="ng-binding nav menu menu-sale">
             <li><h2>Commande - Client: #<% commandCurrentClient %></h2>
 
@@ -169,12 +170,18 @@
 @section('myjsfile')
     <script type="application/javascript" src="{{ @URL::to('Framework/iscroll.js') }}"></script>
     <script type="text/javascript">
-        var myScroll;
+        var myScroll,myBillScroll;
 
             myScroll = new iScroll('filter-wrapper', {
                 hideScrollbar: true
             });
-/*
+
+            myBillScroll = new iScroll('filter-wrapper-bill', {
+                hideScrollbar: true
+            });
+
+        //This block cellphone touch
+        /*
         document.addEventListener('touchmove', function (e) { e.preventDefault(); }, false);*/
 
     </script>

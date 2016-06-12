@@ -15,7 +15,7 @@ class CreateCommandLinesTable extends Migration
         Schema::create('command_lines', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('command_id')->unsigned();
-            $table->foreign('command_id')->references('id')->on('commands')->nullable();
+            $table->foreign('command_id')->references('id')->on('commands');
             $table->integer('item_id')->unsigned();
             $table->foreign('item_id')->references('id')->on('items')->nullable();
             $table->string('size');
