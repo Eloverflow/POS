@@ -200,8 +200,10 @@
 
          $("#editPunch").modal('show');
          e.preventDefault();
-         });/*
-         $('#punchTimePicker').datetimepicker({
+         });
+
+
+        /* $('#punchTimePicker').datetimepicker({
          format: 'LT'
          });*/
          });
