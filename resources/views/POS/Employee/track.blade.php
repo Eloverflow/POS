@@ -1,5 +1,12 @@
 @extends('master')
-
+@section('csrfToken')
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <script src="{{ @URL::to('js/moment/moment.js') }}"></script>
+    <script src="{{ @URL::to('js/moment/moment-timezone.js') }}"></script>
+    {{--WHAT the calisss the fuck ????--}}
+    <script src="{{ @URL::to('js/moment/moment-timezone-with-data.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>
+@stop
 @section('content')
     <div class="row">
         <div class="col-lg-12">

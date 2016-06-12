@@ -9,6 +9,7 @@
 {{--Stylesheet call--}}
     <link href="{{ @URL::to('Framework/Bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/datepicker3.css')}}" rel="stylesheet">
+    <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/styles.css') }}" rel="stylesheet">
@@ -151,7 +152,9 @@ $userMenuTabs = array
 
 {{--Script call--}}
 <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
-<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>{{--
+<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>
+{{--<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>--}}
+{{--
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/chart.min.js') }}"></script>
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/chart-data.js') }}"></script>--}}{{--
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart.js') }}"></script>
