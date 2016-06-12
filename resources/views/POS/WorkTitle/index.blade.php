@@ -1,6 +1,6 @@
 @extends('master')
 @section('csrfToken')
-    <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script src="{{ @URL::to('js/jquery/jquery-ui.js') }}"></script>
     <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery-ui.css') }}"/>
     <link rel="stylesheet" href="{{ @URL::to('css/employeeTitles.css') }}"/>
@@ -178,6 +178,7 @@
 
             $("#frmBtnAddEmpl").bind("click", function() {
                 var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+                alert(CSRF_TOKEN);
                 var emplId =  $("#employeeSelect").val();
                 var emplTitleId = $("#frmTitleId").val();
                 $.ajax({
