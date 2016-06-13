@@ -15,7 +15,7 @@ class CreateExtrasTable extends Migration
         Schema::create('extras', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
-            $table->string('desc');
+            $table->string('description');
             $table->string('effect');
             $table->float('value');
             $table->integer('status');

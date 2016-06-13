@@ -10,7 +10,7 @@ class Extra extends Model
 
     protected $table = 'extras';
 
-    protected $fillable = ['name', 'desc', 'effect', 'value', 'status', 'slug'];
+    protected $fillable = ['name', 'description', 'effect', 'value', 'status', 'slug'];
 
     public function extra_item()
     {
