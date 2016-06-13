@@ -1896,10 +1896,10 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     ctx2d.fillRect(x + w / 2 / 2, y * 2.2, width, height);
 
                     /*Left*/
-                    ctx2d.fillRect(x - (h / 2) * 1.2, y + (h / 2 / 1.9), height, width);
+                    ctx2d.fillRect(x - (h / 2) * 1.2,-width/2, height, width);
 
                     /*Right*/
-                    ctx2d.fillRect(x + w / 2 + width * 1.2, y + (h / 2 / 1.9), height, width);
+                    ctx2d.fillRect(x + w / 2 + width * 1.2, -width/2, height, width);
                     /*End Seats*/
 
 
@@ -1912,10 +1912,10 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     ctx2d.fillRect(x + w / 2 / 2 + 2, y * 2.2 + 2, width - 4, height - 4);
 
                     /*Left*/
-                    ctx2d.fillRect(x - (h / 2) * 1.2 + 2, y + (h / 2 / 1.9) + 2, height - 4, width - 4);
+                    ctx2d.fillRect(x - (h / 2) * 1.2 + 2, -width/2+2, height - 4, width - 4);
 
                     /*Right*/
-                    ctx2d.fillRect(x + w / 2 + width * 1.2 + 2, y + (h / 2 / 1.9) + 2, height - 4, width - 4);
+                    ctx2d.fillRect(x + w / 2 + width * 1.2 + 2, -width/2+2, height - 4, width - 4);
                     /*End Seats*/
                 }
                 else {
@@ -1934,10 +1934,10 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     ctx2d.fillRect(x + w / 2 / 2 - width, y * 2.2, width, height);
 
                     /*Left*/
-                    ctx2d.fillRect(x - (h / 2) * 1.2, y + (h / 2 / 1.9), height, width);
+                    ctx2d.fillRect(x - (h / 2) * 1.2, -width/2, height, width);
 
                     /*Right*/
-                    ctx2d.fillRect(x + w / 2 + width * 2.2, y + (h / 2 / 1.9), height, width);
+                    ctx2d.fillRect(x + w / 2 + width * 2.2,-width/2, height, width);
                     /*End Seats*/
 
 
@@ -1954,10 +1954,10 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     ctx2d.fillRect(x + w / 2 / 2 - width + 2, y * 2.2 + 2, width - 4, height - 4);
 
                     /*Left*/
-                    ctx2d.fillRect(x - (h / 2) * 1.2 + 2, y + (h / 2 / 1.9) + 2, height - 4, width - 4);
+                    ctx2d.fillRect(x - (h / 2) * 1.2 + 2, -width/2+2, height - 4, width - 4);
 
                     /*Right*/
-                    ctx2d.fillRect(x + w / 2 + width * 2.2 + 2, y + (h / 2 / 1.9) + 2, height - 4, width - 4);
+                    ctx2d.fillRect(x + w / 2 + width * 2.2 + 2, -width/2+2, height - 4, width - 4);
                     /*End Seats*/
                 }
 
