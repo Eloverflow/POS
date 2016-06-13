@@ -61,7 +61,7 @@ class ItemsController extends Controller
         $tableChildren = array($tableChild1);
 
 
-        return view('shared.listItems',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
+        return view('erp.item.listItems',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
     }
 
     public function liste()
@@ -213,7 +213,7 @@ class ItemsController extends Controller
 
 
 
-        return view('shared.create',compact('title', 'tableChoiceLists', 'tableColumns'));
+        return view('erp.item.create',compact('title', 'tableChoiceLists', 'tableColumns'));
     }
 
     public function createe()

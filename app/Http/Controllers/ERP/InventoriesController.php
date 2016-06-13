@@ -52,9 +52,9 @@ class InventoriesController extends \App\Http\Controllers\Controller
         return view('shared.list',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
     }
 
-    public function emptyEdit()
+    public function emptyEdit($slug)
     {
-        function() { return Redirect::to('/inventory');}
+        
     }
     public function edit($slug)
     {

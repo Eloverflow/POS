@@ -20,4 +20,9 @@ class ItemType extends Model
     {
         return $this->hasMany('App\Models\ERP\Item');
     }
+
+    public function extra_item_type()
+    {
+        return $this->hasMany('App\Models\ERP\ExtraItemType', 'id', 'item_type_id');
+    }
 }

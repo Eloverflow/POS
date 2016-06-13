@@ -72,6 +72,10 @@ Route::get('/items/liste',  ['uses' => 'ERP\ItemsController@liste', 'middleware'
 
 Route::get('/items/createe',  ['uses' => 'ERP\ItemsController@createe', 'middleware' => 'auth']);
 
+Route::get('/extras',  ['uses' => 'ERP\ExtrasController@index', 'middleware' => 'auth']);
+Route::get('/extras/create',  ['uses' => 'ERP\ExtrasController@create', 'middleware' => 'auth']);
+Route::post('/extras/create',  ['uses' => 'ERP\ExtrasController@postCreate', 'middleware' => 'auth']);
+
 Route::get('/clients',  ['uses' => 'POS\ClientController@index', 'middleware' => 'auth']);
 Route::get('/clients/create',  ['uses' => 'POS\ClientController@create', 'middleware' => 'auth']);
 Route::post('/clients/create',  ['uses' => 'POS\ClientController@postCreate', 'middleware' => 'auth']);

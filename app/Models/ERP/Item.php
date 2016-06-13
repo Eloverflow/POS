@@ -23,6 +23,10 @@ class Item extends Model
     {
         return $this->belongsTo('App\Models\ERP\Inventory');
     }
+    public function extra_item()
+    {
+        return $this->hasMany('App\Models\ERP\ExtraItem', 'id', 'item_id');
+    }
 }
 
 

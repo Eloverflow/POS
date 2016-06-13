@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateSalesTable extends Migration
+class CreateExtrasTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,13 +12,14 @@ class CreateSalesTable extends Migration
      */
     public function up()
     {
-        Schema::create('sales', function (Blueprint $table) {
+        Schema::create('extras', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('cancelled');
-            $table->integer('sale_number')->nullable();
-            $table->float('subTotal')->nullable();
-            $table->float('total')->nullable();
-            $table->json('extras')->nullable();
+            $table->string('name');
+            $table->string('desc');
+            $table->string('effect');
+            $table->float('value');
+            $table->integer('status');
+            $table->string('slug');
             $table->timestamps();
         });
     }
@@ -30,6 +31,6 @@ class CreateSalesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('sales');
+        Schema::drop('extras');
     }
 }

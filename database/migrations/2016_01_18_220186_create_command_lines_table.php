@@ -23,6 +23,7 @@ class CreateCommandLinesTable extends Migration
             $table->integer('status')->default(1);
             $table->string('notes');
             $table->float('cost');
+            $table->json('extras')->nullable();
             $table->timestamps();
         });
     }

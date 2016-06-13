@@ -26,6 +26,7 @@ class CreateSaleLinesTable extends Migration
             $table->string('size');
             $table->json('taxes')->nullable();
             $table->float('cost');
+            $table->json('extras')->nullable();
             $table->timestamps();
         });
     }
