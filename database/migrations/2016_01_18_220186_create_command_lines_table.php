@@ -20,6 +20,7 @@ class CreateCommandLinesTable extends Migration
             $table->foreign('item_id')->references('id')->on('items')->nullable();
             $table->string('size');
             $table->integer('quantity');
+            $table->integer('status')->default(1);
             $table->string('notes');
             $table->float('cost');
             $table->timestamps();

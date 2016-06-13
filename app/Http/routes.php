@@ -24,7 +24,7 @@ Route::controllers([
 ]);
 /* End Authentication */
 
-Route::get('/user/password/update', ['uses' => function() { return  view('auth.update');},'middleware' => 'auth']);
+Route::get('/user/password/update', ['uses' => 'Auth\UserController@update','middleware' => 'auth']);
 Route::post('/user/password/update', ['uses' => 'Auth\UserController@updatePassword','middleware' => 'auth']);
 
 Route::get('/',  ['uses' => 'PagesController@index', 'middleware' => 'auth']);
@@ -47,9 +47,9 @@ Route::post('/menu/getBills',  ['uses' => 'POS\SalesController@getBills', 'middl
 
 
 Route::get('/inventory',  ['uses' => 'ERP\InventoriesController@index', 'middleware' => 'auth']);
-Route::get('/inventory/edit',  function() { return Redirect::to('/inventory');});
+Route::get('/inventory/edit', ['uses' => 'ERP\InventoriesController@emptyEdit', 'middleware' => 'auth']); 
 Route::get('/inventory/edit/{slug}',  ['uses' => 'ERP\InventoriesController@edit', 'middleware' => 'auth']);
-Route::get('/inventory/view',  function() { return Redirect::to('/inventory');});
+Route::get('/inventory/view',['uses' => 'ERP\InventoriesController@emptyEdit', 'middleware' => 'auth']);
 Route::get('/inventory/view/{slug}',  ['uses' => 'ERP\InventoriesController@details', 'middleware' => 'auth']);
 Route::post('/inventory/edit/{slug}',  ['uses' => 'ERP\InventoriesController@update', 'middleware' => 'auth']);
 Route::get('/inventory/create',  ['uses' => 'ERP\InventoriesController@create', 'middleware' => 'auth']);

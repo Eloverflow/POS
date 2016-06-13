@@ -40,6 +40,9 @@
                     <span style="position: absolute; right: 6px; top:6px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandClient[commandCurrentClient].notes.length %></span>
                 </div>
             </li>
+            <li style="background-color: #d62728" ng-show="commandClient[commandCurrentClient].status == 3" class="sale-item">
+                Commande annulé
+            </li>
             <div ng-show="commandClient[commandCurrentClient].notes.length != 0" class="itemNoteSeparation command">
                 <p ng-repeat="currentNote in commandClient[commandCurrentClient].notes"><% currentNote.note %> <span
                             ng-click="deleteItemNote(currentNote)" class="glyphicon glyphicon-remove right"></span></p>
@@ -65,7 +68,7 @@
                 </div>
             </script>
 
-            <li ng-repeat="commandItem in commandClient[commandCurrentClient].commandItems"
+            <li ng-repeat="commandItem in commandClient[commandCurrentClient].commandItems | filter :  { status: 2 }"
                 id="commandItem<% commandItem.id %>" class="sale-item">
                 <span ng-click="increase(commandItem)" class="glyphicon glyphicon-plus"></span>
                 <span ng-click="decrease(commandItem)" class="glyphicon glyphicon-minus"></span>
@@ -87,6 +90,49 @@
                                 ng-click="deleteItemNote(item, commandItem.notes)"
                                 class="glyphicon glyphicon-remove right"></span></p>
                 </div>
+
+                <span style="margin-right:2px;color: #30a5ff; position: absolute; top:2px; right:2px; font-size: 16px; width: 15px" class="glyphicon glyphicon-cloud-upload"></span>
+            </li>
+            <li ng-show="commandClient[commandCurrentClient].commandItems.length > 0">
+                <button ng-hide="commandClient[commandCurrentClient].status == 3" ng-click="cancelCommand(commandClient[commandCurrentClient])" href="#"
+                        style="background-color: #30a5ff; width: 49%; height: 40px; margin-left: 3px; margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
+                            class="glyphicon glyphicon-trash"></span>
+                    Annuler la commande
+                </button>
+                <button ng-show="commandClient[commandCurrentClient].status == 3" ng-click="reactivateCommand(commandClient[commandCurrentClient])" href="#"
+                        style="background-color: #30a5ff; width: 49%; height: 40px; margin-left: 3px; margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
+                            class="glyphicon glyphicon-repeat"></span>
+                    Réactiver la commande
+                </button>
+                <button ng-click="changeCommandItemsStatus()" href="#"
+                        style="background-color: #30a5ff; width: 49%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
+                            class="glyphicon glyphicon-upload"></span>
+                    Ajouter à la commande
+                </button>
+            </li>
+            <li style="border-left: 10px #00a5ff solid;border-right: 10px #00a5ff solid;" ng-repeat="commandItem in commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }"
+                id="commandItem<% commandItem.id %>" class="sale-item">
+                <span ng-click="increase(commandItem)" class="glyphicon glyphicon-plus"></span>
+                <span ng-click="decrease(commandItem)" class="glyphicon glyphicon-minus"></span>
+
+                <div class="saleTextZone"><input id="" type="number" ng-change="updateCommand()"
+                                                 ng-model="commandItem.quantity" value=""><span
+                            class="sale-item-name"><% commandItem.size.name + " " + commandItem.name%></span></div>
+                <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right special"></span>
+                <span uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
+                      popover-placement="<%placement.selected%>" popover-trigger="outsideClick"
+                      class="glyphicon glyphicon-comment itemNote right"> <span
+                            style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
+                <span class="priceItems"
+                      ng-hide="commandItemTimeToggle">$ <% (commandItem.size.price*commandItem.quantity | number:2) %></span>
+                <span class="timeItems" ng-show="commandItemTimeToggle"><% commandItem.time %></span>
+
+                <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
+                    <p ng-repeat="item in commandItem.notes"><% item.note %><span
+                                ng-click="deleteItemNote(item, commandItem.notes)"
+                                class="glyphicon glyphicon-remove right"></span></p>
+                </div>
+
             </li>
         </ul>
     </div>

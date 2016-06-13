@@ -23,6 +23,6 @@ class Command extends Model
 
     public function commandline()
     {
-        return $this->hasMany('App\Models\POS\CommandLine');
+        return $this->hasMany('App\Models\POS\CommandLine', 'command_id', 'id');
     }
 }

@@ -237,7 +237,7 @@ class SalesController extends Controller
         $result['commands'] = array();
 
 
-        $command = Command::where('table_id', $inputs['table']['id'])->where('status', '1')->get();
+        $command = Command::where('table_id', $inputs['table']['id'])->where('status', '>',  '0')->get();
 
         if($command != "")
         {
@@ -313,14 +313,19 @@ class SalesController extends Controller
                 if(!empty($inputCommand['command_number'])){
                     $command = Command::where('command_number', $inputCommand['command_number'])->first();
 
-                    $command->save();
-
                     /*We gotta update the command too now*/
                     if(!empty($inputCommand['notes']))
                     {
-                        $command['notes'] = json_encode($inputCommand['notes']); 
-                        $command->update();
+                        $inputCommand['notes'] = json_encode($inputCommand['notes']);
                     }
+                    $command['notes'] = $inputCommand['notes'];
+
+                    $command['status'] = $inputCommand['status'];
+                    $command->update();
+
+                    $command->save();
+
+
 /*
                     $command = $command[0];*/
 
@@ -362,13 +367,13 @@ class SalesController extends Controller
                             if(!empty($commandLine->first())){
                                 $result['msg'] .= " - Succeeded at finding the command line";/*
                                 $result['inputItem'] = $inputItem;*/
-                                $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes'])]);
+                                $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'status'=>$inputItem['status'], 'notes' => json_encode($inputItem['notes'])]);
                                 $result['msg'] .= " - Command line normally updated";
                                 array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->first()->id);
                             }
                             else{
                                 $result['msg'] .= " - Failed at finding the command line";
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']) ]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'status'=>$inputItem['status'],  'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']) ]);
 
                                 if($commandLine == ""){
                                     $result['msg'] .= " - Failed at recording command line";
@@ -449,7 +454,7 @@ class SalesController extends Controller
                                     if(!empty($inputCommand['notes']))
                                         $notes = json_encode($inputItem['notes']);
 
-                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => $notes]);
+                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'status'=>$inputItem['status'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => $notes]);
 
                                     if($commandLine == ""){
                                         $result['msg'] .= " - Failed at recording command line";
@@ -474,7 +479,7 @@ class SalesController extends Controller
                                 /* var_dump($command);*/
 
 
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes'])]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'],  'status'=>$inputItem['status'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes'])]);
                                 array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->id);
 
                                 if($commandLine == ""){

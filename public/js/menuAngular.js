@@ -118,6 +118,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             //
             var timeoutHandle; //On finish will normaly execute a function that update the current table'commands' - To avoid request overcharge
             var billTimeoutHandle; // Same thing but for the bills
+            var pendingRequestAuthRequest;
             //Msg on employee auth panel
             var msgEnterEmployeeNumber = "Entrez votre numéro d'employé";
             var msgEnterEmployeePassword = "Entrez votre mot de passe";
@@ -717,6 +718,40 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.delayedUpdateTable();
         }
 
+
+        $scope.cancelCommand = function (command) {
+
+            $callbackFunction =function () {
+                console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=3))
+                $scope.delayedUpdateTable();
+                $scope.showEmployeeModal = false;
+            }
+
+            $scope.validateEmployeePassword($callbackFunction);
+        }
+
+        $scope.reactivateCommand = function (command) {
+
+            $callbackFunction =function () {
+                console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=1))
+                $scope.delayedUpdateTable();
+                $scope.showEmployeeModal = false;
+            }
+
+            $scope.validateEmployeePassword($callbackFunction);
+        }
+
+        $scope.changeCommandItemsStatus = function () {
+            if ($scope.commandClient[$scope.commandCurrentClient].commandItems.length > 0) {
+                for (var i = 0; i < $scope.commandClient[$scope.commandCurrentClient].commandItems.length; i++) {
+                    if($scope.commandClient[$scope.commandCurrentClient].commandItems[i].status == 1)
+                        $scope.commandClient[$scope.commandCurrentClient].commandItems[i].status = 2;
+                }
+                $scope.delayedUpdateTable();
+            }
+
+        }
+
         /*Add an item to the current command*/
         $scope.addItem = function () {
 
@@ -730,12 +765,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             var time = new Date();
             $scope.selectedItemForSize['time'] = time.getHours() + "H" + ((time.getMinutes().toString().length < 2) ? "0" : "") + time.getMinutes();
 
+            $scope.selectedItemForSize['status'] = 1;
 
             var result = "";
 
             if ($scope.commandClient[$scope.commandCurrentClient] != null && typeof $scope.commandClient[$scope.commandCurrentClient].commandItems != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].commandItems != null)
                 result = $.grep($scope.commandClient[$scope.commandCurrentClient].commandItems, function (e) {
-                    return e.id == $scope.selectedItemForSize.id && e.size.value == $scope.selectedItemForSize.size.value;
+                    return e.id == $scope.selectedItemForSize.id && e.size.value == $scope.selectedItemForSize.size.value && e.status == 1;
                 });
 
             if (result != "") {
@@ -1197,43 +1233,52 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         /*Send a request to authenticate the employee*/
         $scope.authenticateEmployee = function () {
 
-            $url = 'http://pos.mirageflow.com/employee/authenticate/' + $scope.newUserId;
-            $data = {password: $scope.newUserPassword};
+            if($scope.newUserId != null){
+                $url = 'http://pos.mirageflow.com/employee/authenticate/' + $scope.newUserId;
+                $data = {password: $scope.newUserPassword};
 
-            var $callbackFunction = function (response) {
+                var $callbackFunction = function (response) {
 
-                if (!response.hasOwnProperty('error')) {
-                    console.log("User is valid :");
-                    console.log(response);
-                    $scope.currentEmploye = response;
-                    $scope.getCommand();
+                    if (!response.hasOwnProperty('error')) {
+                        console.log("User is valid :");
+                        console.log(response);
 
-                    var modalChangeEmployee = $('#changeEmployee');
-                    modalChangeEmployee.find('#windowModalBlocker').fadeOut(300, function () {
-                        $(this).remove();
-                    })
+                        if(pendingRequestAuthRequest != null){
+                            pendingRequestAuthRequest();
+                        }
+                        else {
+                            $scope.currentEmploye = response;
+                            $scope.getCommand();
+                            $scope.getPlan();
+                        }
 
-                    $scope.showEmployeeModal = false;
-                    $scope.getPlan();
-                }
-                else {
-                    console.log("User is invalid :");
-                    console.log(response.error);
-
-
-                    $scope.validation = false;
-                    $scope.numPadMsg = msgEnterEmployeeNumber;
-                    $('#mainText').attr('type', 'text');
-                    $('#mainText').attr('placeholder', 'Numéro d\'employé');
-                    $scope.numPadErrMsg = response.error;
-                    $scope.showEmployeeModal = true;
-                    $scope.mainText = '';
-                }
+                        var modalChangeEmployee = $('#changeEmployee');
+                        modalChangeEmployee.find('#windowModalBlocker').fadeOut(300, function () {
+                            $(this).remove();
+                        })
+                        $scope.showEmployeeModal = false;
+                    }
+                    else {
+                        console.log("User is invalid :");
+                        console.log(response.error);
 
 
-            };
+                        $scope.validation = false;
+                        $scope.numPadMsg = msgEnterEmployeeNumber;
+                        $('#mainText').attr('type', 'text');
+                        $('#mainText').attr('placeholder', 'Numéro d\'employé');
+                        $scope.numPadErrMsg = response.error;
+                        $scope.showEmployeeModal = true;
+                        $scope.mainText = '';
+                    }
 
-            postReq.send($url, $data, null, $callbackFunction);
+
+                };
+
+
+
+                postReq.send($url, $data, null, $callbackFunction);
+            }
         }
 
         /*Will display the employee modal with reinitialized value*/
@@ -1258,6 +1303,26 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.mainText = '';
             $scope.validation = false;
             $scope.numPadErrMsg = ''
+        }
+
+        $scope.validateEmployeePassword =function ($callbackFunction) {
+            if (!$scope.showEmployeeModal) {
+                console.log($scope.currentEmploye)
+                $scope.toggleEmployeeModal();
+                pendingRequestAuthRequest = function() {$callbackFunction(); pendingRequestAuthRequest = null;};
+
+                $scope.numPadErrMsg = ''
+                $scope.newUserId = $scope.currentEmploye.id;
+                $scope.numPadMsg = msgEnterEmployeePassword;
+                $('#mainText').attr('placeholder', 'Mot de passe');
+                $('#mainText').attr('type', 'password');
+
+                /*We need to validate*/
+                $scope.validation = true;
+
+                /*Empty the field*/
+                $scope.mainText = '';
+            }
         }
 
         /*Employee numpad triggers - will authenticate or validate password on Enter click*/
@@ -1702,6 +1767,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                             var size = $scope.commandClient[f + 1].commandItems[p].size;
                             var quantity = $scope.commandClient[f + 1].commandItems[p].quantity;
+                            var status = $scope.commandClient[f + 1].commandItems[p].status;
 
                             /*
                              console.log('Notes')
@@ -1757,10 +1823,11 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                             $scope.commandClient[f + 1].commandItems[p].command_id = $scope.commandClient[f + 1].id;
                             $scope.commandClient[f + 1].commandItems[p].command_line_id = commandLineId;
+                            $scope.commandClient[f + 1].commandItems[p].status = status;
 
                         }
-
-                        $scope.commandClient[f + 1].status = "1";
+/*
+                        $scope.commandClient[f + 1].status = "1";*/
 
                     }
 

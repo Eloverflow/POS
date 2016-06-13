@@ -594,6 +594,7 @@ class CommandLineSeeder extends Seeder {
 
 
         foreach ($command_lines as $table){
+            $table['status']=2;
             CommandLine::create($table);
         }
 

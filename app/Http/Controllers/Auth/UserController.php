@@ -23,6 +23,10 @@ class UserController extends Controller
     |
     */
 
+    public function update(){
+       return  view('auth.update');
+    }
+
     public function updatePassword(){
 
         $rules = array(
