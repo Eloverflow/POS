@@ -36,7 +36,7 @@ class ExtrasController extends Controller
             $extraItemTypes = ExtraItemType::where('extra_id', $extra->id)->get();
 
             $extra['items'] = $extraItems->load('item');
-            $extra['item_types'] = $extraItemTypes->load('itemtype');
+            $extra['itemtypes'] = $extraItemTypes->load('itemtype');
         }
 
 
