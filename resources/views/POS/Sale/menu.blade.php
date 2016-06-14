@@ -66,6 +66,14 @@
                     <button type="button" class="btn btn-success"
                             ng-click="addNote(suggestion, commandItem)"><% suggestion %></button>
                 </div>
+                <div ng-repeat="extra in extras | filter : {items:{item :{id: commandItem.id}} }">
+                    <button type="button" class="btn btn-primary"
+                            ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                </div>
+                <div ng-repeat="extra in extras | filter : {itemtypes:{itemtype: {id: commandItem.item_type_id}}}">
+                    <button type="button" class="btn btn-primary"
+                            ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                </div>
             </script>
 
             <li ng-repeat="commandItem in commandClient[commandCurrentClient].commandItems | filter :  { status: 2 }"

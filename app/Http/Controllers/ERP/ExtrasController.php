@@ -40,6 +40,24 @@ class ExtrasController extends Controller
         return view('erp.extra.index',compact('title', 'extras'));
     }
 
+    public  function liste()
+    {
+
+        $extras = Extra::all();
+
+        foreach ($extras as $extra)
+        {
+            $extraItems = ExtraItem::where('extra_id', $extra->id)->get();
+            $extraItemTypes = ExtraItemType::where('extra_id', $extra->id)->get();
+
+            $extra['items'] = $extraItems->load('item');
+            $extra['itemtypes'] = $extraItemTypes->load('itemtype');
+        }
+
+
+        return $extras;
+    }
+
     public  function create()
     {
 

@@ -673,6 +673,17 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 /*$('#changeEmployee').on('click',function(){
                  alert('test')});
                  */
+
+                $url = 'http://pos.mirageflow.com/extras/list';
+                var $callbackFunction = function (response) {
+
+                    console.log("Extra list received inside response");
+
+                    $scope.extras = response;
+                }
+
+
+                    getReq.send($url, null, $callbackFunction);
             };
 
             getReq.send($url, null, $callbackFunction);
