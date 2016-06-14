@@ -756,10 +756,11 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         $scope.changeCommandItemsStatus = function () {
             if ($scope.commandClient[$scope.commandCurrentClient].commandItems.length > 0) {
                 for (var i = 0; i < $scope.commandClient[$scope.commandCurrentClient].commandItems.length; i++) {
-                    if($scope.commandClient[$scope.commandCurrentClient].commandItems[i].status == 1)
+                    if($scope.commandClient[$scope.commandCurrentClient].commandItems[i].status == 1){
                         $scope.commandClient[$scope.commandCurrentClient].commandItems[i].status = 2;
+                        $scope.delayedUpdateTable();
+                    }
                 }
-                $scope.delayedUpdateTable();
             }
 
         }
