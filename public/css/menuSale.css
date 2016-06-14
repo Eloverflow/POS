@@ -392,7 +392,6 @@ div.saleTextZone input:focus{
 
 }
 
-
 .bottomRight{
 	top: 170px;
 	right: 20px;
@@ -594,6 +593,7 @@ span.number{
 
 #billWindow h1{
 
+	width: 200px;
 	color: #30a5ff;
 }
 

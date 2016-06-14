@@ -186,6 +186,8 @@
 <div id="billWindow">
     <h1>Factures</h1>
     <div class="upRight">
+        <button ng-click="" type="button" class="btn btn-info">Terminer la commande</button>
+        <button ng-click="" type="button" class="btn btn-success">Imprimer Factures</button>
         <button ng-click="closeBill()" type="button" class="btn btn-danger">FERMER</button>
     </div>
     <div class="bill-separation">
