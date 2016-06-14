@@ -63,17 +63,23 @@
                     </div>
                 </div>
                 <div ng-repeat="suggestion in noteSuggestions">
-                    <button type="button" class="btn btn-success"
+                    <button type="button" class="btn btn-note"
                             ng-click="addNote(suggestion, commandItem)"><% suggestion %></button>
                 </div>
-                <div ng-repeat="extra in extras | filter : {items:{item :{id: commandItem.id}} }">
-                    <button type="button" class="btn btn-primary"
-                            ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+
+                <div class="suggestions" >
+                    <div class="separation-extra" ></div>
+                    Extras
+                    <div ng-repeat="extra in extras | filter : {items:{item :{id: commandItem.id}} }">
+                        <button type="button" class="btn btn-extra"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                    </div>
+                    <div ng-repeat="extra in extras | filter : {itemtypes:{itemtype: {id: commandItem.item_type_id}}}">
+                        <button type="button" class="btn btn-extra"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                    </div>
                 </div>
-                <div ng-repeat="extra in extras | filter : {itemtypes:{itemtype: {id: commandItem.item_type_id}}}">
-                    <button type="button" class="btn btn-primary"
-                            ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
-                </div>
+
             </script>
 
             <li ng-repeat="commandItem in commandClient[commandCurrentClient].commandItems | filter :  { status: 2 }"
@@ -85,8 +91,12 @@
                                                  ng-model="commandItem.quantity" value=""><span
                             class="sale-item-name"><% commandItem.size.name + " " + commandItem.name%></span></div>
                 <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right special"></span>
-                <span uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
+                <span ng-hide="commandItem.id > 3"uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
                       popover-placement="<%placement.selected%>" popover-trigger="outsideClick"
+                      class="glyphicon glyphicon-comment itemNote right"> <span
+                            style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
+                <span ng-show="commandItem.id > 3" uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
+                      popover-placement="<%placement.selectedBottom%>" popover-trigger="outsideClick"
                       class="glyphicon glyphicon-comment itemNote right"> <span
                             style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
                 <span class="priceItems"
@@ -127,10 +137,15 @@
                                                  ng-model="commandItem.quantity" value=""><span
                             class="sale-item-name"><% commandItem.size.name + " " + commandItem.name%></span></div>
                 <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right special"></span>
-                <span uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
-                      popover-placement="<%placement.selected%>" popover-trigger="outsideClick"
+                 <span ng-hide="commandItem.id > 3"uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
+                       popover-placement="<%placement.selected%>" popover-trigger="outsideClick"
+                       class="glyphicon glyphicon-comment itemNote right"> <span
+                             style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
+                <span ng-show="commandItem.id > 3" uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
+                      popover-placement="<%placement.selectedBottom%>" popover-trigger="outsideClick"
                       class="glyphicon glyphicon-comment itemNote right"> <span
                             style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
+
                 <span class="priceItems"
                       ng-hide="commandItemTimeToggle">$ <% (commandItem.size.price*commandItem.quantity | number:2) %></span>
                 <span class="timeItems" ng-show="commandItemTimeToggle"><% commandItem.time %></span>

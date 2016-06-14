@@ -41,6 +41,41 @@
 	font-weight: bold;
 }
 
+.btn-note{
+	float: left;
+background-color: #333;
+color: #fff;
+	margin-right: 4px;
+	margin-bottom: 4px;
+}
+
+.btn-extra{
+	float: left;
+	background-color: #00a5ff;
+	color: #333;
+	border: 2px #333 solid;
+}
+
+.suggestions{
+	font-size: 28px;
+	color: #333;
+	display: inline-block;
+	width: 98%;
+	padding-bottom: 2px;/*
+	border-bottom: 2px #333 solid;*/
+	margin-bottom: 2px;
+}
+
+.separation-extra{
+	box-shadow: 0 4px 8px rgba(0,0,0,0.8);
+	display: inline-block;
+	position: absolute;
+	left: 0;
+	width: 100%;
+	border-bottom: 2px #333 solid;
+	margin-bottom: 2px;
+}
+
 
 /*svg.glyph{
 	width: 10%!important;

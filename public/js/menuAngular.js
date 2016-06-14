@@ -155,7 +155,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     'right-top',
                     'right-bottom'
                 ],
-                selected: 'bottom-right'
+                selected: 'bottom-right',
+                selectedBottom: 'top-right'
             };
             //
             $scope.clientPagerMaxSize = 3; //This represent the number of page number to display in the middle of the client pager
