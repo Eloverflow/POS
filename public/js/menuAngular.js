@@ -1047,13 +1047,16 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             var $callbackFunction = function (response) {
                 console.log('Updated bills')
-                for (var f = 0; f < response.saleLineIdMat.length; f++) {
+                if(typeof response.saleLineIdMat != 'undefined' && response.saleLineIdMat != null){
+                    for (var f = 0; f < response.saleLineIdMat.length; f++) {
 
-                    for (var g = 0; g < response.saleLineIdMat[f].length; g++) {
-                        $scope.bills[f][g].saleLineId = response.saleLineIdMat[f][g];
-                        $scope.bills[f][g].sale_id = response.saleIdArray[f];
+                        for (var g = 0; g < response.saleLineIdMat[f].length; g++) {
+                            $scope.bills[f][g].saleLineId = response.saleLineIdMat[f][g];
+                            $scope.bills[f][g].sale_id = response.saleIdArray[f];
+                        }
                     }
                 }
+
 
                 $timeout(function () {
                     $scope.progressValue = 100;
@@ -1067,7 +1070,21 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     $updateTableCallBack();
             };
 
-            postReq.send($url, $data, null, $callbackFunction);
+
+      /*      if (timeoutHandle != null){
+                $scope.getCommand();
+                timeoutHandle = null;
+            }*/
+
+
+
+          /*  $timeout(function () {*/
+                postReq.send($url, $data, null, $callbackFunction);
+           /*     $scope.progressValue = 100;
+                $('.progress-bar').addClass('progress-bar-success');
+                $scope.savingMessage = "Commande Sauvegardé!"
+            }, 500);
+*/
 
         }
 
@@ -1089,8 +1106,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         $scope.toggleTableModal = function () {
             $scope.showTableModal = !$scope.showTableModal;
-            if ($scope.showTableModal)
+            if ($scope.showTableModal){
                 $scope.getPlan();
+                if($scope.showPlanModal)
+                    $scope.togglePlanModal();
+            }
+
+
         };
         $scope.toggleBillDemo = function () {
             $scope.showBillDemo = !$scope.showBillDemo;
@@ -1098,12 +1120,25 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         };
         $scope.togglePlanModal = function () {
             $scope.showPlanModal = !$scope.showPlanModal;
-            if ($scope.showPlanModal)
+            if ($scope.showPlanModal){
                 $scope.getPlan();
+                if($scope.showTableModal)
+                    $scope.toggleTableModal();
+            }
+
         };
         $scope.toggleDivideBillModal = function () {
             if(typeof $scope.bills == 'undefined' || $scope.bills == null || $scope.showPanelOverwriteBill)
-            $scope.showDivideBillModal = !$scope.showDivideBillModal;
+            {
+                $scope.showDivideBillModal = !$scope.showDivideBillModal;
+                if (timeoutHandle != null){
+                    $scope.updateTable(function () {
+                        $scope.getCommand();
+                    });
+
+                    timeoutHandle = null;
+                }
+            }
             else
             $scope.showPanelOverwriteBill = true;
         };

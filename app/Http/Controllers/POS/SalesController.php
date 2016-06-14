@@ -318,8 +318,11 @@ class SalesController extends Controller
                     {
                         $inputCommand['notes'] = json_encode($inputCommand['notes']);
                     }
+
+                    if(!empty($inputCommand['notes']))
                     $command['notes'] = $inputCommand['notes'];
 
+                    if(!empty($inputCommand['status']))
                     $command['status'] = $inputCommand['status'];
                     $command->update();
 
