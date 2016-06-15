@@ -13,6 +13,7 @@
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('css/styles.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('css/modals.css') }}" rel="stylesheet">
     {{--End of Stylesheet call--}}
 
     <!--Icons-->
@@ -107,7 +108,7 @@ $userMenuTabs = array
 
 
 </div><!--/.sidebar-->
-<div style="z-index: -1;" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+<div style="z-index: 100;" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
     <div class="row fixed">
         <ol class="breadcrumb">
             <li><a href="{{ @URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
