@@ -224,8 +224,9 @@
                         <span class="" ng-hide="commandItem.cost">$ <%(commandItem.size.price*commandItem.quantity | number:2) %></span>
                         <span class="" ng-show="commandItem.cost">$ <% (commandItem.cost*commandItem.quantity | number:2) %></span>
 
-                        <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
+                        <div ng-show="commandItem.notes.length != 0 || commandItem.extras.length != 0" class="itemNoteSeparation">
                             <p ng-repeat="item in commandItem.notes"><% item.note %></p>
+                            <p ng-repeat="extra in commandItem.extras"><% extra.name %> <% extra.effect %> <% extra.value %> </p>
                         </div>
                     </li>
 

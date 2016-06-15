@@ -98,14 +98,17 @@
                 <span ng-show="commandItem.id > 3" uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
                       popover-placement="<%placement.selectedBottom%>" popover-trigger="outsideClick"
                       class="glyphicon glyphicon-comment itemNote right"> <span
-                            style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
+                            style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length + commandItem.extras.length %></span></span>
                 <span class="priceItems"
                       ng-hide="commandItemTimeToggle">$ <% (commandItem.size.price*commandItem.quantity | number:2) %></span>
                 <span class="timeItems" ng-show="commandItemTimeToggle"><% commandItem.time %></span>
 
-                <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
+                <div ng-show="commandItem.notes.length != 0 || commandItem.extras.length != 0" class="itemNoteSeparation">
                     <p ng-repeat="item in commandItem.notes"><% item.note %><span
                                 ng-click="deleteItemNote(item, commandItem.notes)"
+                                class="glyphicon glyphicon-remove right"></span></p>
+                    <p ng-repeat="extra in commandItem.extras track by $index"><% extra.name %> <% extra.effect %> <% extra.value %> <span
+                                ng-click="deleteItemExtra(item, commandItem.extras)"
                                 class="glyphicon glyphicon-remove right"></span></p>
                 </div>
 

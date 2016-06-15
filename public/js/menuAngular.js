@@ -719,6 +719,24 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             }
         }
 
+        /*Add a given note to a given item inside the current command*/
+        $scope.addExtra = function (extra, item) {
+
+            if (extra != "" && extra != undefined) {
+                if (typeof item != 'undefined' && item != null) {
+                    item.extras.push(extra);
+                }
+                else {
+                    if (typeof $scope.commandClient[$scope.commandCurrentClient].extras === 'undefined' || $scope.commandClient[$scope.commandCurrentClient].extras === null || $scope.commandClient[$scope.commandCurrentClient].extras === "")
+                        $scope.commandClient[$scope.commandCurrentClient].extras = [];
+
+                    $scope.commandClient[$scope.commandCurrentClient].extras.push(extra)
+                }
+
+                $scope.updateCommand();
+            }
+        }
+
         /*Delete a given note to a given item inside the current command*/
         $scope.deleteItemNote = function (note, item) {
             var index
@@ -728,6 +746,20 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             }
             else {
                 index = $scope.commandClient[$scope.commandCurrentClient].notes.indexOf(note);
+                $scope.commandClient[$scope.commandCurrentClient].notes.splice(index, 1);
+            }
+            $scope.delayedUpdateTable();
+        }
+
+        /*Delete a given note to a given item inside the current command*/
+        $scope.deleteItemExtra = function (extra, item) {
+            var index
+            if (typeof item != 'undefined' && item != null) {
+                index = item.indexOf(extra);
+                item.splice(index, 1);
+            }
+            else {
+                index = $scope.commandClient[$scope.commandCurrentClient].notes.indexOf(extra);
                 $scope.commandClient[$scope.commandCurrentClient].notes.splice(index, 1);
             }
             $scope.delayedUpdateTable();
@@ -1949,6 +1981,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                         if ($scope.commandClient[f + 1].notes != "")
                             $scope.commandClient[f + 1].notes = JSON.parse($scope.commandClient[f + 1].notes)
 
+                        if ($scope.commandClient[f + 1].extras != "")
+                            $scope.commandClient[f + 1].extras = JSON.parse($scope.commandClient[f + 1].extras)
+
                         $scope.commandClient[f + 1].commandItems = response.commands[f]['commandline'];
 
                         /*
@@ -1985,6 +2020,17 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                                 }
                             }
 
+                            var extras = [];
+                            if ($scope.commandClient[f + 1].commandItems[p].extras != "") {
+                                try {
+                                    extras = JSON.parse($scope.commandClient[f + 1].commandItems[p].extras);
+                                }
+                                catch (err) {
+                                    //There was an error we flush the notes
+                                    extras = [];
+                                }
+                            }
+
                             var commandLineId = $scope.commandClient[f + 1].commandItems[p].id
 
                             $scope.commandClient[f + 1].commandItems[p] = angular.copy($.grep($scope.menuItems, function (e) {
@@ -2017,6 +2063,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                             })[0];
                             $scope.commandClient[f + 1].commandItems[p].quantity = parseInt(quantity);
                             $scope.commandClient[f + 1].commandItems[p].notes = notes;
+                            $scope.commandClient[f + 1].commandItems[p].extras = extras;
 
                             $scope.commandClient[f + 1].commandItems[p].time = time.getHours() + "H" + ((time.getMinutes().toString().length < 2) ? "0" : "") + time.getMinutes();
 
