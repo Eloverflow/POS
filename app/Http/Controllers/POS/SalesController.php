@@ -149,6 +149,7 @@ class SalesController extends Controller
                     if (!empty($command)) {
                         $result['msg'] .= ' - Command Found';
                         $commandTable = Table::where('id', $command->table_id)->first();
+                        if(!empty($commandTable['status']) && $commandTable['status'] == 2)
                         $commandTable['status'] = 3;
                         $commandTable->save();
 

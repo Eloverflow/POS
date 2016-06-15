@@ -955,6 +955,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.selectedItemForSize['quantity'] = 1;
 
             $scope.selectedItemForSize['notes'] = [];
+            $scope.selectedItemForSize['extras'] = [];
 
             //Eventually selected size
             $scope.selectedItemForSize['size'] = angular.copy($scope.sizeProp.value);
