@@ -323,6 +323,8 @@ class SalesController extends Controller
 
                     if(!empty($inputCommand['notes']))
                         $command['notes'] = $inputCommand['notes'];
+                    else
+                        $command['notes'] = "";
 
                     /*We gotta update the command too now*/
                     if(!empty($inputCommand['extras']))
@@ -332,9 +334,15 @@ class SalesController extends Controller
 
                     if(!empty($inputCommand['extras']))
                         $command['extras'] = $inputCommand['extras'];
+                    else
+                        $command['extras'] = "";
+
 
                     if(!empty($inputCommand['status']))
                         $command['status'] = $inputCommand['status'];
+                    else
+                        $command['status'] = "";
+
 
                     if($command['status'] == 2)
                         $changingTableStatus = true;
