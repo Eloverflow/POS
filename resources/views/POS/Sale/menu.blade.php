@@ -67,7 +67,7 @@
                             ng-click="addNote(suggestion, commandItem)"><% suggestion %></button>
                 </div>
 
-                <div class="suggestions" >
+                <div ng-show="(extras | filter : {items:{item :{id: commandItem.id}}}).length > 0 || (extras | filter : {itemtypes:{itemtype: {id: commandItem.item_type_id}}}).length > 0" class="suggestions" >
                     <div class="separation-extra" ></div>
                     Extras
                     <div ng-repeat="extra in extras | filter : {items:{item :{id: commandItem.id}} }">

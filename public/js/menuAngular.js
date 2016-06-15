@@ -189,6 +189,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             if (!$scope.showEmployeeModal) {
                 $scope.changeEmployee();
             }
+            pendingRequestAuthRequest = null;
         });
 
 
@@ -779,11 +780,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 if(commandsValid)
                 {
                     $callbackFunction =function () {
-                        console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=2))
+                        for(var h = 0; h< $scope.commandClient.length; h++) {
+                            if (typeof $scope.commandClient[h + 1] != 'undefined' && $scope.commandClient[h + 1] != null) {
+                                console.log('Command status for command.id changed from ' + $scope.commandClient[h + 1].status +' to ' + ($scope.commandClient[h + 1].status=2))
+                            }
+                        }
 
-                        $scope.commandClient.splice(index, 1)
-
-                        $scope.delayedUpdateTable();
+                        $scope.updateTable(function () {$scope.bills = []; $scope.commandClient = []});
                         $scope.showEmployeeModal = false;
                     }
 
@@ -851,11 +854,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                     $callbackFunction =function () {
                         console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=2))
 
-                        $scope.commandClient.splice(index, 1)
+
 
                         /*Suggest the employee to cancel the command to terminate or to finish it, bill included*/
 
-                        $scope.delayedUpdateTable();
+
+                        $scope.updateTable(function () {$scope.commandClient.splice(index, 1)});
+
                         $scope.showEmployeeModal = false;
                     }
 

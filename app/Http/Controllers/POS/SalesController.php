@@ -294,6 +294,7 @@ class SalesController extends Controller
         $result['commands'] = array();
         $result['commandLine'] = array();
         $result['commandLineIdMat'] = [];
+        $changingTableStatus = false;
 
         //If the post isn't empty
         if (!empty($inputs)) {
@@ -320,10 +321,16 @@ class SalesController extends Controller
                     }
 
                     if(!empty($inputCommand['notes']))
-                    $command['notes'] = $inputCommand['notes'];
+                        $command['notes'] = $inputCommand['notes'];
 
                     if(!empty($inputCommand['status']))
-                    $command['status'] = $inputCommand['status'];
+                        $command['status'] = $inputCommand['status'];
+
+                    if($command['status'] == 2)
+                        $changingTableStatus = true;
+                    else
+                        $changingTableStatus = false;
+
                     $command->update();
 
                     $command->save();
@@ -509,57 +516,11 @@ class SalesController extends Controller
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-            /*$client = Client::create(['slug' => rand(0, 99999999999)]);
-            $result['msg'] = "Successfully created the client";
-
-            if ($client != "") {
-
-
-               // $command = Command::create(['client_id' => $client->id, 'command_number' => Command::all()->last()->command_number + 1]);
-                $command = Command::create(['table_id' => $inputs['table'], 'client_id' => $client->id, 'command_number' => 1]);
-                $result['command_number'] = $command->command_number;
-
-
-
-                if ($command != "") {
-
-                    $result['msg'] = "Successfully created the command";
-
-                    foreach ($inputs['commands'] as $input) {
-                        $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $input['id'], 'cost' => $input['size']['price'], 'quantity' => $input['quantity']]);
-
-                        if($commandLine == ""){
-                            $result['msg'] = "Failed at command line";
-                            $result['success'] = "false";
-                            break;
-                        }
-                        else
-                        {
-                            $result['msg'] = "Successfully recorded the command line";
-                            $result['success'] = "true";
-                        }
-                    }
-                }
-                else{
-
-                    $result['msg'] = "Failed at creating the command";
-                }
-            }
+        if($changingTableStatus){
+            $table = Table::where('id', $inputs['table']['id'])->first();
+            $table['status'] = 1;
+            $table->save();
         }
-
-        */
-
         return $result;
     }
 

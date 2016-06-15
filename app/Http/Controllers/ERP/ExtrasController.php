@@ -146,10 +146,12 @@ class ExtrasController extends Controller
             ]);
 
 
+            if(!empty($inputs['items']))
             foreach ($inputs['items'] as $itemId){
                 ExtraItem::create(['item_id' => $itemId,'extra_id' =>$extra->id]);
             }
 
+            if(!empty($inputs['itemtypes']))
             foreach ($inputs['itemtypes']  as $itemTypeId){
                 ExtraItemType::create(['item_type_id' => $itemTypeId,'extra_id' =>$extra->id]);
             }
