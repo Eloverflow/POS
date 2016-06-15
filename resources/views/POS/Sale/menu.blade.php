@@ -122,11 +122,19 @@
                             class="glyphicon glyphicon-repeat"></span>
                     Réactiver la commande
                 </button>
-                <button ng-click="changeCommandItemsStatus()" href="#"
+                <button ng-show="(commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }).length > 0" ng-click="changeCommandItemsStatus()" href="#"
                         style="background-color: #30a5ff; width: 49%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
                             class="glyphicon glyphicon-upload"></span>
                     Ajouter à la commande
                 </button>
+                <button ng-hide="(commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }).length > 0" ng-click="terminateCommand(commandClient[commandCurrentClient])" href="#"
+                        style="background-color: #333; width: 49%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
+                            class="glyphicon glyphicon-save"></span>
+                    Terminer la commande
+                </button>
+            </li>
+            <li class="terminate-command-info" ng-show="showTerminateCommandInfo">
+                <span ng-repeat="info in terminateCommandInfo"><% info %><br></span>
             </li>
             <li style="border-left: 10px #00a5ff solid;border-right: 10px #00a5ff solid;" ng-repeat="commandItem in commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }"
                 id="commandItem<% commandItem.id %>" class="sale-item">

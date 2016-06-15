@@ -237,7 +237,7 @@ class SalesController extends Controller
         $result['commands'] = array();
 
 
-        $command = Command::where('table_id', $inputs['table']['id'])->where('status', '>',  '0')->get();
+        $command = Command::where('table_id', $inputs['table']['id'])->where('status', '<>',  '2')->get();
 
         if($command != "")
         {

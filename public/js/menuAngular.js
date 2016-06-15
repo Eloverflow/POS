@@ -175,6 +175,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             //
             $scope.savingMessage = "Pret!"; //Loading bar message
             //
+            $scope.terminateCommandInfo = [];
+            //
             var elem = document.body; // Used to go fullscreen.
             var fullscreenFlag = false;
             var splashFullScreen = $('#splashFullScreen');/*Box to inform you that you are now in fullscreen*/
@@ -740,6 +742,151 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             }
 
             $scope.validateEmployeePassword($callbackFunction);
+        }
+        
+        $scope.terminateCommands = function () {
+            if(typeof $scope.bills != 'undefined' && $scope.bills != null){
+                var commandsValid = true
+                var invalidMsg = ['Attention!'];
+                for(var h = 0; h< $scope.commandClient.length; h++){
+                    if(typeof $scope.commandClient[h+1] != 'undefined' && $scope.commandClient[h+1] != null){
+                        var commandValid = true;
+                        var index =  h
+                        for(var i = 0; i < $scope.commandClient[h+1].commandItems.length; i++){
+                            var itemValid = false;
+                            for(var b = 0; b < $scope.bills.length; b++){
+                                for(var bi = 0; bi < $scope.bills[b].length; bi++){
+                                    if($scope.commandClient[h+1].commandItems[i].command_id == $scope.bills[b][bi].command_id && $scope.commandClient[h+1].commandItems[i].command_line_id == $scope.bills[b][bi].command_line_id ){
+                                        itemValid = true;
+                                    }
+                                }
+                            }
+                            if(!itemValid){
+                                commandValid = false;
+                                invalidMsg.push('Item non facturé: #' + (i+1));
+                                invalidMsg.push($scope.commandClient[h+1].commandItems[i].size.name + ' de ' + $scope.commandClient[h+1].commandItems[i].name + ' sur la commande #' + (index+1))
+                            }
+                        }
+
+
+                        if(!commandValid){
+                            commandsValid = false;
+                        }
+                    }
+
+                }
+
+                if(commandsValid)
+                {
+                    $callbackFunction =function () {
+                        console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=2))
+
+                        $scope.commandClient.splice(index, 1)
+
+                        $scope.delayedUpdateTable();
+                        $scope.showEmployeeModal = false;
+                    }
+
+                    $scope.validateEmployeePassword($callbackFunction);
+                }
+                else {
+                    $scope.showTerminateCommandInfo = true;
+                    $scope.terminateCommandInfo = invalidMsg;
+
+                    // then call setTimeout again to reset the timer
+                    setTimeout(function () {
+                        $scope.showTerminateCommandInfo = false;
+                        $scope.terminateCommandInfo = []
+                    }, 1000+ $scope.terminateCommandInfo.length*1000);
+                }
+
+
+
+
+            }
+            else
+            {
+                $scope.showTerminateCommandInfo = true;
+                $scope.terminateCommandInfo.push("Il n'y a pas de facture, finissez la facturation.");
+                $scope.terminateCommandInfo.push("Sinon, Annulez la commande et terminez la de nouveau.");
+
+                // then call setTimeout again to reset the timer
+                setTimeout(function () {
+                    $scope.showTerminateCommandInfo = false;
+                    $scope.terminateCommandInfo = []
+                }, 3000);
+
+                /* There is no bill, you can either finish it. OR cancel it and terminate again*/
+            }
+
+        }
+/*
+        $scope.findCommandItemsInBills ?*/
+
+        $scope.terminateCommand = function (command) {
+
+            /*If there is no bill*/
+            if(typeof $scope.bills != 'undefined' && $scope.bills != null){
+                var valid = true;
+                var invalidMsg = ['Attention!'];
+                var index =  $scope.commandClient.indexOf(command)
+                for(var i = 0; i < command.commandItems.length; i++){
+                    var itemValid = false;
+                    for(var b = 0; b < $scope.bills.length; b++){
+                        for(var bi = 0; bi < $scope.bills[b].length; bi++){
+                            if(command.commandItems[i].command_id == $scope.bills[b][bi].command_id && command.commandItems[i].command_line_id == $scope.bills[b][bi].command_line_id ){
+                                itemValid = true;
+                            }
+                        }
+                    }
+                    if(!itemValid){
+                        valid = false;
+                        invalidMsg.push('Item non facturé: #' + (i+1));
+                        invalidMsg.push(command.commandItems[i].size.name + ' de ' + command.commandItems[i].name + ' sur la commande #' + (index))
+                    }
+                }
+
+                if(valid)
+                {
+                    $callbackFunction =function () {
+                        console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=2))
+
+                        $scope.commandClient.splice(index, 1)
+
+                        /*Suggest the employee to cancel the command to terminate or to finish it, bill included*/
+
+                        $scope.delayedUpdateTable();
+                        $scope.showEmployeeModal = false;
+                    }
+
+                    $scope.validateEmployeePassword($callbackFunction);
+                }
+                else {
+                    $scope.showTerminateCommandInfo = true;
+                    $scope.terminateCommandInfo = invalidMsg;
+
+                    // then call setTimeout again to reset the timer
+                    setTimeout(function () {
+                        $scope.showTerminateCommandInfo = false;
+                        $scope.terminateCommandInfo = []
+                    }, 1000+ $scope.terminateCommandInfo.length*1000);
+                }
+
+            }
+            else
+            {
+                $scope.showTerminateCommandInfo = true;
+                $scope.terminateCommandInfo.push("Il n'y a pas de facture, finissez la facturation.");
+                $scope.terminateCommandInfo.push("Sinon, Annulez la commande et terminez la de nouveau.");
+
+                // then call setTimeout again to reset the timer
+                setTimeout(function () {
+                    $scope.showTerminateCommandInfo = false;
+                    $scope.terminateCommandInfo = []
+                }, 3000);
+
+                /* There is no bill, you can either finish it. OR cancel it and terminate again*/
+            }
         }
 
         $scope.reactivateCommand = function (command) {
