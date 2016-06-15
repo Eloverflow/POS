@@ -30,6 +30,8 @@
                                         <option value="" @if($extra[$column] == "") selected @endif >Aucun</option>
                                         <option value="-" @if($extra[$column] == "-") selected @endif >Soustraire</option>
                                         <option value="+" @if($extra[$column] == "+") selected @endif >Additionner</option>
+                                        <option value="/" @if($extra[$column] == "/") selected @endif >Soustraire pourcentage</option>
+                                        <option value="*" @if($extra[$column] == "*") selected @endif >Additionner pourcentage</option>
                                     </select>
                                 </div>
                             @else

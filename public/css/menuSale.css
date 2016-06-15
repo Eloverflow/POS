@@ -58,6 +58,17 @@ color: #fff;
 	margin-bottom: 4px;
 }
 
+
+.btn-extra.negative{
+	background-color: #333;
+	color: #00a5ff;
+	border-color: #00a5ff;
+}
+
+.btn-extra.pourcent{
+	background-color: #444;
+}
+
 .suggestions{
 	font-size: 28px;
 	color: #333;

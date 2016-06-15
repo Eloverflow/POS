@@ -43,9 +43,18 @@
             <li style="background-color: #d62728" ng-show="commandClient[commandCurrentClient].status == 3" class="sale-item">
                 Commande annulé
             </li>
-            <div ng-show="commandClient[commandCurrentClient].notes.length != 0" class="itemNoteSeparation command">
+            <div ng-show="commandClient[commandCurrentClient].notes.length != 0 || commandClient[commandCurrentClient].extras.length != 0" class="itemNoteSeparation command">
                 <p ng-repeat="currentNote in commandClient[commandCurrentClient].notes"><% currentNote.note %> <span
                             ng-click="deleteItemNote(currentNote)" class="glyphicon glyphicon-remove right"></span></p>
+
+                <p ng-repeat="extra in commandClient[commandCurrentClient].extras track by $index"><% extra.name %>
+                        <span ng-click="deleteItemExtra(item, commandClient[commandCurrentClient].extras)"
+                              class="glyphicon glyphicon-remove right"></span>
+                    <span ng-show="extra.effect == '+'" style="color: #8ad919; float: right; margin-right: 10px;"> + <% extra.value %>$ </span>
+                    <span ng-show="extra.effect == '-'" style="color: red; float: right; margin-right: 10px;"> - <% extra.value %>$ </span>
+                    <span ng-show="extra.effect == '*'" style="color: #8ad919; float: right; margin-right: 10px;"> + <% extra.value | number:0 %>% </span>
+                    <span ng-show="extra.effect == '/'" style="color: red; float: right; margin-right: 10px;"> - <% extra.value | number:0 %>% </span>
+                </p>
             </div>
             <script type="text/ng-template" id="notePopover.html">
 
@@ -71,11 +80,23 @@
                     <div class="separation-extra" ></div>
                     Extras
                     <div ng-repeat="extra in extras | filter : {items:{item :{id: commandItem.id}} }">
-                        <button type="button" class="btn btn-extra"
+                        <button ng-show="extra.effect == '+'"  type="button" class="btn btn-extra"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                        <button ng-show="extra.effect == '*'"  type="button" class="btn btn-extra pourcent"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                        <button ng-show="extra.effect == '-'" type="button" class="btn btn-extra negative"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                        <button ng-show="extra.effect == '/'" type="button" class="btn btn-extra negative pourcent"
                                 ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
                     </div>
                     <div ng-repeat="extra in extras | filter : {itemtypes:{itemtype: {id: commandItem.item_type_id}}}">
-                        <button type="button" class="btn btn-extra"
+                        <button ng-show="extra.effect == '+'" type="button" class="btn btn-extra"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                        <button ng-show="extra.effect == '*'" type="button" class="btn btn-extra pourcent"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                        <button ng-show="extra.effect == '-'" type="button" class="btn btn-extra negative"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                        <button ng-show="extra.effect == '/'" type="button" class="btn btn-extra negative pourcent"
                                 ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
                     </div>
                 </div>
@@ -107,9 +128,14 @@
                     <p ng-repeat="item in commandItem.notes"><% item.note %><span
                                 ng-click="deleteItemNote(item, commandItem.notes)"
                                 class="glyphicon glyphicon-remove right"></span></p>
-                    <p ng-repeat="extra in commandItem.extras track by $index"><% extra.name %> <% extra.effect %> <% extra.value %> <span
-                                ng-click="deleteItemExtra(item, commandItem.extras)"
-                                class="glyphicon glyphicon-remove right"></span></p>
+                    <p ng-repeat="extra in commandItem.extras track by $index"><% extra.name %>
+                        <span ng-click="deleteItemExtra(item, commandItem.extras)"
+                              class="glyphicon glyphicon-remove right"></span>
+                        <span ng-show="extra.effect == '+'" style="color: #8ad919; float: right; margin-right: 10px;"> + <% extra.value %>$ </span>
+                        <span ng-show="extra.effect == '-'" style="color: red; float: right; margin-right: 10px;"> - <% extra.value %>$ </span>
+                        <span ng-show="extra.effect == '*'" style="color: #8ad919; float: right; margin-right: 10px;"> + <% extra.value | number:0 %>% </span>
+                        <span ng-show="extra.effect == '/'" style="color: red; float: right; margin-right: 10px;"> - <% extra.value | number:0 %>% </span>
+                    </p>
                 </div>
 
                 <span style="margin-right:2px;color: #30a5ff; position: absolute; top:2px; right:2px; font-size: 16px; width: 15px" class="glyphicon glyphicon-cloud-upload"></span>
@@ -161,10 +187,18 @@
                       ng-hide="commandItemTimeToggle">$ <% (commandItem.size.price*commandItem.quantity | number:2) %></span>
                 <span class="timeItems" ng-show="commandItemTimeToggle"><% commandItem.time %></span>
 
-                <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
+                <div ng-show="commandItem.notes.length != 0 || commandItem.extras.length != 0" class="itemNoteSeparation">
                     <p ng-repeat="item in commandItem.notes"><% item.note %><span
                                 ng-click="deleteItemNote(item, commandItem.notes)"
                                 class="glyphicon glyphicon-remove right"></span></p>
+                    <p ng-repeat="extra in commandItem.extras track by $index"><% extra.name %>
+                        <span ng-click="deleteItemExtra(item, commandItem.extras)"
+                              class="glyphicon glyphicon-remove right"></span>
+                        <span ng-show="extra.effect == '+'" style="color: #8ad919; float: right; margin-right: 10px;"> + <% extra.value %>$ </span>
+                        <span ng-show="extra.effect == '-'" style="color: red; float: right; margin-right: 10px;"> - <% extra.value %>$ </span>
+                        <span ng-show="extra.effect == '*'" style="color: #8ad919; float: right; margin-right: 10px;"> + <% extra.value | number:0 %>% </span>
+                        <span ng-show="extra.effect == '/'" style="color: red; float: right; margin-right: 10px;"> - <% extra.value | number:0 %>% </span>
+                    </p>
                 </div>
 
             </li>
