@@ -186,8 +186,8 @@
 <div id="billWindow">
     <h1>Factures</h1>
     <div class="upRight">
-        <button ng-click="" type="button" class="btn btn-info">Terminer la commande</button>
-        <button ng-click="" type="button" class="btn btn-success">Imprimer Factures</button>
+        <button  style="background-color: #333; border-color: #8ad919" ng-click="terminateCommands()" type="button" class="btn btn-info">Terminer les commandes</button>
+        <button  style="background-color: #333; border-color: #30a5ff" ng-click="" type="button" class="btn btn-success">Imprimer les factures</button>
         <button ng-click="closeBill()" type="button" class="btn btn-danger">FERMER</button>
     </div>
     <div class="bill-separation">
@@ -224,8 +224,9 @@
                         <span class="" ng-hide="commandItem.cost">$ <%(commandItem.size.price*commandItem.quantity | number:2) %></span>
                         <span class="" ng-show="commandItem.cost">$ <% (commandItem.cost*commandItem.quantity | number:2) %></span>
 
-                        <div ng-show="commandItem.notes.length != 0" class="itemNoteSeparation">
+                        <div ng-show="commandItem.notes.length != 0 || commandItem.extras.length != 0" class="itemNoteSeparation">
                             <p ng-repeat="item in commandItem.notes"><% item.note %></p>
+                            <p ng-repeat="extra in commandItem.extras"><% extra.name %> <% extra.effect %> <% extra.value %> </p>
                         </div>
                     </li>
 
@@ -257,6 +258,11 @@
                     </div>
                 </div>
         </div>
+    </div>
+    <div ng-show="showTerminateCommandInfo" style="position: fixed; bottom: 0; left: 0; width: 100%; z-index: 1051; font-size: 22px!important;">
+        <li class="terminate-command-info" >
+            <span ng-repeat="info in terminateCommandInfo"><% info %><br></span>
+        </li>
     </div>
 </div>
 

@@ -175,6 +175,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             //
             $scope.savingMessage = "Pret!"; //Loading bar message
             //
+            $scope.terminateCommandInfo = [];
+            //
             var elem = document.body; // Used to go fullscreen.
             var fullscreenFlag = false;
             var splashFullScreen = $('#splashFullScreen');/*Box to inform you that you are now in fullscreen*/
@@ -187,6 +189,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             if (!$scope.showEmployeeModal) {
                 $scope.changeEmployee();
             }
+            pendingRequestAuthRequest = null;
         });
 
 
@@ -716,6 +719,24 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             }
         }
 
+        /*Add a given note to a given item inside the current command*/
+        $scope.addExtra = function (extra, item) {
+
+            if (extra != "" && extra != undefined) {
+                if (typeof item != 'undefined' && item != null) {
+                    item.extras.push(extra);
+                }
+                else {
+                    if (typeof $scope.commandClient[$scope.commandCurrentClient].extras === 'undefined' || $scope.commandClient[$scope.commandCurrentClient].extras === null || $scope.commandClient[$scope.commandCurrentClient].extras === "")
+                        $scope.commandClient[$scope.commandCurrentClient].extras = [];
+
+                    $scope.commandClient[$scope.commandCurrentClient].extras.push(extra)
+                }
+
+                $scope.updateCommand();
+            }
+        }
+
         /*Delete a given note to a given item inside the current command*/
         $scope.deleteItemNote = function (note, item) {
             var index
@@ -725,6 +746,20 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             }
             else {
                 index = $scope.commandClient[$scope.commandCurrentClient].notes.indexOf(note);
+                $scope.commandClient[$scope.commandCurrentClient].notes.splice(index, 1);
+            }
+            $scope.delayedUpdateTable();
+        }
+
+        /*Delete a given note to a given item inside the current command*/
+        $scope.deleteItemExtra = function (extra, item) {
+            var index
+            if (typeof item != 'undefined' && item != null) {
+                index = item.indexOf(extra);
+                item.splice(index, 1);
+            }
+            else {
+                index = $scope.commandClient[$scope.commandCurrentClient].notes.indexOf(extra);
                 $scope.commandClient[$scope.commandCurrentClient].notes.splice(index, 1);
             }
             $scope.delayedUpdateTable();
@@ -740,6 +775,155 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             }
 
             $scope.validateEmployeePassword($callbackFunction);
+        }
+        
+        $scope.terminateCommands = function () {
+            if(typeof $scope.bills != 'undefined' && $scope.bills != null){
+                var commandsValid = true
+                var invalidMsg = ['Attention!'];
+                for(var h = 0; h< $scope.commandClient.length; h++){
+                    if(typeof $scope.commandClient[h+1] != 'undefined' && $scope.commandClient[h+1] != null){
+                        var commandValid = true;
+                        var index =  h
+                        for(var i = 0; i < $scope.commandClient[h+1].commandItems.length; i++){
+                            var itemValid = false;
+                            for(var b = 0; b < $scope.bills.length; b++){
+                                for(var bi = 0; bi < $scope.bills[b].length; bi++){
+                                    if($scope.commandClient[h+1].commandItems[i].command_id == $scope.bills[b][bi].command_id && $scope.commandClient[h+1].commandItems[i].command_line_id == $scope.bills[b][bi].command_line_id ){
+                                        itemValid = true;
+                                    }
+                                }
+                            }
+                            if(!itemValid){
+                                commandValid = false;
+                                invalidMsg.push('Item non facturé: #' + (i+1));
+                                invalidMsg.push($scope.commandClient[h+1].commandItems[i].size.name + ' de ' + $scope.commandClient[h+1].commandItems[i].name + ' sur la commande #' + (index+1))
+                            }
+                        }
+
+
+                        if(!commandValid){
+                            commandsValid = false;
+                        }
+                    }
+
+                }
+
+                if(commandsValid)
+                {
+                    $callbackFunction =function () {
+                        for(var h = 0; h< $scope.commandClient.length; h++) {
+                            if (typeof $scope.commandClient[h + 1] != 'undefined' && $scope.commandClient[h + 1] != null) {
+                                console.log('Command status for command.id changed from ' + $scope.commandClient[h + 1].status +' to ' + ($scope.commandClient[h + 1].status=2))
+                            }
+                        }
+
+                        $scope.updateTable(function () {$scope.bills = []; $scope.commandClient = []});
+                        $scope.showEmployeeModal = false;
+                    }
+
+                    $scope.validateEmployeePassword($callbackFunction);
+                }
+                else {
+                    $scope.showTerminateCommandInfo = true;
+                    $scope.terminateCommandInfo = invalidMsg;
+
+                    // then call setTimeout again to reset the timer
+                    setTimeout(function () {
+                        $scope.showTerminateCommandInfo = false;
+                        $scope.terminateCommandInfo = []
+                    }, 1000+ $scope.terminateCommandInfo.length*1000);
+                }
+
+
+
+
+            }
+            else
+            {
+                $scope.showTerminateCommandInfo = true;
+                $scope.terminateCommandInfo.push("Il n'y a pas de facture, finissez la facturation.");
+                $scope.terminateCommandInfo.push("Sinon, Annulez la commande et terminez la de nouveau.");
+
+                // then call setTimeout again to reset the timer
+                setTimeout(function () {
+                    $scope.showTerminateCommandInfo = false;
+                    $scope.terminateCommandInfo = []
+                }, 3000);
+
+                /* There is no bill, you can either finish it. OR cancel it and terminate again*/
+            }
+
+        }
+/*
+        $scope.findCommandItemsInBills ?*/
+
+        $scope.terminateCommand = function (command) {
+
+            /*If there is no bill*/
+            if(typeof $scope.bills != 'undefined' && $scope.bills != null){
+                var valid = true;
+                var invalidMsg = ['Attention!'];
+                var index =  $scope.commandClient.indexOf(command)
+                for(var i = 0; i < command.commandItems.length; i++){
+                    var itemValid = false;
+                    for(var b = 0; b < $scope.bills.length; b++){
+                        for(var bi = 0; bi < $scope.bills[b].length; bi++){
+                            if(command.commandItems[i].command_id == $scope.bills[b][bi].command_id && command.commandItems[i].command_line_id == $scope.bills[b][bi].command_line_id ){
+                                itemValid = true;
+                            }
+                        }
+                    }
+                    if(!itemValid){
+                        valid = false;
+                        invalidMsg.push('Item non facturé: #' + (i+1));
+                        invalidMsg.push(command.commandItems[i].size.name + ' de ' + command.commandItems[i].name + ' sur la commande #' + (index))
+                    }
+                }
+
+                if(valid)
+                {
+                    $callbackFunction =function () {
+                        console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=2))
+
+
+
+                        /*Suggest the employee to cancel the command to terminate or to finish it, bill included*/
+
+
+                        $scope.updateTable(function () {$scope.commandClient.splice(index, 1)});
+
+                        $scope.showEmployeeModal = false;
+                    }
+
+                    $scope.validateEmployeePassword($callbackFunction);
+                }
+                else {
+                    $scope.showTerminateCommandInfo = true;
+                    $scope.terminateCommandInfo = invalidMsg;
+
+                    // then call setTimeout again to reset the timer
+                    setTimeout(function () {
+                        $scope.showTerminateCommandInfo = false;
+                        $scope.terminateCommandInfo = []
+                    }, 1000+ $scope.terminateCommandInfo.length*1000);
+                }
+
+            }
+            else
+            {
+                $scope.showTerminateCommandInfo = true;
+                $scope.terminateCommandInfo.push("Il n'y a pas de facture, finissez la facturation.");
+                $scope.terminateCommandInfo.push("Sinon, Annulez la commande et terminez la de nouveau.");
+
+                // then call setTimeout again to reset the timer
+                setTimeout(function () {
+                    $scope.showTerminateCommandInfo = false;
+                    $scope.terminateCommandInfo = []
+                }, 3000);
+
+                /* There is no bill, you can either finish it. OR cancel it and terminate again*/
+            }
         }
 
         $scope.reactivateCommand = function (command) {
@@ -771,6 +955,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.selectedItemForSize['quantity'] = 1;
 
             $scope.selectedItemForSize['notes'] = [];
+            $scope.selectedItemForSize['extras'] = [];
 
             //Eventually selected size
             $scope.selectedItemForSize['size'] = angular.copy($scope.sizeProp.value);
@@ -1797,6 +1982,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                         if ($scope.commandClient[f + 1].notes != "")
                             $scope.commandClient[f + 1].notes = JSON.parse($scope.commandClient[f + 1].notes)
 
+                        if ($scope.commandClient[f + 1].extras != "")
+                            $scope.commandClient[f + 1].extras = JSON.parse($scope.commandClient[f + 1].extras)
+
                         $scope.commandClient[f + 1].commandItems = response.commands[f]['commandline'];
 
                         /*
@@ -1833,6 +2021,17 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                                 }
                             }
 
+                            var extras = [];
+                            if ($scope.commandClient[f + 1].commandItems[p].extras != "") {
+                                try {
+                                    extras = JSON.parse($scope.commandClient[f + 1].commandItems[p].extras);
+                                }
+                                catch (err) {
+                                    //There was an error we flush the notes
+                                    extras = [];
+                                }
+                            }
+
                             var commandLineId = $scope.commandClient[f + 1].commandItems[p].id
 
                             $scope.commandClient[f + 1].commandItems[p] = angular.copy($.grep($scope.menuItems, function (e) {
@@ -1865,6 +2064,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                             })[0];
                             $scope.commandClient[f + 1].commandItems[p].quantity = parseInt(quantity);
                             $scope.commandClient[f + 1].commandItems[p].notes = notes;
+                            $scope.commandClient[f + 1].commandItems[p].extras = extras;
 
                             $scope.commandClient[f + 1].commandItems[p].time = time.getHours() + "H" + ((time.getMinutes().toString().length < 2) ? "0" : "") + time.getMinutes();
 

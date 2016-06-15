@@ -58,6 +58,18 @@ color: #fff;
 	margin-bottom: 4px;
 }
 
+
+.btn-extra.negative{
+	background-color: #333;
+	color: #00a5ff;
+	border-color: #00a5ff;
+}
+
+.btn-extra.pourcent{
+	background-color: #444;
+	color: #fff;
+}
+
 .suggestions{
 	font-size: 28px;
 	color: #333;
@@ -632,6 +644,15 @@ span.number{
 	bottom: 49px;
 }
 
+.terminate-command-info{
+	text-align: center;
+	color: #fff;
+	border: 1px #00a5ff solid;
+	border-radius: 6px;
+	padding: 10px;
+	margin: 4px;
+}
+
 .btn-facture{
 	font-size: 1.7em;
 	height: 100%;
@@ -1172,8 +1193,10 @@ body{
 		float: right;
 		font-size: 17px;
 		border-radius: 5px;
-		padding: 6px;
-		border: 1px white solid;
+		padding: 6px;/*
+		background-color: #333;*/
+		border: 2px #333 solid;/*
+		box-shadow: -2px 2px 4px rgba(51,51,51,0.9);*/
 	}
 
 

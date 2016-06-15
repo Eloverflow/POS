@@ -30,6 +30,8 @@
                                         <option value="" >Aucun</option>
                                         <option value="-" >Soustraire</option>
                                         <option value="+" >Additionner</option>
+                                        <option value="/" >Soustraire pourcentage</option>
+                                        <option value="*" >Additionner pourcentage</option>
                                     </select>
                                 </div>
                             @else

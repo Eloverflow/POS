@@ -149,6 +149,7 @@ class SalesController extends Controller
                     if (!empty($command)) {
                         $result['msg'] .= ' - Command Found';
                         $commandTable = Table::where('id', $command->table_id)->first();
+                        if(!empty($commandTable['status']) && $commandTable['status'] == 2)
                         $commandTable['status'] = 3;
                         $commandTable->save();
 
@@ -237,7 +238,7 @@ class SalesController extends Controller
         $result['commands'] = array();
 
 
-        $command = Command::where('table_id', $inputs['table']['id'])->where('status', '>',  '0')->get();
+        $command = Command::where('table_id', $inputs['table']['id'])->where('status', '<>',  '2')->get();
 
         if($command != "")
         {
@@ -294,6 +295,7 @@ class SalesController extends Controller
         $result['commands'] = array();
         $result['commandLine'] = array();
         $result['commandLineIdMat'] = [];
+        $changingTableStatus = false;
 
         //If the post isn't empty
         if (!empty($inputs)) {
@@ -320,10 +322,33 @@ class SalesController extends Controller
                     }
 
                     if(!empty($inputCommand['notes']))
-                    $command['notes'] = $inputCommand['notes'];
+                        $command['notes'] = $inputCommand['notes'];
+                    else
+                        $command['notes'] = "";
+
+                    /*We gotta update the command too now*/
+                    if(!empty($inputCommand['extras']))
+                    {
+                        $inputCommand['extras'] = json_encode($inputCommand['extras']);
+                    }
+
+                    if(!empty($inputCommand['extras']))
+                        $command['extras'] = $inputCommand['extras'];
+                    else
+                        $command['extras'] = "";
+
 
                     if(!empty($inputCommand['status']))
-                    $command['status'] = $inputCommand['status'];
+                        $command['status'] = $inputCommand['status'];
+                    else
+                        $command['status'] = "";
+
+
+                    if($command['status'] == 2)
+                        $changingTableStatus = true;
+                    else
+                        $changingTableStatus = false;
+
                     $command->update();
 
                     $command->save();
@@ -370,13 +395,13 @@ class SalesController extends Controller
                             if(!empty($commandLine->first())){
                                 $result['msg'] .= " - Succeeded at finding the command line";/*
                                 $result['inputItem'] = $inputItem;*/
-                                $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'status'=>$inputItem['status'], 'notes' => json_encode($inputItem['notes'])]);
+                                $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'status'=>$inputItem['status'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras'])]);
                                 $result['msg'] .= " - Command line normally updated";
                                 array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->first()->id);
                             }
                             else{
                                 $result['msg'] .= " - Failed at finding the command line";
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'status'=>$inputItem['status'],  'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']) ]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'status'=>$inputItem['status'],  'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras']) ]);
 
                                 if($commandLine == ""){
                                     $result['msg'] .= " - Failed at recording command line";
@@ -412,12 +437,17 @@ class SalesController extends Controller
                     if(!empty($inputCommand['notes']))
                     $notes = json_encode($inputCommand['notes']);
 
+                    $extras = "";
+                    if(!empty($inputCommand['extras']))
+                        $extras = json_encode($inputCommand['extras']);
+
                     $command = Command::create([
                         'table_id' => $inputs['table']['id'],
                         'client_id' => $client->id,
                         'command_number' => 1 + $commandNumber,
                         'status' => 1,
-                        'notes' => $notes
+                        'notes' => $notes,
+                        'extras' => $extras
                     ]);
                     // Command::all()->last()->command_number + 1
 
@@ -447,6 +477,9 @@ class SalesController extends Controller
                                     //Serialization of notes
                                     $inputItem['notes'] = json_encode($inputItem['notes']);
 
+                                    //Serialization of extras
+                                    $inputItem['extras'] = json_encode($inputItem['extras']);
+
                                     $commandLine->update($inputItem);
                                     $result['msg'] .= " - Command line normally updated";
                                 }
@@ -457,7 +490,11 @@ class SalesController extends Controller
                                     if(!empty($inputCommand['notes']))
                                         $notes = json_encode($inputItem['notes']);
 
-                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'status'=>$inputItem['status'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => $notes]);
+                                    $extras = "";
+                                    if(!empty($inputCommand['extras']))
+                                        $extras = json_encode($inputItem['extras']);
+
+                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'status'=>$inputItem['status'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => $notes, 'extras' => $extras]);
 
                                     if($commandLine == ""){
                                         $result['msg'] .= " - Failed at recording command line";
@@ -482,7 +519,7 @@ class SalesController extends Controller
                                 /* var_dump($command);*/
 
 
-                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'],  'status'=>$inputItem['status'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes'])]);
+                                $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'],  'status'=>$inputItem['status'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras'])]);
                                 array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->id);
 
                                 if($commandLine == ""){
@@ -509,57 +546,11 @@ class SalesController extends Controller
 
         }
 
-
-
-
-
-
-
-
-
-
-
-
-            /*$client = Client::create(['slug' => rand(0, 99999999999)]);
-            $result['msg'] = "Successfully created the client";
-
-            if ($client != "") {
-
-
-               // $command = Command::create(['client_id' => $client->id, 'command_number' => Command::all()->last()->command_number + 1]);
-                $command = Command::create(['table_id' => $inputs['table'], 'client_id' => $client->id, 'command_number' => 1]);
-                $result['command_number'] = $command->command_number;
-
-
-
-                if ($command != "") {
-
-                    $result['msg'] = "Successfully created the command";
-
-                    foreach ($inputs['commands'] as $input) {
-                        $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $input['id'], 'cost' => $input['size']['price'], 'quantity' => $input['quantity']]);
-
-                        if($commandLine == ""){
-                            $result['msg'] = "Failed at command line";
-                            $result['success'] = "false";
-                            break;
-                        }
-                        else
-                        {
-                            $result['msg'] = "Successfully recorded the command line";
-                            $result['success'] = "true";
-                        }
-                    }
-                }
-                else{
-
-                    $result['msg'] = "Failed at creating the command";
-                }
-            }
+        if($changingTableStatus){
+            $table = Table::where('id', $inputs['table']['id'])->first();
+            $table['status'] = 1;
+            $table->save();
         }
-
-        */
-
         return $result;
     }
 
