@@ -84,7 +84,7 @@
                         <strong>Success!</strong><div class="successMsg"></div>
                     </div>
                     <div class="col-md-6">
-                        {!! Form::text('dateClicked', $ViewBag['schedule']->startDate, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
+                        {!! Form::text('dateClicked', $ViewBag['startDate'], array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class="col-md-6">
@@ -227,6 +227,79 @@
                     <button id="btnDelEvent" type="button" class="btn btn-danger">Delete</button>
                     <button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div id="editModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- dialog body -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                        <strong>Whoops!</strong><br><br>
+                        <ul id="errors"></ul>
+                    </div>
+                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
+                        <strong>Success!</strong><div class="successMsg"></div>
+                    </div>
+                    <div class="col-md-4">
+                        {!! Form::text('dateClicked', $ViewBag['startDate'], array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
+                        <div class="form-group">
+                            <h3>Start Time</h3>
+                            <div class="col-md-6">
+                                {!! Form::label('sHour', "Hour" ) !!}
+                                {!! Form::text('sHour', old('sHour'), array('class' => 'form-control', 'id' => 'sHour')) !!}
+                            </div>
+                            <div class="col-md-6">
+                                {!! Form::label('sMin', "Min" ) !!}
+                                {!! Form::text('sMin', old('sMin'), array('class' => 'form-control', 'id' => 'sMin')) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h3>End Time</h3>
+                            <div class="col-md-6">
+                                {!! Form::label('eHour', "Hour" ) !!}
+                                {!! Form::text('eHour', old('eHour'), array('class' => 'form-control', 'id' => 'eHour')) !!}
+                            </div>
+                            <div class="col-md-6">
+                                {!! Form::label('eMin', "Min" ) !!}
+                                {!! Form::text('eMin', old('eMin'), array('class' => 'form-control', 'id' => 'eMin')) !!}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <h3>Day</h3>
+                            <select id="dayNumber" class="form-control">
+                                <option value="0">Sunday</option>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <h3>Employee</h3>
+                            <select id="employeeSelect" name="employeeSelect" class="form-control">
+                                @foreach ($ViewBag['employees'] as $employee)
+                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName . " " . $employee->lastName}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- dialog buttons -->
+                <div class="modal-footer">
+                    <button id="btnDelEvent" type="button" class="btn btn-danger">Delete</button>
+                    <button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button>
+                </div>
+                <div class="modal-footer"></div>
             </div>
         </div>
     </div>

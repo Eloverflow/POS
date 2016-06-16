@@ -4,7 +4,7 @@ namespace App\Http\Controllers\POS;
 
 use App\Http\Controllers\Controller;
 use App\Models\POS\Employee;
-use App\Models\POS\EmployeeTitle;
+use App\Models\POS\WorkTitle;
 use App\Models\POS\Punch;
 use App\Models\Project;
 use App\Models\POS\Title_Employees;
@@ -118,8 +118,8 @@ class EmployeeController extends Controller
 
     public function create()
     {
-        $employeeTitles = EmployeeTitle::All();
-        $view = \View::make('POS.Employee.create')->with('employeeTitles', $employeeTitles);
+        $workTitles = WorkTitle::All();
+        $view = \View::make('POS.Employee.create')->with('workTitles', $workTitles);
         return $view;
     }
 
