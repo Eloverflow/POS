@@ -68,12 +68,15 @@
             </div>
         </div>
     </div>
-    <div id="addModal" class="modal fade">
+    <div id="addModal" class="lumino modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- dialog body -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Add Moment</h4>
+                </div>
+                <div class="row">
                     <div id="displayErrors" style="display:none;" class="alert alert-danger">
                         <strong>Whoops!</strong><br><br>
                         <ul id="errors"></ul>
@@ -81,7 +84,7 @@
                     <div id="displaySuccesses" style="display:none;" class="alert alert-success">
                         <strong>Success!</strong><div class="successMsg"></div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         {!! Form::text('dateClicked', $ViewBag['schedule']->startDate, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
@@ -95,7 +98,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <h3>End Time</h3>
                             <div class="col-md-6">
@@ -108,7 +111,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <h3>Day</h3>
                             <select id="dayNumber" class="form-control">
@@ -122,6 +125,8 @@
                                 <option value="6">Saturday</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <h3>Employee</h3>
                             <select id="employeeSelect" name="employeeSelect" class="form-control">
@@ -143,12 +148,15 @@
             </div>
         </div>
     </div>
-    <div id="editModal" class="modal fade">
+    <div id="editModal" class="lumino modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- dialog body -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Moment</h4>
+                </div>
+                <div class="row">
                     <div id="displayErrors" style="display:none;" class="alert alert-danger">
                         <strong>Whoops!</strong><br><br>
                         <ul id="errors"></ul>
@@ -156,7 +164,7 @@
                     <div id="displaySuccesses" style="display:none;" class="alert alert-success">
                         <strong>Success!</strong><div class="successMsg"></div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
@@ -170,7 +178,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <h3>End Time</h3>
                             <div class="col-md-6">
@@ -183,10 +191,11 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-4">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <h3>Day</h3>
                             <select id="dayNumber" class="form-control">
+                                <option value="-1">All Week</option>
                                 <option value="0">Sunday</option>
                                 <option value="1">Monday</option>
                                 <option value="2">Tuesday</option>
@@ -196,10 +205,13 @@
                                 <option value="6">Saturday</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="col-md-6">
                         <div class="form-group">
                             <h3>Employee</h3>
                             <select id="employeeSelect" name="employeeSelect" class="form-control">
                                 @foreach ($ViewBag['employees'] as $employee)
+
                                     <option value="{{ $employee->idEmployee }}" @if(old('employeeSelect'))
                                         @if(old('employeeSelect') == $employee->idEmployee)
                                             {{ "selected" }}

@@ -67,15 +67,15 @@
         </div>
     </div>
 
-    <div id="addModal" class="modal fade">
+    <div id="editModal" class="lumino modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- dialog body -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-
+                    <h4 class="modal-title">Edit Punch</h4>
                 </div>
-                <div class="modal-content">
+                <div class="row">
                     <div id="displayErrors" style="display:none;" class="alert alert-danger">
                         <strong>Whoops!</strong><br><br>
                         <ul id="errors"></ul>
@@ -84,7 +84,7 @@
                         <strong>Success!</strong><div class="successMsg"></div>
                     </div>
 
-                    <div class="col-md-12">
+                    <div class="col-md-6">
                         <div class="form-group">
                             <h3>IN / OUT</h3>
                             <select id="isInSelect" name="isIn" class="form-control">
@@ -97,75 +97,29 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <h3>Time</h3>
-                            <div class="col-md-6">
+
                                 <div class='input-group date' id='punchTimePicker'>
                                     <input type='text' class="form-control" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
                                     </span>
                                 </div>
-                            </div>
+
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
                             <h3>Date</h3>
-                            <div class="col-md-6">
+
                                 <div class='input-group date' id='punchDatePicker'>
                                     {!! Form::text('punchDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'punchDate')) !!}
                                     {{--<input type='text' class="form-control" />--}}
                                     <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-time"></span>
+                                        <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
                                 </div>
-                            </div>
-                        </div>
-                    </div>
 
-                    <div class="form-group">
-                        {!! Form::label('startDate', "Start Date" ) !!}
-
-                    </div>
-
-                </div>
-                <!-- dialog buttons -->
-                <div class="modal-footer"><button id="btnAddPunch" type="button" class="btn btn-primary">Add</button></div>
-            </div>
-        </div>
-    </div>
-    <div id="editModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- dialog body -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
-                        <strong>Whoops!</strong><br><br>
-                        <ul id="errors"></ul>
-                    </div>
-                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
-                        <strong>Success!</strong><div class="successMsg"></div>
-                    </div>
-                    <div class="col-md-4">
-
-                        <div class="form-group">
-                            <h3>Start Time</h3>
-                            <div class="col-md-6">
-
-                            </div>
-                            <div class="col-md-6">
-
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <h3>IN / OUT</h3>
-                            <select id="isInSelect" name="isIn" class="form-control">
-                                <option value="0">IN</option>
-                                <option value="1">OUT</option>
-                            </select>
                         </div>
                     </div>
                 </div>
@@ -175,7 +129,7 @@
                     <button id="btnDelPunch" type="button" class="btn btn-danger">Delete</button>
                     <button id="btnEditPunch" type="button" class="btn btn-primary">Edit</button>
                 </div>
-                <div class="modal-footer"></div>
+
             </div>
         </div>
     </div>
@@ -192,22 +146,19 @@
          /*$('#addModal #sHour').val("");
          $('#addModal #sMin').val("");*/
 
-         $("#addModal").modal('show');
-         e.preventDefault();
+             $("#editModal").modal('show');
+             e.preventDefault();
          });
          $('a.delPunch').bind('click', function(e) {
-         /*e.preventDefault();*/
+             /*e.preventDefault();*/
 
-         $("#editPunch").modal('show');
-         e.preventDefault();
          });
-
 
         /* $('#punchTimePicker').datetimepicker({
          format: 'LT'
          });*/
-         });
 
+        });
     </script>
 
 

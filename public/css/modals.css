@@ -1,0 +1,18 @@
+
+.lumino .modal-header {
+	background-color: #222 !important;
+}
+
+.lumino .modal-content {
+	-webkit-border-radius: 0px;
+	-moz-border-radius: 0px;
+	border-radius: 0px;
+}
+
+.lumino .modal-header .close {
+	color: white;
+}
+
+.lumino .row{
+	padding: 10px;
+}
