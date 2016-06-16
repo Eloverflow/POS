@@ -254,7 +254,7 @@
         </div>
     </div>
 
-    <div id="contentPanel" class="col-sm-9 col-sm-offset-5 col-lg-7 col-lg-offset-5 main">
+    <div id="contentPanel" class="col-sm-9 col-sm-offset-5 col-lg-7 col-lg-offset-5">
         {{--Content--}}
         <div class="row beer-items">
             <div ng-repeat="menuItems in menuItemsExtended | filter:filters">
@@ -271,11 +271,7 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
-
         </div>
     </div>
 

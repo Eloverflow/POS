@@ -103,9 +103,9 @@
         </div>
     </div>
 </modal>
-<modal title="Êtes-vous sure ?" class="center-modal" visible="showPanelOverwriteBill">
+<modal title="Factures existantes" class="center-modal" visible="showPanelOverwriteBill">
     <div class="divideBillChoices" >
-        <div ng-click="toggleDivideBillModal();togglePanelOverwriteBill();" class="divideBillChoice">
+        <div ng-click="redivideBill()" class="divideBillChoice">
             Rediviser les factures
         </div>
         <div ng-click="togglePanelOverwriteBill();openBill();" class="divideBillChoice">

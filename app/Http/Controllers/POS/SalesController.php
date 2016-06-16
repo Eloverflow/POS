@@ -119,6 +119,92 @@ class SalesController extends Controller
     }
 
 
+    public function deleteBills()
+    {
+
+        $inputs = Input::except('_token');
+
+        $result['inputs'] = $inputs;
+
+        $result['msg'] = "";
+        $result['success'] = "false";
+        $result['saleLineIdMat'] = [];
+        $result['saleIdArray'] = [];
+
+        if (!empty($inputs)) {
+            if (!empty($inputs['bills'])) {
+                foreach ($inputs['bills'] as $bill) {
+
+
+                    $billLineCommandId = '';
+                    foreach ($bill as $billLine){
+
+                        $billLineCommandId =  $billLine['command_id'];
+                        break;
+                    }/*
+                   var_dump($bill[0]['command_id']);*/
+
+                    $command = Command::where('id', $billLineCommandId)->first();
+
+                    if (!empty($command)) {
+                        $result['msg'] .= ' - Command Found';
+                        $commandTable = Table::where('id', $command->table_id)->first();
+                        if(!empty($commandTable['status']) && $commandTable['status'] == 3)
+                        $commandTable['status'] = 2;
+                        $commandTable->save();
+
+
+                        $command->load('client');
+
+                        if (!empty($command->client)) {
+                            $result['msg'] .= ' - Client Found';
+
+
+                            $sale = '';
+                            foreach ($bill as $billLine) {
+                                if(!empty($billLine['sale_id']))
+                                    $sale = Sale::where('id', $billLine['sale_id'])->first();
+                                break;
+                            }
+
+                            if(!empty($sale))
+                            {
+                                $result['msg'] .= ' - Sale Found';
+                            }
+
+                            /*We should eventually check if the bill can be deleted - Must not have been factured to the client*/
+                            if(!empty($sale)) {
+                                $result['success'] = "true";
+                                foreach ($bill as $billLine) {
+
+                                    if(!empty($billLine['saleLineId'])){
+                                        $saleLine = SaleLine::where('id', $billLine['saleLineId'])->first();
+                                        if (!empty($saleLine)) {
+                                            $saleID = $billLine['sale_id'];
+                                            if(empty($saleID)){
+                                                $saleID = $sale->id;
+                                            }
+                                            $saleLine->delete();
+                                            $result['msg'] .= ' - SaleLine deleted';
+                                        }
+                                    }
+                                }
+
+                                $sale->delete();
+                            }
+                        }
+                    }
+                }
+            } else {
+                $result['msg'] = "Inputs contain no Bills";
+            }
+        } else {
+            $result['msg'] = "No inputs or not enough";
+        }
+
+        return $result;
+    }
+
     public function updateBill()
     {
 
@@ -193,7 +279,7 @@ class SalesController extends Controller
                                 $result['success'] = "true";
                                 array_push($result['saleIdArray'], $sale->id);
                                 foreach ($bill as $billLine) {
-                                    
+
                                     if(!empty($billLine['extras']))
                                         $billLine['extras'] = json_encode($billLine['extras']);
                                     else

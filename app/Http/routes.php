@@ -43,6 +43,7 @@ Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware'
 Route::post('/menu/command',  ['uses' => 'POS\SalesController@updateCommand', 'middleware' => 'auth']);
 Route::post('/menu/getCommand',  ['uses' => 'POS\SalesController@getCommand', 'middleware' => 'auth']);
 Route::post('/menu/bill',  ['uses' => 'POS\SalesController@updateBill', 'middleware' => 'auth']);
+Route::post('/menu/delete/bill',  ['uses' => 'POS\SalesController@deleteBills', 'middleware' => 'auth']);
 Route::post('/menu/getBills',  ['uses' => 'POS\SalesController@getBills', 'middleware' => 'auth']);
 
 

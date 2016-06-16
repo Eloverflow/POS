@@ -391,6 +391,34 @@ div.saleTextZone input:focus{
 
 }
 
+/* Side panel scrollbar */
+::-webkit-scrollbar  {
+	width: 0;
+	margin-bottom: 0;
+}
+
+/* Track */
+::-webkit-scrollbar-track  {
+	-webkit-box-shadow: none;
+	-webkit-border-radius: 0;
+	/*border-radius: 2px;*/
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb:vertical  {
+	-webkit-border-radius: 0;
+	/*border-radius: 2px;*/
+	background: none;
+	-webkit-box-shadow: none;
+}
+::-webkit-scrollbar-thumb:window-inactive:vertical {
+	background: none;
+}
+
+::-webkit-scrollbar-corner{
+	background: none;
+}
+
 .upLeft{
 	width: 100%!important;
 	float: left;

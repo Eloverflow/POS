@@ -1306,6 +1306,53 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         }
 
+        /*Will send a request to update the bills and then execute the callbackFunction*/
+        $scope.deleteCommandsBills = function ($callBack) {
+
+
+            $url = 'http://pos.mirageflow.com/menu/delete/bill';
+
+            $data = {
+                bills: $scope.bills,
+                table: $scope.currentTable,
+                employee: $scope.currentEmploye
+            };
+
+
+            var $callbackFunction = function (response) {
+                console.log('Deleted bills')
+                $scope.bills = null;
+
+
+                $timeout(function () {
+                    $scope.progressValue = 100;
+                    $scope.savingMessage = "Facture effacé!"
+                }, 0);
+
+                console.log("Facture effacé - Success or Not ?");
+
+                if ($callBack != null)
+                    $callBack();
+            };
+
+
+      /*      if (timeoutHandle != null){
+                $scope.getCommand();
+                timeoutHandle = null;
+            }*/
+
+
+
+          /*  $timeout(function () {*/
+                postReq.send($url, $data, null, $callbackFunction);
+           /*     $scope.progressValue = 100;
+                $('.progress-bar').addClass('progress-bar-success');
+                $scope.savingMessage = "Commande Sauvegardé!"
+            }, 500);
+*/
+
+        }
+
         /*Client pager - set page*/
         $scope.setPage = function (pageNo) {
             $scope.commandCurrentClient = pageNo;
@@ -1367,7 +1414,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.showHeaderOptions = !$scope.showHeaderOptions
         }
         $scope.toggleBill = function () {
-            if ($scope.bills == null || typeof $scope.bills != 'undefined' && $scope.bills != null && typeof $scope.bills[0] != 'undefined' && $scope.bills[0].length == 0)
+            if ($scope.bills == null || typeof $scope.bills == 'undefined' || ($scope.bills != null & typeof $scope.bills != 'undefined' && $scope.bills.length == 1))
                 $scope.toggleDivideBillModal();
             else {
                 if(!$scope.showBillWindow)
@@ -1645,6 +1692,12 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             }
 
+        }
+
+        $scope.redivideBill = function () {
+            $scope.deleteCommandsBills();
+            $scope.showPanelOverwriteBill =false;
+            $scope.showDivideBillModal = true;
         }
 
         /*Move the selected items or selected bills items to the given bill*/
