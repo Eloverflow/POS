@@ -1662,6 +1662,19 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                             }
 
                             var subTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
+
+                            if(typeof $scope.bills[d][l].extras != 'undefined'  && $scope.bills[d][l].extras != null){
+                                for(var o = 0; o < $scope.bills[d][l].extras.length; o++)
+                                    if($scope.bills[d][l].extras[o].effect == '-')
+                                        subTotal-=  $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity
+                                    else if($scope.bills[d][l].extras[o].effect == '+')
+                                        subTotal+=  $scope.bills[d][l].extras[o] * $scope.bills[d][l].quantity
+                                    else if($scope.bills[d][l].extras[o].effect == '*')
+                                        subTotal+=  $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value/100 * $scope.bills[d][l].quantity
+                                    else if($scope.bills[d][l].extras[o].effect == '/')
+                                        subTotal-=  $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value/100 * $scope.bills[d][l].quantity
+                            }
+
                             var total = subTotal;
                             /*Copy the taxes and change its total to 0*/
                             var taxes = angular.copy($scope.taxes);
@@ -1703,6 +1716,19 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                         }
 
                         var subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
+
+                        if(typeof checkedItems[f].extras != 'undefined'  && checkedItems[f].extras != null){
+                            for(var o = 0; o < checkedItems[f].extras.length; o++)
+                                if(checkedItems[f].extras[o].effect == '-')
+                                    subTotal-=  checkedItems[f].extras[o].value * checkedItems[f].quantity
+                                else if(checkedItems[f].extras[o].effect == '+')
+                                    subTotal+=  checkedItems[f].extras[o] * checkedItems[f].quantity
+                                else if(checkedItems[f].extras[o].effect == '*')
+                                    subTotal+=  checkedItems[f].size.price * checkedItems[f].extras[o].value/100 * checkedItems[f].quantity
+                                else if(checkedItems[f].extras[o].effect == '/')
+                                    subTotal-=  checkedItems[f].size.price * checkedItems[f].extras[o].value/100 * checkedItems[f].quantity
+                        }
+                        
                         var total = subTotal;
 
                         /*Copy the taxes and change its total to 0*/

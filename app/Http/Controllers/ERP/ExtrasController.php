@@ -116,8 +116,7 @@ class ExtrasController extends Controller
         $inputs = \Input::all();
 
         $rules = array(
-            'name' => 'required',
-            'description' => 'required'
+            'name' => 'required'
         );
 
 
