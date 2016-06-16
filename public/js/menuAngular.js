@@ -821,10 +821,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                         }
 
                         $scope.updateTable(function () {$scope.bills = []; $scope.commandClient = []});
-                        $scope.showEmployeeModal = false;
+                        /*$scope.showEmployeeModal = false;*/
+                        /*$scope.showPlanModal = true;*/
+                        $scope.closeBill();
                     }
 
-                    $scope.validateEmployeePassword($callbackFunction);
+                    $callbackFunction();
+                    /*$scope.validateEmployeePassword($callbackFunction);*/
                 }
                 else {
                     $scope.showTerminateCommandInfo = true;
@@ -892,13 +895,14 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                         /*Suggest the employee to cancel the command to terminate or to finish it, bill included*/
 
-
                         $scope.updateTable(function () {$scope.commandClient.splice(index, 1)});
 
-                        $scope.showEmployeeModal = false;
+                        /*$scope.showEmployeeModal = false;*/
+
                     }
 
-                    $scope.validateEmployeePassword($callbackFunction);
+                    $callbackFunction();
+                    /*$scope.validateEmployeePassword($callbackFunction);*/
                 }
                 else {
                     $scope.showTerminateCommandInfo = true;
