@@ -69,6 +69,17 @@ class Schedule extends Model
             ->get();
     }
 
+    // For Tracking
+    public static function getScheduledEmployees($scheduleId)
+    {
+        return  \DB::table('day_schedules')
+            ->select(\DB::raw('day_schedules.id as idSchedule, employees.id as idEmployee, day_schedules.employee_id, employees.firstName, employees.phone, employees.lastName, count(day_schedules.id) as shifts'))
+            ->where('day_schedules.schedule_id', '=', $scheduleId)
+            ->join('employees', 'day_schedules.employee_id', '=', 'employees.id')
+            ->groupBy('day_schedules.employee_id')
+            ->get();
+    }
+
     public static function GetScheduleEmployees($scheduleId)
     {
 

@@ -90,27 +90,33 @@
             </div>
         </div>
     </div>
-    <div id="addModal" class="modal fade">
+    <div id="addModal" class="lumino modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
                 <!-- dialog body -->
+                {!! Form::text('frmTitleId', null, array('class' => 'form-control', 'id' => 'frmTitleId', 'style' => 'display:none;visibility:hidden;')) !!}
                 <div class="modal-header">
-                    {!! Form::text('frmTitleId', null, array('class' => 'form-control', 'id' => 'frmTitleId', 'style' => 'display:none;visibility:hidden;')) !!}
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div class="form-group">
-                        <h3>Select an employee</h3>
-                        <div id="displayErrors" style="display:none;" class="alert alert-danger">
-                            <strong>Whoops!</strong> There were some problems with your input.<br><br>
-                            <ul id="errors"></ul>
-                        </div>
-                        <select id="employeeSelect" name="employeeSelect" class="form-control">
-                            @foreach ($ViewBag['employees'] as $employee)
-                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
+                    <h4 class="modal-title">Select Employee</h4>
                 </div>
+
+                <div class="row">
+                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                        <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                        <ul id="errors"></ul>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <h3></h3>
+                            <select id="employeeSelect" name="employeeSelect" class="form-control">
+                                @foreach ($ViewBag['employees'] as $employee)
+                                    <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
 
                 <!-- dialog buttons -->
                 <div class="modal-footer"><button id="frmBtnAddEmpl" type="button" class="btn btn-primary">Add</button></div>

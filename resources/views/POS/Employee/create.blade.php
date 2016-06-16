@@ -158,8 +158,8 @@
                                     <p class="text-warning">* Press shift while selecting for multiple select.</p>
                                     {!! Form::label('title', "Employee Title(s)" ) !!}
                                     <select multiple name="employeeTitles[]" class="form-control">
-                                        @foreach ($employeeTitles as $employeeTitle)
-                                            <option value="{{ $employeeTitle->id }}">{{ $employeeTitle->name }}</option>
+                                        @foreach ($workTitles as $workTitle)
+                                            <option value="{{ $workTitle->id }}">{{ $workTitle->name }}</option>
                                         @endforeach
                                     </select>
                                 </div>

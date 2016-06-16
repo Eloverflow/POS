@@ -98,7 +98,7 @@
                         <div class="form-group">
                             <h3>Time</h3>
 
-                                <div class='input-group date' id='punchTimePicker'>
+                                <div class='input-group date' id="punchTimePicker">
                                     <input type='text' class="form-control" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
@@ -112,9 +112,8 @@
                         <div class="form-group">
                             <h3>Date</h3>
 
-                                <div class='input-group date' id='punchDatePicker'>
-                                    {!! Form::text('punchDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'punchDate')) !!}
-                                    {{--<input type='text' class="form-control" />--}}
+                                <div class='input-group date' id="punchDatePicker">
+                                    <input type='text' class="form-control"/>
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-calendar"></span>
                                     </span>
@@ -139,6 +138,7 @@
     <script src="{{ @URL::to('js/utils.js') }}"></script>{{--
     <script src="{{ @URL::to('js/schedulesManage.js') }}"></script>--}}
     <script src="{{ @URL::to('js/moment/moment-timezone-with-data.js') }}"></script>
+    <script src="{{ @URL::to('js/moment/moment-timezone-with-data-packed.js') }}"></script>
     <script type="text/javascript">
         $(document).ready(function (e) {
 
@@ -154,9 +154,13 @@
 
          });
 
-        /* $('#punchTimePicker').datetimepicker({
-         format: 'LT'
-         });*/
+        // Les binds pour ce qui concerne les controles dans les modals.
+        $('#punchTimePicker').datetimepicker({
+            format: 'LT'
+        });
+        $('#punchDatePicker').datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
 
         });
     </script>
