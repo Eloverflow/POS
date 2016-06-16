@@ -1,6 +1,8 @@
 <?php
 
 use App\Models\Addons\Rfid\TableRfidBeer;
+use App\Models\ERP\Extra;
+use App\Models\ERP\ExtraItemType;
 use App\Models\ERP\Item;
 use App\Models\ERP\ItemFieldList;
 use App\Models\ERP\ItemType;
@@ -75,6 +77,8 @@ class DatabaseSeeder extends Seeder
         $this->call(SaleSeeder::class);
         $this->call(SaleLineSeeder::class);
         $this->call(MenuSettingsTableSeeder::class);
+        $this->call(ExtraSeeder::class);
+        $this->call(ExtraItemTypeSeeder::class);
 
         Model::reguard();
     }
@@ -204,6 +208,8 @@ class UserTableSeeder extends Seeder {
         User::create(['name' => 'Visiteur(es) Adncomm', 'email' => 'visiteur@adncomm.com', 'password' => 'Adncomm1337!', 'remember_token' => 'l6JMhYJSwbQj8791LCAhPdkrryYMQQkjbwkqd13MhgEeAyUj3yAfoEXvzmTL']);
         User::create(['name' => 'user_employee', 'email' => 'test-mflow@yopmail.com', 'password' => '11']);
         User::create(['name' => 'Visiteur', 'email' => 'visiteur@mirageflow.com', 'password' => 'Visiteur!']);
+        User::create(['name' => 'Alex Breton', 'email' => 'alex.breton@hotmail.co.uk', 'password' => '@lexBreton']);
+
 
         $this->command->info('Users table seeded!');
     }
@@ -651,6 +657,67 @@ class SaleLineSeeder extends Seeder {
         SaleLine::create(['id' => '2', 'sale_id' => '1', 'item_id' => '2' , 'cost' => 3.45, 'quantity' => 2]);*/
 
         $this->command->info('sale lines table seeded!');
+    }
+
+}
+
+class ExtraSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('extras')->delete();
+
+        $extras = array(
+            array('id' => '1','name' => 'Lime','description' => '','effect' => '','value' => '0.00','status' => '0','avail_for_command' => NULL,'slug' => 'Lime1047','created_at' => '2016-06-16 08:24:56','updated_at' => '2016-06-16 08:24:56'),
+            array('id' => '2','name' => 'Bacon','description' => '','effect' => '+','value' => '2.00','status' => '0','avail_for_command' => NULL,'slug' => 'Bacon8974','created_at' => '2016-06-16 08:25:27','updated_at' => '2016-06-16 08:25:27'),
+            array('id' => '3','name' => 'Gratuit','description' => '','effect' => '/','value' => '100.00','status' => '0','avail_for_command' => NULL,'slug' => 'Gratuit5238','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '4','name' => 'Double price','description' => '','effect' => '*','value' => '100.00','status' => '0','avail_for_command' => NULL,'slug' => 'Double price8669','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '5','name' => 'Deduire taxes','description' => '','effect' => '/','value' => '14.975','status' => '0','avail_for_command' => NULL,'slug' => 'Deduire taxes1540','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05')
+        );
+
+        foreach ($extras as $table){
+            Extra::create($table);
+        }
+
+        $this->command->info('extras table seeded!');
+    }
+
+}
+
+class ExtraItemTypeSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('extra_item_types')->delete();
+
+        $extra_item_types = array(
+            array('id' => '1','extra_id' => '1','item_type_id' => '1','created_at' => '2016-06-16 08:24:56','updated_at' => '2016-06-16 08:24:56'),
+            array('id' => '2','extra_id' => '1','item_type_id' => '2','created_at' => '2016-06-16 08:24:56','updated_at' => '2016-06-16 08:24:56'),
+            array('id' => '3','extra_id' => '2','item_type_id' => '3','created_at' => '2016-06-16 08:25:27','updated_at' => '2016-06-16 08:25:27'),
+            array('id' => '4','extra_id' => '2','item_type_id' => '4','created_at' => '2016-06-16 08:25:27','updated_at' => '2016-06-16 08:25:27'),
+            array('id' => '5','extra_id' => '2','item_type_id' => '5','created_at' => '2016-06-16 08:25:27','updated_at' => '2016-06-16 08:25:27'),
+            array('id' => '6','extra_id' => '3','item_type_id' => '1','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '7','extra_id' => '3','item_type_id' => '2','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '8','extra_id' => '3','item_type_id' => '3','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '9','extra_id' => '3','item_type_id' => '4','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '10','extra_id' => '3','item_type_id' => '5','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '11','extra_id' => '4','item_type_id' => '1','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '12','extra_id' => '4','item_type_id' => '2','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '13','extra_id' => '4','item_type_id' => '3','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '14','extra_id' => '4','item_type_id' => '4','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '15','extra_id' => '4','item_type_id' => '5','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '16','extra_id' => '5','item_type_id' => '1','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05'),
+            array('id' => '17','extra_id' => '5','item_type_id' => '2','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05'),
+            array('id' => '18','extra_id' => '5','item_type_id' => '3','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05'),
+            array('id' => '19','extra_id' => '5','item_type_id' => '4','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05'),
+            array('id' => '20','extra_id' => '5','item_type_id' => '5','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05')
+        );
+
+        foreach ($extra_item_types as $table){
+            ExtraItemType::create($table);
+        }
+
+        $this->command->info('extras table seeded!');
     }
 
 }

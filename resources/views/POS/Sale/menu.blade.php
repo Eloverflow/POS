@@ -112,11 +112,11 @@
                                                  ng-model="commandItem.quantity" value=""><span
                             class="sale-item-name"><% commandItem.size.name + " " + commandItem.name%></span></div>
                 <span ng-click="delete2(commandItem)" class="glyphicon glyphicon-remove right special"></span>
-                <span ng-hide="commandItem.id > 3"uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
+                <span ng-hide="commandItem.id > 2"uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
                       popover-placement="<%placement.selected%>" popover-trigger="outsideClick"
                       class="glyphicon glyphicon-comment itemNote right"> <span
                             style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length %></span></span>
-                <span ng-show="commandItem.id > 3" uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
+                <span ng-show="commandItem.id > 2" uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
                       popover-placement="<%placement.selectedBottom%>" popover-trigger="outsideClick"
                       class="glyphicon glyphicon-comment itemNote right"> <span
                             style="position: absolute; right: 1px; top:-8px;  color: #30a5ff; background-color: #333; border-radius: 50%; width: 20px; height: 20px; font-size: 17px!important;  padding: 0!important; text-align: center; "><% commandItem.notes.length + commandItem.extras.length %></span></span>

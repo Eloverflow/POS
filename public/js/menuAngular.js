@@ -724,6 +724,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             if (extra != "" && extra != undefined) {
                 if (typeof item != 'undefined' && item != null) {
+                    if(typeof item.extras == 'undefined' || item.extras == null)
+                        item.extras = [];
                     item.extras.push(extra);
                 }
                 else {
@@ -748,7 +750,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 index = $scope.commandClient[$scope.commandCurrentClient].notes.indexOf(note);
                 $scope.commandClient[$scope.commandCurrentClient].notes.splice(index, 1);
             }
-            $scope.delayedUpdateTable();
+                $scope.updateCommand();
         }
 
         /*Delete a given note to a given item inside the current command*/
@@ -762,7 +764,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 index = $scope.commandClient[$scope.commandCurrentClient].notes.indexOf(extra);
                 $scope.commandClient[$scope.commandCurrentClient].notes.splice(index, 1);
             }
-            $scope.delayedUpdateTable();
+            $scope.updateCommand();
         }
 
 
@@ -819,10 +821,13 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                         }
 
                         $scope.updateTable(function () {$scope.bills = []; $scope.commandClient = []});
-                        $scope.showEmployeeModal = false;
+                        /*$scope.showEmployeeModal = false;*/
+                        /*$scope.showPlanModal = true;*/
+                        $scope.closeBill();
                     }
 
-                    $scope.validateEmployeePassword($callbackFunction);
+                    $callbackFunction();
+                    /*$scope.validateEmployeePassword($callbackFunction);*/
                 }
                 else {
                     $scope.showTerminateCommandInfo = true;
@@ -890,13 +895,14 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                         /*Suggest the employee to cancel the command to terminate or to finish it, bill included*/
 
-
                         $scope.updateTable(function () {$scope.commandClient.splice(index, 1)});
 
-                        $scope.showEmployeeModal = false;
+                        /*$scope.showEmployeeModal = false;*/
+
                     }
 
-                    $scope.validateEmployeePassword($callbackFunction);
+                    $callbackFunction();
+                    /*$scope.validateEmployeePassword($callbackFunction);*/
                 }
                 else {
                     $scope.showTerminateCommandInfo = true;
@@ -1023,6 +1029,17 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                         }
 
                          subTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
+                        if(typeof $scope.bills[d][l].extras != 'undefined'  && $scope.bills[d][l].extras != null){
+                            for(var o = 0; o < $scope.bills[d][l].extras.length; o++)
+                            if($scope.bills[d][l].extras[o].effect == '-')
+                                subTotal-=  $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity
+                            else if($scope.bills[d][l].extras[o].effect == '+')
+                                subTotal+=  $scope.bills[d][l].extras[o] * $scope.bills[d][l].quantity
+                            else if($scope.bills[d][l].extras[o].effect == '*')
+                                subTotal+=  $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value/100 * $scope.bills[d][l].quantity
+                            else if($scope.bills[d][l].extras[o].effect == '/')
+                                subTotal-=  $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value/100 * $scope.bills[d][l].quantity
+                        }
 
                     }
 
@@ -1063,6 +1080,20 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             if ($scope.commandClient[$scope.commandCurrentClient].commandItems.length > 0) {
                 for (var i = 0; i < $scope.commandClient[$scope.commandCurrentClient].commandItems.length; i++) {
                     subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price
+
+                    if(typeof $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras != null){
+                        for(var o = 0; o < $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras.length; o++)
+                            if($scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].effect == '-')
+                                subTotal-=  $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity
+                            else if($scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].effect == '+')
+                                subTotal+=  $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o] * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity
+                            else if($scope.commandClient[$scope.commandCurrentClient].commandItems[i].effect == '*')
+                                subTotal+=  $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value/100 * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity
+                            else if($scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].effect == '/')
+                                subTotal-=  $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value/100 * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity
+                    }
+
+
                 }
 
                 for (j = 0; j < $scope.taxes.length; j++) {
@@ -1402,6 +1433,20 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                             for(var l =0; l < $scope.bills[$scope.bills.length-1].length; l++){
                                 subTotal += $scope.bills[$scope.bills.length-1][l].cost * $scope.bills[$scope.bills.length-1][l].quantity;
 
+                                if(typeof $scope.bills[$scope.bills.length-1][l].extras != 'undefined'  && $scope.bills[$scope.bills.length-1][l].extras != null){
+                                    for(var o = 0; o < $scope.bills[$scope.bills.length-1][l].extras.length; o++)
+                                        if($scope.bills[$scope.bills.length-1][l].extras[o].effect == '-')
+                                            subTotal-=  $scope.bills[$scope.bills.length-1][l].extras[o].value * $scope.bills[$scope.bills.length-1][l].quantity
+                                        else if($scope.bills[$scope.bills.length-1][l].extras[o].effect == '+')
+                                            subTotal+=  $scope.bills[$scope.bills.length-1][l].extras[o] * $scope.bills[$scope.bills.length-1][l].quantity
+                                        else if($scope.bills[$scope.bills.length-1][l].extras[o].effect == '*')
+                                            subTotal+=  $scope.bills[$scope.bills.length-1][l].size.price * $scope.bills[$scope.bills.length-1][l].extras[o].value/100 * $scope.bills[$scope.bills.length-1][l].quantity
+                                        else if( $scope.bills[$scope.bills.length-1][l].extras[o].effect == '/')
+                                            subTotal-=  $scope.bills[$scope.bills.length-1][l].size.price * $scope.bills[$scope.bills.length-1][l].extras[o].value/100 * $scope.bills[$scope.bills.length-1][l].quantity
+                                }
+
+
+
                                 var itemWhereId = angular.copy($.grep($scope.menuItems, function (e) {
                                     return e.id == $scope.bills[$scope.bills.length - 1][l].item_id
                                 })[0]);
@@ -1421,6 +1466,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                                 $scope.bills[$scope.bills.length - 1][l].saleLineId = id;
                                 $scope.bills[$scope.bills.length - 1][l].sale_id = sale_id;
+
+                                if(typeof $scope.bills[$scope.bills.length - 1][l].extras != 'undefined' && $scope.bills[$scope.bills.length - 1][l].extras != null && $scope.bills[$scope.bills.length - 1][l].extras != "")
+                                    $scope.bills[$scope.bills.length - 1][l].extras = JSON.parse($scope.bills[$scope.bills.length - 1][l].extras);
 
                             }
 
@@ -1614,6 +1662,19 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                             }
 
                             var subTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
+
+                            if(typeof $scope.bills[d][l].extras != 'undefined'  && $scope.bills[d][l].extras != null){
+                                for(var o = 0; o < $scope.bills[d][l].extras.length; o++)
+                                    if($scope.bills[d][l].extras[o].effect == '-')
+                                        subTotal-=  $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity
+                                    else if($scope.bills[d][l].extras[o].effect == '+')
+                                        subTotal+=  $scope.bills[d][l].extras[o] * $scope.bills[d][l].quantity
+                                    else if($scope.bills[d][l].extras[o].effect == '*')
+                                        subTotal+=  $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value/100 * $scope.bills[d][l].quantity
+                                    else if($scope.bills[d][l].extras[o].effect == '/')
+                                        subTotal-=  $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value/100 * $scope.bills[d][l].quantity
+                            }
+
                             var total = subTotal;
                             /*Copy the taxes and change its total to 0*/
                             var taxes = angular.copy($scope.taxes);
@@ -1655,6 +1716,19 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                         }
 
                         var subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
+
+                        if(typeof checkedItems[f].extras != 'undefined'  && checkedItems[f].extras != null){
+                            for(var o = 0; o < checkedItems[f].extras.length; o++)
+                                if(checkedItems[f].extras[o].effect == '-')
+                                    subTotal-=  checkedItems[f].extras[o].value * checkedItems[f].quantity
+                                else if(checkedItems[f].extras[o].effect == '+')
+                                    subTotal+=  checkedItems[f].extras[o] * checkedItems[f].quantity
+                                else if(checkedItems[f].extras[o].effect == '*')
+                                    subTotal+=  checkedItems[f].size.price * checkedItems[f].extras[o].value/100 * checkedItems[f].quantity
+                                else if(checkedItems[f].extras[o].effect == '/')
+                                    subTotal-=  checkedItems[f].size.price * checkedItems[f].extras[o].value/100 * checkedItems[f].quantity
+                        }
+                        
                         var total = subTotal;
 
                         /*Copy the taxes and change its total to 0*/
@@ -1736,6 +1810,18 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                         item.checked = false
                         bill.push(item);
                         subTotal += item.size.price * item.quantity
+
+                        if(typeof item.extras != 'undefined'  && item.extras != null){
+                            for(var o = 0; o < item.extras.length; o++)
+                                if(item.extras[o].effect == '-')
+                                    subTotal-=  item.extras[o].value * item.quantity
+                                else if(item.extras[o].effect == '+')
+                                    subTotal+=  item.extras[o] * item.quantity
+                                else if(item.extras[o].effect == '*')
+                                    subTotal+=  item.size.price * item.extras[o].value/100 * item.quantity
+                                else if(item.extras[o].effect == '/')
+                                    subTotal-=  item.size.price * item.extras[o].value/100 * item.quantity
+                        }
                     }
                 }
             }
@@ -1788,6 +1874,18 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                         item.checked = false;
                         bill.push(item);
                         subTotal += item.size.price * item.quantity
+                        
+                        if(typeof item.extras != 'undefined'  && item.extras != null){
+                            for(var o = 0; o < item.extras.length; o++)
+                                if(item.extras[o].effect == '-')
+                                    subTotal-=  item.extras[o].value * item.quantity
+                                else if(item.extras[o].effect == '+')
+                                    subTotal+=  item.extras[o] * item.quantity
+                                else if(item.extras[o].effect == '*')
+                                    subTotal+=  item.size.price * item.extras[o].value/100 * item.quantity
+                                else if(item.extras[o].effect == '/')
+                                    subTotal-=  item.size.price * item.extras[o].value/100 * item.quantity
+                        }
                     }
 
                     for (j = 0; j < taxes.length; j++) {

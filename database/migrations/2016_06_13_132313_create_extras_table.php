@@ -19,6 +19,7 @@ class CreateExtrasTable extends Migration
             $table->string('effect');
             $table->float('value');
             $table->integer('status');
+            $table->boolean('avail_for_command')->nullable();
             $table->string('slug');
             $table->timestamps();
         });
