@@ -193,6 +193,12 @@ class SalesController extends Controller
                                 $result['success'] = "true";
                                 array_push($result['saleIdArray'], $sale->id);
                                 foreach ($bill as $billLine) {
+                                    
+                                    if(!empty($billLine['extras']))
+                                        $billLine['extras'] = json_encode($billLine['extras']);
+                                    else
+                                        $billLine['extras'] = "";
+
                                     if(!empty($billLine['saleLineId'])){
                                         $saleLine = SaleLine::where('id', $billLine['saleLineId'])->first();
                                         if (!empty($saleLine)) {
@@ -200,13 +206,14 @@ class SalesController extends Controller
                                             if(empty($saleID)){
                                                 $saleID = $sale->id;
                                             }
-                                            $saleLine->update(['sale_id' => $saleID, 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity']]);
+                                            $saleLine->update(['sale_id' => $saleID, 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity'], 'extras' => $billLine['extras']]);
                                             $saleLine->save();
                                             $result['msg'] .= ' - SaleLine Updated';
                                         }
                                     }
                                     else{
-                                        $saleLine = SaleLine::create(['sale_id' => $sale->id, 'item_id' => $billLine['id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity'], 'cost' => $billLine['size']['price'] , 'size' => $billLine['size']['name'], 'taxes' => Setting::all()->last()['taxes']]);
+
+                                        $saleLine = SaleLine::create(['sale_id' => $sale->id, 'item_id' => $billLine['id'], 'command_id' => $billLine['command_id'], 'command_line_id' => $billLine['command_line_id'], 'quantity' => $billLine['quantity'], 'cost' => $billLine['size']['price'] , 'size' => $billLine['size']['name'], 'taxes' => Setting::all()->last()['taxes'], 'extras' => $billLine['extras']]);
                                         if (!empty($saleLine)) {
                                             $result['msg'] .= ' - SaleLine Created';
                                             array_push($result['saleLineIdMat'][count($result['saleLineIdMat'])- 1] ,$saleLine->id);

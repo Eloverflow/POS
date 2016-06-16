@@ -225,8 +225,13 @@
                         <span class="" ng-show="commandItem.cost">$ <% (commandItem.cost*commandItem.quantity | number:2) %></span>
 
                         <div ng-show="commandItem.notes.length != 0 || commandItem.extras.length != 0" class="itemNoteSeparation">
-                            <p ng-repeat="item in commandItem.notes"><% item.note %></p>
-                            <p ng-repeat="extra in commandItem.extras"><% extra.name %> <% extra.effect %> <% extra.value %> </p>
+                            <p ng-repeat="item in commandItem.notes track by $index"><% item.note %></p>
+                            <p ng-repeat="extra in commandItem.extras track by $index"><% extra.name %>
+                                <span ng-show="extra.effect == '+'" style="color: #8ad919; float: right; margin-right: 10px;"> + <% extra.value %>$ </span>
+                                <span ng-show="extra.effect == '-'" style="color: red; float: right; margin-right: 10px;"> - <% extra.value %>$ </span>
+                                <span ng-show="extra.effect == '*'" style="color: #8ad919; float: right; margin-right: 10px;"> + <% extra.value | number:0 %>% </span>
+                                <span ng-show="extra.effect == '/'" style="color: red; float: right; margin-right: 10px;"> - <% extra.value | number:0 %>% </span>
+                            </p>
                         </div>
                     </li>
 
