@@ -98,6 +98,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             //
             $scope.filters = {};
             //
+            $scope.menuFilters = {};
+            //
             $scope.menuItemTypes = [];
             //Pannel 100%/100% to block the user if no employee is authenticated
             var windowModalBlockerHtml = '<div id="windowModalBlocker" class="pg-loading-screen pg-loading" style=" background-color: #222; opacity:1; width: 100%; height: 100%; position: absolute; z-index: -1;">' +
@@ -678,16 +680,30 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                  alert('test')});
                  */
 
-                $url = 'http://pos.mirageflow.com/extras/list';
-                var $callbackFunction = function (response) {
+                    $url = 'http://pos.mirageflow.com/extras/list';
+                    var $callbackFunction = function (response) {
 
-                    console.log("Extra list received inside response");
+                        console.log("Extra list received inside response");
 
-                    $scope.extras = response;
-                }
+                        $scope.extras = response;
+                    }
 
 
                     getReq.send($url, null, $callbackFunction);
+
+                    $url = 'http://pos.mirageflow.com/filters/list';
+                    var $callbackFunction = function (response) {
+
+                        console.log("Filters list received inside response");
+
+                        $scope.menuFilters = response;
+                        console.log(response)
+                    }
+
+
+                    getReq.send($url, null, $callbackFunction);
+
+
             };
 
             getReq.send($url, null, $callbackFunction);
@@ -697,6 +713,40 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         getReq.send($url, null, $callbackFunction);
         /*End loadind element - After the callback if exist*/
+
+
+        $scope.filterItemList = [];
+        $scope.filterItemTypeList = [];
+
+        $scope.applyFilter = function (menuFilter) {
+            console.log(menuFilter)
+            /*$scope.filters = menuFilter;*/
+
+        /*    $scope.filters.id = {}
+            for(var l = 0; l < menuFilter.items.length; l++){
+                $scope.filters.item.id.push(menuFilter.items[l].id);
+            }
+*/
+            $scope.filters.itemtype = {}
+            $scope.filters.itemtype.id = []
+            for(l = 0; l < menuFilter.itemtypes.length; l++){
+
+                $scope.filters.itemtype.id.push(menuFilter.itemtypes[l].itemtype.id);
+
+            }
+
+            console.log($scope.filters)
+        }
+
+/*
+        $scope.filterByItem = function(movie) {
+            return ($scope.filters.item.indexOf(movie.genre) !== -1);
+        };
+        $scope.filterByItemType = function(itemtype) {
+            return ($scope.filters.itemtype.indexOf(movie.genre) !== -1);
+        };
+*/
+
 
 
         /*Add a given note to a given item inside the current command*/
@@ -2123,6 +2173,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 $scope.commandCurrentClient = 1;
 
                 if (response.commands.length > 0) {
+                    $scope.clientPagerTotalItems = 0;
 
 
                     for (var f = 0; f < response.commands.length; f++) {
