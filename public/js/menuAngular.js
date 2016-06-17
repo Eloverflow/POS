@@ -2081,6 +2081,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 $('#closeModal').click();
 
                 $scope.commandClient = [];
+                $scope.clientPagerTotalItems = 0;
                 $scope.getCommand();
             }
 
@@ -2123,7 +2124,6 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
                 if (response.commands.length > 0) {
 
-                    $scope.clientPagerTotalItems = 0;
 
                     for (var f = 0; f < response.commands.length; f++) {
                         $scope.clientPagerTotalItems += 10;

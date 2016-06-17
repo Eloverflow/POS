@@ -86,8 +86,8 @@ Route::get('/filters/list',  ['uses' => 'POS\FiltersController@liste', 'middlewa
 Route::get('/filters/create',  ['uses' => 'POS\FiltersController@create', 'middleware' => 'auth']);
 Route::post('/filters/create',  ['uses' => 'POS\FiltersController@postCreate', 'middleware' => 'auth']);
 
-Route::get('/filters/edit/{slug}',  ['uses' => 'POS\filtersController@edit', 'middleware' => 'auth']);
-Route::post('/filters/edit/{slug}',  ['uses' => 'POS\filtersController@update', 'middleware' => 'auth']);
+Route::get('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@edit', 'middleware' => 'auth']);
+Route::post('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@update', 'middleware' => 'auth']);
 
 Route::get('/clients',  ['uses' => 'POS\ClientController@index', 'middleware' => 'auth']);
 Route::get('/clients/create',  ['uses' => 'POS\ClientController@create', 'middleware' => 'auth']);

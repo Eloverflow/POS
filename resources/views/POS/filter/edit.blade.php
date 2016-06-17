@@ -23,16 +23,11 @@
                     <div class="col-md-6">
                         {!! Form::open(array('url' => @URL::to('/filters/edit/' . $filter->slug), 'role' => 'form')) !!}
                         @foreach($tableColumns as $column)
-                            @if($column == 'effect')
+                            @if($column == 'importance')
                                 <div class="form-group">
+                                    <p class="text-warning">* Plus l'importance est eleve, le menu apparaitera en premier dans la liste</p>
                                     <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
-                                    <select name="{{ $column }}" class="form-control">
-                                        <option value="" @if($filter[$column] == "") selected @endif >Aucun</option>
-                                        <option value="-" @if($filter[$column] == "-") selected @endif >Soustraire</option>
-                                        <option value="+" @if($filter[$column] == "+") selected @endif >Additionner</option>
-                                        <option value="/" @if($filter[$column] == "/") selected @endif >Soustraire pourcentage</option>
-                                        <option value="*" @if($filter[$column] == "*") selected @endif >Additionner pourcentage</option>
-                                    </select>
+                                    <input class="form-control" type="number" id="{{ $column }}" name="{{ $column }}" value="{{  $filter[$column] }}">
                                 </div>
                             @else
                                 <div class="form-group">
