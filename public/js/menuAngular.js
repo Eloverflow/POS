@@ -874,10 +874,12 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $callbackFunction =function () {
                 console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=3))
                 $scope.delayedUpdateTable();
-                $scope.showEmployeeModal = false;
+                /*$scope.showEmployeeModal = false;*/
             }
 
-            $scope.validateEmployeePassword($callbackFunction);
+            $callbackFunction();
+
+            /*$scope.validateEmployeePassword($callbackFunction);*/
         }
         
         $scope.terminateCommands = function () {
@@ -1038,10 +1040,11 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $callbackFunction =function () {
                 console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=1))
                 $scope.delayedUpdateTable();
-                $scope.showEmployeeModal = false;
+                /*$scope.showEmployeeModal = false;*/
             }
 
-            $scope.validateEmployeePassword($callbackFunction);
+            $callbackFunction();
+           /* $scope.validateEmployeePassword($callbackFunction);*/
         }
 
         $scope.changeCommandItemsStatus = function () {
