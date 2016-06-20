@@ -274,7 +274,7 @@
                     </div>
                 </div>
             </div>
-                <div ng-repeat="menuItems in menuItemsExtended | byItemType:itemTypeArray ">
+                <div ng-repeat="menuItems in menuItemsExtended | byItemType:itemTypeArray:itemArray ">
                 <div ng-repeat="menuItemSize in menuItems.sizes" class="sizeBlock">
                     <div ng-repeat="menuItem in menuItems" class="col-sm-6 col-md-3">
                         <div{{-- ng-click="selectedItem(menuItem)" --}}

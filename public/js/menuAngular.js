@@ -25,16 +25,48 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         };
     })
     .filter('byItemType', function() {
-    return function(items,itemtypes) {
+    return function(items,itemtypesArray, itemsArray) {
         var out = [];
+
+/*
+        console.log('items')
+        console.log(items)
+        console.log('itemsArray')
+        console.log(itemsArray)
+        console.log('itemtypesArray')
+        console.log(itemtypesArray)*/
 
         if(typeof items != 'undefined' && items != null)
         for(var l = 0; l < items.length; l++){
+            var onFilter = false;
+            if(typeof items[l] != 'undefined' && items[l] != null)
+            {
+                backup = items[l];
+                itemsFound = [];
+                for(z = 0; z < items[l].length; z++) {
+                    if (typeof itemsArray != 'undefined' && itemsArray != null)
+                        for (u = 0; u < itemsArray.length; u++) {
+                            console.log(items[l])
+                            if (items[l][z].id == itemsArray[u].item.id) {
+                                itemsFound.push(items[l][z])
+                                onFilter = true;
+                            }
+                        }
+                }
+                if(itemsFound.length > 0){
+                    itemsFound.sizes = backup.sizes
+                    itemsFound.$$hashKey = backup.$$hashKey
+                    out.push(itemsFound);
+                }
+                console.log(out)
+            }
 
-            if(typeof itemtypes != 'undefined' && itemtypes != null)
-            for(var r = 0; r < itemtypes.length; r++){
-                if(items[l][0].itemtype.id == itemtypes[r].id)
-                    out.push(items[l])
+            if(!onFilter && typeof itemtypesArray != 'undefined' && itemtypesArray != null)
+            {
+                for(var r = 0; r < itemtypesArray.length; r++){
+                    if(items[l][0].itemtype.id == itemtypesArray[r].id)
+                        out.push(items[l])
+                }
             }
 
         }
@@ -741,18 +773,20 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.filters.itemtype = {}
             $scope.filters.itemtype.type = -1;
 
+
+            $scope.itemArray = []
+            for(l = 0; l < menuFilter.items.length; l++){
+                $scope.itemArray.push(menuFilter.items[l])
+            }
             $scope.itemTypeArray = []
             for(l = 0; l < menuFilter.itemtypes.length; l++){
-
                 $scope.itemTypeArray.push(menuFilter.itemtypes[l].itemtype);
-
             }
-
-            console.log($scope.itemTypeArray)
         }
 
         $scope.removeFilters = function () {
             $scope.itemTypeArray = [];
+            $scope.itemArray = [];
         }
 
 /*
