@@ -39,7 +39,16 @@
                                 <td>{{ $employee->lastName }}</td>
                                 <td>{{ $employee->email }}</td>
                                 <td>{{ $employee->hireDate }}</td>
-                                <td><?php if($employee->isWorking == 1){ echo "Working" ; }elseif($employee->isWorking == ""){ echo "Never worked"; }else { echo "Off"; } ?></td>
+                                <td><?php
+                                        if($employee->startTime == null && $employee->endTime == null){
+                                            echo 'Never Worked';
+                                        } else if($employee->startTime != null && $employee->endTime == null){
+                                            echo "Working";
+                                        } else {
+                                            echo "Off";
+                                        }
+                                    ?>
+                                </td>
                                 <td><a href="{{ URL::to('employee/track', $employee->idEmployee) }}">Track</a>
                                     <a href="{{ URL::to('employee/details', $employee->idEmployee) }}">Details</a>
                                     <a href="{{ URL::to('employee/edit', $employee->idEmployee) }}">Edit</a>

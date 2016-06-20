@@ -19,10 +19,22 @@ class Employee extends Model
 
     public static function getAll()
     {
-        return \DB::table('employees')
-            ->join('users', 'employees.userId', '=', 'users.id')
-            ->select(\DB::raw('employees.id as idEmployee, firstName, lastName, email, hireDate, (SELECT a.isIn FROM punches a WHERE a.employee_id=employees.id order by a.created_at desc limit 1) AS isWorking'))
-            ->get();
+        return \DB::select('SELECT * FROM (
+                                SELECT  a.id as idEmployee, a.firstName, a.lastName, u.email, a.hireDate, c.startTime, c.endTime
+                            FROM employees a
+                                LEFT OUTER JOIN users u
+                                    ON a.userId = u.id
+                                LEFT OUTER JOIN punches c
+                                    ON a.id = c.employee_id
+                                LEFT OUTER JOIN
+                                (
+                                    SELECT employee_id, MAX(startTime) maxDate
+                                    FROM punches
+                                    GROUP BY employee_id
+                                ) b ON c.employee_id = b.employee_id AND
+                                        c.startTime = b.maxDate
+                                order by c.startTime desc
+                            ) AS tmp_table GROUP BY idEmployee');
     }
 
 

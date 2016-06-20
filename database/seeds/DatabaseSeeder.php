@@ -105,7 +105,7 @@ class PunchesTableSeeder extends Seeder {
     {
         DB::table('punches')->delete();
 
-        Punch::create(['inout' => 'Dispo 1', 'isIn' => true, 'employee_id' => 1, 'created_at' => '2016-02-24 15:00:00']);
+        Punch::create(['employee_id' => 1, 'startTime' => '2016-06-06 15:00:00', 'endTime' => '2016-06-06 19:00:00', 'work_title_id' => 1]);
 
         $this->command->info('Disponibilities table seeded!');
     }

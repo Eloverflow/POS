@@ -97,4 +97,12 @@ class Schedule extends Model
             ->orderBy('day_schedules.startTime', 'asc')
             ->get();
     }
+
+    public static function GetScheduledHoursYear($year){
+        return \DB::select('SELECT MONTH(p.startTime) month, TIME(SUM(TIMEDIFF(p.endTime, p.startTime))) total
+                            FROM day_schedules p
+                            WHERE YEAR(DATE(p.startTime)) = :year
+                            GROUP BY MONTH(p.startTime)
+                            ORDER BY p.startTime ASC', ['year' => $year]);
+    }
 }

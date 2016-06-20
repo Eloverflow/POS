@@ -9,6 +9,7 @@ use App\Models\POS\EmployeeTitle;
 use App\Models\Project;
 use App\Helpers\Utils;
 use App\Models\POS\Schedule;
+use App\Models\POS\Punch;
 use App\Models\POS\Day_Schedules;
 use App\Models\POS\Disponibility;
 
@@ -34,63 +35,72 @@ class ScheduleController extends Controller
         return $view;
     }
 
-    public function track($id)
-    {
-        $schedule = Schedule::GetById($id);
-        $scheduleInfos = Schedule::GetScheduleEmployees($id);
-
+    // Cette fonction sert a prendre une matrice de temps et a faire les
+    // calculs de la matrice.
+    // Return: The initial matrix with total and interval
+    private function CalculateSchedulesAndPunches($timeInfos){
         $lastEmpl = "";
 
         $e = new DateTime('00:00');
         $f = clone($e);
 
-        $numItems = count($scheduleInfos) - 1;
+        $numItems = count($timeInfos) - 1;
 
         $startIndex = 0;
         $lastEmpl = "";
-        for($i = 0; $i < count($scheduleInfos); $i++) {
-            $datetime1 = new DateTime($scheduleInfos[$i]->startTime);
-            $datetime2 = new DateTime($scheduleInfos[$i]->endTime);
+        for($i = 0; $i < count($timeInfos); $i++) {
+            $datetime1 = new DateTime($timeInfos[$i]->startTime);
+            $datetime2 = new DateTime($timeInfos[$i]->endTime);
             $interval = $datetime1->diff($datetime2);
 
-            $scheduleInfos[$i]->interval = $interval;
+            $timeInfos[$i]->interval = $interval;
 
             if($lastEmpl == "") {
-                $lastEmpl = $scheduleInfos[$i]->idEmployee;
+                $lastEmpl = $timeInfos[$i]->idEmployee;
                 $e->add($interval);
 
                 if($i === $numItems){
-                    $scheduleInfos[$startIndex]->total = $f->diff($e);
+                    $timeInfos[$startIndex]->total = $f->diff($e);
                 }
 
-            } else if($lastEmpl == $scheduleInfos[$i]->idEmployee){
+            } else if($lastEmpl == $timeInfos[$i]->idEmployee){
                 $e->add($interval);
 
                 if($i === $numItems){
-                    $scheduleInfos[$startIndex]->total = $f->diff($e);
+                    $timeInfos[$startIndex]->total = $f->diff($e);
                 }
 
             } else {
                 // On vien de finir de parcourir un employee
-                $scheduleInfos[$startIndex]->total = $f->diff($e);
+                $timeInfos[$startIndex]->total = $f->diff($e);
 
                 $startIndex = $i;
                 $e = new DateTime('00:00');
 
-                $lastEmpl = $scheduleInfos[$i]->idEmployee;
+                $lastEmpl = $timeInfos[$i]->idEmployee;
                 $e->add($interval);
 
                 if($i === $numItems){
-                    $scheduleInfos[$startIndex]->total = $f->diff($e);
+                    $timeInfos[$startIndex]->total = $f->diff($e);
                 }
             }
-
         }
+        return $timeInfos;
+    }
+
+    public function track($id)
+    {
+        $schedule = Schedule::GetById($id);
+        $scheduleInfos = $this->CalculateSchedulesAndPunches(Schedule::GetScheduleEmployees($id));
+        $punches = $this->CalculateSchedulesAndPunches(Punch::GetByInterval($schedule->startDate, $schedule->endDate));
+
+
 
 
         $view = \View::make('POS.Schedule.track')->with('ViewBag', array(
             'schedule' => $schedule,
-            'scheduleInfos' => $scheduleInfos
+            'scheduleInfos' => $scheduleInfos,
+            'punches' => $punches
         ));
         return $view;
     }
