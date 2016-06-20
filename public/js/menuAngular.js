@@ -24,6 +24,24 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             return input;
         };
     })
+    .filter('byItemType', function() {
+    return function(items,itemtypes) {
+        var out = [];
+
+        if(typeof items != 'undefined' && items != null)
+        for(var l = 0; l < items.length; l++){
+
+            if(typeof itemtypes != 'undefined' && itemtypes != null)
+            for(var r = 0; r < itemtypes.length; r++){
+                if(items[l][0].itemtype.id == itemtypes[r].id)
+                    out.push(items[l])
+            }
+
+        }
+
+        return out;
+    }
+    })
 
     /*Allow you to make a quick get request with callbackFunction*/
     .factory('getReq', function ($http, $location) {
@@ -718,24 +736,23 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         $scope.filterItemList = [];
         $scope.filterItemTypeList = [];
 
+        $scope.itemTypeArray = [];
         $scope.applyFilter = function (menuFilter) {
-            console.log(menuFilter)
-            /*$scope.filters = menuFilter;*/
-
-        /*    $scope.filters.id = {}
-            for(var l = 0; l < menuFilter.items.length; l++){
-                $scope.filters.item.id.push(menuFilter.items[l].id);
-            }
-*/
             $scope.filters.itemtype = {}
-            $scope.filters.itemtype.id = []
+            $scope.filters.itemtype.type = -1;
+
+            $scope.itemTypeArray = []
             for(l = 0; l < menuFilter.itemtypes.length; l++){
 
-                $scope.filters.itemtype.id.push(menuFilter.itemtypes[l].itemtype.id);
+                $scope.itemTypeArray.push(menuFilter.itemtypes[l].itemtype);
 
             }
 
-            console.log($scope.filters)
+            console.log($scope.itemTypeArray)
+        }
+
+        $scope.removeFilters = function () {
+            $scope.itemTypeArray = [];
         }
 
 /*
