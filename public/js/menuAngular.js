@@ -24,6 +24,24 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             return input;
         };
     })
+    .filter('byItemType', function() {
+    return function(items,itemtypes) {
+        var out = [];
+
+        if(typeof items != 'undefined' && items != null)
+        for(var l = 0; l < items.length; l++){
+
+            if(typeof itemtypes != 'undefined' && itemtypes != null)
+            for(var r = 0; r < itemtypes.length; r++){
+                if(items[l][0].itemtype.id == itemtypes[r].id)
+                    out.push(items[l])
+            }
+
+        }
+
+        return out;
+    }
+    })
 
     /*Allow you to make a quick get request with callbackFunction*/
     .factory('getReq', function ($http, $location) {
@@ -97,6 +115,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             var planTableHeight = 45.8 * 0.8;
             //
             $scope.filters = {};
+            //
+            $scope.menuFilters = {};
             //
             $scope.menuItemTypes = [];
             //Pannel 100%/100% to block the user if no employee is authenticated
@@ -678,16 +698,30 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                  alert('test')});
                  */
 
-                $url = 'http://pos.mirageflow.com/extras/list';
-                var $callbackFunction = function (response) {
+                    $url = 'http://pos.mirageflow.com/extras/list';
+                    var $callbackFunction = function (response) {
 
-                    console.log("Extra list received inside response");
+                        console.log("Extra list received inside response");
 
-                    $scope.extras = response;
-                }
+                        $scope.extras = response;
+                    }
 
 
                     getReq.send($url, null, $callbackFunction);
+
+                    $url = 'http://pos.mirageflow.com/filters/list';
+                    var $callbackFunction = function (response) {
+
+                        console.log("Filters list received inside response");
+
+                        $scope.menuFilters = response;
+                        console.log(response)
+                    }
+
+
+                    getReq.send($url, null, $callbackFunction);
+
+
             };
 
             getReq.send($url, null, $callbackFunction);
@@ -697,6 +731,39 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         getReq.send($url, null, $callbackFunction);
         /*End loadind element - After the callback if exist*/
+
+
+        $scope.filterItemList = [];
+        $scope.filterItemTypeList = [];
+
+        $scope.itemTypeArray = [];
+        $scope.applyFilter = function (menuFilter) {
+            $scope.filters.itemtype = {}
+            $scope.filters.itemtype.type = -1;
+
+            $scope.itemTypeArray = []
+            for(l = 0; l < menuFilter.itemtypes.length; l++){
+
+                $scope.itemTypeArray.push(menuFilter.itemtypes[l].itemtype);
+
+            }
+
+            console.log($scope.itemTypeArray)
+        }
+
+        $scope.removeFilters = function () {
+            $scope.itemTypeArray = [];
+        }
+
+/*
+        $scope.filterByItem = function(movie) {
+            return ($scope.filters.item.indexOf(movie.genre) !== -1);
+        };
+        $scope.filterByItemType = function(itemtype) {
+            return ($scope.filters.itemtype.indexOf(movie.genre) !== -1);
+        };
+*/
+
 
 
         /*Add a given note to a given item inside the current command*/
@@ -1306,6 +1373,53 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         }
 
+        /*Will send a request to update the bills and then execute the callbackFunction*/
+        $scope.deleteCommandsBills = function ($callBack) {
+
+
+            $url = 'http://pos.mirageflow.com/menu/delete/bill';
+
+            $data = {
+                bills: $scope.bills,
+                table: $scope.currentTable,
+                employee: $scope.currentEmploye
+            };
+
+
+            var $callbackFunction = function (response) {
+                console.log('Deleted bills')
+                $scope.bills = null;
+
+
+                $timeout(function () {
+                    $scope.progressValue = 100;
+                    $scope.savingMessage = "Facture effacé!"
+                }, 0);
+
+                console.log("Facture effacé - Success or Not ?");
+
+                if ($callBack != null)
+                    $callBack();
+            };
+
+
+      /*      if (timeoutHandle != null){
+                $scope.getCommand();
+                timeoutHandle = null;
+            }*/
+
+
+
+          /*  $timeout(function () {*/
+                postReq.send($url, $data, null, $callbackFunction);
+           /*     $scope.progressValue = 100;
+                $('.progress-bar').addClass('progress-bar-success');
+                $scope.savingMessage = "Commande Sauvegardé!"
+            }, 500);
+*/
+
+        }
+
         /*Client pager - set page*/
         $scope.setPage = function (pageNo) {
             $scope.commandCurrentClient = pageNo;
@@ -1367,7 +1481,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.showHeaderOptions = !$scope.showHeaderOptions
         }
         $scope.toggleBill = function () {
-            if ($scope.bills == null || typeof $scope.bills != 'undefined' && $scope.bills != null && typeof $scope.bills[0] != 'undefined' && $scope.bills[0].length == 0)
+            if ($scope.bills == null || typeof $scope.bills == 'undefined' || ($scope.bills != null & typeof $scope.bills != 'undefined' && $scope.bills.length == 1))
                 $scope.toggleDivideBillModal();
             else {
                 if(!$scope.showBillWindow)
@@ -1645,6 +1759,12 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
             }
 
+        }
+
+        $scope.redivideBill = function () {
+            $scope.deleteCommandsBills();
+            $scope.showPanelOverwriteBill =false;
+            $scope.showDivideBillModal = true;
         }
 
         /*Move the selected items or selected bills items to the given bill*/
@@ -2028,6 +2148,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 $('#closeModal').click();
 
                 $scope.commandClient = [];
+                $scope.clientPagerTotalItems = 0;
                 $scope.getCommand();
             }
 
@@ -2069,8 +2190,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 $scope.commandCurrentClient = 1;
 
                 if (response.commands.length > 0) {
-
                     $scope.clientPagerTotalItems = 0;
+
 
                     for (var f = 0; f < response.commands.length; f++) {
                         $scope.clientPagerTotalItems += 10;

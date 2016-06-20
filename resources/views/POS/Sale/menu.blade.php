@@ -245,19 +245,21 @@
         <div id="filter-wrapper" style="overflow: hidden;">
 
             <div class="menu-filter">
-                <button ng-click="filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary"><span
+                <button ng-click="removeFilters();filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary"><span
                             class="glyphicon glyphicon-star"></span> Tout
                 </button>
-                <button ng-repeat="itemType in menuItemTypes" ng-click="filters.itemtype.type = itemType.type"
+                <button ng-repeat="menuFilter in menuFilters" ng-click="applyFilter(menuFilter)"
+                        type="button" class="btn btn-primary"><% menuFilter.name %></button>
+                <button ng-repeat="itemType in menuItemTypes" ng-click="removeFilters();filters.itemtype.type = itemType.type"
                         type="button" class="btn btn-primary"><% itemType.type %></button>
             </div>
         </div>
     </div>
 
-    <div id="contentPanel" class="col-sm-9 col-sm-offset-5 col-lg-7 col-lg-offset-5 main">
+    <div id="contentPanel" class="col-sm-9 col-sm-offset-5 col-lg-7 col-lg-offset-5">
         {{--Content--}}
         <div class="row beer-items">
-            <div ng-repeat="menuItems in menuItemsExtended | filter:filters">
+            <div ng-repeat="menuItems in menuItemsExtended | filter:filters ">
                 <div ng-repeat="menuItemSize in menuItems.sizes" class="sizeBlock">
                     <div ng-repeat="menuItem in menuItems" class="col-sm-6 col-md-3">
                         <div{{-- ng-click="selectedItem(menuItem)" --}}
@@ -271,13 +273,24 @@
                         </div>
                     </div>
                 </div>
-
             </div>
-
-
-
+                <div ng-repeat="menuItems in menuItemsExtended | byItemType:itemTypeArray ">
+                <div ng-repeat="menuItemSize in menuItems.sizes" class="sizeBlock">
+                    <div ng-repeat="menuItem in menuItems" class="col-sm-6 col-md-3">
+                        <div{{-- ng-click="selectedItem(menuItem)" --}}
+                                ng-click="selectedItem(menuItem,menuItemSize.name);addItem()" class="thumbnail beerItem"
+                                style="background-color: <% menuItemSize.color.boxColor %>; ">{{--
+                        <img class="beerImage" ng-src="{{ @URL::to('/img/item/')}}/<% menuItem.img_id %>">--}}
+                            <div class="caption">
+                                <h3 style="color: <% menuItemSize.color.textColor %>"><span class="beerName"><% menuItemSize.name %>
+                                        de <% menuItem.name %></span></h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+             </div>
+            </div>
         </div>
-    </div>
 
 @stop
 

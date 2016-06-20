@@ -43,6 +43,7 @@ Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware'
 Route::post('/menu/command',  ['uses' => 'POS\SalesController@updateCommand', 'middleware' => 'auth']);
 Route::post('/menu/getCommand',  ['uses' => 'POS\SalesController@getCommand', 'middleware' => 'auth']);
 Route::post('/menu/bill',  ['uses' => 'POS\SalesController@updateBill', 'middleware' => 'auth']);
+Route::post('/menu/delete/bill',  ['uses' => 'POS\SalesController@deleteBills', 'middleware' => 'auth']);
 Route::post('/menu/getBills',  ['uses' => 'POS\SalesController@getBills', 'middleware' => 'auth']);
 
 
@@ -79,6 +80,14 @@ Route::post('/extras/create',  ['uses' => 'ERP\ExtrasController@postCreate', 'mi
 
 Route::get('/extras/edit/{slug}',  ['uses' => 'ERP\ExtrasController@edit', 'middleware' => 'auth']);
 Route::post('/extras/edit/{slug}',  ['uses' => 'ERP\ExtrasController@update', 'middleware' => 'auth']);
+
+Route::get('/filters',  ['uses' => 'POS\FiltersController@index', 'middleware' => 'auth']);
+Route::get('/filters/list',  ['uses' => 'POS\FiltersController@liste', 'middleware' => 'auth']);
+Route::get('/filters/create',  ['uses' => 'POS\FiltersController@create', 'middleware' => 'auth']);
+Route::post('/filters/create',  ['uses' => 'POS\FiltersController@postCreate', 'middleware' => 'auth']);
+
+Route::get('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@edit', 'middleware' => 'auth']);
+Route::post('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@update', 'middleware' => 'auth']);
 
 Route::get('/clients',  ['uses' => 'POS\ClientController@index', 'middleware' => 'auth']);
 Route::get('/clients/create',  ['uses' => 'POS\ClientController@create', 'middleware' => 'auth']);
