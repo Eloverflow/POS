@@ -38,17 +38,17 @@ class CommandLine extends Model implements LogsActivityInterface {
     {
         if ($eventName == 'created')
         {
-            return 'Command line "' . $this->id . '" was created';
+            return '{"msg" : "command_line of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->name .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'updated')
         {
-            return 'Command line "' . $this->id . '" was updated';
+            return '{"msg" : "command_line of command #' . $this->command_id  . ' - item : ' . $this->size . ' of  X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'deleted')
         {
-            return 'Command line "' . $this->id . '" was deleted';
+            return '{"msg" : "command_line of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->name .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         return '';

@@ -12,7 +12,7 @@ class Command extends Model implements LogsActivityInterface {
 
     protected $table = 'commands';
 
-    protected $fillable = array('table_id', 'client_id', 'command_number', 'notes', 'total', 'taxes', 'subTotal', 'status', 'slug');
+    protected $fillable = array('table_id', 'client_id', 'command_number', 'notes', 'status', 'slug');
 
 
     public function client()
@@ -21,6 +21,11 @@ class Command extends Model implements LogsActivityInterface {
     }
 
     public function table()
+    {
+        return $this->hasOne('App\Models\POS\Table', 'id', 'table_id');
+    }
+
+    public function tables()
     {
         return $this->hasOne('App\Models\POS\Table', 'id', 'table_id');
     }
@@ -40,17 +45,17 @@ class Command extends Model implements LogsActivityInterface {
     {
         if ($eventName == 'created')
         {
-            return 'Command number "' . $this->command_number . '" was created';
+            return '{"msg" : " command #' . $this->command_number  . ' - client : ' . $this->client_id . ' of table ' . $this->tables->id . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'updated')
         {
-            return 'Command number "' . $this->command_number . '" was updated';
+            return '{"msg" : " command #' . $this->command_number  . ' - client : ' . $this->client_id . ' of table ' . $this->tables->id . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'deleted')
         {
-            return 'Command number "' . $this->command_number . '" was deleted';
+            return '{"msg" : " command #' . $this->command_number  . ' - client : ' . $this->client_id . ' of table ' . $this->tables->id . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         return '';

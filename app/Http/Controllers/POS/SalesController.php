@@ -380,7 +380,6 @@ class SalesController extends Controller
 
     public function updateCommand()
     {
-        Activity::log('Someone updated Commands');
 
         $inputs = Input::except('_token');
 /*

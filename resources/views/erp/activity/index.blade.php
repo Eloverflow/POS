@@ -21,7 +21,18 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                       <div style="overflow-y: scroll;height: 700px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333" id="terminal"></div>
+                    <div style="overflow-y: scroll;height: 30px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333; color: #fff" id="filtre"> Filtres: </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                       <div style="overflow-y: scroll;height: 600px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333" id="terminal"></div>
 
                 </div>
 
@@ -64,26 +75,39 @@
                 finalString += log.employee[0].firstName + ' ' +  log.employee[0].lastName
             }
             else{
-                finalString += '<span style="color: #ccc">'
+                finalString += '<span style="color: #fff; text-shadow: 0 0 5px rgba(255,255,255,.2);">'
                 finalString += log.user[0].name + '(Admin)'
             }
             finalString += '</span>'
             finalString += ' - '
 
+            try {
+                var logObject = JSON.parse(log.text);
+                if(logObject.type == "created"){
+                    finalString += '<span style="color: #30a5ff">Created: '
+                    finalString += logObject.msg;
 
-            if(log.type == "created")
-                finalString += '<span style="color: blue">Created:'
-            else if(log.type == "updated")
-                finalString += '<span style="color: green">Updated:'
-            else if(log.type == "deleted")
-                finalString += '<span style="color: red">Deleted:'
-            else {
-                finalString += '<span style="color: white">'
+                }
+                else if(logObject.type == "updated"){
+                    finalString += '<span style="color: green">Updated: '
+                    finalString += logObject.msg;
+
+                }
+                else if(logObject.type == "deleted"){
+                    finalString += '<span style="color: red">Deleted: '
+                    finalString += logObject.msg;
+
+                }
+                else {
+                    finalString += '<span style="color: #8ad919">'
+                    finalString += log.text;
+                }
+            }catch (e) {
+                //console.error("Parsing error:", e);
+
+                finalString += '<span style="color: #fff">'
                 finalString += log.text;
             }
-
-
-
 
             finalString += '</span>'
 
@@ -122,7 +146,7 @@
                 isLive = false
                 $( "#displayLive" ).show();
                 $( "#live" ).hide();
-                $('#terminal').append('<span style="color:red;">The live action log has been stopped after 60 empty request (No new actions were made ?)' + '</span><br>');
+                $('#terminal').append('<span style="color:red;">The live action log has been stopped after 60 empty request.' + '</span><br>');
                 updateScroll();
             }
 
