@@ -10,7 +10,8 @@
         "intervention/image": "dev-master",
         "illuminate/html": "5.*",
         "barryvdh/laravel-ide-helper": "^2.1",
-        "barryvdh/laravel-dompdf": "0.6.*"
+        "barryvdh/laravel-dompdf": "0.6.*",
+        "spatie/activitylog": "*"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

@@ -16,6 +16,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Input;
+use Activity;
 
 class SalesController extends Controller
 {
@@ -62,6 +63,7 @@ class SalesController extends Controller
 
     public function liste()
     {
+
 
 
         $title = 'Sales';
@@ -207,6 +209,7 @@ class SalesController extends Controller
 
     public function updateBill()
     {
+
 
         $inputs = Input::except('_token');
 
@@ -377,6 +380,8 @@ class SalesController extends Controller
 
     public function updateCommand()
     {
+        Activity::log('Someone updated Commands');
+
         $inputs = Input::except('_token');
 /*
         var_dump($inputs);*/
