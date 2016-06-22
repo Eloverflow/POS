@@ -70,6 +70,15 @@
 	visibility: hidden;
 }
 
+#terminal{
+	font-size:14px;  font-family: 'Consolas', 'Arial', sans-serif;overflow-y: scroll;height: 570px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333
+}
+
+
+#terminal em{
+	background-color: #555;
+}
+
 /* Fin Ajout*/
 
 
