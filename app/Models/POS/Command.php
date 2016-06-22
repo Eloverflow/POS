@@ -45,17 +45,17 @@ class Command extends Model implements LogsActivityInterface {
     {
         if ($eventName == 'created')
         {
-            return '{"msg" : " command #' . $this->command_number  . ' - client : ' . $this->client_id . ' of table ' . $this->tables->id . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : " command #' . $this->command_number  . ' - client : ' . $this->client_id . ' of table #' . $this->tables->tblNumber . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'updated')
         {
-            return '{"msg" : " command #' . $this->command_number  . ' - client : ' . $this->client_id . ' of table ' . $this->tables->id . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : " command #' . $this->command_number  . ' - client : ' . $this->client_id . ' of table #' . $this->tables->tblNumber . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'deleted')
         {
-            return '{"msg" : " command #' . $this->command_number  . ' - client : ' . $this->client_id . ' of table ' . $this->tables->id . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : " command #' . $this->command_number  . ' - client : ' . $this->client_id . ' of table #' . $this->tables->tblNumber . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         return '';

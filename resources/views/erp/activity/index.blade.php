@@ -21,7 +21,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div style="overflow-y: scroll;height: 30px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333; color: #fff" id="filtre"> Filtres: </div>
+                    <div style="font-family: 'Consolas', 'Arial', sans-serif;overflow-y: scroll;height: 30px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333; color: #fff" id="filtre"> Filtres: </div>
 
                 </div>
 
@@ -32,7 +32,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                       <div style="overflow-y: scroll;height: 600px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333" id="terminal"></div>
+                       <div style="font-size:14px;  font-family: 'Consolas', 'Arial', sans-serif;overflow-y: scroll;height: 600px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333" id="terminal"></div>
 
                 </div>
 
@@ -55,6 +55,17 @@
             setTimeout(getActivityLogOverId(lastId), 2000);
             $( "#live" ).show();
             $( "#displayLive" ).hide();
+
+
+            if($('.lastPosition').length == 1)
+                $('.lastPosition').remove();
+
+
+            if($('.liveActionMsg').length == 0)
+                $('#terminal').append('<div class="lastPosition" style="border-bottom: 1px solid #00a5ff; height: 3px; margin-bottom: 3px; width: 100%"></div>');
+            else
+                $('.liveActionMsg').before('<div class="lastPosition" style="border-bottom: 1px solid #00a5ff; height: 3px; margin-bottom: 3px; width: 100%"></div>');
+
         });
 
         $('#live').click(function() {
@@ -102,14 +113,60 @@
                     finalString += '<span style="color: #8ad919">'
                     finalString += log.text;
                 }
+                finalString += '</span>'
+
+                finalString += '<button class="btn btn-info" data-toggle="collapse" href="#data-'+ log.id + '"> Object </button>'
+                finalString += '<span style="margin-left: 0;" id="data-'+ log.id + '" class="collapse" >'
+
+                var row = logObject['row']
+                console.log('row')
+                console.log(row)
+
+                /*finalString += objectRow;*/
+
+                finalString += '<table style="border: 4px #555 solid; color: #fff"><tr>'
+                $.each(row, function(key, data) {
+                    finalString += '<th  style="border: 3px #555 solid">';
+                    finalString += key;
+                    finalString += '</th>';
+                });
+                finalString += '</tr>'
+
+                finalString += '<tr>'
+                $.each(row, function(key, data) {
+                    finalString += '<td  style="border: 2px #555 solid">';
+                    finalString += data;
+                    finalString += '</td>';
+                });
+                finalString += '</tr></table>'
+
+
+
+
+
+             /*   $.each(objectRow, function (key, data) {
+                    finalString += 'key :';
+                    finalString += key;
+                    finalString += 'data :';
+                    finalString += data;
+                    $.each(data, function (index, data) {
+                        finalString += 'index :';
+                        finalString += index;
+                        finalString += 'data :';
+                        finalString += data;
+                    })
+                })*/
+
+                finalString += '</span>'
+                /*$('.object')[ $('.object').leng]*/
             }catch (e) {
-                //console.error("Parsing error:", e);
+                console.log("Parsing error:", e);
 
                 finalString += '<span style="color: #fff">'
                 finalString += log.text;
+                finalString += '</span>'
             }
 
-            finalString += '</span>'
 
             return finalString
 
@@ -143,10 +200,20 @@
 
         function getActivityLogOverId($id) {
             if(noResultIteration > 60){
-                isLive = false
+                isLive = false;
+
+                $('.liveActionMsg').slideUp( 200, function() {
+                    $(this).remove();
+                    $('#terminal').append('<span class="liveActionMsg" style="color:red;">The live action log has been stopped after 60 empty request.' + '<br></span>');
+
+                });
+
+                if($('.liveActionMsg').length == 0)
+                $('#terminal').append('<span class="liveActionMsg" style="color:red;">The live action log has been stopped after 60 empty request.' + '<br></span>');
+
+
                 $( "#displayLive" ).show();
                 $( "#live" ).hide();
-                $('#terminal').append('<span style="color:red;">The live action log has been stopped after 60 empty request.' + '</span><br>');
                 updateScroll();
             }
 

@@ -484,15 +484,16 @@ class SalesController extends Controller
 
                         //We update de command
                         foreach ($inputCommand['commandItems'] as $inputItem) {
-                            $commandLine = CommandLine::where('command_id', $command->id)->where('item_id', $inputItem['id'])->where('size', $inputItem['size']['name']);
+                            $commandLine = CommandLine::where('command_id', $command->id)->where('item_id', $inputItem['id'])->where('size', $inputItem['size']['name'])->get()->last();
 /*
                             var_dump($commandLine);*/
 
 
-                            if(!empty($commandLine->first())){
+                            if(!empty($commandLine)){
                                 $result['msg'] .= " - Succeeded at finding the command line";/*
                                 $result['inputItem'] = $inputItem;*/
                                 $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'status'=>$inputItem['status'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras'])]);
+                                $commandLine->save();
                                 $result['msg'] .= " - Command line normally updated";
                                 array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->first()->id);
                             }
@@ -563,11 +564,11 @@ class SalesController extends Controller
                             foreach ($inputCommand['commandItems'] as $inputItem) {/*
                                 $commandLine = CommandLine::findOrNew($inputItem['id']);*/
 
-                                $commandLine = CommandLine::where('command_id', $command->id)->where('item_id', $inputItem['id'])->where('size', $inputItem['size']['name']);
+                                $commandLine = CommandLine::where('command_id', $command->id)->where('item_id', $inputItem['id'])->where('size', $inputItem['size']['name'])->get()->last();
 
 
                                 if($commandLine != ""){
-                                    array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->first()->id);
+                                    array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->id);
 
                                     $result['msg'] .= " - Succeeded at finding the command line";
 
@@ -578,6 +579,7 @@ class SalesController extends Controller
                                     $inputItem['extras'] = json_encode($inputItem['extras']);
 
                                     $commandLine->update($inputItem);
+                                    $commandLine->save();
                                     $result['msg'] .= " - Command line normally updated";
                                 }
                                 else{

@@ -11,7 +11,7 @@ return [
     | Laravel logger handler
     |
     */
-    'alsoLogInDefaultLog' => true,
+    'alsoLogInDefaultLog' => false,
 
     /*
     |--------------------------------------------------------------------------

@@ -41,9 +41,9 @@ class CommandLine extends Model implements LogsActivityInterface {
             return '{"msg" : "command_line of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->name .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
-        if ($eventName == 'updated' || $eventName == 'saved' || $eventName == 'updating' || $eventName == 'saving')
+        if ($eventName == 'updated')
         {
-            return 'test222';
+            return '{"msg" : "command_line of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->id .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'deleted')
@@ -51,6 +51,6 @@ class CommandLine extends Model implements LogsActivityInterface {
             return '{"msg" : "command_line of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->name .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
-        return 'test1111';
+        return '';
     }
 }
