@@ -95,12 +95,12 @@
             try {
                 var logObject = JSON.parse(log.text);
                 if(logObject.type == "created"){
-                    finalString += '<span style="color: #30a5ff">Created: '
+                    finalString += '<span style="color: green">Created: '
                     finalString += logObject.msg;
 
                 }
                 else if(logObject.type == "updated"){
-                    finalString += '<span style="color: green">Updated: '
+                    finalString += '<span style="color: #30a5ff">Updated: '
                     finalString += logObject.msg;
 
                 }
@@ -119,8 +119,6 @@
                 finalString += '<span style="margin-left: 0;" id="data-'+ log.id + '" class="collapse" >'
 
                 var row = logObject['row']
-                console.log('row')
-                console.log(row)
 
                 /*finalString += objectRow;*/
 
@@ -202,7 +200,7 @@
             if(noResultIteration > 60){
                 isLive = false;
 
-                $('.liveActionMsg').slideUp( 200, function() {
+                $('.liveActionMsg').fadeOut( 200, function() {
                     $(this).remove();
                     $('#terminal').append('<span class="liveActionMsg" style="color:red;">The live action log has been stopped after 60 empty request.' + '<br></span>');
 

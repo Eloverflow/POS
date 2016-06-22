@@ -57,13 +57,13 @@ class Table extends Model implements LogsActivityInterface {
         if ($eventName == 'updated')
         {
             $plan = $this->theplan;
-            return '{"msg" : " status -> ' . $this->status  . ' - table #' . $this->tblNumber  . ' - type : ' . $this->type . ' - floor #' . $this->noFloor . (!empty($plan) ? ' plan: ' .$plan['name'] : '').' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type : ' . $this->type . ' - floor #' . $this->noFloor . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'deleted')
         {
             $plan = $this->theplan;
-            return '{"msg" : " status -> ' . $this->status  . ' - table #' . $this->tblNumber  . ' - type : ' . $this->type . ' - floor #' . $this->noFloor . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type : ' . $this->type . ' - floor #' . $this->noFloor . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         return '';
