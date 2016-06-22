@@ -29,6 +29,7 @@ Route::post('/user/password/update', ['uses' => 'Auth\UserController@updatePassw
 
 Route::get('/activity-log',  ['uses' => 'ERP\ActivityLogController@index', 'middleware' => 'auth']);
 Route::get('/activity-log/over/{id}',  ['uses' => 'ERP\ActivityLogController@overId', 'middleware' => 'auth']);
+Route::get('/activity-log/olderthan/{id}',  ['uses' => 'ERP\ActivityLogController@olderThan', 'middleware' => 'auth']);
 Route::get('/activity-log/list',  ['uses' => 'ERP\ActivityLogController@liste', 'middleware' => 'auth']);
 
 Route::get('/',  ['uses' => 'PagesController@index', 'middleware' => 'auth']);

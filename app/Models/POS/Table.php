@@ -31,14 +31,8 @@ class Table extends Model implements LogsActivityInterface {
 
     public function plan()
     {
-        return $this->hasOne('App\Models\POS\Plan', 'id', 'pland_id');
+        return $this->hasOne('App\Models\POS\Plan', 'id', 'plan_id');
     }
-
-    public function theplan()
-    {
-        return $this->hasOne('App\Models\POS\Plan', 'id', 'pland_id');
-    }
-
 
     /**
      * Get the message that needs to be logged for the given event name.
@@ -50,20 +44,20 @@ class Table extends Model implements LogsActivityInterface {
     {
         if ($eventName == 'created')
         {
-            $plan = $this->theplan;
-            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type : ' . $this->type . ' - floor #' . $this->noFloor . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            $plan = $this->plan;
+            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'updated')
         {
-            $plan = $this->theplan;
-            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type : ' . $this->type . ' - floor #' . $this->noFloor . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            $plan = $this->plan;
+            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'deleted')
         {
-            $plan = $this->theplan;
-            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type : ' . $this->type . ' - floor #' . $this->noFloor . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            $plan = $this->plan;
+            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         return '';

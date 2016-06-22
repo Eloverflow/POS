@@ -47,7 +47,7 @@
 
         var isLive = false;
         var noResultIteration = 0;
-        var lastId;
+        var lastId, firstId;
 
         $('#displayLive').click(function() {
             noResultIteration = 0;
@@ -115,16 +115,16 @@
                 }
                 finalString += '</span>'
 
-                finalString += '<button class="btn btn-info" data-toggle="collapse" href="#data-'+ log.id + '"> Object </button>'
+                finalString += '<button onclick="updateScrollDelayed(this)" class="btn btn-info" style="height: 30px; margin: 2px;" data-toggle="collapse" href="#data-'+ log.id + '"> Object </button>'
                 finalString += '<span style="margin-left: 0;" id="data-'+ log.id + '" class="collapse" >'
 
                 var row = logObject['row']
 
                 /*finalString += objectRow;*/
 
-                finalString += '<table style="border: 4px #555 solid; color: #fff"><tr>'
+                finalString += '<table style="border: 4px #31b0d5 solid; color: #fff"><tr>'
                 $.each(row, function(key, data) {
-                    finalString += '<th  style="border: 3px #555 solid">';
+                    finalString += '<th  style=" padding: 3px; border: 3px #31b0d5 solid; ">';
                     finalString += key;
                     finalString += '</th>';
                 });
@@ -132,8 +132,46 @@
 
                 finalString += '<tr>'
                 $.each(row, function(key, data) {
-                    finalString += '<td  style="border: 2px #555 solid">';
-                    finalString += data;
+                    finalString += '<td style="  border: 2px #555 solid; border-top: none">';
+
+                    if(typeof data =='object' && data != null)
+                    {
+                        $.each(data, function(dataKey, dataData) {
+                            finalString += dataKey;
+                            finalString += ': ';
+                            finalString += dataData;
+                            finalString += '<br>';
+                        });
+                    }
+                    else {
+
+                        /*finalString += data*/
+                        try {
+                            var newData = JSON.parse(data);
+
+                            if(typeof newData =='object' && newData != null)
+                            {
+                                $.each(newData, function(dataKey, dataData) {
+                                    finalString += dataKey;
+                                    finalString += ': ';
+                                    finalString += dataData;
+                                  finalString += '<br>';
+                                });
+                            }
+                            else {
+                                finalString += data
+                            }
+
+                        }catch (e) {/*
+                            console.log("Parsing error:", e);*/
+
+                            finalString += data
+                        }
+
+                    }
+
+
+                   /* finalString += data;*/
                     finalString += '</td>';
                 });
                 finalString += '</tr></table>'
@@ -157,8 +195,8 @@
 
                 finalString += '</span>'
                 /*$('.object')[ $('.object').leng]*/
-            }catch (e) {
-                console.log("Parsing error:", e);
+            }catch (e) {/*
+                console.log("Parsing error:", e);*/
 
                 finalString += '<span style="color: #fff">'
                 finalString += log.text;
@@ -176,9 +214,19 @@
                 complete: function (response) {
                     if(typeof response.responseJSON != 'undefined'){
                         var i;
+
                         for(i = 0; i< response.responseJSON.length; i++){
                             $('#terminal').append(getLogString(response.responseJSON[i])+ '<br>');
+
+                            if(i == 0){
+                                firstId = response.responseJSON[i].id;
+                            }
                         }
+
+                        if(response.responseJSON.length >= 20){
+                            $('#terminal').prepend('<div class="olderThanBox" style="text-align: center; width: 100%;"><a href="#" onclick="getActivityLogOlderThanId(firstId)">(Show more logs)</a></div>');
+                        }
+
                         updateScroll();
                         if(isLive)
                         setTimeout(getActivityLogOverId(response.responseJSON[i-1].id), 2000);
@@ -187,13 +235,49 @@
                     }
                 },
                 error: function () {
-                    $('#terminal').append('Bummer: there was an error!');
+                    $('#terminal').append('Bummer: there was an error!<br>');
                     setTimeout(getActivityLog(), 3000);
                 },
             });
             return false;
         }
         getActivityLog();
+
+
+        function getActivityLogOlderThanId($id) {
+
+            $('.olderThanBox').remove();
+            $('#terminal').prepend('<div class="firstPosition" style="border-bottom: 1px solid #00a5ff; height: 3px; margin-bottom: 3px; width: 100%"></div>');
+
+
+            $.ajax({
+                    url:'{{ @URL::to('/activity-log/olderthan') }}/'+ $id,
+                    complete: function (response) {
+                        if(typeof response.responseJSON != 'undefined'){
+                            var i
+                            for(i= 0; i< response.responseJSON.length; i++){
+                                $('#terminal').prepend(getLogString(response.responseJSON[i])+ '<br>');
+
+                                if(i == 0){
+                                    firstId = response.responseJSON[i].id;
+                                }
+                            }
+
+                            if(response.responseJSON.length >= 20){
+                                $('#terminal').prepend('<div class="olderThanBox" style="text-align: center; width: 100%;"><a href="#" onclick="getActivityLogOlderThanId(firstId)">(Show more logs)</a></div>');
+                            }
+                            else {
+                                $('#terminal').prepend('<div class="olderThanBox" style="text-align: center; width: 100%;">*No more logs</div>');
+                            }
+
+                        }
+                    },
+                    error: function () {
+                        $('#terminal').prepend('Bummer: there was an error!<br>');
+                    },
+                });
+            return false;
+        }
 
 
         function getActivityLogOverId($id) {
@@ -239,7 +323,7 @@
                     }
                 },
                 error: function () {
-                    $('#terminal').append('Bummer: there was an error!');
+                    $('#terminal').append('Bummer: there was an error!<br>');
                 },
             });
             return false;
@@ -248,6 +332,12 @@
         function updateScroll(){
             var element = document.getElementById("terminal");
             element.scrollTop = element.scrollHeight;
+        }
+        function updateScrollDelayed(e){
+            var element = document.getElementById("terminal");
+            if(e.offsetTop > element.scrollHeight-200)
+            setTimeout(updateScroll, 100)
+
         }
     </script>
 

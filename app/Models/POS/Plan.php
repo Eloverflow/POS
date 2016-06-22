@@ -41,7 +41,7 @@ class Plan extends Model
 
     public function table()
     {
-        return $this->hasMany('App\Models\POS\Table');
+        return $this->hasMany('App\Models\POS\Table', 'plan_id', 'id');
     }
 
 

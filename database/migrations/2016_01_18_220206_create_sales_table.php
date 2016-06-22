@@ -15,6 +15,7 @@ class CreateSalesTable extends Migration
         Schema::create('sales', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('cancelled');
+            $table->boolean('status')->nullable();
             $table->integer('sale_number')->nullable();
             $table->float('subTotal')->nullable();
             $table->float('total')->nullable();

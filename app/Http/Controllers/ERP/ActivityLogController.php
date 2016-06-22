@@ -46,7 +46,24 @@ class ActivityLogController extends Controller
     public function liste()
     {
 
-        $activities = Activity::all();
+        $activities = Activity::latest()->limit(20)->get();
+
+        foreach ($activities as $activity)
+        {
+            $user = User::where('id', $activity->user_id)->get();
+            $employee = Employee::where('userId', $activity->user_id)->get();
+
+            $activity['user'] = $user;
+            $activity['employee'] = $employee;
+        }
+
+        return $activities;
+    }
+
+    public function olderThan($id)
+    {
+
+        $activities = Activity::where('id', '<', $id)->latest()->limit(20)->get();
 
         foreach ($activities as $activity)
         {

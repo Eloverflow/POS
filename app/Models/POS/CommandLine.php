@@ -38,17 +38,17 @@ class CommandLine extends Model implements LogsActivityInterface {
     {
         if ($eventName == 'created')
         {
-            return '{"msg" : "command_line of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->name .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : "Command Line '  . ' - Status -> ' . $this->status . ' of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->name .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'updated')
         {
-            return '{"msg" : "command_line of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->id .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : "Command Line '  . ' - Status -> ' . $this->status . ' of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->name .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'deleted')
         {
-            return '{"msg" : "command_line of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->name .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : "Command Line '  . ' - Status -> ' . $this->status . ' of command #' . $this->command_id  . ' - item : ' . $this->size . ' of ' . $this->item->name .' X ' . $this->quantity . ' - cost: ' . $this->cost . ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         return '';

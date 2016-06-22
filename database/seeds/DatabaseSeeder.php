@@ -15,6 +15,9 @@ use App\Models\Addons\Rfid\TableRfidRequest;
 use App\Models\POS\Client;
 use App\Models\POS\Command;
 use App\Models\POS\CommandLine;
+use App\Models\POS\Filter;
+use App\Models\POS\FilterItem;
+use App\Models\POS\FilterItemType;
 use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
 use App\Models\POS\Plan;
@@ -79,6 +82,9 @@ class DatabaseSeeder extends Seeder
         $this->call(MenuSettingsTableSeeder::class);
         $this->call(ExtraSeeder::class);
         $this->call(ExtraItemTypeSeeder::class);
+        $this->call(FilterSeeder::class);
+        $this->call(FilterItemTypeSeeder::class);
+        $this->call(FilterItemSeeder::class);
 
         Model::reguard();
     }
@@ -538,7 +544,7 @@ class TableSeeder extends Seeder {
 
     public function run()
     {
-        $preDoneTable = array(array('id' => '1','type' => 'tbl','tblNumber' => '1','noFloor' => '0','xPos' => '29','yPos' => '314','angle' => '0.536766rad','plan_id' => '1','status' => '2','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '2','type' => 'tbl','tblNumber' => '2','noFloor' => '0','xPos' => '157','yPos' => '296','angle' => '0.536766rad','plan_id' => '1','status' => '3','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '3','type' => 'tbl','tblNumber' => '3','noFloor' => '0','xPos' => '35','yPos' => '214','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '4','type' => 'tbl','tblNumber' => '4','noFloor' => '0','xPos' => '173','yPos' => '194','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '5','type' => 'tbl','tblNumber' => '5','noFloor' => '0','xPos' => '43','yPos' => '120','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '6','type' => 'tbl','tblNumber' => '6','noFloor' => '0','xPos' => '149','yPos' => '27','angle' => '1.56547rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '7','type' => 'tbl','tblNumber' => '7','noFloor' => '0','xPos' => '244','yPos' => '26','angle' => '1.59723rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '8','type' => 'tbl','tblNumber' => '8','noFloor' => '0','xPos' => '923','yPos' => '199','angle' => '1.58034rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:26:26'),array('id' => '9','type' => 'tbl','tblNumber' => '9','noFloor' => '0','xPos' => '1035','yPos' => '198','angle' => '1.57802rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:26:26'),array('id' => '10','type' => 'tbl','tblNumber' => '10','noFloor' => '0','xPos' => '39','yPos' => '650','angle' => '0.0108279rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '11','type' => 'tbl','tblNumber' => '11','noFloor' => '0','xPos' => '172','yPos' => '647','angle' => '-0.058568rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '12','type' => 'tbl','tblNumber' => '12','noFloor' => '0','xPos' => '168','yPos' => '552','angle' => '-0.0398922rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '13','type' => 'tbl','tblNumber' => '13','noFloor' => '0','xPos' => '41','yPos' => '555','angle' => '-0.0263365rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '14','type' => 'tbl','tblNumber' => '14','noFloor' => '0','xPos' => '42','yPos' => '458','angle' => '-0.0342332rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '15','type' => 'tbl','tblNumber' => '15','noFloor' => '0','xPos' => '179','yPos' => '449','angle' => '-0.0985259rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '16','type' => 'tbl','tblNumber' => '16','noFloor' => '0','xPos' => '314','yPos' => '398','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '17','type' => 'tbl','tblNumber' => '17','noFloor' => '0','xPos' => '418','yPos' => '358','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '18','type' => 'tbl','tblNumber' => '18','noFloor' => '0','xPos' => '518','yPos' => '315','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '19','type' => 'tbl','tblNumber' => '19','noFloor' => '0','xPos' => '550','yPos' => '221','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '20','type' => 'tbl','tblNumber' => '20','noFloor' => '0','xPos' => '565','yPos' => '114','angle' => '0.56906rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '21','type' => 'tbl','tblNumber' => '21','noFloor' => '0','xPos' => '441','yPos' => '56','angle' => '0.332999rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '22','type' => 'tbl','tblNumber' => '22','noFloor' => '0','xPos' => '323','yPos' => '10','angle' => '0.28873rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '23','type' => 'plc','tblNumber' => '23','noFloor' => '0','xPos' => '784','yPos' => '222','angle' => '0','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 16:26:26','updated_at' => '2016-05-31 16:26:26'),array('id' => '24','type' => 'plc','tblNumber' => '24','noFloor' => '1','xPos' => '29','yPos' => '314','angle' => '0.536766rad','plan_id' => '1','status' => '1','associated_employee_id' => NULL,'created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'));
+        $preDoneTable = array(array('id' => '1','type' => 'tbl','tblNumber' => '1','noFloor' => '0','xPos' => '29','yPos' => '314','angle' => '0.536766rad','plan_id' => '1','status' => '2','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '2','type' => 'tbl','tblNumber' => '2','noFloor' => '0','xPos' => '157','yPos' => '296','angle' => '0.536766rad','plan_id' => '1','status' => '3','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '3','type' => 'tbl','tblNumber' => '3','noFloor' => '0','xPos' => '35','yPos' => '214','angle' => '0.536766rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '4','type' => 'tbl','tblNumber' => '4','noFloor' => '0','xPos' => '173','yPos' => '194','angle' => '0.536766rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '5','type' => 'tbl','tblNumber' => '5','noFloor' => '0','xPos' => '43','yPos' => '120','angle' => '0.536766rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '6','type' => 'tbl','tblNumber' => '6','noFloor' => '0','xPos' => '149','yPos' => '27','angle' => '1.56547rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '7','type' => 'tbl','tblNumber' => '7','noFloor' => '0','xPos' => '244','yPos' => '26','angle' => '1.59723rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '8','type' => 'tbl','tblNumber' => '8','noFloor' => '0','xPos' => '923','yPos' => '199','angle' => '1.58034rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:26:26'),array('id' => '9','type' => 'tbl','tblNumber' => '9','noFloor' => '0','xPos' => '1035','yPos' => '198','angle' => '1.57802rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:26:26'),array('id' => '10','type' => 'tbl','tblNumber' => '10','noFloor' => '0','xPos' => '39','yPos' => '650','angle' => '0.0108279rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '11','type' => 'tbl','tblNumber' => '11','noFloor' => '0','xPos' => '172','yPos' => '647','angle' => '-0.058568rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '12','type' => 'tbl','tblNumber' => '12','noFloor' => '0','xPos' => '168','yPos' => '552','angle' => '-0.0398922rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '13','type' => 'tbl','tblNumber' => '13','noFloor' => '0','xPos' => '41','yPos' => '555','angle' => '-0.0263365rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '14','type' => 'tbl','tblNumber' => '14','noFloor' => '0','xPos' => '42','yPos' => '458','angle' => '-0.0342332rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '15','type' => 'tbl','tblNumber' => '15','noFloor' => '0','xPos' => '179','yPos' => '449','angle' => '-0.0985259rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '16','type' => 'tbl','tblNumber' => '16','noFloor' => '0','xPos' => '314','yPos' => '398','angle' => '0.536766rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '17','type' => 'tbl','tblNumber' => '17','noFloor' => '0','xPos' => '418','yPos' => '358','angle' => '0.536766rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '18','type' => 'tbl','tblNumber' => '18','noFloor' => '0','xPos' => '518','yPos' => '315','angle' => '0.536766rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '19','type' => 'tbl','tblNumber' => '19','noFloor' => '0','xPos' => '550','yPos' => '221','angle' => '0.536766rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '20','type' => 'tbl','tblNumber' => '20','noFloor' => '0','xPos' => '565','yPos' => '114','angle' => '0.56906rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '21','type' => 'tbl','tblNumber' => '21','noFloor' => '0','xPos' => '441','yPos' => '56','angle' => '0.332999rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '22','type' => 'tbl','tblNumber' => '22','noFloor' => '0','xPos' => '323','yPos' => '10','angle' => '0.28873rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'),array('id' => '23','type' => 'plc','tblNumber' => '23','noFloor' => '0','xPos' => '784','yPos' => '222','angle' => '0','plan_id' => '1','status' => '1','created_at' => '2016-05-31 16:26:26','updated_at' => '2016-05-31 16:26:26'),array('id' => '24','type' => 'plc','tblNumber' => '24','noFloor' => '1','xPos' => '29','yPos' => '314','angle' => '0.536766rad','plan_id' => '1','status' => '1','created_at' => '2016-05-31 11:33:42','updated_at' => '2016-05-31 16:24:36'));
         DB::table('tables')->delete();
 
         foreach ($preDoneTable as $table){
@@ -684,37 +690,100 @@ class ExtraSeeder extends Seeder {
 
 }
 
-class ExtraItemTypeSeeder extends Seeder {
+class ExtraItemTypeSeeder extends Seeder
+{
 
     public function run()
     {
         DB::table('extra_item_types')->delete();
 
         $extra_item_types = array(
-            array('id' => '1','extra_id' => '1','item_type_id' => '1','created_at' => '2016-06-16 08:24:56','updated_at' => '2016-06-16 08:24:56'),
-            array('id' => '2','extra_id' => '1','item_type_id' => '2','created_at' => '2016-06-16 08:24:56','updated_at' => '2016-06-16 08:24:56'),
-            array('id' => '3','extra_id' => '2','item_type_id' => '3','created_at' => '2016-06-16 08:25:27','updated_at' => '2016-06-16 08:25:27'),
-            array('id' => '4','extra_id' => '2','item_type_id' => '4','created_at' => '2016-06-16 08:25:27','updated_at' => '2016-06-16 08:25:27'),
-            array('id' => '5','extra_id' => '2','item_type_id' => '5','created_at' => '2016-06-16 08:25:27','updated_at' => '2016-06-16 08:25:27'),
-            array('id' => '6','extra_id' => '3','item_type_id' => '1','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
-            array('id' => '7','extra_id' => '3','item_type_id' => '2','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
-            array('id' => '8','extra_id' => '3','item_type_id' => '3','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
-            array('id' => '9','extra_id' => '3','item_type_id' => '4','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
-            array('id' => '10','extra_id' => '3','item_type_id' => '5','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
-            array('id' => '11','extra_id' => '4','item_type_id' => '1','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
-            array('id' => '12','extra_id' => '4','item_type_id' => '2','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
-            array('id' => '13','extra_id' => '4','item_type_id' => '3','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
-            array('id' => '14','extra_id' => '4','item_type_id' => '4','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
-            array('id' => '15','extra_id' => '4','item_type_id' => '5','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
-            array('id' => '16','extra_id' => '5','item_type_id' => '1','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05'),
-            array('id' => '17','extra_id' => '5','item_type_id' => '2','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05'),
-            array('id' => '18','extra_id' => '5','item_type_id' => '3','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05'),
-            array('id' => '19','extra_id' => '5','item_type_id' => '4','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05'),
-            array('id' => '20','extra_id' => '5','item_type_id' => '5','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05')
+            array('id' => '1', 'extra_id' => '1', 'item_type_id' => '1', 'created_at' => '2016-06-16 08:24:56', 'updated_at' => '2016-06-16 08:24:56'),
+            array('id' => '2', 'extra_id' => '1', 'item_type_id' => '2', 'created_at' => '2016-06-16 08:24:56', 'updated_at' => '2016-06-16 08:24:56'),
+            array('id' => '3', 'extra_id' => '2', 'item_type_id' => '3', 'created_at' => '2016-06-16 08:25:27', 'updated_at' => '2016-06-16 08:25:27'),
+            array('id' => '4', 'extra_id' => '2', 'item_type_id' => '4', 'created_at' => '2016-06-16 08:25:27', 'updated_at' => '2016-06-16 08:25:27'),
+            array('id' => '5', 'extra_id' => '2', 'item_type_id' => '5', 'created_at' => '2016-06-16 08:25:27', 'updated_at' => '2016-06-16 08:25:27'),
+            array('id' => '6', 'extra_id' => '3', 'item_type_id' => '1', 'created_at' => '2016-06-16 08:25:49', 'updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '7', 'extra_id' => '3', 'item_type_id' => '2', 'created_at' => '2016-06-16 08:25:49', 'updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '8', 'extra_id' => '3', 'item_type_id' => '3', 'created_at' => '2016-06-16 08:25:49', 'updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '9', 'extra_id' => '3', 'item_type_id' => '4', 'created_at' => '2016-06-16 08:25:49', 'updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '10', 'extra_id' => '3', 'item_type_id' => '5', 'created_at' => '2016-06-16 08:25:49', 'updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '11', 'extra_id' => '4', 'item_type_id' => '1', 'created_at' => '2016-06-16 08:27:05', 'updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '12', 'extra_id' => '4', 'item_type_id' => '2', 'created_at' => '2016-06-16 08:27:05', 'updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '13', 'extra_id' => '4', 'item_type_id' => '3', 'created_at' => '2016-06-16 08:27:05', 'updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '14', 'extra_id' => '4', 'item_type_id' => '4', 'created_at' => '2016-06-16 08:27:05', 'updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '15', 'extra_id' => '4', 'item_type_id' => '5', 'created_at' => '2016-06-16 08:27:05', 'updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '16', 'extra_id' => '5', 'item_type_id' => '1', 'created_at' => '2016-06-16 08:28:05', 'updated_at' => '2016-06-16 08:28:05'),
+            array('id' => '17', 'extra_id' => '5', 'item_type_id' => '2', 'created_at' => '2016-06-16 08:28:05', 'updated_at' => '2016-06-16 08:28:05'),
+            array('id' => '18', 'extra_id' => '5', 'item_type_id' => '3', 'created_at' => '2016-06-16 08:28:05', 'updated_at' => '2016-06-16 08:28:05'),
+            array('id' => '19', 'extra_id' => '5', 'item_type_id' => '4', 'created_at' => '2016-06-16 08:28:05', 'updated_at' => '2016-06-16 08:28:05'),
+            array('id' => '20', 'extra_id' => '5', 'item_type_id' => '5', 'created_at' => '2016-06-16 08:28:05', 'updated_at' => '2016-06-16 08:28:05')
         );
 
-        foreach ($extra_item_types as $table){
+        foreach ($extra_item_types as $table) {
             ExtraItemType::create($table);
+        }
+
+        $this->command->info('extras table seeded!');
+    }
+}
+
+
+class FilterSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('filters')->delete();
+
+        $filters = array(
+            array('id' => '1','name' => 'Dejeuner','description' => 'Menu dejeuner','importance' => '10','type' => '1.00','status' => '1','slug' => 'Dejeuner2250','created_at' => '2016-06-22 15:50:36','updated_at' => '2016-06-22 15:50:36'),
+            array('id' => '2','name' => 'Souper','description' => '','importance' => '2','type' => '1.00','status' => '1','slug' => 'Souper2892','created_at' => '2016-06-22 15:50:53','updated_at' => '2016-06-22 15:50:53')
+        );
+
+        foreach ($filters as $table){
+            Filter::create($table);
+        }
+
+        $this->command->info('extras table seeded!');
+    }
+
+}
+
+class FilterItemTypeSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('filter_item_types')->delete();
+
+        $filter_item_types = array(
+            array('id' => '1','filter_id' => '1','item_type_id' => '4','created_at' => '2016-06-22 15:50:36','updated_at' => '2016-06-22 15:50:36'),
+            array('id' => '2','filter_id' => '2','item_type_id' => '3','created_at' => '2016-06-22 15:50:53','updated_at' => '2016-06-22 15:50:53'),
+            array('id' => '3','filter_id' => '2','item_type_id' => '5','created_at' => '2016-06-22 15:50:53','updated_at' => '2016-06-22 15:50:53')
+        );
+
+        foreach ($filter_item_types as $table){
+            FilterItemType::create($table);
+        }
+
+        $this->command->info('extras table seeded!');
+    }
+
+}
+
+class FilterItemSeeder extends Seeder {
+
+    public function run()
+    {
+        DB::table('filter_items')->delete();
+
+        $filter_items = array(
+            array('id' => '1','filter_id' => '1','item_id' => '5','created_at' => '2016-06-22 15:50:36','updated_at' => '2016-06-22 15:50:36'),
+            array('id' => '2','filter_id' => '2','item_id' => '1','created_at' => '2016-06-22 15:50:53','updated_at' => '2016-06-22 15:50:53')
+        );
+
+
+        foreach ($filter_items as $table){
+            FilterItem::create($table);
         }
 
         $this->command->info('extras table seeded!');
