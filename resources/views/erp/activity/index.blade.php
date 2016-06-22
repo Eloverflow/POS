@@ -23,7 +23,7 @@
                 <div class="panel-body">
                     <div style="font-family: 'Consolas', 'Arial', sans-serif;overflow-y: scroll;height: 30px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333; color: #fff" id="filtre">
                         {{--  --}}
-                            <form style="height: 20px; "><label for="query">Search:</label> <input style="height: 20px; color: #222" name="query" id="query" type="text" size="30" maxlength="30"></form>
+                            <form style="height: 20px; "><label for="query">Search:</label> <input placeholder="Eventually filtering line !" style="height: 20px; color: #222" name="query" id="query" type="text" size="30" maxlength="30"></form>
                     </div>
 
                 </div>
