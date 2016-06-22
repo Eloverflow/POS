@@ -168,10 +168,10 @@
                                     {!! Form::label('hireDate', "Hire Date" ) !!}
                                     @if($errors->has('hireDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('birthDate', $ViewBag['employee']->hireDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                            {!! Form::text('hireDate', $ViewBag['employee']->hireDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('birthDate', $ViewBag['employee']->hireDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                        {!! Form::text('hireDate', $ViewBag['employee']->hireDate, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
                                     @endif
                                 </div>
                             </div>
