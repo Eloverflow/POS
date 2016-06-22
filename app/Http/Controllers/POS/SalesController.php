@@ -11,6 +11,7 @@ use App\Models\POS\Sale;
 use App\Models\POS\SaleLine;
 use App\Models\POS\Setting;
 use App\Models\POS\Table;
+use Auth;
 use DateTimeZone;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -221,6 +222,10 @@ class SalesController extends Controller
         $result['saleIdArray'] = [];
 
         if (!empty($inputs)) {
+
+            if(!empty($inputs['employee']))
+                Auth::loginUsingId($inputs['employee']['userId']);
+
             if (!empty($inputs['bills'])) {
                 foreach ($inputs['bills'] as $bill) {
 
@@ -396,6 +401,9 @@ class SalesController extends Controller
 
         //If the post isn't empty
         if (!empty($inputs)) {
+
+            if(!empty($inputs['employee']))
+                Auth::loginUsingId($inputs['employee']['userId']);
 /*
             foreach ($inputs['commands'] as $inputCommand) {*/
 
