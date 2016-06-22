@@ -188,23 +188,8 @@ class ScheduleController extends Controller
         $pdf = App::make('dompdf.wrapper');
         $pdf->loadHTML("<html>
                         <head>
-                        <style>
-                        h2, h4, h5 {
-                            margin: 0px;
-                        }
-                        table
-                        {
-                            border: 1px solid black;
-                            border-collapse: collapse;
-                        }
-                        table, th, td {
-                           text-align: center;
-                           border: 1px solid black;
-                        }
-                        table .dayCol {
-                            width: 120px;
-                        }
-                        </style>
+                        <link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"css/schedule.css\">
+
                         </head>
                         <body>" . Utils::getDaySchedulesHtml($schedule, $scheduleInfos) . "</body></html>");
         $pdf->setPaper('A4', 'landscape');

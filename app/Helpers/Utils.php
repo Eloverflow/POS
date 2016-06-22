@@ -7,6 +7,7 @@ use App\Models\POS\Shared\Row;
 use App\Models\POS\Shared\Intersect;
 use App\Models\POS\Shared\ScheduleCell;
 
+use DateTime;
 /**
  * Created by PhpStorm.
  * User: Maype-IsaelBlais
@@ -73,9 +74,12 @@ class Utils
 
 
             for ($k = 0; $k < count($emplNSchedules); $k++) {
+                $dt = new DateTime($emplNSchedules[$k]['startTime']);
+                $dte = new DateTime($emplNSchedules[$k]['endTime']);
 
-                $key = $emplNSchedules[$k]['day_number'];
-                $text = substr($emplNSchedules[$k]['startTime'], 0, -3) . " to " . substr($emplNSchedules[$k]['endTime'], 0, -3) . "<br />";
+                $key = (int)$dt->format('w');
+                //$key = 0;//$emplNSchedules[$k]['day_number'];
+                $text = $dt->format('H:i') . " to " . $dte->format('H:i');
                 $arrayWeek[$key] = $arrayWeek[$key] . $text;
             }
             for ($j = 0; $j < count($arrayWeek); $j++) {
@@ -86,6 +90,8 @@ class Utils
                 }
             }
         }
+
+        // substr($emplNSchedules[$k]['startTime'], 0, -3) . " to " . substr($emplNSchedules[$k]['endTime'], 0, -3) . "<br />";
 
         $htmlString = $htmlString . "</tbody>";
         $htmlString = $htmlString . "</table>";
