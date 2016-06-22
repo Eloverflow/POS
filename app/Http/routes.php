@@ -27,6 +27,11 @@ Route::controllers([
 Route::get('/user/password/update', ['uses' => 'Auth\UserController@update','middleware' => 'auth']);
 Route::post('/user/password/update', ['uses' => 'Auth\UserController@updatePassword','middleware' => 'auth']);
 
+Route::get('/activity-log',  ['uses' => 'ERP\ActivityLogController@index', 'middleware' => 'auth']);
+Route::get('/activity-log/over/{id}',  ['uses' => 'ERP\ActivityLogController@overId', 'middleware' => 'auth']);
+Route::get('/activity-log/olderthan/{id}',  ['uses' => 'ERP\ActivityLogController@olderThan', 'middleware' => 'auth']);
+Route::get('/activity-log/list',  ['uses' => 'ERP\ActivityLogController@liste', 'middleware' => 'auth']);
+
 Route::get('/',  ['uses' => 'PagesController@index', 'middleware' => 'auth']);
 Route::get('/about',  ['uses' => 'PagesController@about', 'middleware' => 'auth']);
 Route::get('/contact',  ['uses' => 'PagesController@contact', 'middleware' => 'auth']);

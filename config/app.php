@@ -141,6 +141,7 @@ return [
         Intervention\Image\ImageServiceProvider::class,
         Barryvdh\DomPDF\ServiceProvider::class,
         MaddHatter\LaravelFullcalendar\ServiceProvider::class,
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -203,7 +204,9 @@ return [
         'Image'     => Intervention\Image\Facades\Image::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
+        'Activity' => Spatie\Activitylog\ActivitylogFacade::class,
 
     ],
 
+    
 ];

@@ -248,7 +248,7 @@
                 <button ng-click="removeFilters();filters.itemtype.type = ''" type="button" class="btn btn-default btn-primary"><span
                             class="glyphicon glyphicon-star"></span> Tout
                 </button>
-                <button ng-repeat="menuFilter in menuFilters" ng-click="applyFilter(menuFilter)"
+                <button ng-repeat="menuFilter in menuFilters | orderBy:'importance':true" ng-click="applyFilter(menuFilter)"
                         type="button" class="btn btn-primary"><% menuFilter.name %></button>
                 <button ng-repeat="itemType in menuItemTypes" ng-click="removeFilters();filters.itemtype.type = itemType.type"
                         type="button" class="btn btn-primary"><% itemType.type %></button>
@@ -274,7 +274,7 @@
                     </div>
                 </div>
             </div>
-                <div ng-repeat="menuItems in menuItemsExtended | byItemType:itemTypeArray ">
+                <div ng-repeat="menuItems in filteredItems">
                 <div ng-repeat="menuItemSize in menuItems.sizes" class="sizeBlock">
                     <div ng-repeat="menuItem in menuItems" class="col-sm-6 col-md-3">
                         <div{{-- ng-click="selectedItem(menuItem)" --}}

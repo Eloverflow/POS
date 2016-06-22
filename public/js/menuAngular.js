@@ -1,4 +1,4 @@
-var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpolateProvider, uibPaginationConfig, IdleProvider, KeepaliveProvider) {
+var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpolateProvider, uibPaginationConfig, IdleProvider, KeepaliveProvider, $rootScopeProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');
         uibPaginationConfig.previousText = 'Précédent';
@@ -9,6 +9,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         IdleProvider.timeout(10); // in seconds
         KeepaliveProvider.interval(2); // in seconds
         IdleProvider.windowInterrupt('focus');
+
 
     })
     .run(function (Idle) {
@@ -24,25 +25,6 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             return input;
         };
     })
-    .filter('byItemType', function() {
-    return function(items,itemtypes) {
-        var out = [];
-
-        if(typeof items != 'undefined' && items != null)
-        for(var l = 0; l < items.length; l++){
-
-            if(typeof itemtypes != 'undefined' && itemtypes != null)
-            for(var r = 0; r < itemtypes.length; r++){
-                if(items[l][0].itemtype.id == itemtypes[r].id)
-                    out.push(items[l])
-            }
-
-        }
-
-        return out;
-    }
-    })
-
     /*Allow you to make a quick get request with callbackFunction*/
     .factory('getReq', function ($http, $location) {
         return {
@@ -732,6 +714,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
         getReq.send($url, null, $callbackFunction);
         /*End loadind element - After the callback if exist*/
 
+        $scope.filteredItems = []
 
         $scope.filterItemList = [];
         $scope.filterItemTypeList = [];
@@ -741,30 +724,59 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.filters.itemtype = {}
             $scope.filters.itemtype.type = -1;
 
+            $scope.itemArray = []
+            for(l = 0; l < menuFilter.items.length; l++){
+                $scope.itemArray.push(menuFilter.items[l])
+            }
             $scope.itemTypeArray = []
             for(l = 0; l < menuFilter.itemtypes.length; l++){
-
                 $scope.itemTypeArray.push(menuFilter.itemtypes[l].itemtype);
-
             }
 
-            console.log($scope.itemTypeArray)
+
+            $scope.filteredItems = $scope.filteringItems($scope.menuItemsExtended, $scope.itemTypeArray,  $scope.itemArray )
+        }
+
+        $scope.filteringItems = function(items,itemtypesArray, itemsArray) {
+            var out = [];
+
+            angular.forEach(items, function(subItems) {
+                var backup = subItems;
+                itemsFound = [];
+                angular.forEach(subItems, function(item) {
+                    anItemFilter = false
+                    angular.forEach(itemsArray, function(filterItem) {
+                        if (item.id == filterItem.item.id) {
+                            itemsFound.push(item);
+                            anItemFilter = true;
+                        }
+                    })
+
+                    if(!anItemFilter)
+                        angular.forEach(itemtypesArray, function(filterItemType) {
+                            if(item.itemtype.id == filterItemType.id)
+                                itemsFound.push(item)
+                        })
+
+                });
+
+                if(itemsFound.length > 0){
+                    itemsFound.sizes = backup.sizes
+                    out.push(itemsFound);
+                }
+
+            });
+
+
+
+            return out;
         }
 
         $scope.removeFilters = function () {
+            $scope.filteredItems = [];
             $scope.itemTypeArray = [];
+            $scope.itemArray = [];
         }
-
-/*
-        $scope.filterByItem = function(movie) {
-            return ($scope.filters.item.indexOf(movie.genre) !== -1);
-        };
-        $scope.filterByItemType = function(itemtype) {
-            return ($scope.filters.itemtype.indexOf(movie.genre) !== -1);
-        };
-*/
-
-
 
         /*Add a given note to a given item inside the current command*/
         $scope.addNote = function (note, item) {
@@ -840,10 +852,12 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $callbackFunction =function () {
                 console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=3))
                 $scope.delayedUpdateTable();
-                $scope.showEmployeeModal = false;
+                /*$scope.showEmployeeModal = false;*/
             }
 
-            $scope.validateEmployeePassword($callbackFunction);
+            $callbackFunction();
+
+            /*$scope.validateEmployeePassword($callbackFunction);*/
         }
         
         $scope.terminateCommands = function () {
@@ -1004,10 +1018,11 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $callbackFunction =function () {
                 console.log('Command status for command.id changed from ' + command.status +' to ' + (command.status=1))
                 $scope.delayedUpdateTable();
-                $scope.showEmployeeModal = false;
+                /*$scope.showEmployeeModal = false;*/
             }
 
-            $scope.validateEmployeePassword($callbackFunction);
+            $callbackFunction();
+           /* $scope.validateEmployeePassword($callbackFunction);*/
         }
 
         $scope.changeCommandItemsStatus = function () {
