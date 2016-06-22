@@ -123,7 +123,7 @@
 
                 /*finalString += objectRow;*/
 
-                finalString += '<table style="border: 4px #31b0d5 solid; color: #fff"><tr>'
+                finalString += '<table style="width: 100%; box-shadow: 2px 2px 6px #222;border: 4px #31b0d5 solid; color: #fff"><tr>'
                 $.each(row, function(key, data) {
                     finalString += '<th  style=" padding: 3px; border: 3px #31b0d5 solid; ">';
                     finalString += key;
@@ -133,7 +133,7 @@
 
                 finalString += '<tr>'
                 $.each(row, function(key, data) {
-                    finalString += '<td style="  border: 2px #555 solid; border-top: none">';
+                    finalString += '<td style=" max-width:430px; overflow: auto;  border: 2px #555 solid; border-top: none">';
 
                     if(typeof data =='object' && data != null)
                     {
