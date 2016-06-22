@@ -52,7 +52,7 @@
         $('#displayLive').click(function() {
             noResultIteration = 0;
             isLive = true;
-            setTimeout(getActivityLogOverId(lastId), 2000);
+            getActivityLogOverId(lastId);
             $( "#live" ).show();
             $( "#displayLive" ).hide();
 
@@ -79,6 +79,7 @@
         function getLogString(log) {
 
             var finalString = "";
+            /*finalString += log.id+ ' : ';*/
             finalString += '<span style="color: #30a5ff">[' + log.updated_at + ']</span> ';
 
             if(log.user[0].name == 'user_employee'){
@@ -215,10 +216,10 @@
                     if(typeof response.responseJSON != 'undefined'){
                         var i;
 
-                        for(i = 0; i< response.responseJSON.length; i++){
+                        for(i = response.responseJSON.length-1; i >= 0; i--){
                             $('#terminal').append(getLogString(response.responseJSON[i])+ '<br>');
 
-                            if(i == 0){
+                            if(i == response.responseJSON.length-1){
                                 firstId = response.responseJSON[i].id;
                             }
                         }
@@ -229,14 +230,14 @@
 
                         updateScroll();
                         if(isLive)
-                        setTimeout(getActivityLogOverId(response.responseJSON[i-1].id), 2000);
+                        setTimeout(function() {getActivityLogOverId(response.responseJSON[i-1].id)}, 1000);
                         else
-                        lastId = response.responseJSON[i-1].id;
+                        lastId = response.responseJSON[0].id;
                     }
                 },
                 error: function () {
                     $('#terminal').append('Bummer: there was an error!<br>');
-                    setTimeout(getActivityLog(), 3000);
+                    setTimeout(function() {getActivityLog()}, 2000);
                 },
             });
             return false;
@@ -258,7 +259,7 @@
                             for(i= 0; i< response.responseJSON.length; i++){
                                 $('#terminal').prepend(getLogString(response.responseJSON[i])+ '<br>');
 
-                                if(i == 0){
+                                if(i == response.responseJSON.length-1){
                                     firstId = response.responseJSON[i].id;
                                 }
                             }
@@ -281,17 +282,17 @@
 
 
         function getActivityLogOverId($id) {
-            if(noResultIteration > 60){
+            if(noResultIteration > 10){
                 isLive = false;
 
                 $('.liveActionMsg').fadeOut( 200, function() {
                     $(this).remove();
-                    $('#terminal').append('<span class="liveActionMsg" style="color:red;">The live action log has been stopped after 60 empty request.' + '<br></span>');
+                    $('#terminal').append('<span class="liveActionMsg" style="color:red;">The live action log has been stopped after 10 empty request.' + '<br></span>');
 
                 });
 
                 if($('.liveActionMsg').length == 0)
-                $('#terminal').append('<span class="liveActionMsg" style="color:red;">The live action log has been stopped after 60 empty request.' + '<br></span>');
+                $('#terminal').append('<span class="liveActionMsg" style="color:red;">The live action log has been stopped after 10 empty request.' + '<br></span>');
 
 
                 $( "#displayLive" ).show();
@@ -311,12 +312,12 @@
                         if(i>0)
                         {
                             updateScroll();
-                            setTimeout(getActivityLogOverId(response.responseJSON[i-1].id), 2000);
+                            setTimeout(function() {getActivityLogOverId(response.responseJSON[i-1].id)}, 1000);
                             lastId = response.responseJSON[i-1].id;
                             noResultIteration = 0
                         }
                         else{
-                            setTimeout(getActivityLogOverId($id), 2000);
+                            setTimeout(function() {getActivityLogOverId($id)}, 1000);
                             noResultIteration++;
                         }
 

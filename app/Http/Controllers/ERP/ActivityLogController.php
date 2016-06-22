@@ -46,7 +46,7 @@ class ActivityLogController extends Controller
     public function liste()
     {
 
-        $activities = Activity::latest()->limit(20)->get();
+        $activities = Activity::orderBy('id', 'desc')->limit(20)->get();
 
         foreach ($activities as $activity)
         {
@@ -63,7 +63,7 @@ class ActivityLogController extends Controller
     public function olderThan($id)
     {
 
-        $activities = Activity::where('id', '<', $id)->latest()->limit(20)->get();
+        $activities = Activity::where('id', '<', $id)->orderBy('id', 'desc')->limit(20)->get();
 
         foreach ($activities as $activity)
         {
