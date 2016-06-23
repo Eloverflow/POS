@@ -134,6 +134,9 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.showHeaderOptions =true;
             $scope.showBillDemo= false;
             $scope.showPanelOverwriteBill= false;
+            $scope.showPayBillPanel=false;
+            //
+            $scope.paymentCurrentStep = '';
             //
             $scope.noteDynamicPopover = {
                 content: '',
@@ -844,6 +847,47 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 $scope.commandClient[$scope.commandCurrentClient].notes.splice(index, 1);
             }
             $scope.updateCommand();
+        }
+
+        $scope.chargeBill = function (bill) {
+
+        /*Popup modal for charging client*/
+        $scope.showPayBillPanel = true;
+
+
+        $scope.billInTransaction = bill
+
+        $scope.paymentCurrentStep = 'transac';
+
+
+
+        /* Will authenticate with the interact or the */
+            bill.status = 2;
+        }
+
+
+        
+        $scope.paymentType = function (type) {
+            if(type == 'credit'){
+                $scope.billInTransaction.payment_type = type;
+                $scope.stepPayment();
+            }
+            else if(type == 'debit'){
+                $scope.billInTransaction.payment_type = type;
+                $scope.stepPayment();
+            }
+            else if(type == 'cash'){
+                $scope.billInTransaction.payment_type = type;
+                $scope.stepPayment();
+            }else {
+                
+            }
+        }
+        $scope.stepPayment = function () {
+            $('.bs-wizard-step.active').removeClass('active').addClass('complete')
+            setTimeout(function () {
+                $('.bs-wizard-step.disabled').first().removeClass('disabled').addClass('active')
+            }, 900)
         }
 
 
