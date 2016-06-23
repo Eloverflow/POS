@@ -849,6 +849,8 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
             $scope.updateCommand();
         }
 
+
+
         $scope.chargeBill = function (bill) {
 
         /*Popup modal for charging client*/
@@ -863,8 +865,27 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
 
         /* Will authenticate with the interact or the */
             bill.status = 2;
+
+
+
         }
 
+        $('#billWindow').mouseup(function (e)
+        {
+                if($scope.showPayBillPanel)
+                {
+                    var container = $("#pay-bill-panel");
+
+                    if (!container.is(e.target) // if the target of the click isn't the container...
+                        && container.has(e.target).length === 0) // ... nor a descendant of the container
+                    {
+                        //container.hide();
+
+                        $scope.showPayBillPanel = false;
+                    }
+                }
+
+        })
 
         
         $scope.paymentType = function (type) {
@@ -883,6 +904,7 @@ var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpol
                 
             }
         }
+
         $scope.stepPayment = function () {
             $('.bs-wizard-step.active').removeClass('active').addClass('complete')
             setTimeout(function () {

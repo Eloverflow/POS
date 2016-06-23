@@ -608,6 +608,11 @@ span.number{
 	cursor: pointer;
 }
 
+.charge-bill:hover,.print-bill:hover{
+	color: #2ca02c;
+	border-color: #2ca02c;
+}
+
 .move-bill-item{
 	background-color: #30a5ff!important;
 	cursor: pointer;
