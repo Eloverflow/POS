@@ -45,19 +45,19 @@ class Table extends Model implements LogsActivityInterface {
         if ($eventName == 'created')
         {
             $plan = $this->plan;
-            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : "Table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'updated')
         {
             $plan = $this->plan;
-            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : "Table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         if ($eventName == 'deleted')
         {
             $plan = $this->plan;
-            return '{"msg" : " table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
+            return '{"msg" : "Table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
         }
 
         return '';

@@ -21,7 +21,10 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div style="font-family: 'Consolas', 'Arial', sans-serif;overflow-y: scroll;height: 30px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333; color: #fff" id="filtre"> Filtres: </div>
+                    <div style="font-family: 'Consolas', 'Arial', sans-serif;overflow-y: scroll;height: 30px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333; color: #fff" id="filtre">
+                        {{--  --}}
+                            <form style="height: 20px; "><label for="query">Search:</label> <input placeholder="Eventually filtering line !" style="height: 20px; color: #222" name="query" id="query" type="text" size="30" maxlength="30"></form>
+                    </div>
 
                 </div>
 
@@ -32,7 +35,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                       <div style="font-size:14px;  font-family: 'Consolas', 'Arial', sans-serif;overflow-y: scroll;height: 600px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333" id="terminal"></div>
+                       <div id="terminal"></div>
 
                 </div>
 
@@ -123,7 +126,7 @@
 
                 /*finalString += objectRow;*/
 
-                finalString += '<table style="border: 4px #31b0d5 solid; color: #fff"><tr>'
+                finalString += '<table style="width: 100%; box-shadow: 2px 2px 6px #222;border: 4px #31b0d5 solid; color: #fff"><tr>'
                 $.each(row, function(key, data) {
                     finalString += '<th  style=" padding: 3px; border: 3px #31b0d5 solid; ">';
                     finalString += key;
@@ -133,7 +136,7 @@
 
                 finalString += '<tr>'
                 $.each(row, function(key, data) {
-                    finalString += '<td style="  border: 2px #555 solid; border-top: none">';
+                    finalString += '<td style=" max-width:430px; overflow: auto;  border: 2px #555 solid; border-top: none">';
 
                     if(typeof data =='object' && data != null)
                     {
@@ -338,6 +341,31 @@
             var element = document.getElementById("terminal");
             if(e.offsetTop > element.scrollHeight-200)
             setTimeout(updateScroll, 100)
+
+        }
+
+
+        $('#query').bind('input', function() {
+            highlightSearch()
+        });
+
+        function highlightSearch() {
+            var text = document.getElementById("query").value;
+
+            if(text.length > 3){
+
+                var query = new RegExp("(" + text + ")", "gim");
+                var e = document.getElementById("terminal").innerHTML;
+                var enew = e.replace(/(<em>|<\/em>)/igm, "");
+                document.getElementById("terminal").innerHTML = enew;
+                var newe = enew.replace(query, "<em>$1</em>");
+                document.getElementById("terminal").innerHTML = newe;
+            }else {
+                var query = new RegExp("(\\b" + text + "\\b)", "gim");
+                var e = document.getElementById("terminal").innerHTML;
+                var enew = e.replace(/(<em>|<\/em>)/igm, "");
+                document.getElementById("terminal").innerHTML = enew;
+            }
 
         }
     </script>

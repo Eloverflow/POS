@@ -260,6 +260,8 @@
                     <h3>Sous-total : <span class="number"><% bill.subTotal | number:2 %></span></h3>
                     <h3 ng-repeat="taxe in bill.taxes"><% taxe.name %> : <span class="number"><% taxe.total | number:2 %></span></h3>
                     <h2>Total: <span class="number"><% bill.total | number:2 %></span></h2>
+                         <span  ng-show="bill.length > 0" ng-click="chargeBill(bill)" class="glyphicon glyphicon-barcode charge-bill"></span>
+                         <span  ng-show="bill.length > 0" ng-click="printBill(bill)" class="glyphicon glyphicon-print print-bill"></span>
                     </div>
                 </div>
         </div>
@@ -269,6 +271,82 @@
             <span ng-repeat="info in terminateCommandInfo"><% info %><br></span>
         </li>
     </div>
+    <div ng-show="showPayBillPanel" id="pay-bill-panel" class="container">
+
+        <div id="PayBillPanelTitle">Paiement de la facture</div>
+        <div class="row bs-wizard" style="border-bottom:0;">
+
+            <div class="col-xs-3 bs-wizard-step active">
+                <div class="text-center bs-wizard-stepnum">Type de transaction</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+                <div class="bs-wizard-info text-center">
+                    <span ng-show="billInTransaction.payment_type == 'credit'" class="glyphicon glyphicon-credit-card bill-pay-progress"></span>
+                    <span ng-show="billInTransaction.payment_type == 'debit'" class="glyphicon glyphicon-credit-card bill-pay-progress"></span>
+                    <span ng-show="billInTransaction.payment_type == 'cash'" class="glyphicon glyphicon-euro bill-pay-progress"></span>
+                </div>
+                {{--
+                <div class="bs-wizard-info text-center">Lorem ipsum dolor sit amet.</div>--}}
+            </div>
+
+            <div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+                <div class="text-center bs-wizard-stepnum">Paiement</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+{{--
+                <div class="bs-wizard-info text-center">
+                    <span class="glyphicon glyphicon-check bill-pay-credit"></span>
+                </div>--}}
+                {{--
+                <div class="bs-wizard-info text-center">Nam mollis tristique erat vel tristique. Aliquam erat volutpat. Mauris et vestibulum nisi. Duis molestie nisl sed scelerisque vestibulum. Nam placerat tristique placerat</div>
+            --}}</div>
+
+            <div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+                <div class="text-center bs-wizard-stepnum">Confirmation</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+             {{--   <div class="bs-wizard-info text-center">Integer semper dolor ac auctor rutrum. Duis porta ipsum vitae mi bibendum bibendum</div>
+            --}}</div>
+
+            <div class="col-xs-3 bs-wizard-step disabled"><!-- active -->
+                <div class="text-center bs-wizard-stepnum">Finalisation</div>
+                <div class="progress"><div class="progress-bar"></div></div>
+                <a href="#" class="bs-wizard-dot"></a>
+              {{--  <div class="bs-wizard-info text-center"> Curabitur mollis magna at blandit vestibulum. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia Curae</div>
+           --}} </div>
+        </div>
+        <div id="currentStep">
+            <div ng-show="paymentCurrentStep == 'transac'" id="stepTransacType">
+
+                <button href="#" ng-click="paymentType('credit')" type="button" class="btn btn-info"> <span class="glyphicon glyphicon-credit-card bill-pay-type"></span>
+                    Credit
+                </button>
+                <button href="#" ng-click="paymentType('debit')" type="button" class="btn btn-info"> <span class="glyphicon glyphicon-credit-card bill-pay-type"></span>
+                    Debit
+                </button>
+                <button href="#" ng-click="paymentType('cash')" type="button" class="btn btn-info"> <span class="glyphicon glyphicon-euro bill-pay-type"></span>
+                    Comptant
+                </button>
+
+            </div>
+            <div ng-show="paymentCurrentStep == 'payment'" id="stepPayment">
+
+                <button href="#" ng-click="paymentType('credit')" type="button" class="btn btn-info"> <span class="glyphicon glyphicon-credit-card bill-pay-type"></span>
+                    Credit
+                </button>
+                <button href="#" ng-click="paymentType('debit')" type="button" class="btn btn-info"> <span class="glyphicon glyphicon-credit-card bill-pay-type"></span>
+                    Debit
+                </button>
+                <button href="#" ng-click="paymentType('cash')" type="button" class="btn btn-info"> <span class="glyphicon glyphicon-euro bill-pay-type"></span>
+                    Comptant
+                </button>
+
+            </div>
+        </div>
+
+
+    </div>
+
 </div>
 
 @yield('myjsfile')

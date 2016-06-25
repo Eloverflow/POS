@@ -447,8 +447,8 @@ class EmployeeSeeder extends Seeder {
             'hireDate' => date('2016-01-01')
         ]);
         Employee::create([
-            'firstName' => 'firstName',
-            'lastName' => 'lastName',
+            'firstName' => 'John',
+            'lastName' => 'Mccormick',
             'streetAddress' => 'streetAddress',
             'phone' => 'none',
             'city' => 'Quebec',
