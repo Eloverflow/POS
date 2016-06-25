@@ -12,19 +12,10 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <div class="col-md-6">
-                        <div id="tracking-display">
-                            {{--<table>
-                                <thead>
-                                <tr>
-                                    <th>Starts At</th>
-                                    <th>Finish At</th>
-                                    <th>Total</th>
-                                </tr>
-                                </thead>--}}
+
                             <?php
                             $s_lastEmpl = "";
                             $s_totalHours = 0;
@@ -37,129 +28,64 @@
                                 <?php
                                     foreach($ViewBag['scheduleInfos'] as $schedule){
 
-                                        if($s_lastEmpl == ""){
+                                        if($s_lastEmpl == "" || $s_lastEmpl != $schedule->idEmployee){
                                             $s_lastEmpl = $schedule->idEmployee;
 
                                 ?>
+                                <div class="tracking-bloc">
+                                <h2>{{ $schedule->firstName . " " . $schedule->lastName}}</h2>
                                 <div class="employee">
-                                    <h2>{{ $schedule->firstName . " " . $schedule->lastName}} </h2>
+                                    <h3>Scheduled Hours</h3>
                                     <label>Total: </label>{{ $schedule->total->format("%H:%I") }}
                                 </div>
+                                <?php } ?>
                                 <div class="content">
-                                    <tr>
-                                        <td>{{ $schedule->startTime }}</td>
-                                        <td>{{ $schedule->endTime }}</td>
-                                        <td>{{ $schedule->interval->format("%H:%I")}}</td>
-                                    </tr>
+                                    <div class="header">
+                                        <span>{{ $schedule->startTime }}</span>
+                                        <span>{{ $schedule->endTime }}</span>
+                                        <span style="color:blue">{{ $schedule->interval->format("%H:%I")}}</span>
+                                    </div>
+                                    <div class="sub-content">
+                                        <div class="row-container">
+                                        <?php
+                                            $e = new DateTime('00:00');
+                                            $f = clone($e);
+                                            foreach($schedule->corresponds as $corresp){
+                                                $st_pieces = explode(' ', $corresp->startTime);;
+                                                $et_pieces = explode(' ', $corresp->endTime);
+                                            ?>
+                                            <div class="p-row">
+                                                <span>{{ $st_pieces[0] }}&nbsp;<strong>{{ $st_pieces[1] }}</strong></span>
+                                                <span>{{ $et_pieces[0] }}&nbsp;<strong>{{ $et_pieces[1] }}</strong></span>
+                                                <span style="color:blue">{{ $corresp->interval->format("%H:%I")}}</span>
+                                            </div>
+                                            <?php
+                                                $e->add($corresp->interval);
+                                            }
+                                        ?>
+                                        </div>
+                                        <div class="total-square">
+                                            <span>{{ $f->diff($e)->format("%H:%I") }}</span>
+                                        </div>
+                                    </div>
                                 </div>
                                 <?php
-                                    } else if($s_lastEmpl == $schedule->idEmployee){
-
+                                    if((count($ViewBag['scheduleInfos']) - 1) != $i){
+                                        if($ViewBag['scheduleInfos'][$i+1]->idEmployee != $s_lastEmpl){
                                 ?>
-                                <div class="content">
-                                    <tr>
-                                        <td>{{ $schedule->startTime }}</td>
-                                        <td>{{ $schedule->endTime }}</td>
-                                        <td>{{ $schedule->interval->format("%H:%I")}}</td>
-                                    </tr>
-                                </div>
-                                <?php
-                                    } else {
-                                        $s_lastEmpl = $schedule->idEmployee;
-
-                                ?>
-                                <div class="employee">
-                                    <h2>{{ $schedule->firstName . " " . $schedule->lastName}} </h2>
-                                    <label>Total: </label>{{ $schedule->total->format("%H:%I") }}
-                                </div>
-                                <div class="content">
-                                    <tr>
-                                        <td>{{ $schedule->startTime }}</td>
-                                        <td>{{ $schedule->endTime }}</td>
-                                        <td>{{ $schedule->interval->format("%H:%I")}}</td>
-                                    </tr>
                                 </div>
                                 <?php
                                         }
+                                    } else {
+                                    ?>
+                                </div>
+                                <?php
+                                    }
                                         $i++;
                                     }
                                 ?>
-                        </div>
                     </div>
-                    <div class="col-md-6">
 
-
-
-                        <div id="tracking-display">
-                            {{--<table>
-                                <thead>
-                                <tr>
-                                    <th>Starts At</th>
-                                    <th>Finish At</th>
-                                    <th>Total</th>
-                                </tr>
-                                </thead>--}}
-                            <?php
-                            $p_lastEmpl = "";
-                            $p_totalHours = 0;
-                            $p_totalMinutes = 0;
-
-                            $p_numItems = count($ViewBag['punches']) - 1;
-                            $j = 0;
-                            ?>
-                            {{--@foreach ($ViewBag['scheduleInfos'] as $schedule)--}}
-                            <?php
-                            foreach($ViewBag['punches'] as $punch){
-
-                            if($p_lastEmpl == ""){
-                            $p_lastEmpl = $punch->idEmployee;
-
-                            ?>
-                            <div class="employee">
-                                <h2>{{ $punch->firstName . " " . $punch->lastName}} </h2>
-                                <label>Total: </label>{{ $punch->total->format("%H:%I") }}
-                            </div>
-                            <div class="content">
-                                <tr>
-                                    <td>{{ $punch->startTime }}</td>
-                                    <td>{{ $punch->endTime }}</td>
-                                    <td>{{ $punch->interval->format("%H:%I")}}</td>
-                                </tr>
-                            </div>
-                            <?php
-                            } else if($p_lastEmpl == $punch->idEmployee){
-
-                            ?>
-                            <div class="content">
-                                <tr>
-                                    <td>{{ $punch->startTime }}</td>
-                                    <td>{{ $punch->endTime }}</td>
-                                    <td>{{ $punch->interval->format("%H:%I")}}</td>
-                                </tr>
-                            </div>
-                            <?php
-                            } else {
-                            $p_lastEmpl = $punch->idEmployee;
-
-                            ?>
-                            <div class="employee">
-                                <h2>{{ $punch->firstName . " " . $punch->lastName}} </h2>
-                                <label>Total: </label>{{ $punch->total->format("%H:%I") }}
-                            </div>
-                            <div class="content">
-                                <tr>
-                                    <td>{{ $punch->startTime }}</td>
-                                    <td>{{ $punch->endTime }}</td>
-                                    <td>{{ $punch->interval->format("%H:%I")}}</td>
-                                </tr>
-                            </div>
-                            <?php
-                            }
-                            $j++;
-                            }
-                            ?>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>

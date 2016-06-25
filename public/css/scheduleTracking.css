@@ -1,7 +1,43 @@
-#tracking-display .employee h2{
-	display: inline-block;
+.tracking-bloc .header {
+	height: 32px;
+	width: 100%;
+	background-color: #ffffcc;
+	border-radius: 15px 0px 0px 0px;
+	padding: 7px 0px 3px 10px;
 }
 
-#tracking-display .content {
-	padding-left: 45px;
+
+.tracking-bloc .sub-content {
+
+}
+
+.tracking-bloc .sub-content .row-container {
+	width: 80%;
+	display: inline-block;
+	min-height: 50px;
+}
+
+.tracking-bloc .sub-content .row-container .p-row {
+	padding: 2px 0px 2px 50px;
+}
+
+.tracking-bloc .sub-content .total-square {
+	width: 15%;
+	float: right;
+	min-height: 50px;
+	background-color: #ff3333;
+}
+
+.tracking-bloc .sub-content .total-square span {
+	color: white;
+	font-size: 28px;
+	font-weight: bold;
+	line-height: 50px;
+	text-align: center;
+	vertical-align: middle;
+	width: 100%;
+	display: block;
+}
+.tracking-bloc .sub-content .p-row {
+
 }

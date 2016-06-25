@@ -38,61 +38,80 @@ class ScheduleController extends Controller
     // Cette fonction sert a prendre une matrice de temps et a faire les
     // calculs de la matrice.
     // Return: The initial matrix with total and interval
-    private function CalculateSchedulesAndPunches($timeInfos){
+    private function CalculateSchedulesAndPunches($schedule, $punch){
         $lastEmpl = "";
 
         $e = new DateTime('00:00');
         $f = clone($e);
 
-        $numItems = count($timeInfos) - 1;
+        $numItems = count($schedule) - 1;
 
         $startIndex = 0;
         $lastEmpl = "";
-        for($i = 0; $i < count($timeInfos); $i++) {
-            $datetime1 = new DateTime($timeInfos[$i]->startTime);
-            $datetime2 = new DateTime($timeInfos[$i]->endTime);
+        for($i = 0; $i < count($schedule); $i++) {
+            $datetime1 = new DateTime($schedule[$i]->startTime);
+            $datetime2 = new DateTime($schedule[$i]->endTime);
             $interval = $datetime1->diff($datetime2);
 
-            $timeInfos[$i]->interval = $interval;
+            $schedule[$i]->interval = $interval;
+
+            $correspnds = array();
+            For($j = 0; $j < count($punch); $j++){
+                if($schedule[$i]->idEmployee == $punch[$j]->idEmployee){
+                    $dt1 = new DateTime($punch[$j]->startTime);
+                    $dt2 = new DateTime($punch[$j]->endTime);
+                    $int = $dt1->diff($dt2);
+
+                    $punch[$j]->interval = $int;
+
+                    array_push($correspnds, $punch[$j]);
+                }
+            }
+
+            $schedule[$i]->corresponds = $correspnds;
 
             if($lastEmpl == "") {
-                $lastEmpl = $timeInfos[$i]->idEmployee;
+                $lastEmpl = $schedule[$i]->idEmployee;
                 $e->add($interval);
 
                 if($i === $numItems){
-                    $timeInfos[$startIndex]->total = $f->diff($e);
+                    $schedule[$startIndex]->total = $f->diff($e);
                 }
 
-            } else if($lastEmpl == $timeInfos[$i]->idEmployee){
+            } else if($lastEmpl == $schedule[$i]->idEmployee){
                 $e->add($interval);
 
                 if($i === $numItems){
-                    $timeInfos[$startIndex]->total = $f->diff($e);
+                    $schedule[$startIndex]->total = $f->diff($e);
                 }
 
             } else {
                 // On vien de finir de parcourir un employee
-                $timeInfos[$startIndex]->total = $f->diff($e);
+                $schedule[$startIndex]->total = $f->diff($e);
 
                 $startIndex = $i;
                 $e = new DateTime('00:00');
 
-                $lastEmpl = $timeInfos[$i]->idEmployee;
+                $lastEmpl = $schedule[$i]->idEmployee;
                 $e->add($interval);
 
                 if($i === $numItems){
-                    $timeInfos[$startIndex]->total = $f->diff($e);
+                    $schedule[$startIndex]->total = $f->diff($e);
                 }
             }
+
+            // Clean the array
+            $correspnds = null;
         }
-        return $timeInfos;
+        return $schedule;
     }
 
     public function track($id)
     {
         $schedule = Schedule::GetById($id);
-        $scheduleInfos = $this->CalculateSchedulesAndPunches(Schedule::GetScheduleEmployees($id));
-        $punches = $this->CalculateSchedulesAndPunches(Punch::GetByInterval($schedule->startDate, $schedule->endDate));
+        $scheduleInfos = $this->CalculateSchedulesAndPunches(Schedule::GetScheduleEmployees($id),
+                                                             Punch::GetByInterval($schedule->startDate, $schedule->endDate));
+        //$punches = $this->CalculateSchedulesAndPunches());
 
 
 
@@ -100,7 +119,7 @@ class ScheduleController extends Controller
         $view = \View::make('POS.Schedule.track')->with('ViewBag', array(
             'schedule' => $schedule,
             'scheduleInfos' => $scheduleInfos,
-            'punches' => $punches
+            //'punches' => $punches
         ));
         return $view;
     }
@@ -189,7 +208,6 @@ class ScheduleController extends Controller
         $pdf->loadHTML("<html>
                         <head>
                         <link rel=\"stylesheet\" type=\"text/css\" media=\"screen\" href=\"css/schedule.css\">
-
                         </head>
                         <body>" . Utils::getDaySchedulesHtml($schedule, $scheduleInfos) . "</body></html>");
         $pdf->setPaper('A4', 'landscape');

@@ -29,13 +29,13 @@ class Punch extends Model
     }
 
     public static function GetByInterval($startDate, $endDate){
-        return \DB::table('punches')
-            ->join('employees', 'punches.employee_id', '=', 'employees.id')
-            ->select(\DB::raw('punches.id, punches.startTime, punches.endTime, punches.employee_id as idEmployee, employees.firstName, employees.lastName'))
-            ->where('punches.startTime', '>', $startDate)
-            ->where('punches.startTime', '<', $endDate)
-            ->orderBy('punches.startTime', 'asc')
-            ->get();
+        return \DB::select('SELECT p.id, p.startTime, p.endTime, p.employee_id as idEmployee, e.firstName, e.lastName, w.name, ((w.baseSalary + e.bonusSalary) * TIMEDIFF(p.endTime, p.startTime)) as totalSalary
+                            FROM punches p
+                            INNER JOIN employees e on p.employee_id = e.id
+                            INNER JOIN work_titles w ON p.work_title_id = w.id
+                            WHERE p.startTime >= :st
+                            AND p.endTime <= :et
+                            ORDER BY p.startTime asc', ['st' => $startDate, 'et' => $endDate]);
     }
 
     public static function GetWorkedHoursYear($year){
