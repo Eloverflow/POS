@@ -12,7 +12,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
 
@@ -32,11 +32,18 @@
                                             $s_lastEmpl = $schedule->idEmployee;
 
                                 ?>
-                                <div class="tracking-bloc">
+                                <div class="col-lg-6 tracking-bloc">
                                 <h2>{{ $schedule->firstName . " " . $schedule->lastName}}</h2>
                                 <div class="employee">
                                     <h3>Scheduled Hours</h3>
-                                    <label>Total: </label>{{ $schedule->total->format("%H:%I") }}
+                                    <label>Total Scheduled: </label>{{ $schedule->total->format("%H:%I") }}
+                                    <label>Total Worked: </label>{{ $schedule->totalWorked }}
+                                    <span class="positive-green">{{ $schedule->difference }}</span>
+                                    {{--@if($schedule->difference >= 0)
+                                        <span class="positive-green">{{ $schedule->difference }}</span>
+                                    @else
+                                        <span class="negative-red">{{ $schedule->difference }}</span>
+                                    @endif--}}
                                 </div>
                                 <?php } ?>
                                 <div class="content">

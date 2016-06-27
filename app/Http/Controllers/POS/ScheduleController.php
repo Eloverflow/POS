@@ -34,6 +34,38 @@ class ScheduleController extends Controller
         ));
         return $view;
     }
+    // Calculate interval from 2 DateTime string in the format y-m-d h:i:s
+    // Return DateInterval Object.
+    private function GetInterval($start, $end){
+        $datetime1 = new DateTime($start);
+        $datetime2 = new DateTime($end);
+
+        return $datetime1->diff($datetime2);
+    }
+
+    // Calculate hours from DateInterval Object
+    // Return array with hours and minutes.
+    private function CalculateHoursAndMinutesToArray($interval){
+
+
+        $hours = $interval->h + ($interval->d * 24);
+        $mins = $interval->i;
+
+        return array('h' => $hours, 'm' => $mins);
+
+    }
+
+    // Calculate hours from DateInterval Object
+    // Return formatted string time.
+    private function CalculateHoursAndMinutesToString($interval){
+
+
+        $hours = $interval->h + ($interval->d * 24);
+        $mins = $interval->i;
+
+        return ($hours < 10 ? '0' . $hours : $hours) . ":" . ($mins < 10 ? '0' . $mins : $mins);
+
+    }
 
     // Cette fonction sert a prendre une matrice de temps et a faire les
     // calculs de la matrice.
@@ -44,24 +76,25 @@ class ScheduleController extends Controller
         $e = new DateTime('00:00');
         $f = clone($e);
 
+        $g = new DateTime('00:00');
+        $h = clone($g);
+
         $numItems = count($schedule) - 1;
 
         $startIndex = 0;
         $lastEmpl = "";
         for($i = 0; $i < count($schedule); $i++) {
-            $datetime1 = new DateTime($schedule[$i]->startTime);
-            $datetime2 = new DateTime($schedule[$i]->endTime);
-            $interval = $datetime1->diff($datetime2);
+            $interval = $this->GetInterval($schedule[$i]->startTime, $schedule[$i]->endTime);
 
             $schedule[$i]->interval = $interval;
 
             $correspnds = array();
             For($j = 0; $j < count($punch); $j++){
+                // Ici la comparaison qui sert de correspondace a un momment scheduler et le punch actif
                 if($schedule[$i]->idEmployee == $punch[$j]->idEmployee){
-                    $dt1 = new DateTime($punch[$j]->startTime);
-                    $dt2 = new DateTime($punch[$j]->endTime);
-                    $int = $dt1->diff($dt2);
+                    $int = $this->GetInterval($punch[$j]->startTime, $punch[$j]->endTime);
 
+                    $g->add($int);
                     $punch[$j]->interval = $int;
 
                     array_push($correspnds, $punch[$j]);
@@ -74,30 +107,36 @@ class ScheduleController extends Controller
                 $lastEmpl = $schedule[$i]->idEmployee;
                 $e->add($interval);
 
-                if($i === $numItems){
-                    $schedule[$startIndex]->total = $f->diff($e);
-                }
+
 
             } else if($lastEmpl == $schedule[$i]->idEmployee){
                 $e->add($interval);
 
-                if($i === $numItems){
-                    $schedule[$startIndex]->total = $f->diff($e);
-                }
+
 
             } else {
                 // On vien de finir de parcourir un employee
                 $schedule[$startIndex]->total = $f->diff($e);
+                $schedule[$startIndex]->totalWorked = $this->CalculateHoursAndMinutesToString($h->diff($g));
+                $schedule[$startIndex]->difference = $this->CalculateHoursAndMinutesToString($f->diff($h));
 
                 $startIndex = $i;
                 $e = new DateTime('00:00');
+                $g = new DateTime('00:00');
 
                 $lastEmpl = $schedule[$i]->idEmployee;
                 $e->add($interval);
 
-                if($i === $numItems){
-                    $schedule[$startIndex]->total = $f->diff($e);
-                }
+
+            }
+
+            // A la fin completement, on met le total dans le premiere ligne
+            // correspondant a lemployee.
+            // * Il est imperatif de trier la liste et dordonner celle-ci par nom d<employee.
+            if($i === $numItems){
+                $schedule[$startIndex]->total = $f->diff($e);
+                $schedule[$startIndex]->totalWorked = $this->CalculateHoursAndMinutesToString($h->diff($g));
+                $schedule[$startIndex]->difference = $this->CalculateHoursAndMinutesToString($h->diff($f));
             }
 
             // Clean the array
