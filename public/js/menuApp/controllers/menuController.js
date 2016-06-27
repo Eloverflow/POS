@@ -633,8 +633,8 @@ angular.module('starter.controllers')
 
         getReq.send($url, null, $callbackFunction);
 
-    };
 
+    };
 
     getReq.send($url, null, $callbackFunction);
     /*End loadind element - After the callback if exist*/
@@ -1292,25 +1292,30 @@ angular.module('starter.controllers')
 
         var $callbackFunction = function (response) {
             console.log('Updated table')
-            for (var f = 0; f < response.commands.length; f++) {
-                /*if(typeof $scope.commandClient[f+1] != 'undefined' && $scope.commandClient[f+1] != null)*/
-                $scope.commandClient[f + 1].command_number = response.commands[f].command_number + "";
+            if(typeof response.commands != 'undefined' && response.commands != null)
+            {
 
-                for (var g = 0; g < response.commandLineIdMat[f].length; g++) {
-                    $scope.commandClient[f + 1].commandItems[g].commandLineId = response.commandLineIdMat[f][g]
+                for (var f = 0; f < response.commands.length; f++) {
+                    /*if(typeof $scope.commandClient[f+1] != 'undefined' && $scope.commandClient[f+1] != null)*/
+                    $scope.commandClient[f + 1].command_number = response.commands[f].command_number + "";
+
+                    for (var g = 0; g < response.commandLineIdMat[f].length; g++) {
+                        $scope.commandClient[f + 1].commandItems[g].commandLineId = response.commandLineIdMat[f][g]
+                    }
                 }
+
+                $timeout(function () {
+                    $scope.progressValue = 100;
+                    $('.progress-bar').addClass('progress-bar-success');
+                    $scope.savingMessage = "Sauvegardé!"
+                }, 0);
+
+                console.log("The command as been saved and confirmation received inside response - Success or Not ?");
+
+                if ($updateTableCallBack != null)
+                    $updateTableCallBack();
+
             }
-
-            $timeout(function () {
-                $scope.progressValue = 100;
-                $('.progress-bar').addClass('progress-bar-success');
-                $scope.savingMessage = "Sauvegardé!"
-            }, 0);
-
-            console.log("The command as been saved and confirmation received inside response - Success or Not ?");
-
-            if ($updateTableCallBack != null)
-                $updateTableCallBack();
         };
         /*
          $scope.commandClient[$scope.commandCurrentClient].commandItems = [];

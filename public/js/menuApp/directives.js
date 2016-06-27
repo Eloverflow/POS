@@ -1,3 +1,4 @@
+/*Allow to display a modal with backdrop*/
 angular.module('starter.controllers')
 .directive('modal', function () {
     return {
