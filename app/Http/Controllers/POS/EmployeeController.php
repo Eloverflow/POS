@@ -9,6 +9,7 @@ use App\Models\POS\Punch;
 use App\Models\Project;
 use App\Models\POS\Title_Employees;
 use App\Models\Auth\User;
+use Auth;
 use Hash;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
@@ -203,6 +204,9 @@ class EmployeeController extends Controller
             if($hashCheck)
             {
                 /*Password match*/
+
+                Auth::loginUsingId($id);
+
             }else {
                 $employee['error'] = "Mauvais mot de passe";
             }

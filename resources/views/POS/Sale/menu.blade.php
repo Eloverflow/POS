@@ -11,7 +11,12 @@
     <script src="{{ @URL::to('Framework/Bootstrap/js/ui-bootstrap-tpls-1.2.5.min.js') }}"></script>
     <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
-    <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/app.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/controllers/starterController.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/controllers/menuController.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/constants.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/services.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/directives.js') }}"></script>
 
 
     <script src="{{ @URL::to('js/utils.js') }}"></script>
@@ -225,7 +230,7 @@
             </div>
             <div class="div-btn-facture">
                 <button ng-click="" type="button" class="btn btn-success btn-facture">Imprimer Factures</button>
-                <button ng-click="toggleDivideBillModal()" type="button" class="btn btn-success btn-facture">Diviser Factures</button>
+                <button ng-click="divideBill()" type="button" class="btn btn-success btn-facture">Diviser Factures</button>
             </div>
             <uib-progressbar class="progress-striped active" animate="true" max="100" value="progressValue" type="success">
                 <i><%savingMessage%> {{--<span count-to="5" duration="5" count-from="0"></span>/5 secondes--}}</i>

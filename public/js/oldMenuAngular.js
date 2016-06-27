@@ -1,3 +1,5 @@
+/*This is now supose to be unused - Use as backup - Backup made on 2016-06-27*/
+
 var app = angular.module('menu', ['ui.bootstrap', 'ngIdle'], function ($interpolateProvider, uibPaginationConfig, IdleProvider, KeepaliveProvider, $rootScopeProvider) {
         $interpolateProvider.startSymbol('<%');
         $interpolateProvider.endSymbol('%>');

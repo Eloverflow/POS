@@ -43,13 +43,13 @@ Route::get('/menu',  ['uses' => 'POS\SalesController@menu', 'middleware' => 'aut
 Route::get('/menu-settings',  ['uses' => 'POS\SalesController@menuSettings', 'middleware' => 'auth']);
 Route::post('/menu-settings',  ['uses' => 'POS\SalesController@applyMenuSettings', 'middleware' => 'auth']);
 
-Route::get('/menu/start',  ['uses' => 'POS\SalesController@menuStart', 'middleware' => 'auth']);
-Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware' => 'auth']);
-Route::post('/menu/command',  ['uses' => 'POS\SalesController@updateCommand', 'middleware' => 'auth']);
-Route::post('/menu/getCommand',  ['uses' => 'POS\SalesController@getCommand', 'middleware' => 'auth']);
-Route::post('/menu/bill',  ['uses' => 'POS\SalesController@updateBill', 'middleware' => 'auth']);
-Route::post('/menu/delete/bill',  ['uses' => 'POS\SalesController@deleteBills', 'middleware' => 'auth']);
-Route::post('/menu/getBills',  ['uses' => 'POS\SalesController@getBills', 'middleware' => 'auth']);
+/*Route::get('/menu/start',  ['uses' => 'POS\SalesController@menuStart', 'middleware' => 'auth']);
+Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware' => 'auth']);*/
+Route::post('/menu/command',  ['uses' => 'POS\SalesController@updateCommand']);
+Route::post('/menu/getCommand',  ['uses' => 'POS\SalesController@getCommand']);
+Route::post('/menu/bill',  ['uses' => 'POS\SalesController@updateBill']);
+Route::post('/menu/delete/bill',  ['uses' => 'POS\SalesController@deleteBills']);
+Route::post('/menu/getBills',  ['uses' => 'POS\SalesController@getBills']);
 
 
 Route::get('/inventory',  ['uses' => 'ERP\InventoriesController@index', 'middleware' => 'auth']);
@@ -181,7 +181,7 @@ Route::get('/plan/edit/{id}',  ['uses' => 'POS\PlanController@edit', 'middleware
 Route::post('/plan/edit/{id}',  ['uses' => 'POS\PlanController@postEdit', 'middleware' => 'auth']);
 
 Route::get('/plan/details/{id}',  ['uses' => 'POS\PlanController@details', 'middleware' => 'auth']);
-Route::get('/api/table-plan/{id}',  ['uses' => 'POS\PlanController@tablePlan', 'middleware' => 'auth']);
+Route::get('/api/table-plan/{id}',  ['uses' => 'POS\PlanController@tablePlan']);
 /* End Plan */
 
 /* Start disponibility */
