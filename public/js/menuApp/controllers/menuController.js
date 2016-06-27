@@ -893,6 +893,7 @@ angular.module('starter.controllers')
                     /*$scope.showEmployeeModal = false;*/
                     /*$scope.showPlanModal = true;*/
                     $scope.closeBill();
+                    $scope.bills = null;
                 }
 
                 $callbackFunction();
@@ -1490,7 +1491,7 @@ angular.module('starter.controllers')
     }
     $scope.toggleBill = function () {
         if ($scope.bills == null || typeof $scope.bills == 'undefined' || ($scope.bills != null & typeof $scope.bills != 'undefined' && $scope.bills.length == 1))
-            $scope.toggleDivideBillModal();
+            $scope.divideBill();
         else {
             if(!$scope.showBillWindow)
                 $scope.openBill()
@@ -1908,11 +1909,31 @@ angular.module('starter.controllers')
 
     /*Show panel to display bills division choice*/
     $scope.divideBill = function () {
-        $scope.toggleDivideBillModal();
 
-        $('#billWindow').slideUp(0);
-        $('#billWindow').css('visibility', 'visible')
-        $scope.openBill();
+
+        var nonAddedItems = $filter("filter")($scope.commandClient[$scope.commandCurrentClient].commandItems, { status: 1 });
+
+        if(nonAddedItems.length == 0)
+        {
+
+            $scope.toggleDivideBillModal();
+/*
+            $('#billWindow').slideUp(0);
+            $('#billWindow').css('visibility', 'visible')
+            $scope.openBill();*/
+        }
+        else {
+
+            $scope.showTerminateCommandInfo = true;
+            $scope.terminateCommandInfo.push("Tout les items n'ont pas été ajoutés à la commande.");
+            $scope.terminateCommandInfo.push("Ajoutez tous les items avant de pouvoir facturer.");
+
+            // then call setTimeout again to reset the timer
+            setTimeout(function () {
+                $scope.showTerminateCommandInfo = false;
+                $scope.terminateCommandInfo = []
+            }, 3000);
+        }
     };
 
     /*Onebill choice will create a single bill*/

@@ -230,7 +230,7 @@
             </div>
             <div class="div-btn-facture">
                 <button ng-click="" type="button" class="btn btn-success btn-facture">Imprimer Factures</button>
-                <button ng-click="toggleDivideBillModal()" type="button" class="btn btn-success btn-facture">Diviser Factures</button>
+                <button ng-click="divideBill()" type="button" class="btn btn-success btn-facture">Diviser Factures</button>
             </div>
             <uib-progressbar class="progress-striped active" animate="true" max="100" value="progressValue" type="success">
                 <i><%savingMessage%> {{--<span count-to="5" duration="5" count-from="0"></span>/5 secondes--}}</i>
