@@ -26,7 +26,9 @@
     @yield('csrfToken')
 </head>
 
-<body ng-app="menu" ng-controller="menuController">
+<body ng-app="starter" ng-controller="menuController">
+
+
 <script type="text/javascript" src="{{ URL::to('Framework/please-wait/please-wait.min.js')  }}"></script>
 <script type="text/javascript">
     window.loading_screen = window.pleaseWait({

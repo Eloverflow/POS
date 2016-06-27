@@ -11,7 +11,13 @@
     <script src="{{ @URL::to('Framework/Bootstrap/js/ui-bootstrap-tpls-1.2.5.min.js') }}"></script>
     <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
-    <script src="{{ @URL::to('js/menuAngular.js') }}"></script>
+   {{-- <script src="{{ @URL::to('js/menuAngular.js') }}"></script>--}}
+    <script src="{{ @URL::to('js/menuApp/app.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/controllers/starterController.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/controllers/menuController.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/constants.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/services.js') }}"></script>
+    <script src="{{ @URL::to('js/menuApp/directives.js') }}"></script>
 
 
     <script src="{{ @URL::to('js/utils.js') }}"></script>
