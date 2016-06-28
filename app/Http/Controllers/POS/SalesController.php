@@ -297,6 +297,7 @@ class SalesController extends Controller
                                         $saleLine = SaleLine::where('id', $billLine['saleLineId'])->first();
                                         if (!empty($saleLine)) {
                                             $saleID = $billLine['sale_id'];
+                                            array_push($result['saleLineIdMat'][count($result['saleLineIdMat'])- 1] ,$saleLine->id);
                                             if(empty($saleID)){
                                                 $saleID = $sale->id;
                                             }
