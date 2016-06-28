@@ -36,14 +36,13 @@
                                 <h2>{{ $schedule->firstName . " " . $schedule->lastName}}</h2>
                                 <div class="employee">
                                     <h3>Scheduled Hours</h3>
-                                    <label>Total Scheduled: </label>{{ $schedule->total->format("%H:%I") }}
+                                    <label>Total Scheduled: </label>{{ $schedule->total }}
                                     <label>Total Worked: </label>{{ $schedule->totalWorked }}
-                                    <span class="positive-green">{{ $schedule->difference }}</span>
-                                    {{--@if($schedule->difference >= 0)
+                                    @if($schedule->difference[0] != "-")
                                         <span class="positive-green">{{ $schedule->difference }}</span>
                                     @else
                                         <span class="negative-red">{{ $schedule->difference }}</span>
-                                    @endif--}}
+                                    @endif
                                 </div>
                                 <?php } ?>
                                 <div class="content">
@@ -65,6 +64,7 @@
                                                 <span>{{ $st_pieces[0] }}&nbsp;<strong>{{ $st_pieces[1] }}</strong></span>
                                                 <span>{{ $et_pieces[0] }}&nbsp;<strong>{{ $et_pieces[1] }}</strong></span>
                                                 <span style="color:blue">{{ $corresp->interval->format("%H:%I")}}</span>
+                                                <span><strong>{{ $corresp->name }}</strong></span>
                                             </div>
                                             <?php
                                                 $e->add($corresp->interval);

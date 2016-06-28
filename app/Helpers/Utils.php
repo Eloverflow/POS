@@ -2,11 +2,9 @@
 namespace App\Helpers;
 use App\Models\POS\Disponibility;
 use App\Models\POS\Schedule;
-use App\Models\POS\Shared\Cell;
-use App\Models\POS\Shared\Row;
-use App\Models\POS\Shared\Intersect;
-use App\Models\POS\Shared\ScheduleCell;
 
+
+use DateInterval;
 use DateTime;
 /**
  * Created by PhpStorm.
@@ -97,5 +95,57 @@ class Utils
         $htmlString = $htmlString . "</table>";
         //var_dump($userANDdaySchedules);
         return $htmlString;
+    }
+
+    // Calculate interval from 2 DateTime string in the format y-m-d h:i:s
+    // Return DateInterval Object.
+    static public function GetInterval($start, $end){
+        $datetime1 = new DateTime($start);
+        $datetime2 = new DateTime($end);
+
+        return $datetime1->diff($datetime2);
+    }
+
+    // Calculate hours from DateInterval Object
+    // Return array with hours and minutes.
+    static public function CalculateMinutes($interval){
+
+
+        $hours = ($interval->h + ($interval->d * 24))*60;
+        $mins = $interval->i;
+
+        return ($hours + $mins);
+
+    }
+
+    // Calculate hours from DateInterval Object
+    // Return array with hours and minutes.
+    static public function MinutesToTimeString($minutes){
+
+        $sign_Char = "";
+        if($minutes < 0){
+            $minutes = $minutes * -1;
+            $sign_Char = "-";
+        } else {
+            $sign_Char = "+";
+        }
+
+        $hours = floor($minutes / 60);
+        $mins = $minutes % 60;
+
+        return $sign_Char . ($hours < 10 ? '0' . $hours : $hours) . ":" . ($mins < 10 ? '0' . $mins : $mins);
+
+    }
+
+    // Calculate hours from DateInterval Object
+    // Return formatted string time.
+    static public function IntervalToString($interval){
+
+
+        $hours = $interval->h + ($interval->d * 24);
+        $mins = $interval->i;
+
+        return ($hours < 10 ? '0' . $hours : $hours) . ":" . ($mins < 10 ? '0' . $mins : $mins);
+
     }
 }
