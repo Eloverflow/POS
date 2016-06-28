@@ -503,7 +503,7 @@ class SalesController extends Controller
                                 $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'status'=>$inputItem['status'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras'])]);
                                 $commandLine->save();
                                 $result['msg'] .= " - Command line normally updated";
-                                array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->first()->id);
+                                array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->id);
                             }
                             else{
                                 $result['msg'] .= " - Failed at finding the command line";
@@ -517,7 +517,7 @@ class SalesController extends Controller
                                 else
                                 {
                                     $result['msg'] .= " - Successfully recorded the command line";
-                                    array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->id);
+                                    array_push($result['commandLineIdMat'][count($result['commandLineIdMat'])-1], $commandLine->id ."");
                                     $result['success'] = "true";
                                 }
                             }

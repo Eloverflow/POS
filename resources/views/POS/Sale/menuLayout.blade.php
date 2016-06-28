@@ -188,8 +188,9 @@
 <div id="billWindow">
     <h1>Factures</h1>
     <div class="upRight">
-        <button  style="background-color: #333; border-color: #8ad919" ng-click="terminateCommands()" type="button" class="btn btn-info">Terminer les commandes</button>
-        <button  style="background-color: #333; border-color: #30a5ff" ng-click="" type="button" class="btn btn-success">Imprimer les factures</button>
+        <button ng-show="(commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }).length > 0" style="background-color: #333; border-color: #8ad919" ng-click="addNewItemToBill(true)" type="button" class="btn btn-info">Ajouter nouveaux items</button>
+        <button ng-hide="(commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }).length > 0" style="background-color: #333; border-color: #8ad919" ng-click="terminateCommands()" type="button" class="btn btn-info">Terminer les commandes</button>
+        <button ng-hide="(commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }).length > 0" style="background-color: #333; border-color: #30a5ff" ng-click="" type="button" class="btn btn-success">Imprimer les factures</button>
         <button ng-click="closeBill()" type="button" class="btn btn-danger">FERMER</button>
     </div>
     <div class="bill-separation">
@@ -211,7 +212,7 @@
 
                     <span ng-show="bill.checked"  ng-click="checkBill(bill)" class="glyphicon glyphicon-check move-bill-check"></span>
                     <span ng-hide="bill.checked"  ng-click="checkBill(bill)" class="glyphicon glyphicon-unchecked move-bill-check"></span>
-                <h2 style="color: white">Facture <% bill.number %></h2>
+                <h2 ng-show="!bill.unasociatedCommandItems" style="color: white">Facture <% bill.number %></h2><h2 ng-hide="!bill.unasociatedCommandItems" style="color: white"><% bill.number %></h2>
                 <ul>
 
 
@@ -237,7 +238,7 @@
                         </div>
                     </li>
 
-                    <li ng-click="toggleBillDemo()" ng-show="bill.total == 0 && !movingBillItem" class="add-bill-item">
+                    <li ng-click="toggleBillDemo()" ng-show="bill.total == 0 && !movingBillItem && !bill.unasociatedCommandItems" class="add-bill-item">
                         <span class="glyphicon glyphicon-plus"></span>
                     </li>
                     <li style="text-align: center" ng-show="showBillDemo" ng-click="moveToBill(bill)">

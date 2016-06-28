@@ -40,6 +40,34 @@
 	width: 10%;
 }
 
+.liveActionLoading{
+	z-index: 4;
+	padding-top: 3px;
+	color:#00a5ff;
+	text-align: center;
+	width: 91%;
+	position: absolute;
+	bottom: 37px;
+}
+
+.liveActionLoading span{
+	background-color: rgba(66,66,66,0.9);
+	padding: 2px;
+	border-radius: 50%;
+	animation-name: spin;
+	animation-duration: 2000ms;
+	animation-iteration-count: infinite;
+	animation-timing-function: linear;
+}
+
+@keyframes spin {
+	from {
+		transform: rotate(0deg);
+	}
+	to {
+		transform: rotate(360deg);
+	}
+}
 
 .menuLinkCancel,.menuLinkDelete,.menuLinkUpdate,.menuLinkEdit{
 	visibility: hidden;
