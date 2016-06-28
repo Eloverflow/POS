@@ -41,3 +41,11 @@
 .tracking-bloc .sub-content .p-row {
 
 }
+
+.positive-green {
+	color: darkgreen;
+}
+
+.negative-red {
+	color: darkred;
+}

@@ -23,6 +23,7 @@ class StatsController extends Controller
 {
     public function index()
     {
+
         // For bar chart Monthly scheduled & worked hours
         $rawWorkedHours = Punch::GetWorkedHoursYear(date("Y"));
         $rawScheduledHours = Schedule::GetScheduledHoursYear(date("Y"));
@@ -33,7 +34,7 @@ class StatsController extends Controller
         }
         foreach($rawScheduledHours as $monthSheduledHours){
 
-            $scheduledHours[$monthSheduledHours->month] = (int)(Datetime::createFromFormat('H:i:s', $monthSheduledHours->total)->format('h'));
+            $scheduledHours[$monthSheduledHours->month] = (int)(Datetime::createFromFormat('H:i:s', $monthSheduledHours->total));
         }
         $view = \View::make('POS.stats.index')->with('ViewBag', array(
                 'workedHours' => $workedHours,

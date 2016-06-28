@@ -35,6 +35,7 @@ class ScheduleController extends Controller
         return $view;
     }
 
+
     // Cette fonction sert a prendre une matrice de temps et a faire les
     // calculs de la matrice.
     // Return: The initial matrix with total and interval
@@ -44,24 +45,25 @@ class ScheduleController extends Controller
         $e = new DateTime('00:00');
         $f = clone($e);
 
+        $g = new DateTime('00:00');
+        $h = clone($g);
+
         $numItems = count($schedule) - 1;
 
         $startIndex = 0;
         $lastEmpl = "";
         for($i = 0; $i < count($schedule); $i++) {
-            $datetime1 = new DateTime($schedule[$i]->startTime);
-            $datetime2 = new DateTime($schedule[$i]->endTime);
-            $interval = $datetime1->diff($datetime2);
+            $interval = Utils::GetInterval($schedule[$i]->startTime, $schedule[$i]->endTime);
 
             $schedule[$i]->interval = $interval;
 
             $correspnds = array();
             For($j = 0; $j < count($punch); $j++){
+                // Ici la comparaison qui sert de correspondace a un momment scheduler et le punch actif
                 if($schedule[$i]->idEmployee == $punch[$j]->idEmployee){
-                    $dt1 = new DateTime($punch[$j]->startTime);
-                    $dt2 = new DateTime($punch[$j]->endTime);
-                    $int = $dt1->diff($dt2);
+                    $int = Utils::GetInterval($punch[$j]->startTime, $punch[$j]->endTime);
 
+                    $g->add($int);
                     $punch[$j]->interval = $int;
 
                     array_push($correspnds, $punch[$j]);
@@ -74,30 +76,40 @@ class ScheduleController extends Controller
                 $lastEmpl = $schedule[$i]->idEmployee;
                 $e->add($interval);
 
-                if($i === $numItems){
-                    $schedule[$startIndex]->total = $f->diff($e);
-                }
+
 
             } else if($lastEmpl == $schedule[$i]->idEmployee){
                 $e->add($interval);
 
-                if($i === $numItems){
-                    $schedule[$startIndex]->total = $f->diff($e);
-                }
+
 
             } else {
                 // On vien de finir de parcourir un employee
-                $schedule[$startIndex]->total = $f->diff($e);
+                $schedule[$startIndex]->total = Utils::IntervalToString($f->diff($e));
+                $schedule[$startIndex]->totalWorked = Utils::IntervalToString($h->diff($g));
+
+                $totalMinutes = Utils::CalculateMinutes($h->diff($g)) - Utils::CalculateMinutes($f->diff($e));
+                $schedule[$startIndex]->difference = Utils::MinutesToTimeString($totalMinutes);
 
                 $startIndex = $i;
                 $e = new DateTime('00:00');
+                $g = new DateTime('00:00');
 
                 $lastEmpl = $schedule[$i]->idEmployee;
                 $e->add($interval);
 
-                if($i === $numItems){
-                    $schedule[$startIndex]->total = $f->diff($e);
-                }
+
+            }
+
+            // A la fin completement, on met le total dans le premiere ligne
+            // correspondant a lemployee.
+            // * Il est imperatif de trier la liste et dordonner celle-ci par nom d<employee.
+            if($i === $numItems){
+                $schedule[$startIndex]->total = Utils::IntervalToString($f->diff($e));
+                $schedule[$startIndex]->totalWorked = Utils::IntervalToString($h->diff($g));
+
+                $totalMinutes = Utils::CalculateMinutes($h->diff($g)) - Utils::CalculateMinutes($f->diff($e));
+                $schedule[$startIndex]->difference = Utils::MinutesToTimeString($totalMinutes);
             }
 
             // Clean the array
