@@ -40,8 +40,8 @@
                     <table data-toggle="table" >
                         <thead>
                         <tr>
-                            <th class="col-md-1" data-field="inout">In/Out</th>
-                            <th data-field="time">Time</th>
+                            <th class="col-md-2" data-field="startTime">Start Time</th>
+                            <th class="col-md-2" data-field="endTime">End Time</th>
                             <th data-field="date">Date</th>
                             <th data-field="actions"></th>
                         </tr>
@@ -49,13 +49,8 @@
                         <tbody>
                             @foreach ($ViewBag['punches'] as $punch)
                             <tr>
-                                <?php  if($punch->inout == "in") {
-                                    echo "<td class=\"tagin\">IN</td>"; } else {
-                                    echo "<td class=\"tagout\">OUT</td>";
-                                }
-                                        ?>
-                                <td>{{ $punch->time }}</td>
-                                <td>{{ $punch->date }}</td>
+                                <td>{{ $punch->startTime }}</td>
+                                <td>{{ $punch->endTime }}</td>
                                 <td><a class="editPunch" href="#" data-id="{{ $punch->id }}">Edit</a>
                                     <a class="delPunch" href="#" data-id="{{ $punch->id }}">Delete</a></td>
                             </tr>
@@ -84,22 +79,27 @@
                         <strong>Success!</strong><div class="successMsg"></div>
                     </div>
 
+
                     <div class="col-md-6">
                         <div class="form-group">
-                            <h3>IN / OUT</h3>
-                            <select id="isInSelect" name="isIn" class="form-control">
-                                <option value="0">IN</option>
-                                <option value="1">OUT</option>
-                            </select>
+                            <h3>Start Time</h3>
+
+                            <div class='input-group date' id="startTimePicker">
+                                <input type='text' class="form-control dark-border" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                            </div>
+
                         </div>
                     </div>
 
                     <div class="col-md-6">
                         <div class="form-group">
-                            <h3>Time</h3>
+                            <h3>End Time</h3>
 
-                                <div class='input-group date' id="punchTimePicker">
-                                    <input type='text' class="form-control" />
+                                <div class='input-group date' id="endTimePicker">
+                                    <input type='text' class="form-control dark-border" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
                                     </span>
@@ -108,19 +108,6 @@
                         </div>
                     </div>
 
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <h3>Date</h3>
-
-                                <div class='input-group date' id="punchDatePicker">
-                                    <input type='text' class="form-control"/>
-                                    <span class="input-group-addon">
-                                        <span class="glyphicon glyphicon-calendar"></span>
-                                    </span>
-                                </div>
-
-                        </div>
-                    </div>
                 </div>
 
                 <!-- dialog buttons -->
@@ -155,9 +142,13 @@
          });
 
         // Les binds pour ce qui concerne les controles dans les modals.
-        $('#punchTimePicker').datetimepicker({
-            format: 'LT'
+        $('#startTimePicker').datetimepicker({
+            // Pass parameters here.
         });
+        $('#endTimePicker').datetimepicker({
+            // Pass parameters here.
+        });
+
         $('#punchDatePicker').datetimepicker({
             format: 'DD/MM/YYYY'
         });

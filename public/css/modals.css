@@ -1,4 +1,8 @@
 
+.lumino .modal-header .modal-title {
+	color: white;
+}
+
 .lumino .modal-header {
 	background-color: #222 !important;
 }
@@ -15,4 +19,8 @@
 
 .lumino .row{
 	margin: 0px;
+}
+
+.lumino .dark-border{
+	border: 1px solid #CCCCCC;
 }

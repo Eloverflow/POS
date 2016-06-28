@@ -118,6 +118,23 @@ class Utils
 
     }
 
+    // Calculate salary from interval
+    // IN: $interval between two moment,
+    // $finalSalary of the person context: baseSalary + BonusSalary
+    // Return The pay in dollar.
+    static public function CalculateSalary($interval, $finalSalary){
+
+        $hours = ($interval->h + ($interval->d * 24))*60;
+        $mins = $interval->i;
+
+        $salary = $finalSalary / 60;
+        $worktime = $hours + $mins;
+        $pay = $worktime* $salary; // This result is in cents
+
+        return $pay;
+
+    }
+
     // Calculate hours from DateInterval Object
     // Return array with hours and minutes.
     static public function MinutesToTimeString($minutes){
@@ -146,6 +163,33 @@ class Utils
         $mins = $interval->i;
 
         return ($hours < 10 ? '0' . $hours : $hours) . ":" . ($mins < 10 ? '0' . $mins : $mins);
+
+    }
+
+    // Calculate hours from DateInterval Object
+    // Return formatted string time.
+    static public function IsBetweenInterval($st1, $st2, $et1, $et2, $mins_tolerance){
+
+        // Schedule
+        $startTime1 = new DateTime($st1);
+        // Punch
+        $startTime2 = new DateTime($st2);
+        // Schedule
+        $endTime1 = new DateTime($et1);
+        // Punch
+        $endTime2 = new DateTime($et2);
+
+        //$interval = new DateInterval('PT' . $mins_tolerance . 'M');
+
+        //$startTime1->sub($interval);
+        //$endTime1->sub($interval);
+
+
+        if($startTime2 >= $startTime1 && $endTime1 <= $endTime2){
+            return true;
+        } else {
+            return false;
+        }
 
     }
 }
