@@ -60,14 +60,24 @@
             $( "#displayLive" ).hide();
 
 
+
             if($('.lastPosition').length == 1)
                 $('.lastPosition').remove();
 
 
-            if($('.liveActionMsg').length == 0)
+            if($('.liveActionMsg').length == 0){
                 $('#terminal').append('<div class="lastPosition" style="border-bottom: 1px solid #00a5ff; height: 3px; margin-bottom: 3px; width: 100%"></div>');
+                $('#terminal').append('<div class="loadBlock" style="height: 18px; "></div>');
+            }
             else
                 $('.liveActionMsg').before('<div class="lastPosition" style="border-bottom: 1px solid #00a5ff; height: 3px; margin-bottom: 3px; width: 100%"></div>');
+
+
+            if($('.liveActionLoading').length == 0){
+                $('#terminal').append('<div class="liveActionLoading"><span class="glyphicon glyphicon-refresh"></span></div>');
+
+                updateScroll();
+            }
 
         });
 
@@ -76,6 +86,7 @@
             isLive = false;
             $( "#displayLive" ).show();
             $( "#live" ).hide();
+            $('.liveActionLoading').remove();
         });
 
 
@@ -239,7 +250,8 @@
                     }
                 },
                 error: function () {
-                    $('#terminal').append('Bummer: there was an error!<br>');
+                    $('#terminal').append('<div style="position: absolute; bottom:40px;z-index:6;background-color: #333;width:90%;">Bummer: there was an error! <a href="">(Refresh the page)</a></div>');
+                    updateScroll();
                     setTimeout(function() {getActivityLog()}, 2000);
                 },
             });
@@ -277,7 +289,8 @@
                         }
                     },
                     error: function () {
-                        $('#terminal').prepend('Bummer: there was an error!<br>');
+                        $('#terminal').prepend('<div style="position: absolute; bottom:40px;z-index:6;background-color: #333;width:90%;">Bummer: there was an error! <a href="">(Refresh the page)</a></div>');
+                        updateScroll();
                     },
                 });
             return false;
@@ -285,8 +298,17 @@
 
 
         function getActivityLogOverId($id) {
+
+
             if(noResultIteration > 10){
                 isLive = false;
+
+
+                if($('.liveActionLoading').length == 1)
+                    $('.liveActionLoading').remove();
+
+                if($('.loadBlock').length == 1)
+                    $('.loadBlock').remove();
 
                 $('.liveActionMsg').fadeOut( 200, function() {
                     $(this).remove();
@@ -327,9 +349,11 @@
                     }
                 },
                 error: function () {
-                    $('#terminal').append('Bummer: there was an error!<br>');
+                    $('#terminal').append('<div style="position: absolute; bottom:40px;z-index:6;background-color: #333;width:90%;">Bummer: there was an error! <a href="">(Refresh the page)</a></div>');
+                    updateScroll();
                 },
             });
+
             return false;
         }
 
