@@ -2100,79 +2100,89 @@ angular.module('starter.controllers')
         }
 
         $scope.addNewItemToBill = function (force) {
-            var unasociatedCommandItem = [];
 
-            for (var f = 0; f < $scope.commandClient.length; f++) {
-                if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandItems.length > 0) {
-                    for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
+            $callbackFunction = function () {
+                var unasociatedCommandItem = [];
+
+                for (var f = 0; f < $scope.commandClient.length; f++) {
+                    if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandItems.length > 0) {
+                        for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
 
 
-                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p])
-                        var flagOn = false;
+                            var item = angular.copy($scope.commandClient[f + 1].commandItems[p])
+                            var flagOn = false;
 
-                        /*Pour chaque item de la commande on doit comparer avec les items des bill avec leur command_line*/
-                        for(var k = 0; k < $scope.bills.length && !flagOn; k++){
-                            for(var l = 0; l < $scope.bills[k].length && !flagOn; l++){
-                                if(typeof $scope.bills[k][l] != 'undefined' && item.command_line_id == $scope.bills[k][l].command_line_id){
-                                    flagOn = true;
+                            /*Pour chaque item de la commande on doit comparer avec les items des bill avec leur command_line*/
+                            for(var k = 0; k < $scope.bills.length && !flagOn; k++){
+                                for(var l = 0; l < $scope.bills[k].length && !flagOn; l++){
+                                    if(typeof $scope.bills[k][l] != 'undefined' && item.command_line_id == $scope.bills[k][l].command_line_id){
+                                        flagOn = true;
+                                    }
                                 }
                             }
-                        }
 
-                        if(!flagOn)
-                        {
-                            if(item.status == 1 || force)
+                            if(!flagOn)
                             {
-                                $scope.commandClient[f + 1].commandItems[p].status = 2;
-                                item.status = 2
-                                $scope.updateCommand();
+                                if(item.status == 1 || force)
+                                {
+                                    $scope.commandClient[f + 1].commandItems[p].status = 2;
+                                    item.status = 2
+                                    $scope.updateCommand();
+                                }
+                                unasociatedCommandItem.push(item);
                             }
-                            unasociatedCommandItem.push(item);
+
+                            /*
+
+                             var itemInBills = $filter("filter")($scope.bills, {command_line_id: item.command_line_id})[0];*/
+                            /* if(typeof itemInBills == 'undefined' || itemInBills == null){
+
+                             }
+                             else{
+                             itemInBills = $filter("filter")($scope.bills, {command_line_id: item.command_line_id})[0];
+                             }*/
+
+
+                            /*
+                             console.log('itemInBills');
+                             console.log(itemInBills);*/
+
+
                         }
-
-                    /*
-
-                        var itemInBills = $filter("filter")($scope.bills, {command_line_id: item.command_line_id})[0];*/
-                       /* if(typeof itemInBills == 'undefined' || itemInBills == null){
-
-                        }
-                        else{
-                            itemInBills = $filter("filter")($scope.bills, {command_line_id: item.command_line_id})[0];
-                        }*/
-
-
-/*
-                        console.log('itemInBills');
-                        console.log(itemInBills);*/
-
-
                     }
                 }
+
+
+                console.log('$scope.bills')
+                console.log($scope.bills)
+                console.log('$scope.commandClient')
+                console.log($scope.commandClient)
+
+                if(unasociatedCommandItem.length > 0){
+
+                    console.log(unasociatedCommandItem)
+                    $scope.newLastBill();
+
+                    $scope.bills[$scope.bills.length-1] = unasociatedCommandItem;
+                    $scope.bills[$scope.bills.length-1].total = 0;
+                    $scope.bills[$scope.bills.length-1].subTotal = 0;
+                    $scope.bills[$scope.bills.length-1].number = "Nouveaux Items";
+                    $scope.bills[$scope.bills.length-1].unasociatedCommandItems = true;
+                    /*Copy the taxes and change its total to 0*/
+                    var taxes = angular.copy($scope.taxes);
+                    for (var j = 0; j < taxes.length; j++) {
+                        taxes[j].total = 0;
+                    }
+                    $scope.bills[$scope.bills.length-1].taxes = taxes;
+
+                }
+
             }
 
-
-            console.log('$scope.bills')
-            console.log($scope.bills)
-            console.log('$scope.commandClient')
-            console.log($scope.commandClient)
-
-            if(unasociatedCommandItem.length > 0){
-
-                console.log(unasociatedCommandItem)
-                $scope.newLastBill();
-
-                $scope.bills[$scope.bills.length-1] = unasociatedCommandItem;
-                $scope.bills[$scope.bills.length-1].total = 0;
-                $scope.bills[$scope.bills.length-1].subTotal = 0;
-                $scope.bills[$scope.bills.length-1].number = "Nouveaux Items";
-                $scope.bills[$scope.bills.length-1].unasociatedCommandItems = true;
-                /*Copy the taxes and change its total to 0*/
-                var taxes = angular.copy($scope.taxes);
-                for (var j = 0; j < taxes.length; j++) {
-                    taxes[j].total = 0;
-                }
-                $scope.bills[$scope.bills.length-1].taxes = taxes;
-
+            if (timeoutHandle != null)
+                $scope.updateTable($callbackFunction);
+            else {
+                $callbackFunction();
             }
 
 
