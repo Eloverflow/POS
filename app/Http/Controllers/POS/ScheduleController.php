@@ -36,6 +36,46 @@ class ScheduleController extends Controller
     }
 
 
+    private function FindEmployeeOffTrackPunch($employeeId, $matches, $punches){
+
+        $acc_corresp_off_track = array();
+        for($k = 0; $k < count($punches); $k++){
+
+            if($punches[$k]->idEmployee == $employeeId){
+                for($l = 0; $l < count($matches); $l++){
+                    if(!isset($matches[$punches[$k]->id]) &&
+                        !isset($acc_corresp_off_track[$punches[$k]->id]))
+                    {
+                        $acc_corresp_off_track[$punches[$k]->id] = $punches[$k];
+
+                        $int = Utils::GetInterval($punches[$k]->startTime, $punches[$k]->endTime);
+
+                        $g->add($int);
+                        $punch[$k]->interval = $int;
+
+                        $payInDollar = Utils::CalculateSalary($int, $punches[$k]->baseSalary + $punches[$k]->bonusSalary);
+
+                        $acc_total_Payed += $payInDollar;
+
+
+                        $punch[$j]->totalPay = $payInDollar;
+
+                    }
+
+                }
+
+            }
+        }
+
+        $summary = array(
+            'worked' => $acc_corresp_off_track,
+            'cost' =>
+            'offTrack'
+        );
+
+        return $summary;
+    }
+
     // Cette fonction sert a prendre une matrice de temps et a faire les
     // calculs de la matrice.
     // Return: The initial matrix with total and interval
@@ -57,7 +97,7 @@ class ScheduleController extends Controller
         // Compteur qui sert accumuler le total dheures payer par employer
         $acc_total_Payed = 0;
         $acc_corresp = array();
-        $off_track_corresp = array();
+        $acc_corresp_off_track = array();
 
         $nbItems = count($schedule) - 1;
 
@@ -95,12 +135,9 @@ class ScheduleController extends Controller
                             $acc_corresp[$punch[$j]->id] = $punch[$j];
                         }
 
+
+
                         //unset($punch[$j]);
-                    } else {
-                        if(!isset($off_track_corresp[$punch[$j]->id])){
-                            //$off_track_corresp[$punch[$j]->id] = $punch[$j];
-                        }
-                        //$off_track_corresp[] = $punch[$j];
                     }
                 }
             }
@@ -122,7 +159,12 @@ class ScheduleController extends Controller
                 $schedule[$startIndex]->total = Utils::IntervalToString($f->diff($e));
                 $schedule[$startIndex]->totalWorked = Utils::IntervalToString($f->diff($g));
                 $schedule[$startIndex]->totalPayed = $acc_total_Payed;
-                $schedule[$startIndex]->offTrack = $off_track_corresp;
+
+
+                $unMatchesSum =
+
+
+                $schedule[$startIndex]->offTrack = $acc_corresp_off_track;
 
                 $sum_hours_scheduled->add($f->diff($e));
                 $sum_hours_worked->add($f->diff($g));
@@ -140,7 +182,7 @@ class ScheduleController extends Controller
                 $e->add($interval);
 
                 $acc_corresp = null;
-                $off_track_corresp = null;
+                $acc_corresp_off_track = null;
             }
 
             // A la fin completement, on met le total dans le premiere ligne
@@ -152,7 +194,15 @@ class ScheduleController extends Controller
                 $schedule[$startIndex]->total = Utils::IntervalToString($f->diff($e));
                 $schedule[$startIndex]->totalWorked = Utils::IntervalToString($f->diff($g));
                 $schedule[$startIndex]->totalPayed = $acc_total_Payed;
-                $schedule[$startIndex]->offTrack = $off_track_corresp;
+
+                for($k = 0; $k < count($punch); $k++){
+                    /*if($punch[$k]->idEmployee == $schedule[$i]->idEmployee){
+                        $acc_corresp_off_track[] = $punch[$k];
+                    }*/
+                    $acc_corresp_off_track[] = array($punch[$k]->idEmployee, $schedule[$i]->idEmployee);
+                }
+                $schedule[$startIndex]->offTrack = $punch;
+
 
                 $sum_hours_scheduled->add($f->diff($e));
                 $sum_hours_worked->add($f->diff($g));

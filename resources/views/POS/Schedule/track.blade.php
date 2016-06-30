@@ -30,7 +30,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <div class="panel panel-default">
                 <div class="panel-body">
 
@@ -50,7 +50,7 @@
                                             $s_lastEmpl = $schedule->idEmployee;
 
                                 ?>
-                                <div class="col-lg-6 tracking-bloc">
+                                <div class="col-lg-12 tracking-bloc">
                                 <h2>{{ $schedule->firstName . " " . $schedule->lastName}}</h2>
                                 <div class="employee">
                                     <h3>Scheduled Hours</h3>
@@ -98,18 +98,67 @@
                                         <div class="total-square">
                                             <span>{{ $f->diff($e)->format("%H:%I") }}</span>
                                         </div>
-
                                     </div>
                                 </div>
+
+
                                 <?php
                                     if((count($ViewBag['scheduleInfos']['grid']) - 1) != $i){
                                         if($ViewBag['scheduleInfos']['grid'][$i+1]->idEmployee != $s_lastEmpl){
                                 ?>
+                                    <div class="content">
+                                        <div class="header">
+                                            <span>Off Tracking</span>
+                                        </div>
+                                        <div class="sub-content">
+                                            <div class="row-container">
+                                                <?php
+
+                                                for($z = 0; $z < 10; $z++){
+
+                                                ?>
+                                                <div class="p-row">
+                                                    <span>{{ $z }}</span>
+                                                </div>
+                                                <?php
+
+                                                }
+                                                ?>
+                                            </div>
+                                            <div class="total-square">
+                                                <span>0</span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                                 <?php
                                         }
                                     } else {
                                     ?>
+                                <div class="content">
+                                    <div class="header">
+                                        <span>Off Tracking</span>
+                                    </div>
+                                    <div class="sub-content">
+                                        <div class="row-container">
+                                            <?php
+
+                                            for($z = 0; $z < 10; $z++){
+
+                                            ?>
+                                            <div class="p-row">
+                                                <span>{{ $z }}</span>
+                                            </div>
+                                            <?php
+
+                                            }
+                                            ?>
+                                        </div>
+                                        <div class="total-square">
+                                            <span>0</span>
+                                        </div>
+                                    </div>
+                                </div>
                                 </div>
                                 <?php
                                     }

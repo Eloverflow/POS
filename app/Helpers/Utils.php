@@ -179,13 +179,13 @@ class Utils
         // Punch
         $endTime2 = new DateTime($et2);
 
-        //$interval = new DateInterval('PT' . $mins_tolerance . 'M');
+        $interval = new DateInterval('PT' . $mins_tolerance . 'M');
 
-        //$startTime1->sub($interval);
-        //$endTime1->sub($interval);
+        $startTime1->sub($interval);
+        $endTime1->add($interval);
 
 
-        if($startTime2 >= $startTime1 && $endTime1 <= $endTime2){
+        if($startTime2 >= $startTime1 && $endTime2 <= $endTime1){
             return true;
         } else {
             return false;
