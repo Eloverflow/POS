@@ -94,8 +94,8 @@ angular.module('starter.controllers')
         $scope.commandClient[$scope.commandCurrentClient] = {};
         $scope.commandClient[$scope.commandCurrentClient].commandItems = [];  // Array containing the list of item for the command
         //
-        $scope.bills = [];
-        $scope.bills[0] = [];
+        $scope.bills = null;
+        //$scope.bills[0] = [];
         $scope.movingBillItem = false; //Flag to display the move item button on bill page
         //
         $scope.currentEmploye = {}; //Current employee authenticated
@@ -729,7 +729,7 @@ angular.module('starter.controllers')
                 if (typeof item != 'undefined' && item != null) {
                     if (typeof item.extras == 'undefined' || item.extras == null)
                         item.extras = [];
-                    item.extras.push(extra);
+                    item.extras.push({name: extra.name, value: extra.value, effect: extra.effect});
                 }
                 else {
                     if (typeof $scope.commandClient[$scope.commandCurrentClient].extras === 'undefined' || $scope.commandClient[$scope.commandCurrentClient].extras === null || $scope.commandClient[$scope.commandCurrentClient].extras === "")
@@ -1292,6 +1292,7 @@ angular.module('starter.controllers')
                         $scope.commandClient[f + 1].command_number = response.commands[f].command_number + "";
 
                         for (var g = 0; g < response.commandLineIdMat[f].length; g++) {
+                            $scope.commandClient[f + 1].commandItems[g].command_id = $scope.commandClient[f + 1].id;
                             $scope.commandClient[f + 1].commandItems[g].command_line_id = response.commandLineIdMat[f][g]
                         }
                     }
@@ -1530,8 +1531,8 @@ angular.module('starter.controllers')
 
             var $callbackFunction = function (response) {
 
-
-                $scope.bills = null;
+/*
+                $scope.bills = null;*/
 
                 if (response.success == "true") {
                     $scope.bills = [];
@@ -1569,18 +1570,20 @@ angular.module('starter.controllers')
                                 id = $scope.bills[$scope.bills.length - 1][l].id;
                                 var sale_id = $scope.bills[$scope.bills.length - 1][l].sale_id;
 
+                                console.log('extras')
+                                var extras = $scope.bills[$scope.bills.length - 1][l].extras;
+
                                 for (var o in itemWhereId) {
                                     if (itemWhereId.hasOwnProperty(o)) {
                                         $scope.bills[$scope.bills.length - 1][l][o] = itemWhereId[o];
                                     }
                                 }
 
-
                                 $scope.bills[$scope.bills.length - 1][l].saleLineId = id;
                                 $scope.bills[$scope.bills.length - 1][l].sale_id = sale_id;
+                                if (typeof extras != 'undefined' && extras != null && extras != "")
+                                    $scope.bills[$scope.bills.length - 1][l].extras = JSON.parse(extras);
 
-                                if (typeof $scope.bills[$scope.bills.length - 1][l].extras != 'undefined' && $scope.bills[$scope.bills.length - 1][l].extras != null && $scope.bills[$scope.bills.length - 1][l].extras != "")
-                                    $scope.bills[$scope.bills.length - 1][l].extras = JSON.parse($scope.bills[$scope.bills.length - 1][l].extras);
 
                             }
 
@@ -1611,6 +1614,7 @@ angular.module('starter.controllers')
                     console.log($scope.bills)
                 }
                 else {
+                    $scope.bills = null;
                     $scope.closeBill();
                 }
 
