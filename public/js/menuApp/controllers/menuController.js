@@ -109,11 +109,16 @@ angular.module('starter.controllers')
         var splashFullScreen = $('#splashFullScreen');
         /*Box to inform you that you are now in fullscreen*/
         //
+        var billWindow = $('#billWindow');
+        //
+        var modalChangeEmployee = $('#changeEmployee');
+        //
+        var mainText = $('#mainText');
         /*End of Initializing variables*/
 
         /*When the user become idle*/
         $scope.$on('IdleStart', function () {
-            console.log('Idle')
+            console.log('Idle');
             if (!$scope.showEmployeeModal) {
                 $scope.changeEmployee();
             }
@@ -131,13 +136,12 @@ angular.module('starter.controllers')
 
         /*User idle has timeout, he is kicked*/
         $scope.$on('IdleTimeout', function () {
-            console.log('IdleTimeout')
+            console.log('IdleTimeout');
             $scope.commandClient = [];
             $scope.commandItems = [];
             /*$scope.bills = [];
              $scope.taxe = [0, 0];
              $scope.totalBill = 0;*/
-            var modalChangeEmployee = $('#changeEmployee');
             $(windowModalBlockerHtml).hide().prependTo(modalChangeEmployee).fadeIn("fast");
 
             modalChangeEmployee.find('#closeModal').hide();
@@ -161,10 +165,10 @@ angular.module('starter.controllers')
         /*Function to decrease quantity of an item from the current command*/
         $scope.decrease = function (item) {
             if (item.quantity > 0) {
-                item.quantity = item.quantity - 1
+                item.quantity = item.quantity - 1;
                 $scope.updateCommand();
             }
-        }
+        };
 
         /*Function to get the plan from database then display it*/
         $scope.getPlan = function () {
@@ -189,22 +193,22 @@ angular.module('starter.controllers')
                 $scope.planCanva();
 
 
-            }
+            };
             getReq.send($url, null, $callbackFunction);
-        }
+        };
         $scope.getPlan();
 
         /*Increase the floor level in the plan*/
         $scope.floorUp = function () {
             $scope.plan.currentFloor++;
             $scope.planCanva();
-        }
+        };
 
         /*Decrease the floor level in the plan*/
         $scope.floorDown = function () {
             $scope.plan.currentFloor--;
             $scope.planCanva();
-        }
+        };
 
         /*Reset zoom status in the plan*/
         $planSection.find("#planZoomout").on('click', function () {
@@ -302,7 +306,7 @@ angular.module('starter.controllers')
 
                         var selectedTable = $filter("filter")($scope.plan.table, {id: element.id});
 
-                        $scope.changeTable(selectedTable[0])
+                        $scope.changeTable(selectedTable[0]);
                         $scope.showPlanModal = false;
                     }
                 });
@@ -339,7 +343,7 @@ angular.module('starter.controllers')
                  yProportion = 1;*/
 
                 context.beginPath();
-                context.strokeStyle = "#222"
+                context.strokeStyle = "#222";
                 context.lineWidth = 8;
                 context.lineJoin = 'round';
                 for (m = 0; m < onePoint.length; m++) {
@@ -378,7 +382,7 @@ angular.module('starter.controllers')
                     var width = planTableWidth * planXProportion;
                     var height = planTableHeight * planYProportion;
                     var angle = parseFloat($scope.plan.table[i].angle.substring(0, 4));
-                    var color = '#00a5ff'
+                    var color = '#00a5ff';
 
                     if ($scope.plan.table[i].status == 2)
                         color = '#EC0033'
@@ -423,7 +427,7 @@ angular.module('starter.controllers')
                     angle -= 3.12;
                 }
                 if (angle >= 1.5) {
-                    var curHeight = element.height
+                    var curHeight = element.height;
                     if (angle >= 2.15) {
                         curHeight /= 2;
                     }
@@ -441,11 +445,11 @@ angular.module('starter.controllers')
             });
 
 
-        }
+        };
 
         /*Start loading element*/
-        $url = 'http://pos.mirageflow.com/itemtypes/list';
-        $callbackFunction = function (response) {
+        var $url = 'http://pos.mirageflow.com/itemtypes/list';
+        var $callbackFunction = function (response) {
 
             console.log("Itemtype list received inside response");
 
@@ -471,7 +475,7 @@ angular.module('starter.controllers')
 
                     var size_name_array_now = $scope.menuItemTypes[i].size_names.split(",");
 
-                    var size_array = []
+                    var size_array = [];
 
 
                     var sizeMainColor = [];
@@ -556,13 +560,7 @@ angular.module('starter.controllers')
 
                              */
 
-                            var object = {
-                                boxColor: color,
-                                textColor: textColor
-                            }
-
-
-                            return object;
+                            return {boxColor: color, textColor: textColor};
                         }
 
 
@@ -590,43 +588,39 @@ angular.module('starter.controllers')
                 window.loading_screen.finish();
 
                 $scope.numPadMsg = msgEnterEmployeeNumber;
-                $('#mainText').attr('type', 'text');
-                $('#mainText').attr('placeholder', 'Numéro d\'employé');
+                mainText.attr('type', 'text');
+                mainText.attr('placeholder', 'Numéro d\'employé');
                 /*
                  $scope.authenticateEmployee();*/
                 $scope.changeEmployee();
 
-                var modalChangeEmployee = $('#changeEmployee');
+
                 modalChangeEmployee.prepend(windowModalBlockerHtml);
                 modalChangeEmployee.find('#closeModal').hide();
 
 
-                /*$('#changeEmployee').on('click',function(){
-                 alert('test')});
-                 */
-
-                $url = 'http://pos.mirageflow.com/extras/list';
-                var $callbackFunction = function (response) {
+                var $url = 'http://pos.mirageflow.com/extras/list';
+                var $callbackFunctionExtraList = function (response) {
 
                     console.log("Extra list received inside response");
 
                     $scope.extras = response;
-                }
+                };
 
 
-                getReq.send($url, null, $callbackFunction);
+                getReq.send($url, null, $callbackFunctionExtraList);
 
                 $url = 'http://pos.mirageflow.com/filters/list';
-                var $callbackFunction = function (response) {
+                var $callbackFunctionFilterList = function (response) {
 
                     console.log("Filters list received inside response");
 
                     $scope.menuFilters = response;
                     console.log(response)
-                }
+                };
 
 
-                getReq.send($url, null, $callbackFunction);
+                getReq.send($url, null, $callbackFunctionFilterList);
 
 
             };
@@ -639,21 +633,21 @@ angular.module('starter.controllers')
         getReq.send($url, null, $callbackFunction);
         /*End loadind element - After the callback if exist*/
 
-        $scope.filteredItems = []
+        $scope.filteredItems = [];
 
         $scope.filterItemList = [];
         $scope.filterItemTypeList = [];
 
         $scope.itemTypeArray = [];
         $scope.applyFilter = function (menuFilter) {
-            $scope.filters.itemtype = {}
+            $scope.filters.itemtype = {};
             $scope.filters.itemtype.type = -1;
-
-            $scope.itemArray = []
+            var l;
+            $scope.itemArray = [];
             for (l = 0; l < menuFilter.items.length; l++) {
                 $scope.itemArray.push(menuFilter.items[l])
             }
-            $scope.itemTypeArray = []
+            $scope.itemTypeArray = [];
             for (l = 0; l < menuFilter.itemtypes.length; l++) {
                 $scope.itemTypeArray.push(menuFilter.itemtypes[l].itemtype);
             }
@@ -664,18 +658,20 @@ angular.module('starter.controllers')
 
         $scope.filteringItems = function (items, itemtypesArray, itemsArray) {
             var out = [];
+            var anItemFilter;
+            var itemsFound;
 
             angular.forEach(items, function (subItems) {
                 var backup = subItems;
                 itemsFound = [];
                 angular.forEach(subItems, function (item) {
-                    anItemFilter = false
+                    anItemFilter = false;
                     angular.forEach(itemsArray, function (filterItem) {
                         if (item.id == filterItem.item.id) {
                             itemsFound.push(item);
                             anItemFilter = true;
                         }
-                    })
+                    });
 
                     if (!anItemFilter)
                         angular.forEach(itemtypesArray, function (filterItemType) {
@@ -686,7 +682,7 @@ angular.module('starter.controllers')
                 });
 
                 if (itemsFound.length > 0) {
-                    itemsFound.sizes = backup.sizes
+                    itemsFound.sizes = backup.sizes;
                     out.push(itemsFound);
                 }
 
@@ -694,13 +690,13 @@ angular.module('starter.controllers')
 
 
             return out;
-        }
+        };
 
         $scope.removeFilters = function () {
             $scope.filteredItems = [];
             $scope.itemTypeArray = [];
             $scope.itemArray = [];
-        }
+        };
 
         /*Add a given note to a given item inside the current command*/
         $scope.addNote = function (note, item) {
@@ -720,7 +716,7 @@ angular.module('starter.controllers')
 
                 $scope.updateCommand();
             }
-        }
+        };
 
         /*Add a given note to a given item inside the current command*/
         $scope.addExtra = function (extra, item) {
@@ -740,11 +736,11 @@ angular.module('starter.controllers')
 
                 $scope.updateCommand();
             }
-        }
+        };
 
         /*Delete a given note to a given item inside the current command*/
         $scope.deleteItemNote = function (note, item) {
-            var index
+            var index;
             if (typeof item != 'undefined' && item != null) {
                 index = item.indexOf(note);
                 item.splice(index, 1);
@@ -754,11 +750,11 @@ angular.module('starter.controllers')
                 $scope.commandClient[$scope.commandCurrentClient].notes.splice(index, 1);
             }
             $scope.updateCommand();
-        }
+        };
 
         /*Delete a given note to a given item inside the current command*/
         $scope.deleteItemExtra = function (extra, item) {
-            var index
+            var index;
             if (typeof item != 'undefined' && item != null) {
                 index = item.indexOf(extra);
                 item.splice(index, 1);
@@ -768,7 +764,7 @@ angular.module('starter.controllers')
                 $scope.commandClient[$scope.commandCurrentClient].notes.splice(index, 1);
             }
             $scope.updateCommand();
-        }
+        };
 
 
         $scope.chargeBill = function (bill) {
@@ -777,7 +773,7 @@ angular.module('starter.controllers')
             $scope.showPayBillPanel = true;
 
 
-            $scope.billInTransaction = bill
+            $scope.billInTransaction = bill;
 
             $scope.paymentCurrentStep = 'transac';
 
@@ -786,9 +782,9 @@ angular.module('starter.controllers')
             bill.status = 2;
 
 
-        }
+        };
 
-        $('#billWindow').mouseup(function (e) {
+        billWindow.mouseup(function (e) {
             if ($scope.showPayBillPanel) {
                 var container = $("#pay-bill-panel");
 
@@ -801,7 +797,7 @@ angular.module('starter.controllers')
                 }
             }
 
-        })
+        });
 
 
         $scope.paymentType = function (type) {
@@ -819,37 +815,38 @@ angular.module('starter.controllers')
             } else {
 
             }
-        }
+        };
 
         $scope.stepPayment = function () {
-            $('.bs-wizard-step.active').removeClass('active').addClass('complete')
+            $('.bs-wizard-step.active').removeClass('active').addClass('complete');
             setTimeout(function () {
                 $('.bs-wizard-step.disabled').first().removeClass('disabled').addClass('active')
             }, 900)
-        }
+        };
 
 
         $scope.cancelCommand = function (command) {
 
             $callbackFunction = function () {
-                console.log('Command status for command.id changed from ' + command.status + ' to ' + (command.status = 3))
+                console.log('Command status for command.id changed from ' + command.status + ' to ' + (command.status = 3));
                 $scope.delayedUpdateTable();
                 /*$scope.showEmployeeModal = false;*/
-            }
+            };
 
             $callbackFunction();
 
             /*$scope.validateEmployeePassword($callbackFunction);*/
-        }
+        };
 
         $scope.terminateCommands = function () {
             if (typeof $scope.bills != 'undefined' && $scope.bills != null) {
-                var commandsValid = true
+                var commandsValid = true;
                 var invalidMsg = ['Attention!'];
+                var index;
                 for (var h = 0; h < $scope.commandClient.length; h++) {
                     if (typeof $scope.commandClient[h + 1] != 'undefined' && $scope.commandClient[h + 1] != null) {
                         var commandValid = true;
-                        var index = h
+                        index = h;
                         for (var i = 0; i < $scope.commandClient[h + 1].commandItems.length; i++) {
                             var itemValid = false;
                             for (var b = 0; b < $scope.bills.length; b++) {
@@ -890,7 +887,7 @@ angular.module('starter.controllers')
                         /*$scope.showPlanModal = true;*/
                         $scope.closeBill();
                         $scope.bills = null;
-                    }
+                    };
 
                     $callbackFunction();
                     /*$scope.validateEmployeePassword($callbackFunction);*/
@@ -922,7 +919,7 @@ angular.module('starter.controllers')
                 /* There is no bill, you can either finish it. OR cancel it and terminate again*/
             }
 
-        }
+        };
         /*
          $scope.findCommandItemsInBills ?*/
 
@@ -932,7 +929,7 @@ angular.module('starter.controllers')
             if (typeof $scope.bills != 'undefined' && $scope.bills != null) {
                 var valid = true;
                 var invalidMsg = ['Attention!'];
-                var index = $scope.commandClient.indexOf(command)
+                var index = $scope.commandClient.indexOf(command);
                 for (var i = 0; i < command.commandItems.length; i++) {
                     var itemValid = false;
                     for (var b = 0; b < $scope.bills.length; b++) {
@@ -951,7 +948,7 @@ angular.module('starter.controllers')
 
                 if (valid) {
                     $callbackFunction = function () {
-                        console.log('Command status for command.id changed from ' + command.status + ' to ' + (command.status = 2))
+                        console.log('Command status for command.id changed from ' + command.status + ' to ' + (command.status = 2));
 
 
                         /*Suggest the employee to cancel the command to terminate or to finish it, bill included*/
@@ -962,7 +959,7 @@ angular.module('starter.controllers')
 
                         /*$scope.showEmployeeModal = false;*/
 
-                    }
+                    };
 
                     $callbackFunction();
                     /*$scope.validateEmployeePassword($callbackFunction);*/
@@ -992,19 +989,19 @@ angular.module('starter.controllers')
 
                 /* There is no bill, you can either finish it. OR cancel it and terminate again*/
             }
-        }
+        };
 
         $scope.reactivateCommand = function (command) {
 
             $callbackFunction = function () {
-                console.log('Command status for command.id changed from ' + command.status + ' to ' + (command.status = 1))
+                console.log('Command status for command.id changed from ' + command.status + ' to ' + (command.status = 1));
                 $scope.delayedUpdateTable();
                 /*$scope.showEmployeeModal = false;*/
-            }
+            };
 
             $callbackFunction();
             /* $scope.validateEmployeePassword($callbackFunction);*/
-        }
+        };
 
         $scope.changeCommandItemsStatus = function () {
             if ($scope.commandClient[$scope.commandCurrentClient].commandItems.length > 0) {
@@ -1016,7 +1013,7 @@ angular.module('starter.controllers')
                 }
             }
 
-        }
+        };
 
         /*Add an item to the current command*/
         $scope.addItem = function () {
@@ -1095,13 +1092,13 @@ angular.module('starter.controllers')
                         if (typeof $scope.bills[d][l].extras != 'undefined' && $scope.bills[d][l].extras != null) {
                             for (var o = 0; o < $scope.bills[d][l].extras.length; o++)
                                 if ($scope.bills[d][l].extras[o].effect == '-')
-                                    subTotal -= $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity
+                                    subTotal -= $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity;
                                 else if ($scope.bills[d][l].extras[o].effect == '+')
-                                    subTotal += $scope.bills[d][l].extras[o] * $scope.bills[d][l].quantity
+                                    subTotal += $scope.bills[d][l].extras[o] * $scope.bills[d][l].quantity;
                                 else if ($scope.bills[d][l].extras[o].effect == '*')
-                                    subTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity
+                                    subTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity;
                                 else if ($scope.bills[d][l].extras[o].effect == '/')
-                                    subTotal -= $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity
+                                    subTotal -= $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity;
                         }
 
                     }
@@ -1112,9 +1109,9 @@ angular.module('starter.controllers')
                         taxTotal += $scope.bills[d].taxes[j].total
                     }
 
-                    console.log($scope.bills[d])
-                    console.log(subTotal)
-                    console.log(taxTotal)
+                    console.log($scope.bills[d]);
+                    console.log(subTotal);
+                    console.log(taxTotal);
 
                     $scope.bills[d].subTotal = subTotal;
                     $scope.bills[d].total = subTotal + taxTotal;
@@ -1142,18 +1139,18 @@ angular.module('starter.controllers')
 
             if ($scope.commandClient[$scope.commandCurrentClient].commandItems.length > 0) {
                 for (var i = 0; i < $scope.commandClient[$scope.commandCurrentClient].commandItems.length; i++) {
-                    subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price
+                    subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price;
 
                     if (typeof $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras != null) {
                         for (var o = 0; o < $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras.length; o++)
                             if ($scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].effect == '-')
-                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity
+                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity;
                             else if ($scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].effect == '+')
-                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o] * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity
+                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o] * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity;
                             else if ($scope.commandClient[$scope.commandCurrentClient].commandItems[i].effect == '*')
-                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity
+                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity;
                             else if ($scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].effect == '/')
-                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity
+                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity;
                     }
 
 
@@ -1233,7 +1230,7 @@ angular.module('starter.controllers')
 
         /*Launch delayed function that can always be cancel - To update the current table*/
         $scope.delayedUpdateTable = function () {
-            $scope.savingMessage = "Sauvegarde automatique.."
+            $scope.savingMessage = "Sauvegarde automatique..";
 
             $timeout(function () {
                 $scope.progressValue = 50;
@@ -1248,11 +1245,11 @@ angular.module('starter.controllers')
                 $scope.updateTable();
 
             }, 2000);
-        }
+        };
 
         /*Launch delayed function that can always be cancel - To update the current table*/
         $scope.delayedUpdateBills = function () {
-            $scope.savingMessage = "Sauvegarde automatique.."
+            $scope.savingMessage = "Sauvegarde automatique..";
 
             $timeout(function () {
                 $scope.progressValue = 50;
@@ -1267,16 +1264,16 @@ angular.module('starter.controllers')
                 $scope.updateBills();
 
             }, 2000);
-        }
+        };
 
 
         /*Will send a request to update the table and then execute the callbackFunction*/
         $scope.updateTable = function ($updateTableCallBack) {
 
 
-            $url = 'http://pos.mirageflow.com/menu/command';
+            var $url = 'http://pos.mirageflow.com/menu/command';
 
-            $data = {
+            var $data = {
                 commands: $scope.commandClient,
                 table: $scope.currentTable,
                 employee: $scope.currentEmploye
@@ -1284,7 +1281,7 @@ angular.module('starter.controllers')
 
 
             var $callbackFunction = function (response) {
-                console.log('Updated table')
+                console.log('Updated table');
                 if (typeof response.commands != 'undefined' && response.commands != null) {
 
                     for (var f = 0; f < response.commands.length; f++) {
@@ -1316,7 +1313,7 @@ angular.module('starter.controllers')
 
             postReq.send($url, $data, null, $callbackFunction);
 
-        }
+        };
 
         /*Will send a request to update the bills and then execute the callbackFunction*/
         $scope.updateBills = function ($updateTableCallBack) {
@@ -1332,7 +1329,7 @@ angular.module('starter.controllers')
 
 
             var $callbackFunction = function (response) {
-                console.log('Updated bills')
+                console.log('Updated bills');
                 if (typeof response.saleLineIdMat != 'undefined' && response.saleLineIdMat != null) {
                     for (var f = 0; f < response.saleLineIdMat.length; f++) {
 
@@ -1371,15 +1368,15 @@ angular.module('starter.controllers')
              }, 500);
              */
 
-        }
+        };
 
         /*Will send a request to update the bills and then execute the callbackFunction*/
         $scope.deleteCommandsBills = function ($callBack) {
 
 
-            $url = 'http://pos.mirageflow.com/menu/delete/bill';
+            var $url = 'http://pos.mirageflow.com/menu/delete/bill';
 
-            $data = {
+            var $data = {
                 bills: $scope.bills,
                 table: $scope.currentTable,
                 employee: $scope.currentEmploye
@@ -1387,7 +1384,7 @@ angular.module('starter.controllers')
 
 
             var $callbackFunction = function (response) {
-                console.log('Deleted bills')
+                console.log('Deleted bills');
                 $scope.bills = null;
 
 
@@ -1417,7 +1414,7 @@ angular.module('starter.controllers')
              }, 500);
              */
 
-        }
+        };
 
         /*Client pager - set page*/
         $scope.setPage = function (pageNo) {
@@ -1477,45 +1474,45 @@ angular.module('starter.controllers')
         };
         $scope.toggleHeaderOptions = function () {
             $scope.showHeaderOptions = !$scope.showHeaderOptions
-        }
+        };
         $scope.toggleBill = function () {
             if ($scope.bills == null || typeof $scope.bills == 'undefined' || ($scope.bills != null & typeof $scope.bills != 'undefined' && $scope.bills.length == 1))
                 $scope.divideBill();
             else {
                 if (!$scope.showBillWindow)
-                    $scope.openBill()
+                    $scope.openBill();
                 else
                     $scope.closeBill();
             }
 
 
-        }
+        };
         $scope.openBill = function () {
-            if(typeof $scope.bills != 'undefined')
-            $scope.addNewItemToBill();
+            if (typeof $scope.bills != 'undefined')
+                $scope.addNewItemToBill();
             $scope.showBillWindow = true;
-            $('#billWindow').slideDown(400);
-        }
+            billWindow.slideDown(400);
+        };
         $scope.closeBill = function () {
             $scope.showBillWindow = false;
-            $('#billWindow').slideUp(250);
-        }
+            billWindow.slideUp(250);
+        };
 
         /*Toggle to display time or money on current command items*/
         $scope.toggleCommandTime = function () {
             $scope.commandItemTimeToggle = !$scope.commandItemTimeToggle;
-        }
+        };
 
         $scope.toogleFullscreen = function () {
             fullscreenFlag = !fullscreenFlag;
             if (fullscreenFlag) {
                 fullscreen();
             } else {
-                console.log('etst')
+                console.log('etst');
                 cancelFullScreen();
             }
 
-        }
+        };
 
         /*Send a request to get the bill*/
         $scope.getBills = function () {
@@ -1526,19 +1523,19 @@ angular.module('starter.controllers')
                     $scope.commandsId.push($scope.commandClient[h + 1].id)
             }
 
-            $url = 'http://pos.mirageflow.com/menu/getBills';
-            $data = {commandsId: $scope.commandsId};
+            var $url = 'http://pos.mirageflow.com/menu/getBills';
+            var $data = {commandsId: $scope.commandsId};
 
             var $callbackFunction = function (response) {
 
-/*
-                $scope.bills = null;*/
+                /*
+                 $scope.bills = null;*/
 
                 if (response.success == "true") {
                     $scope.bills = [];
                     for (var k in response.bills) {
                         if (response.bills.hasOwnProperty(k)) {
-                            $scope.bills.push(response.bills[k])
+                            $scope.bills.push(response.bills[k]);
                             /*$scope.bills[$scope.bills.length-1] = bill;*/
 
                             var subTotal = 0;
@@ -1550,13 +1547,13 @@ angular.module('starter.controllers')
                                 if (typeof $scope.bills[$scope.bills.length - 1][l].extras != 'undefined' && $scope.bills[$scope.bills.length - 1][l].extras != null) {
                                     for (var o = 0; o < $scope.bills[$scope.bills.length - 1][l].extras.length; o++)
                                         if ($scope.bills[$scope.bills.length - 1][l].extras[o].effect == '-')
-                                            subTotal -= $scope.bills[$scope.bills.length - 1][l].extras[o].value * $scope.bills[$scope.bills.length - 1][l].quantity
+                                            subTotal -= $scope.bills[$scope.bills.length - 1][l].extras[o].value * $scope.bills[$scope.bills.length - 1][l].quantity;
                                         else if ($scope.bills[$scope.bills.length - 1][l].extras[o].effect == '+')
-                                            subTotal += $scope.bills[$scope.bills.length - 1][l].extras[o] * $scope.bills[$scope.bills.length - 1][l].quantity
+                                            subTotal += $scope.bills[$scope.bills.length - 1][l].extras[o] * $scope.bills[$scope.bills.length - 1][l].quantity;
                                         else if ($scope.bills[$scope.bills.length - 1][l].extras[o].effect == '*')
-                                            subTotal += $scope.bills[$scope.bills.length - 1][l].size.price * $scope.bills[$scope.bills.length - 1][l].extras[o].value / 100 * $scope.bills[$scope.bills.length - 1][l].quantity
+                                            subTotal += $scope.bills[$scope.bills.length - 1][l].size.price * $scope.bills[$scope.bills.length - 1][l].extras[o].value / 100 * $scope.bills[$scope.bills.length - 1][l].quantity;
                                         else if ($scope.bills[$scope.bills.length - 1][l].extras[o].effect == '/')
-                                            subTotal -= $scope.bills[$scope.bills.length - 1][l].size.price * $scope.bills[$scope.bills.length - 1][l].extras[o].value / 100 * $scope.bills[$scope.bills.length - 1][l].quantity
+                                            subTotal -= $scope.bills[$scope.bills.length - 1][l].size.price * $scope.bills[$scope.bills.length - 1][l].extras[o].value / 100 * $scope.bills[$scope.bills.length - 1][l].quantity;
                                 }
 
 
@@ -1564,18 +1561,18 @@ angular.module('starter.controllers')
                                     return e.id == $scope.bills[$scope.bills.length - 1][l].item_id
                                 })[0]);
 
-                                var id
+                                var id;
 
 
                                 id = $scope.bills[$scope.bills.length - 1][l].id;
                                 var sale_id = $scope.bills[$scope.bills.length - 1][l].sale_id;
 
-                                console.log('extras')
+                                console.log('extras');
                                 var extras = $scope.bills[$scope.bills.length - 1][l].extras;
 
-                                for (var o in itemWhereId) {
-                                    if (itemWhereId.hasOwnProperty(o)) {
-                                        $scope.bills[$scope.bills.length - 1][l][o] = itemWhereId[o];
+                                for (var ob in itemWhereId) {
+                                    if (itemWhereId.hasOwnProperty(ob)) {
+                                        $scope.bills[$scope.bills.length - 1][l][ob] = itemWhereId[ob];
                                     }
                                 }
 
@@ -1605,12 +1602,12 @@ angular.module('starter.controllers')
                     $scope.updateBillsTotal();
 
                     $scope.newLastBill();
-                    $('#billWindow').slideUp(0);
-                    $('#billWindow').css('visibility', 'visible')
+                    billWindow.slideUp(0);
+                    billWindow.css('visibility', 'visible');
 
                     $scope.openBill();
 
-                    console.log('Bills')
+                    console.log('Bills');
                     console.log($scope.bills)
                 }
                 else {
@@ -1621,14 +1618,14 @@ angular.module('starter.controllers')
 
             };
             postReq.send($url, $data, null, $callbackFunction);
-        }
+        };
 
         /*Send a request to authenticate the employee*/
         $scope.authenticateEmployee = function () {
 
             if ($scope.newUserId != null) {
-                $url = 'http://pos.mirageflow.com/employee/authenticate/' + $scope.newUserId;
-                $data = {password: $scope.newUserPassword};
+                var $url = 'http://pos.mirageflow.com/employee/authenticate/' + $scope.newUserId;
+                var $data = {password: $scope.newUserPassword};
 
                 var $callbackFunction = function (response) {
 
@@ -1645,10 +1642,9 @@ angular.module('starter.controllers')
                             $scope.getPlan();
                         }
 
-                        var modalChangeEmployee = $('#changeEmployee');
                         modalChangeEmployee.find('#windowModalBlocker').fadeOut(300, function () {
                             $(this).remove();
-                        })
+                        });
                         $scope.showEmployeeModal = false;
                     }
                     else {
@@ -1658,8 +1654,8 @@ angular.module('starter.controllers')
 
                         $scope.validation = false;
                         $scope.numPadMsg = msgEnterEmployeeNumber;
-                        $('#mainText').attr('type', 'text');
-                        $('#mainText').attr('placeholder', 'Numéro d\'employé');
+                        mainText.attr('type', 'text');
+                        mainText.attr('placeholder', 'Numéro d\'employé');
                         $scope.numPadErrMsg = response.error;
                         $scope.showEmployeeModal = true;
                         $scope.mainText = '';
@@ -1671,46 +1667,46 @@ angular.module('starter.controllers')
 
                 postReq.send($url, $data, null, $callbackFunction);
             }
-        }
+        };
 
         /*Will display the employee modal with reinitialized value*/
         $scope.changeEmployee = function () {
             if (!$scope.showEmployeeModal) {
                 $scope.toggleEmployeeModal();
 
-                $scope.numPadErrMsg = ''
+                $scope.numPadErrMsg = '';
                 $scope.numPadMsg = msgEnterEmployeeNumber;
-                $('#mainText').attr('type', 'text');
-                $('#mainText').attr('placeholder', 'Numéro d\'employé');
+                mainText.attr('type', 'text');
+                mainText.attr('placeholder', 'Numéro d\'employé');
                 $scope.mainText = '';
                 $scope.validation = false;
             }
-        }
+        };
 
         /*Return to employee number on employee modal*/
         $scope.changeEmployeeStepBack = function () {
             $scope.numPadMsg = msgEnterEmployeeNumber;
-            $('#mainText').attr('type', 'text');
-            $('#mainText').attr('placeholder', 'Numéro d\'employé');
+            mainText.attr('type', 'text');
+            mainText.attr('placeholder', 'Numéro d\'employé');
             $scope.mainText = '';
             $scope.validation = false;
             $scope.numPadErrMsg = ''
-        }
+        };
 
         $scope.validateEmployeePassword = function ($callbackFunction) {
             if (!$scope.showEmployeeModal) {
-                console.log($scope.currentEmploye)
+                console.log($scope.currentEmploye);
                 $scope.toggleEmployeeModal();
                 pendingRequestAuthRequest = function () {
                     $callbackFunction();
                     pendingRequestAuthRequest = null;
                 };
 
-                $scope.numPadErrMsg = ''
+                $scope.numPadErrMsg = '';
                 $scope.newUserId = $scope.currentEmploye.id;
                 $scope.numPadMsg = msgEnterEmployeePassword;
-                $('#mainText').attr('placeholder', 'Mot de passe');
-                $('#mainText').attr('type', 'password');
+                mainText.attr('placeholder', 'Mot de passe');
+                mainText.attr('type', 'password');
 
                 /*We need to validate*/
                 $scope.validation = true;
@@ -1718,7 +1714,7 @@ angular.module('starter.controllers')
                 /*Empty the field*/
                 $scope.mainText = '';
             }
-        }
+        };
 
         /*Employee numpad triggers - will authenticate or validate password on Enter click*/
         $scope.padClick = function ($value) {
@@ -1738,11 +1734,11 @@ angular.module('starter.controllers')
                         $scope.authenticateEmployee();
                     }
                     else {
-                        $scope.numPadErrMsg = ''
+                        $scope.numPadErrMsg = '';
                         $scope.newUserId = $scope.mainText;
                         $scope.numPadMsg = msgEnterEmployeePassword;
-                        $('#mainText').attr('placeholder', 'Mot de passe');
-                        $('#mainText').attr('type', 'password');
+                        mainText.attr('placeholder', 'Mot de passe');
+                        mainText.attr('type', 'password');
 
                         /*We need to validate*/
                         $scope.validation = true;
@@ -1759,17 +1755,23 @@ angular.module('starter.controllers')
 
             }
 
-        }
+        };
 
         $scope.redivideBill = function () {
             $scope.deleteCommandsBills();
             $scope.showPanelOverwriteBill = false;
             $scope.showDivideBillModal = true;
-        }
+        };
 
         /*Move the selected items or selected bills items to the given bill*/
         $scope.moveToBill = function (bill) {
             $scope.showBillDemo = false;
+            var billSubTotal;
+            var billTotal;
+            var billTaxes;
+            var o;
+            var j;
+            var index;
             for (var d = 0; d < $scope.bills.length; d++) {
                 if ($scope.bills[d].checked) {
                     if ($scope.bills[d] != bill) {
@@ -1780,32 +1782,32 @@ angular.module('starter.controllers')
                                 $scope.bills[d][l].sale_id = bill.sale_id;
                             }
 
-                            var subTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
+                            billSubTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
 
                             if (typeof $scope.bills[d][l].extras != 'undefined' && $scope.bills[d][l].extras != null) {
-                                for (var o = 0; o < $scope.bills[d][l].extras.length; o++)
+                                for (o = 0; o < $scope.bills[d][l].extras.length; o++)
                                     if ($scope.bills[d][l].extras[o].effect == '-')
-                                        subTotal -= $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity
+                                        billSubTotal -= $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity;
                                     else if ($scope.bills[d][l].extras[o].effect == '+')
-                                        subTotal += $scope.bills[d][l].extras[o] * $scope.bills[d][l].quantity
+                                        billSubTotal += $scope.bills[d][l].extras[o] * $scope.bills[d][l].quantity;
                                     else if ($scope.bills[d][l].extras[o].effect == '*')
-                                        subTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity
+                                        billSubTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity;
                                     else if ($scope.bills[d][l].extras[o].effect == '/')
-                                        subTotal -= $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity
+                                        billSubTotal -= $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity;
                             }
 
-                            var total = subTotal;
-                            /*Copy the taxes and change its total to 0*/
-                            var taxes = angular.copy($scope.taxes);
-                            for (var j = 0; j < taxes.length; j++) {
-                                taxes[j].total = subTotal * taxes[j].value;
-                                total += taxes[j].total;
+                            billTotal = billSubTotal;
+                            /*Copy the billTaxes and change its billTotal to 0*/
+                            billTaxes = angular.copy($scope.taxes);
+                            for (j = 0; j < billTaxes.length; j++) {
+                                billTaxes[j].billTotal = billSubTotal * billTaxes[j].value;
+                                billTotal += billTaxes[j].billTotal;
                             }
 
-                            bill.subTotal += subTotal;
-                            bill.total += total;
-                            for (j = 0; j < taxes.length; j++) {
-                                bill.taxes[j].total += taxes[j].total;
+                            bill.billSubTotal += billSubTotal;
+                            bill.billTotal += billTotal;
+                            for (j = 0; j < billTaxes.length; j++) {
+                                bill.taxes[j].billTotal += billTaxes[j].billTotal;
                             }
                             bill.push($scope.bills[d][l]);
 
@@ -1833,47 +1835,47 @@ angular.module('starter.controllers')
                             checkedItems[f].sale_id = ''
                         }
 
-                        var subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
+                        billSubTotal = checkedItems[f].size.price * checkedItems[f].quantity;
 
                         if (typeof checkedItems[f].extras != 'undefined' && checkedItems[f].extras != null) {
-                            for (var o = 0; o < checkedItems[f].extras.length; o++)
+                            for (o = 0; o < checkedItems[f].extras.length; o++)
                                 if (checkedItems[f].extras[o].effect == '-')
-                                    subTotal -= checkedItems[f].extras[o].value * checkedItems[f].quantity
+                                    billSubTotal -= checkedItems[f].extras[o].value * checkedItems[f].quantity;
                                 else if (checkedItems[f].extras[o].effect == '+')
-                                    subTotal += checkedItems[f].extras[o] * checkedItems[f].quantity
+                                    billSubTotal += checkedItems[f].extras[o] * checkedItems[f].quantity;
                                 else if (checkedItems[f].extras[o].effect == '*')
-                                    subTotal += checkedItems[f].size.price * checkedItems[f].extras[o].value / 100 * checkedItems[f].quantity
+                                    billSubTotal += checkedItems[f].size.price * checkedItems[f].extras[o].value / 100 * checkedItems[f].quantity;
                                 else if (checkedItems[f].extras[o].effect == '/')
-                                    subTotal -= checkedItems[f].size.price * checkedItems[f].extras[o].value / 100 * checkedItems[f].quantity
+                                    billSubTotal -= checkedItems[f].size.price * checkedItems[f].extras[o].value / 100 * checkedItems[f].quantity;
                         }
 
-                        var total = subTotal;
+                        billTotal = billSubTotal;
 
-                        /*Copy the taxes and change its total to 0*/
-                        var taxes = angular.copy($scope.taxes);
-                        for (var j = 0; j < taxes.length; j++) {
-                            taxes[j].total = subTotal * taxes[j].value;
-                            total += taxes[j].total;
+                        /*Copy the billTaxes and change its billTotal to 0*/
+                        billTaxes = angular.copy($scope.taxes);
+                        for (j = 0; j < billTaxes.length; j++) {
+                            billTaxes[j].billTotal = billSubTotal * billTaxes[j].value;
+                            billTotal += billTaxes[j].billTotal;
                         }
 
-                        $scope.bills[d].subTotal -= subTotal;
-                        bill.subTotal += subTotal;
-                        $scope.bills[d].total -= total;
-                        bill.total += total;
-                        for (j = 0; j < taxes.length; j++) {
-                            $scope.bills[d].taxes[j].total -= taxes[j].total;
-                            bill.taxes[j].total += taxes[j].total;
+                        $scope.bills[d].billSubTotal -= billSubTotal;
+                        bill.billSubTotal += billSubTotal;
+                        $scope.bills[d].billTotal -= billTotal;
+                        bill.billTotal += billTotal;
+                        for (j = 0; j < billTaxes.length; j++) {
+                            $scope.bills[d].taxes[j].billTotal -= billTaxes[j].billTotal;
+                            bill.taxes[j].billTotal += billTaxes[j].billTotal;
                         }
 
-                        checkedItems[f].checked = false
-                        bill.push(checkedItems[f])
+                        checkedItems[f].checked = false;
+                        bill.push(checkedItems[f]);
 
-                        var index = $scope.bills[d].indexOf(checkedItems[f]);
+                        index = $scope.bills[d].indexOf(checkedItems[f]);
                         $scope.bills[d].splice(index, 1)
                     }
                     $scope.movingBillItem = false;
 
-                    /*We needed* to recalculate subtotal, taxes, total of each bill*/
+                    /*We needed* to recalculate subbillTotal, billTaxes, billTotal of each bill*/
                 }
 
             }
@@ -1883,8 +1885,8 @@ angular.module('starter.controllers')
                 /*Re-order bill number*/
                 $scope.bills[d].number = d + 1;
                 if ($scope.bills[d].length == 0) {
-                    var index = $scope.bills.indexOf($scope.bills[d]);
-                    $scope.bills.splice(index, 1)
+                    index = $scope.bills.indexOf($scope.bills[d]);
+                    $scope.bills.splice(index, 1);
                     d--;
                 }
             }
@@ -1894,7 +1896,7 @@ angular.module('starter.controllers')
 
 
             $scope.delayedUpdateBills();
-        }
+        };
 
         /*Show panel to display bills division choice*/
         $scope.divideBill = function () {
@@ -1937,21 +1939,21 @@ angular.module('starter.controllers')
             for (var f = 0; f < $scope.commandClient.length; f++) {
                 if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null) {
                     for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
-                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p])
-                        item.checked = false
+                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p]);
+                        item.checked = false;
                         bill.push(item);
-                        subTotal += item.size.price * item.quantity
+                        subTotal += item.size.price * item.quantity;
 
                         if (typeof item.extras != 'undefined' && item.extras != null) {
                             for (var o = 0; o < item.extras.length; o++)
                                 if (item.extras[o].effect == '-')
-                                    subTotal -= item.extras[o].value * item.quantity
+                                    subTotal -= item.extras[o].value * item.quantity;
                                 else if (item.extras[o].effect == '+')
-                                    subTotal += item.extras[o] * item.quantity
+                                    subTotal += item.extras[o] * item.quantity;
                                 else if (item.extras[o].effect == '*')
-                                    subTotal += item.size.price * item.extras[o].value / 100 * item.quantity
+                                    subTotal += item.size.price * item.extras[o].value / 100 * item.quantity;
                                 else if (item.extras[o].effect == '/')
-                                    subTotal -= item.size.price * item.extras[o].value / 100 * item.quantity
+                                    subTotal -= item.size.price * item.extras[o].value / 100 * item.quantity;
                         }
                     }
                 }
@@ -1970,12 +1972,12 @@ angular.module('starter.controllers')
 
             $scope.newLastBill();
 
-            console.log('Bills')
-            console.log($scope.bills[0])
+            console.log('Bills');
+            console.log($scope.bills[0]);
 
 
-            $('#billWindow').slideUp(0);
-            $('#billWindow').css('visibility', 'visible')
+            billWindow.slideUp(0);
+            billWindow.css('visibility', 'visible');
             $scope.openBill();
             $scope.delayedUpdateBills();
         };
@@ -2001,21 +2003,21 @@ angular.module('starter.controllers')
 
                     for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
 
-                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p])
+                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p]);
                         item.checked = false;
                         bill.push(item);
-                        subTotal += item.size.price * item.quantity
+                        subTotal += item.size.price * item.quantity;
 
                         if (typeof item.extras != 'undefined' && item.extras != null) {
                             for (var o = 0; o < item.extras.length; o++)
                                 if (item.extras[o].effect == '-')
-                                    subTotal -= item.extras[o].value * item.quantity
+                                    subTotal -= item.extras[o].value * item.quantity;
                                 else if (item.extras[o].effect == '+')
-                                    subTotal += item.extras[o] * item.quantity
+                                    subTotal += item.extras[o] * item.quantity;
                                 else if (item.extras[o].effect == '*')
-                                    subTotal += item.size.price * item.extras[o].value / 100 * item.quantity
+                                    subTotal += item.size.price * item.extras[o].value / 100 * item.quantity;
                                 else if (item.extras[o].effect == '/')
-                                    subTotal -= item.size.price * item.extras[o].value / 100 * item.quantity
+                                    subTotal -= item.size.price * item.extras[o].value / 100 * item.quantity;
                         }
                     }
 
@@ -2038,11 +2040,11 @@ angular.module('starter.controllers')
 
             $scope.newLastBill();
 
-            console.log('Bills')
-            console.log($scope.bills[0])
+            console.log('Bills');
+            console.log($scope.bills[0]);
 
-            $('#billWindow').slideUp(0);
-            $('#billWindow').css('visibility', 'visible')
+            billWindow.slideUp(0);
+            billWindow.css('visibility', 'visible');
             $scope.openBill();
             $scope.delayedUpdateBills();
         };
@@ -2054,7 +2056,7 @@ angular.module('starter.controllers')
                 $scope.bills[$scope.bills.length] = [];
                 $scope.bills[$scope.bills.length - 1].total = 0;
                 $scope.bills[$scope.bills.length - 1].subTotal = 0;
-                $scope.bills[$scope.bills.length - 1].number = $scope.bills.length
+                $scope.bills[$scope.bills.length - 1].number = $scope.bills.length;
                 /*Copy the taxes and change its total to 0*/
                 var taxes = angular.copy($scope.taxes);
                 for (var j = 0; j < taxes.length; j++) {
@@ -2065,7 +2067,7 @@ angular.module('starter.controllers')
                 console.log($scope.bills)
 
             }
-        }
+        };
 
 
         $scope.manualBill = function () {
@@ -2076,7 +2078,7 @@ angular.module('starter.controllers')
             for (var f = 0; f < $scope.commandClient.length; f++) {
                 if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandItems.length > 0) {
                     for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
-                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p])
+                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p]);
                         item.checked = false;
                         unasociatedCommandItem.push(item);
                     }
@@ -2087,7 +2089,7 @@ angular.module('starter.controllers')
             $scope.bills[0] = unasociatedCommandItem;
             $scope.bills[0].total = 0;
             $scope.bills[0].subTotal = 0;
-            $scope.bills[0].number = " - Liste d'achat"
+            $scope.bills[0].number = " - Liste d'achat";
             /*Copy the taxes and change its total to 0*/
             var taxes = angular.copy($scope.taxes);
             for (var j = 0; j < taxes.length; j++) {
@@ -2098,10 +2100,10 @@ angular.module('starter.controllers')
 
             $scope.newLastBill();
 
-            $('#billWindow').slideUp(0);
-            $('#billWindow').css('visibility', 'visible')
+            billWindow.slideUp(0);
+            billWindow.css('visibility', 'visible');
             $scope.openBill();
-        }
+        };
 
         $scope.addNewItemToBill = function (force) {
 
@@ -2113,24 +2115,22 @@ angular.module('starter.controllers')
                         for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
 
 
-                            var item = angular.copy($scope.commandClient[f + 1].commandItems[p])
+                            var item = angular.copy($scope.commandClient[f + 1].commandItems[p]);
                             var flagOn = false;
 
                             /*Pour chaque item de la commande on doit comparer avec les items des bill avec leur command_line*/
-                            for(var k = 0; k < $scope.bills.length && !flagOn; k++){
-                                for(var l = 0; l < $scope.bills[k].length && !flagOn; l++){
-                                    if(typeof $scope.bills[k][l] != 'undefined' && item.command_line_id == $scope.bills[k][l].command_line_id){
+                            for (var k = 0; k < $scope.bills.length && !flagOn; k++) {
+                                for (var l = 0; l < $scope.bills[k].length && !flagOn; l++) {
+                                    if (typeof $scope.bills[k][l] != 'undefined' && item.command_line_id == $scope.bills[k][l].command_line_id) {
                                         flagOn = true;
                                     }
                                 }
                             }
 
-                            if(!flagOn)
-                            {
-                                if(item.status == 1 || force)
-                                {
+                            if (!flagOn) {
+                                if (item.status == 1 || force) {
                                     $scope.commandClient[f + 1].commandItems[p].status = 2;
-                                    item.status = 2
+                                    item.status = 2;
                                     $scope.updateCommand();
                                 }
                                 unasociatedCommandItem.push(item);
@@ -2157,31 +2157,31 @@ angular.module('starter.controllers')
                 }
 
 
-                console.log('$scope.bills')
-                console.log($scope.bills)
-                console.log('$scope.commandClient')
-                console.log($scope.commandClient)
+                console.log('$scope.bills');
+                console.log($scope.bills);
+                console.log('$scope.commandClient');
+                console.log($scope.commandClient);
 
-                if(unasociatedCommandItem.length > 0){
+                if (unasociatedCommandItem.length > 0) {
 
-                    console.log(unasociatedCommandItem)
+                    console.log(unasociatedCommandItem);
                     $scope.newLastBill();
 
-                    $scope.bills[$scope.bills.length-1] = unasociatedCommandItem;
-                    $scope.bills[$scope.bills.length-1].total = 0;
-                    $scope.bills[$scope.bills.length-1].subTotal = 0;
-                    $scope.bills[$scope.bills.length-1].number = "Nouveaux Items";
-                    $scope.bills[$scope.bills.length-1].unasociatedCommandItems = true;
+                    $scope.bills[$scope.bills.length - 1] = unasociatedCommandItem;
+                    $scope.bills[$scope.bills.length - 1].total = 0;
+                    $scope.bills[$scope.bills.length - 1].subTotal = 0;
+                    $scope.bills[$scope.bills.length - 1].number = "Nouveaux Items";
+                    $scope.bills[$scope.bills.length - 1].unasociatedCommandItems = true;
                     /*Copy the taxes and change its total to 0*/
                     var taxes = angular.copy($scope.taxes);
                     for (var j = 0; j < taxes.length; j++) {
                         taxes[j].total = 0;
                     }
-                    $scope.bills[$scope.bills.length-1].taxes = taxes;
+                    $scope.bills[$scope.bills.length - 1].taxes = taxes;
 
                 }
 
-            }
+            };
 
             if (timeoutHandle != null)
                 $scope.updateTable($callbackFunction);
@@ -2190,7 +2190,7 @@ angular.module('starter.controllers')
             }
 
 
-        }
+        };
 
         /*Function to change a bill checked flag - And also addapt the movingBillItem flag */
         $scope.checkBill = function (bill) {
@@ -2212,7 +2212,7 @@ angular.module('starter.controllers')
                     }
                 }
             }
-        }
+        };
 
 
         /*Function to change a bill item checked flag - And also addapt the movingBillItem flag */
@@ -2235,22 +2235,22 @@ angular.module('starter.controllers')
                     }
                 }
             }
-        }
+        };
 
         /*Function to trigger a table change
          This will need to update the table if a timeoutHandle for saving is already running */
         $scope.changeTable = function (table) {
             /* Table change wont happen until the current table is saved, the table change will be done on the callback*/
             var $callbackFunction = function (response) {
-                console.log('Changed to table #' + table.tblNumber)
-                console.log(table)
+                console.log('Changed to table #' + table.tblNumber);
+                console.log(table);
                 $scope.currentTable = table;
                 $('#closeModal').click();
 
                 $scope.commandClient = [];
                 $scope.clientPagerTotalItems = 0;
                 $scope.getCommand();
-            }
+            };
 
             if (billTimeoutHandle != null)
                 $scope.updateBills();
@@ -2268,7 +2268,7 @@ angular.module('starter.controllers')
 
             $scope.clientPagerTotalItems += 10;
             $scope.commandCurrentClient = $scope.clientPagerTotalItems / 10
-        }
+        };
 
         /*Send a request to get the commands for the current table*/
         $scope.getCommand = function () {
@@ -2298,10 +2298,10 @@ angular.module('starter.controllers')
 
 
                         if ($scope.commandClient[f + 1].notes != "")
-                            $scope.commandClient[f + 1].notes = JSON.parse($scope.commandClient[f + 1].notes)
+                            $scope.commandClient[f + 1].notes = JSON.parse($scope.commandClient[f + 1].notes);
 
                         if ($scope.commandClient[f + 1].extras != "")
-                            $scope.commandClient[f + 1].extras = JSON.parse($scope.commandClient[f + 1].extras)
+                            $scope.commandClient[f + 1].extras = JSON.parse($scope.commandClient[f + 1].extras);
 
                         $scope.commandClient[f + 1].commandItems = response.commands[f]['commandline'];
 
@@ -2350,7 +2350,7 @@ angular.module('starter.controllers')
                                 }
                             }
 
-                            var commandLineId = $scope.commandClient[f + 1].commandItems[p].id
+                            var commandLineId = $scope.commandClient[f + 1].commandItems[p].id;
 
                             $scope.commandClient[f + 1].commandItems[p] = angular.copy($.grep($scope.menuItems, function (e) {
                                 return e.id == $scope.commandClient[f + 1].commandItems[p].item_id
@@ -2424,7 +2424,7 @@ angular.module('starter.controllers')
 
             postReq.send($url, $data, null, $callbackFunction);
 
-        }
+        };
 
         /*Listener on window size to ajust layout*/
         $(window).on('resize', function () {
@@ -2499,7 +2499,7 @@ angular.module('starter.controllers')
          * @param text  :  The text we are going to centralize
          * @param angle  :  The angle of the rectangle,to nullify with text number.
          */
-        paint_centered = function (canvas, x, y, w, h, text, angle) {
+        var paint_centered = function (canvas, x, y, w, h, text, angle) {
             // The painting properties
             // Normally I would write this as an input parameter
             var Paint = {
@@ -2507,7 +2507,7 @@ angular.module('starter.controllers')
                 RECTANGLE_LINE_WIDTH: 3,
                 VALUE_FONT: '28px Arial',
                 VALUE_FILL_STYLE: 'white'
-            }
+            };
 
             // Obtains the context 2d of the canvas
             // It may return null
@@ -2610,8 +2610,8 @@ angular.module('starter.controllers')
                 ctx2d.fillStyle = Paint.VALUE_FILL_STYLE;
                 // ctx2d.measureText(text).width/2
                 // returns the text width (given the supplied font) / 2
-                textX = x + w / 2 - ctx2d.measureText(text).width / 2;
-                textY = y + h / 2;
+                var textX = x + w / 2 - ctx2d.measureText(text).width / 2;
+                var textY = y + h / 2;
                 ctx2d.rotate(-angle);
                 ctx2d.fillText(text, textX, textY);
             } else {
@@ -2620,4 +2620,4 @@ angular.module('starter.controllers')
         }
 
 
-    })
+    });
