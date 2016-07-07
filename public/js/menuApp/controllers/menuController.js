@@ -1287,6 +1287,7 @@ angular.module('starter.controllers')
                     for (var f = 0; f < response.commands.length; f++) {
                         /*if(typeof $scope.commandClient[f+1] != 'undefined' && $scope.commandClient[f+1] != null)*/
                         $scope.commandClient[f + 1].command_number = response.commands[f].command_number + "";
+                        $scope.commandClient[f + 1].id = response.commands[f].id;
 
                         for (var g = 0; g < response.commandLineIdMat[f].length; g++) {
                             $scope.commandClient[f + 1].commandItems[g].command_id = $scope.commandClient[f + 1].id;
@@ -2258,7 +2259,12 @@ angular.module('starter.controllers')
             if (timeoutHandle != null)
                 $scope.updateTable($callbackFunction);
             else {
-                $callbackFunction();
+                if(billTimeoutHandle != null){
+                    $scope.updateBills($callbackFunction)
+                }
+                else {
+                    $callbackFunction();
+                }
             }
 
 
