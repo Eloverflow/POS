@@ -67,7 +67,7 @@ class ExtrasController extends Controller
         /*Page Title*/
         $title = 'Extra';
 
-        $tableColumns = array('name', 'description', 'effect', 'value');
+        $tableColumns = array('name', 'description', 'effect', 'value', 'avail_for_command');
 
         $items = Item::all();
         $itemtypes = ItemType::all();
@@ -86,7 +86,7 @@ class ExtrasController extends Controller
         /*Page Title*/
         $title = 'Extra';
 
-        $tableColumns = array('name', 'description', 'effect', 'value');
+        $tableColumns = array('name', 'description', 'effect', 'value', 'avail_for_command');
 
         $extra = Extra::whereSlug($slug)->first();
 
@@ -141,7 +141,8 @@ class ExtrasController extends Controller
                 'description' => Input::get('description'),
                 'slug' => Input::get('name') . rand(10, 10000),
                 'effect' => Input::get('effect'),
-                'value' => Input::get('value')
+                'value' => Input::get('value'),
+                'avail_for_command' => Input::get('avail_for_command')
             ]);
 
 
@@ -161,7 +162,7 @@ class ExtrasController extends Controller
         /*Page Title*/
         $title = 'Extra';
 
-        $tableColumns = array('name', 'description', 'effect', 'value');
+        $tableColumns = array('name', 'description', 'effect', 'value', 'avail_for_command');
 
         $items = Item::all();
         $itemtypes = ItemType::all();
@@ -229,7 +230,8 @@ class ExtrasController extends Controller
                 'name' =>  Input::get('name'),
                 'description' => Input::get('description'),
                 'effect' => Input::get('effect'),
-                'value' => Input::get('value')
+                'value' => Input::get('value'),
+                'avail_for_command' => Input::get('avail_for_command')
             ]);
             $extra->save();
 
@@ -239,7 +241,7 @@ class ExtrasController extends Controller
         /*Page Title*/
         $title = 'Extra';
 
-        $tableColumns = array('name', 'description', 'effect', 'value');
+        $tableColumns = array('name', 'description', 'effect', 'value', 'avail_for_command');
 
         $items = Item::all();
         $itemtypes = ItemType::all();

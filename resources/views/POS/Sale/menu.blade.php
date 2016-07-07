@@ -64,7 +64,7 @@
             <script type="text/ng-template" id="notePopover.html">
 
                 <div class="form-group">
-                    <label>Ajouter un note :</label>
+                    <label style="color: #000">Ajouter une note :</label>
 
                     <div class="input-group">
                         <input type="text" ng-model="noteDynamicPopover.note" placeholder="Note" class="form-control">
@@ -84,7 +84,7 @@
                 <div ng-show="(extras | filter : {items:{item :{id: commandItem.id}}}).length > 0 || (extras | filter : {itemtypes:{itemtype: {id: commandItem.item_type_id}}}).length > 0" class="suggestions" >
                     <div class="separation-extra" ></div>
                     Extras
-                    <div ng-repeat="extra in extras | filter : {items:{item :{id: commandItem.id}} }">
+                    <div ng-show="commandItem" ng-repeat="extra in extras | filter : {items:{item :{id: commandItem.id}}}">
                         <button ng-show="extra.effect == '+'"  type="button" class="btn btn-extra"
                                 ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
                         <button ng-show="extra.effect == '*'"  type="button" class="btn btn-extra pourcent"
@@ -94,10 +94,20 @@
                         <button ng-show="extra.effect == '/'" type="button" class="btn btn-extra negative pourcent"
                                 ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
                     </div>
-                    <div ng-repeat="extra in extras | filter : {itemtypes:{itemtype: {id: commandItem.item_type_id}}}">
+                    <div ng-show="commandItem" ng-repeat="extra in extras | filter : {itemtypes:{itemtype: {id: commandItem.item_type_id}}}">
                         <button ng-show="extra.effect == '+'" type="button" class="btn btn-extra"
                                 ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
                         <button ng-show="extra.effect == '*'" type="button" class="btn btn-extra pourcent"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                        <button ng-show="extra.effect == '-'" type="button" class="btn btn-extra negative"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                        <button ng-show="extra.effect == '/'" type="button" class="btn btn-extra negative pourcent"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                    </div>
+                    <div ng-hide="commandItem" ng-repeat="extra in extras | filter : {avail_for_command: 1}">
+                        <button ng-show="extra.effect == '+'"  type="button" class="btn btn-extra"
+                                ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
+                        <button ng-show="extra.effect == '*'"  type="button" class="btn btn-extra pourcent"
                                 ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
                         <button ng-show="extra.effect == '-'" type="button" class="btn btn-extra negative"
                                 ng-click="addExtra(extra, commandItem)"><% extra.name %></button>
@@ -108,7 +118,7 @@
 
             </script>
 
-            <li ng-repeat="commandItem in commandClient[commandCurrentClient].commandItems | filter :  { status: 2 }"
+            <li ng-repeat="commandItem in commandClient[commandCurrentClient].commandline | filter :  { status: 2 }"
                 id="commandItem<% commandItem.id %>" class="sale-item">
                 <span ng-click="increase(commandItem)" class="glyphicon glyphicon-plus"></span>
                 <span ng-click="decrease(commandItem)" class="glyphicon glyphicon-minus"></span>
@@ -145,7 +155,7 @@
 
                 <span style="margin-right:2px;color: #30a5ff; position: absolute; top:2px; right:2px; font-size: 16px; width: 15px" class="glyphicon glyphicon-cloud-upload"></span>
             </li>
-            <li ng-show="commandClient[commandCurrentClient].commandItems.length > 0">
+            <li ng-show="commandClient[commandCurrentClient].commandline.length > 0">
                 <button ng-hide="commandClient[commandCurrentClient].status == 3" ng-click="cancelCommand(commandClient[commandCurrentClient])" href="#"
                         style="background-color: #30a5ff; width: 49%; height: 40px; margin-left: 3px; margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
                             class="glyphicon glyphicon-trash"></span>
@@ -156,12 +166,12 @@
                             class="glyphicon glyphicon-repeat"></span>
                     Réactiver la commande
                 </button>
-                <button ng-show="(commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }).length > 0" ng-click="changeCommandItemsStatus()" href="#"
+                <button ng-show="(commandClient[commandCurrentClient].commandline | filter :  { status: 1 }).length > 0" ng-click="changecommandlineStatus()" href="#"
                         style="background-color: #30a5ff; width: 49%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
                             class="glyphicon glyphicon-upload"></span>
                     Ajouter à la commande
                 </button>
-                <button ng-hide="(commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }).length > 0" ng-click="terminateCommand(commandClient[commandCurrentClient])" href="#"
+                <button ng-hide="(commandClient[commandCurrentClient].commandline | filter :  { status: 1 }).length > 0" ng-click="terminateCommand(commandClient[commandCurrentClient])" href="#"
                         style="background-color: #333; width: 49%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
                             class="glyphicon glyphicon-save"></span>
                     Terminer la commande
@@ -170,7 +180,7 @@
             <li class="terminate-command-info" ng-show="showTerminateCommandInfo">
                 <span ng-repeat="info in terminateCommandInfo"><% info %><br></span>
             </li>
-            <li style="border-left: 10px #00a5ff solid;border-right: 10px #00a5ff solid;" ng-repeat="commandItem in commandClient[commandCurrentClient].commandItems | filter :  { status: 1 }"
+            <li style="border-left: 10px #00a5ff solid;border-right: 10px #00a5ff solid;" ng-repeat="commandItem in commandClient[commandCurrentClient].commandline | filter :  { status: 1 }"
                 id="commandItem<% commandItem.id %>" class="sale-item">
                 <span ng-click="increase(commandItem)" class="glyphicon glyphicon-plus"></span>
                 <span ng-click="decrease(commandItem)" class="glyphicon glyphicon-minus"></span>

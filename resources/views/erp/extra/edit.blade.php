@@ -34,6 +34,14 @@
                                         <option value="*" @if($extra[$column] == "*") selected @endif >Additionner pourcentage</option>
                                     </select>
                                 </div>
+                            @elseif($column == 'avail_for_command')
+                                <div class="form-group">
+                                    <label for="{{ $column }}" >Peut être appliqué sur commande ?</label>
+                                    <select name="{{ $column }}" class="form-control">
+                                        <option value="0" @if($extra[$column] == 0) selected @endif >Non</option>
+                                        <option value="1" @if($extra[$column] == 1) selected @endif >Oui</option>
+                                    </select>
+                                </div>
                             @else
                                 <div class="form-group">
                                     <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>

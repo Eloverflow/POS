@@ -2,7 +2,7 @@ angular.module('starter.controllers')
     .controller('menuController', function ($scope, getReq, postReq, $log, $filter, $timeout, Idle) {
 
         /*Initializing variables*/
-        $scope.commandItems = [];
+        $scope.commandline = [];
         //
         var $planSection = $('#planModal');
         var $planPanzoom = $planSection.find('.panzoom').panzoom({$reset: $planSection.find("#planZoomout")});  // Initialize the panzoom
@@ -92,7 +92,7 @@ angular.module('starter.controllers')
         //
         $scope.commandClient = []; // Array containing the list of command for the current table
         $scope.commandClient[$scope.commandCurrentClient] = {};
-        $scope.commandClient[$scope.commandCurrentClient].commandItems = [];  // Array containing the list of item for the command
+        $scope.commandClient[$scope.commandCurrentClient].commandline = [];  // Array containing the list of item for the command
         //
         $scope.bills = null;
         //$scope.bills[0] = [];
@@ -138,7 +138,7 @@ angular.module('starter.controllers')
         $scope.$on('IdleTimeout', function () {
             console.log('IdleTimeout');
             $scope.commandClient = [];
-            $scope.commandItems = [];
+            $scope.commandline = [];
             /*$scope.bills = [];
              $scope.taxe = [0, 0];
              $scope.totalBill = 0;*/
@@ -151,7 +151,7 @@ angular.module('starter.controllers')
 
         /*Function to delete an item from the current command*/
         $scope.delete2 = function (item) {
-            $scope.commandClient[$scope.commandCurrentClient].commandItems.splice($scope.commandClient[$scope.commandCurrentClient].commandItems.indexOf(item), 1);
+            $scope.commandClient[$scope.commandCurrentClient].commandline.splice($scope.commandClient[$scope.commandCurrentClient].commandline.indexOf(item), 1);
             $scope.updateCommand();
         };
 
@@ -847,11 +847,11 @@ angular.module('starter.controllers')
                     if (typeof $scope.commandClient[h + 1] != 'undefined' && $scope.commandClient[h + 1] != null) {
                         var commandValid = true;
                         index = h;
-                        for (var i = 0; i < $scope.commandClient[h + 1].commandItems.length; i++) {
+                        for (var i = 0; i < $scope.commandClient[h + 1].commandline.length; i++) {
                             var itemValid = false;
                             for (var b = 0; b < $scope.bills.length; b++) {
                                 for (var bi = 0; bi < $scope.bills[b].length; bi++) {
-                                    if ($scope.commandClient[h + 1].commandItems[i].command_id == $scope.bills[b][bi].command_id && $scope.commandClient[h + 1].commandItems[i].command_line_id == $scope.bills[b][bi].command_line_id) {
+                                    if ($scope.commandClient[h + 1].commandline[i].command_id == $scope.bills[b][bi].command_id && $scope.commandClient[h + 1].commandline[i].command_line_id == $scope.bills[b][bi].command_line_id) {
                                         itemValid = true;
                                     }
                                 }
@@ -859,7 +859,7 @@ angular.module('starter.controllers')
                             if (!itemValid) {
                                 commandValid = false;
                                 invalidMsg.push('Item non facturé: #' + (i + 1));
-                                invalidMsg.push($scope.commandClient[h + 1].commandItems[i].size.name + ' de ' + $scope.commandClient[h + 1].commandItems[i].name + ' sur la commande #' + (index + 1))
+                                invalidMsg.push($scope.commandClient[h + 1].commandline[i].size.name + ' de ' + $scope.commandClient[h + 1].commandline[i].name + ' sur la commande #' + (index + 1))
                             }
                         }
 
@@ -921,7 +921,7 @@ angular.module('starter.controllers')
 
         };
         /*
-         $scope.findCommandItemsInBills ?*/
+         $scope.findcommandlineInBills ?*/
 
         $scope.terminateCommand = function (command) {
 
@@ -930,11 +930,11 @@ angular.module('starter.controllers')
                 var valid = true;
                 var invalidMsg = ['Attention!'];
                 var index = $scope.commandClient.indexOf(command);
-                for (var i = 0; i < command.commandItems.length; i++) {
+                for (var i = 0; i < command.commandline.length; i++) {
                     var itemValid = false;
                     for (var b = 0; b < $scope.bills.length; b++) {
                         for (var bi = 0; bi < $scope.bills[b].length; bi++) {
-                            if (command.commandItems[i].command_id == $scope.bills[b][bi].command_id && command.commandItems[i].command_line_id == $scope.bills[b][bi].command_line_id) {
+                            if (command.commandline[i].command_id == $scope.bills[b][bi].command_id && command.commandline[i].command_line_id == $scope.bills[b][bi].command_line_id) {
                                 itemValid = true;
                             }
                         }
@@ -942,7 +942,7 @@ angular.module('starter.controllers')
                     if (!itemValid) {
                         valid = false;
                         invalidMsg.push('Item non facturé: #' + (i + 1));
-                        invalidMsg.push(command.commandItems[i].size.name + ' de ' + command.commandItems[i].name + ' sur la commande #' + (index))
+                        invalidMsg.push(command.commandline[i].size.name + ' de ' + command.commandline[i].name + ' sur la commande #' + (index))
                     }
                 }
 
@@ -1003,11 +1003,11 @@ angular.module('starter.controllers')
             /* $scope.validateEmployeePassword($callbackFunction);*/
         };
 
-        $scope.changeCommandItemsStatus = function () {
-            if ($scope.commandClient[$scope.commandCurrentClient].commandItems.length > 0) {
-                for (var i = 0; i < $scope.commandClient[$scope.commandCurrentClient].commandItems.length; i++) {
-                    if ($scope.commandClient[$scope.commandCurrentClient].commandItems[i].status == 1) {
-                        $scope.commandClient[$scope.commandCurrentClient].commandItems[i].status = 2;
+        $scope.changecommandlineStatus = function () {
+            if ($scope.commandClient[$scope.commandCurrentClient].commandline.length > 0) {
+                for (var i = 0; i < $scope.commandClient[$scope.commandCurrentClient].commandline.length; i++) {
+                    if ($scope.commandClient[$scope.commandCurrentClient].commandline[i].status == 1) {
+                        $scope.commandClient[$scope.commandCurrentClient].commandline[i].status = 2;
                         $scope.delayedUpdateTable();
                     }
                 }
@@ -1033,8 +1033,8 @@ angular.module('starter.controllers')
 
             var result = "";
 
-            if ($scope.commandClient[$scope.commandCurrentClient] != null && typeof $scope.commandClient[$scope.commandCurrentClient].commandItems != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].commandItems != null)
-                result = $.grep($scope.commandClient[$scope.commandCurrentClient].commandItems, function (e) {
+            if ($scope.commandClient[$scope.commandCurrentClient] != null && typeof $scope.commandClient[$scope.commandCurrentClient].commandline != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].commandline != null)
+                result = $.grep($scope.commandClient[$scope.commandCurrentClient].commandline, function (e) {
                     return e.id == $scope.selectedItemForSize.id && e.size.value == $scope.selectedItemForSize.size.value && e.status == 1;
                 });
 
@@ -1042,16 +1042,16 @@ angular.module('starter.controllers')
                 result[0]['quantity'] = result[0]['quantity'] + 1;
             }
             else {
-                /*$scope.commandItems.push(angular.copy($scope.selectedItemForSize));
+                /*$scope.commandline.push(angular.copy($scope.selectedItemForSize));
                  */
 
                 if (typeof $scope.commandClient[$scope.commandCurrentClient] === 'undefined' || $scope.commandClient[$scope.commandCurrentClient] === null)
                     $scope.commandClient[$scope.commandCurrentClient] = {};
 
-                if (typeof $scope.commandClient[$scope.commandCurrentClient].commandItems === 'undefined' || $scope.commandClient[$scope.commandCurrentClient].commandItems === null)
-                    $scope.commandClient[$scope.commandCurrentClient].commandItems = [];
+                if (typeof $scope.commandClient[$scope.commandCurrentClient].commandline === 'undefined' || $scope.commandClient[$scope.commandCurrentClient].commandline === null)
+                    $scope.commandClient[$scope.commandCurrentClient].commandline = [];
 
-                $scope.commandClient[$scope.commandCurrentClient].commandItems.push(angular.copy($scope.selectedItemForSize));
+                $scope.commandClient[$scope.commandCurrentClient].commandline.push(angular.copy($scope.selectedItemForSize));
             }
 
 
@@ -1113,6 +1113,17 @@ angular.module('starter.controllers')
                     console.log(subTotal);
                     console.log(taxTotal);
 
+                    if (typeof $scope.bills[d].extras != 'undefined' && $scope.bills[d].extras != null) {
+                        for (o = 0; o < $scope.bills[d].extras.length; o++)
+                            if ($scope.bills[d].extras[o].effect == '-')
+                                subTotal -= $scope.bills[d].extras[o].value;
+                            else if ($scope.bills[d].extras[o].effect == '+')
+                                subTotal += $scope.bills[d].extras[o];
+                            else if ($scope.bills[d].extras[o].effect == '*')
+                                subTotal += subTotal * $scope.bills[d].extras[o].value / 100;
+                            else if ($scope.bills[d].extras[o].effect == '/')
+                                subTotal -= subTotal * $scope.bills[d].extras[o].value / 100;
+                    }
                     $scope.bills[d].subTotal = subTotal;
                     $scope.bills[d].total = subTotal + taxTotal;
                 }
@@ -1133,26 +1144,37 @@ angular.module('starter.controllers')
             if (typeof $scope.commandClient[$scope.commandCurrentClient] === 'undefined' || $scope.commandClient[$scope.commandCurrentClient] === null) {
 
                 $scope.commandClient[$scope.commandCurrentClient] = {};
-                $scope.commandClient[$scope.commandCurrentClient].commandItems = [];
+                $scope.commandClient[$scope.commandCurrentClient].commandline = [];
 
             }
 
-            if ($scope.commandClient[$scope.commandCurrentClient].commandItems.length > 0) {
-                for (var i = 0; i < $scope.commandClient[$scope.commandCurrentClient].commandItems.length; i++) {
-                    subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price;
+            if ($scope.commandClient[$scope.commandCurrentClient].commandline.length > 0) {
+                for (var i = 0; i < $scope.commandClient[$scope.commandCurrentClient].commandline.length; i++) {
+                    subTotal += $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity * $scope.commandClient[$scope.commandCurrentClient].commandline[i].size.price;
 
-                    if (typeof $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras != null) {
-                        for (var o = 0; o < $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras.length; o++)
-                            if ($scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].effect == '-')
-                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity;
-                            else if ($scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].effect == '+')
-                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o] * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity;
-                            else if ($scope.commandClient[$scope.commandCurrentClient].commandItems[i].effect == '*')
-                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity;
-                            else if ($scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].effect == '/')
-                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandItems[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandItems[i].quantity;
+                    if (typeof $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras != null) {
+                        for (var o = 0; o < $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras.length; o++)
+                            if ($scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].effect == '-')
+                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].value * $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity;
+                            else if ($scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].effect == '+')
+                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o] * $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity;
+                            else if ($scope.commandClient[$scope.commandCurrentClient].commandline[i].effect == '*')
+                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandline[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity;
+                            else if ($scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].effect == '/')
+                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandline[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity;
                     }
 
+                    if (typeof $scope.commandClient[$scope.commandCurrentClient].extras != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].extras != null) {
+                        for (o = 0; o < $scope.commandClient[$scope.commandCurrentClient].extras.length; o++)
+                            if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '-')
+                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].extras[o].value;
+                            else if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '+')
+                                subTotal += $scope.commandClient[$scope.commandCurrentClient].extras[o];
+                            else if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '*')
+                                subTotal += subTotal * $scope.commandClient[$scope.commandCurrentClient].extras[o].value / 100;
+                            else if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '/')
+                                subTotal -= subTotal * $scope.commandClient[$scope.commandCurrentClient].extras[o].value / 100;
+                    }
 
                 }
 
@@ -1213,13 +1235,13 @@ angular.module('starter.controllers')
          $scope.payNow = function () {
 
          $url = 'http://pos.mirageflow.com/menu/payer';
-         $data = $scope.commandClient[$scope.commandCurrentClient].commandItems;
+         $data = $scope.commandClient[$scope.commandCurrentClient].commandline;
 
          var $callbackFunction = function(response){
 
          console.log("Paying confirmation received inside response");
 
-         $scope.commandClient[$scope.commandCurrentClient].commandItems = [];
+         $scope.commandClient[$scope.commandCurrentClient].commandline = [];
          $scope.updateCommand();
          };
 
@@ -1290,8 +1312,8 @@ angular.module('starter.controllers')
                         $scope.commandClient[f + 1].id = response.commands[f].id;
 
                         for (var g = 0; g < response.commandLineIdMat[f].length; g++) {
-                            $scope.commandClient[f + 1].commandItems[g].command_id = $scope.commandClient[f + 1].id;
-                            $scope.commandClient[f + 1].commandItems[g].command_line_id = response.commandLineIdMat[f][g]
+                            $scope.commandClient[f + 1].commandline[g].command_id = $scope.commandClient[f + 1].id;
+                            $scope.commandClient[f + 1].commandline[g].command_line_id = response.commandLineIdMat[f][g]
                         }
                     }
 
@@ -1309,7 +1331,7 @@ angular.module('starter.controllers')
                 }
             };
             /*
-             $scope.commandClient[$scope.commandCurrentClient].commandItems = [];
+             $scope.commandClient[$scope.commandCurrentClient].commandline = [];
              $scope.updateCommand();*/
 
             postReq.send($url, $data, null, $callbackFunction);
@@ -1903,7 +1925,7 @@ angular.module('starter.controllers')
         $scope.divideBill = function () {
 
 
-            var nonAddedItems = $filter("filter")($scope.commandClient[$scope.commandCurrentClient].commandItems, {status: 1});
+            var nonAddedItems = $filter("filter")($scope.commandClient[$scope.commandCurrentClient].commandline, {status: 1});
 
             if (nonAddedItems.length == 0)
                 $scope.toggleDivideBillModal();
@@ -1939,8 +1961,8 @@ angular.module('starter.controllers')
 
             for (var f = 0; f < $scope.commandClient.length; f++) {
                 if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null) {
-                    for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
-                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p]);
+                    for (var p = 0; p < $scope.commandClient[f + 1].commandline.length; p++) {
+                        var item = angular.copy($scope.commandClient[f + 1].commandline[p]);
                         item.checked = false;
                         bill.push(item);
                         subTotal += item.size.price * item.quantity;
@@ -1991,7 +2013,7 @@ angular.module('starter.controllers')
             var bill = [];
 
             for (var f = 0; f < $scope.commandClient.length; f++) {
-                if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandItems.length > 0) {
+                if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandline.length > 0) {
                     var subTotal = 0;
                     var taxTotal = 0;
 
@@ -2002,9 +2024,9 @@ angular.module('starter.controllers')
                     }
 
 
-                    for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
+                    for (var p = 0; p < $scope.commandClient[f + 1].commandline.length; p++) {
 
-                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p]);
+                        var item = angular.copy($scope.commandClient[f + 1].commandline[p]);
                         item.checked = false;
                         bill.push(item);
                         subTotal += item.size.price * item.quantity;
@@ -2077,9 +2099,9 @@ angular.module('starter.controllers')
             var unasociatedCommandItem = [];
 
             for (var f = 0; f < $scope.commandClient.length; f++) {
-                if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandItems.length > 0) {
-                    for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
-                        var item = angular.copy($scope.commandClient[f + 1].commandItems[p]);
+                if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandline.length > 0) {
+                    for (var p = 0; p < $scope.commandClient[f + 1].commandline.length; p++) {
+                        var item = angular.copy($scope.commandClient[f + 1].commandline[p]);
                         item.checked = false;
                         unasociatedCommandItem.push(item);
                     }
@@ -2112,11 +2134,11 @@ angular.module('starter.controllers')
                 var unasociatedCommandItem = [];
 
                 for (var f = 0; f < $scope.commandClient.length; f++) {
-                    if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandItems.length > 0) {
-                        for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
+                    if (typeof $scope.commandClient[f + 1] != 'undefined' && $scope.commandClient[f + 1] != null && $scope.commandClient[f + 1].commandline.length > 0) {
+                        for (var p = 0; p < $scope.commandClient[f + 1].commandline.length; p++) {
 
 
-                            var item = angular.copy($scope.commandClient[f + 1].commandItems[p]);
+                            var item = angular.copy($scope.commandClient[f + 1].commandline[p]);
                             var flagOn = false;
 
                             /*Pour chaque item de la commande on doit comparer avec les items des bill avec leur command_line*/
@@ -2130,7 +2152,7 @@ angular.module('starter.controllers')
 
                             if (!flagOn) {
                                 if (item.status == 1 || force) {
-                                    $scope.commandClient[f + 1].commandItems[p].status = 2;
+                                    $scope.commandClient[f + 1].commandline[p].status = 2;
                                     item.status = 2;
                                     $scope.updateCommand();
                                 }
@@ -2172,7 +2194,7 @@ angular.module('starter.controllers')
                     $scope.bills[$scope.bills.length - 1].total = 0;
                     $scope.bills[$scope.bills.length - 1].subTotal = 0;
                     $scope.bills[$scope.bills.length - 1].number = "Nouveaux Items";
-                    $scope.bills[$scope.bills.length - 1].unasociatedCommandItems = true;
+                    $scope.bills[$scope.bills.length - 1].unasociatedcommandline = true;
                     /*Copy the taxes and change its total to 0*/
                     var taxes = angular.copy($scope.taxes);
                     for (var j = 0; j < taxes.length; j++) {
@@ -2309,35 +2331,35 @@ angular.module('starter.controllers')
                         if ($scope.commandClient[f + 1].extras != "")
                             $scope.commandClient[f + 1].extras = JSON.parse($scope.commandClient[f + 1].extras);
 
-                        $scope.commandClient[f + 1].commandItems = response.commands[f]['commandline'];
+                        $scope.commandClient[f + 1].commandline = response.commands[f]['commandline'];
 
                         /*
                          console.log('Command line');
-                         console.log($scope.commandClient[f+1].commandItems);*/
+                         console.log($scope.commandClient[f+1].commandline);*/
                         var time;
-                        for (var p = 0; p < $scope.commandClient[f + 1].commandItems.length; p++) {
+                        for (var p = 0; p < $scope.commandClient[f + 1].commandline.length; p++) {
 
 
 
                             /*   console.log('menuItems');
                              console.log($scope.menuItems);*/
 
-                            time = new Date($scope.commandClient[f + 1].commandItems[p].created_at);
+                            time = new Date($scope.commandClient[f + 1].commandline[p].created_at);
 
 
-                            var size = $scope.commandClient[f + 1].commandItems[p].size;
-                            var quantity = $scope.commandClient[f + 1].commandItems[p].quantity;
-                            var status = $scope.commandClient[f + 1].commandItems[p].status;
+                            var size = $scope.commandClient[f + 1].commandline[p].size;
+                            var quantity = $scope.commandClient[f + 1].commandline[p].quantity;
+                            var status = $scope.commandClient[f + 1].commandline[p].status;
 
                             /*
                              console.log('Notes')
-                             console.log($scope.commandClient[f+1].commandItems[p].notes);*/
+                             console.log($scope.commandClient[f+1].commandline[p].notes);*/
 
                             var notes = [];
 
-                            if ($scope.commandClient[f + 1].commandItems[p].notes != "") {
+                            if ($scope.commandClient[f + 1].commandline[p].notes != "") {
                                 try {
-                                    notes = JSON.parse($scope.commandClient[f + 1].commandItems[p].notes);
+                                    notes = JSON.parse($scope.commandClient[f + 1].commandline[p].notes);
                                 }
                                 catch (err) {
                                     //There was an error we flush the notes
@@ -2346,9 +2368,9 @@ angular.module('starter.controllers')
                             }
 
                             var extras = [];
-                            if ($scope.commandClient[f + 1].commandItems[p].extras != "") {
+                            if ($scope.commandClient[f + 1].commandline[p].extras != "") {
                                 try {
-                                    extras = JSON.parse($scope.commandClient[f + 1].commandItems[p].extras);
+                                    extras = JSON.parse($scope.commandClient[f + 1].commandline[p].extras);
                                 }
                                 catch (err) {
                                     //There was an error we flush the notes
@@ -2356,15 +2378,15 @@ angular.module('starter.controllers')
                                 }
                             }
 
-                            var commandLineId = $scope.commandClient[f + 1].commandItems[p].id;
+                            var commandLineId = $scope.commandClient[f + 1].commandline[p].id;
 
-                            $scope.commandClient[f + 1].commandItems[p] = angular.copy($.grep($scope.menuItems, function (e) {
-                                return e.id == $scope.commandClient[f + 1].commandItems[p].item_id
+                            $scope.commandClient[f + 1].commandline[p] = angular.copy($.grep($scope.menuItems, function (e) {
+                                return e.id == $scope.commandClient[f + 1].commandline[p].item_id
                             })[0]);
 
-                            var size_prices_array = JSON.parse($scope.commandClient[f + 1].commandItems[p]['size_prices_array']);
+                            var size_prices_array = JSON.parse($scope.commandClient[f + 1].commandline[p]['size_prices_array']);
 
-                            var size_names = $scope.commandClient[f + 1].commandItems[p]['itemtype']['size_names'];
+                            var size_names = $scope.commandClient[f + 1].commandline[p]['itemtype']['size_names'];
 
                             var size_name_array = size_names.split(",");
 
@@ -2383,19 +2405,19 @@ angular.module('starter.controllers')
                             }
 
 
-                            $scope.commandClient[f + 1].commandItems[p].size = $.grep(sizes, function (e) {
+                            $scope.commandClient[f + 1].commandline[p].size = $.grep(sizes, function (e) {
                                 return e.name == size
                             })[0];
-                            $scope.commandClient[f + 1].commandItems[p].quantity = parseInt(quantity);
-                            $scope.commandClient[f + 1].commandItems[p].notes = notes;
-                            $scope.commandClient[f + 1].commandItems[p].extras = extras;
+                            $scope.commandClient[f + 1].commandline[p].quantity = parseInt(quantity);
+                            $scope.commandClient[f + 1].commandline[p].notes = notes;
+                            $scope.commandClient[f + 1].commandline[p].extras = extras;
 
-                            $scope.commandClient[f + 1].commandItems[p].time = time.getHours() + "H" + ((time.getMinutes().toString().length < 2) ? "0" : "") + time.getMinutes();
+                            $scope.commandClient[f + 1].commandline[p].time = time.getHours() + "H" + ((time.getMinutes().toString().length < 2) ? "0" : "") + time.getMinutes();
 
 
-                            $scope.commandClient[f + 1].commandItems[p].command_id = $scope.commandClient[f + 1].id;
-                            $scope.commandClient[f + 1].commandItems[p].command_line_id = commandLineId;
-                            $scope.commandClient[f + 1].commandItems[p].status = status;
+                            $scope.commandClient[f + 1].commandline[p].command_id = $scope.commandClient[f + 1].id;
+                            $scope.commandClient[f + 1].commandline[p].command_line_id = commandLineId;
+                            $scope.commandClient[f + 1].commandline[p].status = status;
 
                         }
                         /*
@@ -2408,7 +2430,7 @@ angular.module('starter.controllers')
 
                     $scope.commandClient = [];
                     $scope.commandClient[$scope.commandCurrentClient] = {};
-                    $scope.commandClient[$scope.commandCurrentClient].commandItems = [];
+                    $scope.commandClient[$scope.commandCurrentClient].commandline = [];
 
                 }
 

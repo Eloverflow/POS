@@ -418,7 +418,7 @@ class SalesController extends Controller
                 $inputCommand = $inputs['commands'][$clientNumber];
 
                 //No need to go farther if there is no items
-                if(!empty($inputCommand['commandItems']) && count($inputCommand['commandItems']) > 0)
+                if(!empty($inputCommand['commandline']) && count($inputCommand['commandline']) > 0)
                 {
 
                     /*If the command Posted contain a commmand_number it mean that it already exist, so we gota update it instead of create it */
@@ -473,13 +473,13 @@ class SalesController extends Controller
                                                     var_dump($command);*/
                             $commandLines = CommandLine::where('command_id', $command['id'])->get();
 
-                            if (count($commandLines) > count($inputCommand['commandItems'])) {
+                            if (count($commandLines) > count($inputCommand['commandline'])) {
                                 $result['msg'] .= " - Removing deleted commands lines";
 
                                 foreach ($commandLines as $commandLine) {
                                     $isMissing = true;
 
-                                    foreach ($inputCommand['commandItems'] as $inputItem) {
+                                    foreach ($inputCommand['commandline'] as $inputItem) {
                                         if ($commandLine['item_id'] == $inputItem['id'] && $commandLine['size'] == $inputItem['size']['name'])
                                             $isMissing = false;
                                     }
@@ -492,7 +492,7 @@ class SalesController extends Controller
                             }
 
                             //We update de command
-                            foreach ($inputCommand['commandItems'] as $inputItem) {
+                            foreach ($inputCommand['commandline'] as $inputItem) {
                                 if (!empty($inputItem['command_line_id']))
                                     $commandLine = CommandLine::where('id', $inputItem['command_line_id'])->get()->last();
                                 else
@@ -569,7 +569,7 @@ class SalesController extends Controller
 
                             if (!empty($inputCommand['command_number'])) {
                                 //We update de command
-                                foreach ($inputCommand['commandItems'] as $inputItem) {/*
+                                foreach ($inputCommand['commandline'] as $inputItem) {/*
                                     $commandLine = CommandLine::findOrNew($inputItem['id']);*/
 
                                     $commandLine = CommandLine::where('command_id', $command->id)->where('item_id', $inputItem['id'])->where('size', $inputItem['size']['name'])->get()->last();
@@ -619,7 +619,7 @@ class SalesController extends Controller
                             } else {
 
                                 /*We create a new command*/
-                                foreach ($inputCommand['commandItems'] as $inputItem) {
+                                foreach ($inputCommand['commandline'] as $inputItem) {
                                     /* var_dump($command);*/
 
 
