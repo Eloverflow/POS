@@ -163,8 +163,8 @@ class ScheduleController extends Controller
                 $schedule[$startIndex]->offTrack = $unMatchesSum;
 
                 // On ajoute ceux qui ne rentre pas les schedules.
-                $acc_total_Payed += (float)$unMatchesSum["cost"];
-                $g->add($unMatchesSum["worked"]);
+                //$acc_total_Payed += (float)$unMatchesSum["cost"];
+                //$g->add($unMatchesSum["worked"]);
 
 
                 // On vien de finir de parcourir un employee
@@ -197,7 +197,7 @@ class ScheduleController extends Controller
             // * Il est imperatif de trier la liste et dordonner celle-ci par nom d<employee.
             if($i === $nbItems){
                 $unMatchesSum = $this->FindEmployeeOffTrackPunch($schedule[$startIndex]->idEmployee, $acc_corresp, $punch);
-                $schedule[$startIndex]->offTrack = $unMatchesSum;
+                $schedule[$startIndex]->offTrack = $unMatchesSum; //$punch;
 
                 // On ajoute ceux qui ne rentre pas les schedules.
                 $acc_total_Payed += (float)$unMatchesSum["cost"];

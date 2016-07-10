@@ -68,7 +68,7 @@
                             <label>Cost Calculated: </label>{{ round($schedule->totalPayed, 2) }}
                         </div>
                         <div>
-                            {{--{{ var_dump($schedule->offTrack) }}--}}
+                            {{--{{ //var_dump($schedule->offTrack) }}--}}
                         </div>
                         <?php } ?>
                         <div class="content">
@@ -114,7 +114,7 @@
                         <div class="content">
                             <div class="header">
                                 <span>Off Tracking</span>
-                                <?php var_dump($ViewBag['scheduleInfos']['grid'][$startIndex]->offTrack["punches"]); ?>
+                                
                             </div>
                             <div class="sub-content">
                                 <div class="row-container">
