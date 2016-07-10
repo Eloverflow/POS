@@ -38,6 +38,10 @@ class ScheduleController extends Controller
 
     private function FindEmployeeOffTrackPunch($employeeId, $matches, $punches){
 
+        $e = new DateTime('00:00');
+        $f = clone($e);
+        $acc_total_Payed = 0;
+
         $acc_corresp_off_track = array();
         for($k = 0; $k < count($punches); $k++){
 
@@ -46,19 +50,19 @@ class ScheduleController extends Controller
                     if(!isset($matches[$punches[$k]->id]) &&
                         !isset($acc_corresp_off_track[$punches[$k]->id]))
                     {
-                        $acc_corresp_off_track[$punches[$k]->id] = $punches[$k];
 
                         $int = Utils::GetInterval($punches[$k]->startTime, $punches[$k]->endTime);
 
-                        $g->add($int);
-                        $punch[$k]->interval = $int;
+                        $e->add($int);
+                        $punches[$k]->interval = $int;
 
                         $payInDollar = Utils::CalculateSalary($int, $punches[$k]->baseSalary + $punches[$k]->bonusSalary);
 
                         $acc_total_Payed += $payInDollar;
 
+                        $punches[$k]->totalPay = $payInDollar;
 
-                        $punch[$j]->totalPay = $payInDollar;
+                        $acc_corresp_off_track[$punches[$k]->id] = $punches[$k];
 
                     }
 
@@ -68,9 +72,9 @@ class ScheduleController extends Controller
         }
 
         $summary = array(
-            'worked' => $acc_corresp_off_track,
-            'cost' =>
-            'offTrack'
+            'worked' => $f->diff($e),
+            'cost' => $acc_total_Payed,
+            'punches' => $acc_corresp_off_track
         );
 
         return $summary;
@@ -150,21 +154,24 @@ class ScheduleController extends Controller
                 $lastEmpl = $schedule[$i]->idEmployee;
                 $e->add($interval);
 
-            // Cest le meme employee
+                // Cest le meme employee
             } else if($lastEmpl == $schedule[$i]->idEmployee){
                 $e->add($interval);
 
             } else {
+                $unMatchesSum = $this->FindEmployeeOffTrackPunch($schedule[$startIndex]->idEmployee, $acc_corresp, $punch);
+                $schedule[$startIndex]->offTrack = $unMatchesSum;
+
+                // On ajoute ceux qui ne rentre pas les schedules.
+                $acc_total_Payed += (float)$unMatchesSum["cost"];
+                $g->add($unMatchesSum["worked"]);
+
+
                 // On vien de finir de parcourir un employee
                 $schedule[$startIndex]->total = Utils::IntervalToString($f->diff($e));
                 $schedule[$startIndex]->totalWorked = Utils::IntervalToString($f->diff($g));
                 $schedule[$startIndex]->totalPayed = $acc_total_Payed;
 
-
-                $unMatchesSum =
-
-
-                $schedule[$startIndex]->offTrack = $acc_corresp_off_track;
 
                 $sum_hours_scheduled->add($f->diff($e));
                 $sum_hours_worked->add($f->diff($g));
@@ -189,19 +196,19 @@ class ScheduleController extends Controller
             // correspondant a lemployee.
             // * Il est imperatif de trier la liste et dordonner celle-ci par nom d<employee.
             if($i === $nbItems){
+                $unMatchesSum = $this->FindEmployeeOffTrackPunch($schedule[$startIndex]->idEmployee, $acc_corresp, $punch);
+                $schedule[$startIndex]->offTrack = $unMatchesSum;
+
+                // On ajoute ceux qui ne rentre pas les schedules.
+                $acc_total_Payed += (float)$unMatchesSum["cost"];
+                $g->add($unMatchesSum["worked"]);
+
+
                 // Le startIndex est un index qui indique a quel endroit se situe le premier
                 // employee pr lui inserer des totalite. Ex: total heures travailler
                 $schedule[$startIndex]->total = Utils::IntervalToString($f->diff($e));
                 $schedule[$startIndex]->totalWorked = Utils::IntervalToString($f->diff($g));
                 $schedule[$startIndex]->totalPayed = $acc_total_Payed;
-
-                for($k = 0; $k < count($punch); $k++){
-                    /*if($punch[$k]->idEmployee == $schedule[$i]->idEmployee){
-                        $acc_corresp_off_track[] = $punch[$k];
-                    }*/
-                    $acc_corresp_off_track[] = array($punch[$k]->idEmployee, $schedule[$i]->idEmployee);
-                }
-                $schedule[$startIndex]->offTrack = $punch;
 
 
                 $sum_hours_scheduled->add($f->diff($e));
@@ -233,7 +240,7 @@ class ScheduleController extends Controller
     {
         $schedule = Schedule::GetById($id);
         $scheduleInfos = $this->CalculateSchedulesAndPunches(Schedule::GetScheduleEmployees($id),
-                                                             Punch::GetByInterval($schedule->startDate, $schedule->endDate));
+            Punch::GetByInterval($schedule->startDate, $schedule->endDate));
         //$punches = $this->CalculateSchedulesAndPunches());
 
         $view = \View::make('POS.Schedule.track')->with('ViewBag', array(
