@@ -84,14 +84,15 @@ class ScheduleController extends Controller
         return $sortedDaySchedulesArray;
     }
 
-    private function FindEmployeeOnTrack($daySchedules, $punches){
+    private function FindEmployeeOnTrackPunch($daySchedules, $punches){
         $correspnds = array();
         $acc_correspnds = array();
 
         For($i = 0; $i < count($daySchedules); $i++){
+            unset($correspnds);
+            $correspnds = array();
             For($j = 0; $j < count($punches); $j++) {
-                unset($correspnds);
-                $correspnds = array();
+
                 if (Utils::IsBetweenInterval($daySchedules[$i]->startTime, $punches[$j]->startTime, $daySchedules[$i]->endTime, $punches[$j]->endTime, 30)) {
                     $int = Utils::GetInterval($punches[$j]->startTime, $punches[$j]->endTime);
 
@@ -106,10 +107,10 @@ class ScheduleController extends Controller
                     $punches[$j]->totalPay = $payInDollar;
 
 
-                    if (!isset($acc_corresp[$punches[$j]->id])) {
+                    //if (!isset($acc_corresp[$punches[$j]->id])) {
                         $correspnds[$punches[$j]->id] = $punches[$j];
                         $acc_correspnds[$punches[$j]->id] = $punches[$j];
-                    }
+                    //}
 
                 }
             }
@@ -118,7 +119,7 @@ class ScheduleController extends Controller
         return $daySchedules;
     }
 
-    private function FindEmployeeOffTrackPunch($employeeId, $matches, $punches){
+    private function FindEmployeeOffTrackPunch($matches, $punches){
 
         $e = new DateTime('00:00');
         $f = clone($e);
@@ -127,7 +128,6 @@ class ScheduleController extends Controller
         $acc_corresp_off_track = array();
         for($k = 0; $k < count($punches); $k++){
 
-            if($punches[$k]->idEmployee == $employeeId){
                 for($l = 0; $l < count($matches); $l++){
                     if(!isset($matches[$punches[$k]->id]) &&
                         !isset($acc_corresp_off_track[$punches[$k]->id]))
@@ -150,7 +150,7 @@ class ScheduleController extends Controller
 
                 }
 
-            }
+
         }
 
         $summary = array(
@@ -174,10 +174,11 @@ class ScheduleController extends Controller
             $employeeDaySchedules = $this->SortEmployeeDaySchedules($employeeIDs[$i]->id, $daySchedules);
             $employeePunches = $this->SortEmployeePunches($employeeIDs[$i]->id, $punches);
 
-            $vals = $this->FindEmployeeOnTrack($employeeDaySchedules, $employeePunches);
+            $vals = $this->FindEmployeeOnTrackPunch($employeeDaySchedules, $employeePunches);
+            $offTracks = $this->FindEmployeeOffTrackPunch($vals, $employeePunches);
 
             $employeeIDs[$i]->daySchedules = $vals;
-
+            $employeeIDs[$i]->offTracks = $offTracks;
         }
         $scheduleInfos = array();
         $summary = array(

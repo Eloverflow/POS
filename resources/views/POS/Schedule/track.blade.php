@@ -35,7 +35,61 @@
                 <div class="panel-body">
 
                 <?php
-                    var_dump($ViewBag['scheduleInfos']['grid']);
+                    //var_dump($ViewBag['scheduleInfos']['grid']);
+                    foreach($ViewBag['scheduleInfos']['grid'] as $employee){
+                ?>
+
+                        <h2>{{ $employee->id }}</h2>
+
+                <?php
+                        foreach($employee->daySchedules as $daySchedule){
+                        ?>
+
+                    <div class="content">
+                        <div class="header">
+                            <span>{{ $daySchedule->startTime }}</span>
+                            <span>{{ $daySchedule->endTime }}</span>
+                            {{--<span style="color:blue">{{ $schedule->interval->format("%H:%I")}}</span>--}}
+                        </div>
+                        <div class="sub-content">
+                            <div class="row-container">
+                                <?php
+
+
+                                $e = new DateTime('00:00');
+                                $f = clone($e);
+                                foreach($daySchedule->corresps as $corresp){
+                                $st_pieces = explode(' ', $corresp->startTime);;
+                                $et_pieces = explode(' ', $corresp->endTime);
+                                ?>
+                                <div class="p-row">
+                                    <span>{{ $st_pieces[0] }}&nbsp;<strong>{{ $st_pieces[1] }}</strong></span>
+                                    <span>{{ $et_pieces[0] }}&nbsp;<strong>{{ $et_pieces[1] }}</strong></span>
+                                    <span style="color:blue">{{ $corresp->interval->format("%H:%I")}}</span>
+                                    <span><strong>{{ $corresp->name }}</strong></span>
+                                    <span>{{ number_format((float)$corresp->totalPay, 2, '.', '') . " $" }}</span>
+                                </div>
+                                <?php
+                                $e->add($corresp->interval);
+                                }
+                                ?>
+                            </div>
+                            <div class="total-square">
+                                <span>{{ $f->diff($e)->format("%H:%I") }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+
+                        <?php
+                        }
+                        ?>
+
+
+
+
+                    <?php
+                    }
                 ?>
                 </div>
 
