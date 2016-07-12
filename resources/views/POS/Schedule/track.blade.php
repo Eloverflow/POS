@@ -38,9 +38,10 @@
                     //var_dump($ViewBag['scheduleInfos']['grid']);
                     foreach($ViewBag['scheduleInfos']['grid'] as $employee){
                 ?>
-
+                    <div class="col-lg-12 tracking-bloc">
                         <h2>{{ $employee->id }}</h2>
-
+                        <div class="employee">
+                        </div>
                 <?php
                         foreach($employee->daySchedules as $daySchedule){
                         ?>
@@ -59,10 +60,11 @@
                                 $e = new DateTime('00:00');
                                 $f = clone($e);
                                 foreach($daySchedule->corresps as $corresp){
-                                $st_pieces = explode(' ', $corresp->startTime);;
+                                $st_pieces = explode(' ', $corresp->startTime);
                                 $et_pieces = explode(' ', $corresp->endTime);
                                 ?>
                                 <div class="p-row">
+                                    <span>{{ $corresp->id }}</span>
                                     <span>{{ $st_pieces[0] }}&nbsp;<strong>{{ $st_pieces[1] }}</strong></span>
                                     <span>{{ $et_pieces[0] }}&nbsp;<strong>{{ $et_pieces[1] }}</strong></span>
                                     <span style="color:blue">{{ $corresp->interval->format("%H:%I")}}</span>
@@ -83,11 +85,11 @@
 
                         <?php
                         }
+
+
                         ?>
-
-
-
-
+                        {{ var_dump($employee->offTracks) }}
+                    </div>
                     <?php
                     }
                 ?>

@@ -88,6 +88,10 @@ class ScheduleController extends Controller
         $correspnds = array();
         $acc_correspnds = array();
 
+        $e = new DateTime('00:00');
+        $f = clone($e);
+        $acc_total_Payed = 0;
+
         For($i = 0; $i < count($daySchedules); $i++){
             unset($correspnds);
             $correspnds = array();
@@ -96,27 +100,34 @@ class ScheduleController extends Controller
                 if (Utils::IsBetweenInterval($daySchedules[$i]->startTime, $punches[$j]->startTime, $daySchedules[$i]->endTime, $punches[$j]->endTime, 30)) {
                     $int = Utils::GetInterval($punches[$j]->startTime, $punches[$j]->endTime);
 
-                    //$g->add($int);
+                    $f->add($int);
                     $punches[$j]->interval = $int;
 
                     $payInDollar = Utils::CalculateSalary($int, $punches[$j]->baseSalary + $punches[$j]->bonusSalary);
 
-                    //$acc_total_Payed += $payInDollar;
+                    $acc_total_Payed += $payInDollar;
 
 
                     $punches[$j]->totalPay = $payInDollar;
 
 
-                    //if (!isset($acc_corresp[$punches[$j]->id])) {
+                    if (!isset($acc_corresp[$punches[$j]->id])) {
                         $correspnds[$punches[$j]->id] = $punches[$j];
                         $acc_correspnds[$punches[$j]->id] = $punches[$j];
-                    //}
+                    }
 
                 }
             }
             $daySchedules[$i]->corresps = $correspnds;
         }
-        return $daySchedules;
+
+        $summary = array(
+            'worked' => $f->diff($e),
+            'cost' => $acc_total_Payed,
+            'punches' => $acc_correspnds,
+            'daySchedules' => $daySchedules
+        );
+        return $summary;
     }
 
     private function FindEmployeeOffTrackPunch($matches, $punches){
@@ -126,40 +137,45 @@ class ScheduleController extends Controller
         $acc_total_Payed = 0;
 
         $acc_corresp_off_track = array();
-        for($k = 0; $k < count($punches); $k++){
+        if(count($matches) > 0 && count($punches) > 0) {
 
-                for($l = 0; $l < count($matches); $l++){
-                    if(!isset($matches[$punches[$k]->id]) &&
-                        !isset($acc_corresp_off_track[$punches[$k]->id]))
-                    {
+            for ($k = 0; $k < count($punches); $k++) {
+                $punchIsFound = false;
+                for ($l = 0; $l < count($matches); $l++) {
 
-                        $int = Utils::GetInterval($punches[$k]->startTime, $punches[$k]->endTime);
-
-                        $e->add($int);
-                        $punches[$k]->interval = $int;
-
-                        $payInDollar = Utils::CalculateSalary($int, $punches[$k]->baseSalary + $punches[$k]->bonusSalary);
-
-                        $acc_total_Payed += $payInDollar;
-
-                        $punches[$k]->totalPay = $payInDollar;
-
-                        $acc_corresp_off_track[$punches[$k]->id] = $punches[$k];
-
+                    if ($punches[$k]->id == $matches[$l]->id) {
+                        $punchIsFound = true;
                     }
+
+                }
+                if (!$punchIsFound) {
+
+                    $int = Utils::GetInterval($punches[$k]->startTime, $punches[$k]->endTime);
+
+                    $e->add($int);
+                    $punches[$k]->interval = $int;
+
+                    $payInDollar = Utils::CalculateSalary($int, $punches[$k]->baseSalary + $punches[$k]->bonusSalary);
+
+                    $acc_total_Payed += $payInDollar;
+
+                    $punches[$k]->totalPay = $payInDollar;
+
+                    $acc_corresp_off_track[$punches[$k]->id] = $punches[$k];
 
                 }
 
 
+            }
+
+            $summary = array(
+                'worked' => $f->diff($e),
+                'cost' => $acc_total_Payed,
+                'punches' => $acc_corresp_off_track
+            );
+
+            return $summary;
         }
-
-        $summary = array(
-            'worked' => $f->diff($e),
-            'cost' => $acc_total_Payed,
-            'punches' => $acc_corresp_off_track
-        );
-
-        return $summary;
     }
 
     // Cette fonction sert a prendre une matrice de temps et a faire les
@@ -175,10 +191,10 @@ class ScheduleController extends Controller
             $employeePunches = $this->SortEmployeePunches($employeeIDs[$i]->id, $punches);
 
             $vals = $this->FindEmployeeOnTrackPunch($employeeDaySchedules, $employeePunches);
-            $offTracks = $this->FindEmployeeOffTrackPunch($vals, $employeePunches);
+            $offTracks = array_udiff($vals["punches"], $employeePunches, 'compare_objects'); //array_diff($vals["punches"], $employeePunches); //$this->FindEmployeeOffTrackPunch($vals["daySchedules"], $employeePunches);
 
-            $employeeIDs[$i]->daySchedules = $vals;
-            $employeeIDs[$i]->offTracks = $offTracks;
+            $employeeIDs[$i]->daySchedules = $vals["daySchedules"];
+            $employeeIDs[$i]->offTracks =  array("Matching punches" => $vals["punches"], "Employee Punches" => $employeePunches, "OFFTRACK" => $offTracks); //$offTracks["punches"]; $offTracks;
         }
         $scheduleInfos = array();
         $summary = array(
@@ -192,6 +208,9 @@ class ScheduleController extends Controller
         // On met le sommaire et le grille dans l<object
         return $scheduleInfos;
     }
+
+
+
 
     public function track($id)
     {
