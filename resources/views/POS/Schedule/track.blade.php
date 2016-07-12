@@ -85,20 +85,50 @@
 
                         <?php
                         }
-
-
                         ?>
-                        {{ var_dump($employee->offTracks) }}
+                        <div class="content">
+                            <div class="header">
+                                <span>Off Tracking</span>
+                            </div>
+                            <div class="sub-content">
+                                <div class="row-container">
+                        <?php
+                        $e = new DateTime('00:00');
+                        $f = clone($e);
+                        foreach($employee->offTracks as $offTrack){
+
+                        $st_pieces = explode(' ', $offTrack->startTime);
+                        $et_pieces = explode(' ', $offTrack->endTime);
+                        ?>
+
+                        <div class="p-row">
+                            <span>{{ $offTrack->id }}</span>
+                            <span>{{ $st_pieces[0] }}&nbsp;<strong>{{ $st_pieces[1] }}</strong></span>
+                            <span>{{ $et_pieces[0] }}&nbsp;<strong>{{ $et_pieces[1] }}</strong></span>
+                            <span style="color:blue">{{ $offTrack->interval->format("%H:%I")}}</span>
+                            <span><strong>{{ $offTrack->name }}</strong></span>
+                            <span>{{ number_format((float)$offTrack->totalPay, 2, '.', '') . " $" }}</span>
+                        </div>
+                        <?php
+                        $e->add($offTrack->interval);
+                        }
+                        ?>
+
+                    </div>
+                    <div class="total-square">
+                        <span>{{ $f->diff($e)->format("%H:%I") }}</span>
+                    </div>
+                    </div>
+                    </div>
+
                     </div>
                     <?php
                     }
                 ?>
-                </div>
-
             </div>
         </div>
     </div>
-
+</div>
 @stop
 
 
