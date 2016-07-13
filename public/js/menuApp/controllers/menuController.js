@@ -788,11 +788,11 @@ angular.module('starter.controllers')
             if ($scope.showPayBillPanel) {
                 var container = $("#pay-bill-panel");
 
-                if (!container.is(e.target) // if the target of the click isn't the container...
-                    && container.has(e.target).length === 0) // ... nor a descendant of the container
+                if (e.clientX > container.offsetLeft || e.clientX < container.offsetLeft + container.width || e.clientY > container.offsetTop || e.clientY < container.offsetTop + container.height)
                 {
-                    //container.hide();
-
+                    //Inside the pay-bill-panel
+                }
+                else {
                     $scope.showPayBillPanel = false;
                 }
             }
