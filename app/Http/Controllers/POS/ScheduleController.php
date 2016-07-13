@@ -59,11 +59,17 @@ class ScheduleController extends Controller
 
                 $lastEmployee = $daySchedules[$k]->idEmployee;
 
-                $object = (object) array('id' => (int)$daySchedules[$k]->idEmployee);
+                $object = (object) array('id' => (int)$daySchedules[$k]->idEmployee,
+                    "firstName" => $daySchedules[$k]->firstName,
+                    "lastName" => $daySchedules[$k]->lastName);
+
                 array_push($emplIDs, $object);
 
             } else if ($lastEmployee !=  $daySchedules[$k]->idEmployee){
-                $object = (object) array('id' => (int)$daySchedules[$k]->idEmployee);
+                $object = (object) array('id' => (int)$daySchedules[$k]->idEmployee,
+                    "firstName" => $daySchedules[$k]->firstName,
+                    "lastName" => $daySchedules[$k]->lastName);
+
                 $lastEmployee = $daySchedules[$k]->idEmployee;
                 array_push($emplIDs, $object);
             }
@@ -89,10 +95,16 @@ class ScheduleController extends Controller
         $acc_correspnds = array();
 
         $e = new DateTime('00:00');
+        $dtScheduled = new DateTime('00:00');
+
         $f = clone($e);
         $acc_total_Payed = 0;
 
         For($i = 0; $i < count($daySchedules); $i++){
+
+            $scheduledInterval = Utils::GetInterval($daySchedules[$i]->startTime, $daySchedules[$i]->endTime);
+            $dtScheduled->add($scheduledInterval);
+
             unset($correspnds);
             $correspnds = array();
             For($j = 0; $j < count($punches); $j++) {
@@ -119,6 +131,7 @@ class ScheduleController extends Controller
         }
 
         $summary = array(
+            'scheduled' => $dtScheduled,
             'worked' => $f->diff($e),
             'cost' => $acc_total_Payed,
             'punches' => $acc_correspnds,
@@ -170,6 +183,11 @@ class ScheduleController extends Controller
     private function CalculateSchedulesAndPunches($daySchedules, $punches){
 
         $employeeIDs = $this->GetScheduledEmplId($daySchedules);
+        $totalEmplWorkedHours = new DateTime('00:00');
+        $totalEmplScheduledHours = clone($totalEmplWorkedHours);
+        $totalCost = 0;
+
+        $f = clone($totalEmplWorkedHours);
 
         for($i = 0; $i < count($employeeIDs); $i++){
 
@@ -178,18 +196,43 @@ class ScheduleController extends Controller
 
             $vals = $this->FindEmployeeOnTrackPunch($employeeDaySchedules, $employeePunches);
 
-            $offTracks = $this->PunchArrayDiff($vals["punches"], $employeePunches)["punches"];
+            $offTracks = $this->PunchArrayDiff($vals["punches"], $employeePunches);
 
-            // The SUM
+            // The SUM for worked hours
+            $dtWorkd = new DateTime('00:00');
+
+            $totalCostPerEmployee = 0;
+
+            $dtWorkd->add($vals["worked"]);
+            $dtWorkd->add($offTracks["worked"]);
+
+            $totalEmplWorkedHours->add($vals["worked"]);
+            $totalEmplWorkedHours->add($offTracks["worked"]);
+
+            $totalEmplScheduledHours->add($f->diff($vals["scheduled"]));
+
+            $totalCostPerEmployee += $vals["cost"];
+            $totalCostPerEmployee += $offTracks["cost"];
+
+            $totalCost += $totalCostPerEmployee;
+
+            $totalMinutes = Utils::CalculateMinutes($f->diff($dtWorkd)) - Utils::CalculateMinutes($f->diff($vals["scheduled"]));
+            //$schedule[$startIndex]->difference = Utils::MinutesToTimeString($totalMinutes);
 
             $employeeIDs[$i]->daySchedules = $vals["daySchedules"];
-            $employeeIDs[$i]->offTracks = $offTracks;
+            $employeeIDs[$i]->infos = (object)array(
+                "scheduled" => Utils::IntervalToString($f->diff($vals["scheduled"])),
+                "worked" => Utils::IntervalToString($f->diff($dtWorkd)),
+                "difference" => Utils::MinutesToTimeString($totalMinutes),
+                "cost" => $totalCostPerEmployee
+            );
+            $employeeIDs[$i]->offTracks = $offTracks["punches"];
         }
         $scheduleInfos = array();
         $summary = array(
-            'scheduled' => 100,
-            'worked' => 100,
-            'cost' => 100
+            'scheduled' => Utils::IntervalToString($f->diff($totalEmplScheduledHours)),
+            'worked' => Utils::IntervalToString($f->diff($totalEmplWorkedHours)),
+            'cost' => $totalCost
         );
 
         $scheduleInfos['summary'] = $summary;

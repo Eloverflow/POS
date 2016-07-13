@@ -39,8 +39,16 @@
                     foreach($ViewBag['scheduleInfos']['grid'] as $employee){
                 ?>
                     <div class="col-lg-12 tracking-bloc">
-                        <h2>{{ $employee->id }}</h2>
+                        <h2>{{ $employee->firstName . " " . $employee->lastName }}</h2>
                         <div class="employee">
+                            <label>Total Scheduled: </label>{{ $employee->infos->scheduled }}
+                            <label>Total Worked: </label>{{ $employee->infos->worked }}
+                            @if($employee->infos->difference[0] != "-")
+                                <span class="positive-green">{{ $employee->infos->difference }}</span>
+                            @else
+                                <span class="negative-red">{{ $employee->infos->difference }}</span>
+                            @endif
+                            <label>Cost Calculated: </label>{{ round($employee->infos->cost, 2) . " $"}}
                         </div>
                 <?php
                         foreach($employee->daySchedules as $daySchedule){
