@@ -36,204 +36,219 @@ class ScheduleController extends Controller
     }
 
 
-    private function FindEmployeeOffTrackPunch($employeeId, $matches, $punches){
+    private function SortEmployeePunches($employeeId, $punches){
+        $sortedPunchesArray = array();
+        for($k = 0; $k < count($punches); $k++) {
 
-        $acc_corresp_off_track = array();
-        for($k = 0; $k < count($punches); $k++){
+            if ($punches[$k]->idEmployee == $employeeId) {
 
-            if($punches[$k]->idEmployee == $employeeId){
-                for($l = 0; $l < count($matches); $l++){
-                    if(!isset($matches[$punches[$k]->id]) &&
-                        !isset($acc_corresp_off_track[$punches[$k]->id]))
-                    {
-                        $acc_corresp_off_track[$punches[$k]->id] = $punches[$k];
+                array_push($sortedPunchesArray, $punches[$k]);
 
-                        $int = Utils::GetInterval($punches[$k]->startTime, $punches[$k]->endTime);
+            }
+        }
+        return $sortedPunchesArray;
+    }
 
-                        $g->add($int);
-                        $punch[$k]->interval = $int;
+    private function GetScheduledEmplId($daySchedules){
+        $emplIDs = array();
 
-                        $payInDollar = Utils::CalculateSalary($int, $punches[$k]->baseSalary + $punches[$k]->bonusSalary);
+        $lastEmployee = 0;
+        for($k = 0; $k < count($daySchedules); $k++) {
 
-                        $acc_total_Payed += $payInDollar;
+            if ($lastEmployee === 0) {
 
+                $lastEmployee = $daySchedules[$k]->idEmployee;
 
-                        $punch[$j]->totalPay = $payInDollar;
+                $object = (object) array('id' => (int)$daySchedules[$k]->idEmployee,
+                    "firstName" => $daySchedules[$k]->firstName,
+                    "lastName" => $daySchedules[$k]->lastName);
 
+                array_push($emplIDs, $object);
+
+            } else if ($lastEmployee !=  $daySchedules[$k]->idEmployee){
+                $object = (object) array('id' => (int)$daySchedules[$k]->idEmployee,
+                    "firstName" => $daySchedules[$k]->firstName,
+                    "lastName" => $daySchedules[$k]->lastName);
+
+                $lastEmployee = $daySchedules[$k]->idEmployee;
+                array_push($emplIDs, $object);
+            }
+        }
+        return $emplIDs;
+    }
+
+    private function SortEmployeeDaySchedules($employeeId, $daySchedules){
+        $sortedDaySchedulesArray = array();
+        for($k = 0; $k < count($daySchedules); $k++) {
+
+            if ($daySchedules[$k]->idEmployee == $employeeId) {
+
+                array_push($sortedDaySchedulesArray, $daySchedules[$k]);
+
+            }
+        }
+        return $sortedDaySchedulesArray;
+    }
+
+    private function FindEmployeeOnTrackPunch($daySchedules, $punches){
+        $correspnds = array();
+        $acc_correspnds = array();
+
+        $e = new DateTime('00:00');
+        $dtScheduled = new DateTime('00:00');
+
+        $f = clone($e);
+        $acc_total_Payed = 0;
+
+        For($i = 0; $i < count($daySchedules); $i++){
+
+            $scheduledInterval = Utils::GetInterval($daySchedules[$i]->startTime, $daySchedules[$i]->endTime);
+            $dtScheduled->add($scheduledInterval);
+
+            unset($correspnds);
+            $correspnds = array();
+            For($j = 0; $j < count($punches); $j++) {
+
+                if (Utils::IsBetweenInterval($daySchedules[$i]->startTime, $punches[$j]->startTime, $daySchedules[$i]->endTime, $punches[$j]->endTime, 30)) {
+                    $int = Utils::GetInterval($punches[$j]->startTime, $punches[$j]->endTime);
+
+                    $f->add($int);
+                    $punches[$j]->interval = $int;
+
+                    $payInDollar = Utils::CalculateSalary($int, $punches[$j]->baseSalary + $punches[$j]->bonusSalary);
+
+                    $acc_total_Payed += $payInDollar;
+                    $punches[$j]->totalPay = $payInDollar;
+
+                    if (!isset($acc_corresp[$punches[$j]->id])) {
+                        $correspnds[$punches[$j]->id] = $punches[$j];
+                        $acc_correspnds[$punches[$j]->id] = $punches[$j];
                     }
 
                 }
+            }
+            $daySchedules[$i]->corresps = $correspnds;
+        }
 
+        $summary = array(
+            'scheduled' => $dtScheduled,
+            'worked' => $f->diff($e),
+            'cost' => $acc_total_Payed,
+            'punches' => $acc_correspnds,
+            'daySchedules' => $daySchedules
+        );
+        return $summary;
+    }
+
+    private function PunchArrayDiff($matches, $punches) {
+        $punchs = array();
+
+        $e = new DateTime('00:00');
+        $f = clone($e);
+        $acc_total_Payed = 0;
+
+        foreach($punches as $km => $objPunch) {
+            $isFound = false;
+            foreach ($matches as $kp => $objMatch) {
+                if((int)($objPunch->id) === (int)($objMatch->id)){
+                    $isFound = true;
+                }
+            }
+            if(!$isFound){
+                $punchs[] = $objPunch;
+
+                $int = Utils::GetInterval($objPunch->startTime, $objPunch->endTime);
+
+                $f->add($int);
+                $objPunch->interval = $int;
+
+                $payInDollar = Utils::CalculateSalary($int, $objPunch->baseSalary + $objPunch->bonusSalary);
+                $acc_total_Payed += $payInDollar;
+
+                $objPunch->totalPay = $payInDollar;
             }
         }
 
         $summary = array(
-            'worked' => $acc_corresp_off_track,
-            'cost' =>
-            'offTrack'
+            'worked' => $f->diff($e),
+            'cost' => $acc_total_Payed,
+            'punches' => $punchs
         );
-
         return $summary;
     }
 
     // Cette fonction sert a prendre une matrice de temps et a faire les
     // calculs de la matrice.
     // Return: The initial matrix with total and interval
-    private function CalculateSchedulesAndPunches($schedule, $punch){
-        $lastEmpl = "";
+    private function CalculateSchedulesAndPunches($daySchedules, $punches){
 
-        // On declare les variables pour le sommaire.
-        $sum_hours_scheduled = new DateTime('00:00');
-        $sum_hours_worked = new DateTime('00:00');
+        $employeeIDs = $this->GetScheduledEmplId($daySchedules);
+        $totalEmplWorkedHours = new DateTime('00:00');
+        $totalEmplScheduledHours = clone($totalEmplWorkedHours);
+        $totalCost = 0;
 
-        $sum_cost_calculated = 0;
+        $f = clone($totalEmplWorkedHours);
 
-        $e = new DateTime('00:00');
-        $f = clone($e);
+        for($i = 0; $i < count($employeeIDs); $i++){
 
-        $g = new DateTime('00:00');
+            $employeeDaySchedules = $this->SortEmployeeDaySchedules($employeeIDs[$i]->id, $daySchedules);
+            $employeePunches = $this->SortEmployeePunches($employeeIDs[$i]->id, $punches);
 
+            $vals = $this->FindEmployeeOnTrackPunch($employeeDaySchedules, $employeePunches);
 
-        // Compteur qui sert accumuler le total dheures payer par employer
-        $acc_total_Payed = 0;
-        $acc_corresp = array();
-        $acc_corresp_off_track = array();
+            $offTracks = $this->PunchArrayDiff($vals["punches"], $employeePunches);
 
-        $nbItems = count($schedule) - 1;
+            // The SUM for worked hours
+            $dtWorkd = new DateTime('00:00');
 
-        $startIndex = 0;
-        $lastEmpl = "";
+            $totalCostPerEmployee = 0;
 
-        // Pour chaque jours de scheduler
-        // La liste a ete trier par id d'un employee
-        for($i = 0; $i < count($schedule); $i++) {
-            $interval = Utils::GetInterval($schedule[$i]->startTime, $schedule[$i]->endTime);
+            $dtWorkd->add($vals["worked"]);
+            $dtWorkd->add($offTracks["worked"]);
 
-            $schedule[$i]->interval = $interval;
+            $totalEmplWorkedHours->add($vals["worked"]);
+            $totalEmplWorkedHours->add($offTracks["worked"]);
 
-            $correspnds = array();
-            For($j = 0; $j < count($punch); $j++){
-                // Ici la comparaison qui sert de correspondace a un momment scheduler et le punch actif
-                if($schedule[$i]->idEmployee == $punch[$j]->idEmployee){
+            $totalEmplScheduledHours->add($f->diff($vals["scheduled"]));
 
-                    if(Utils::IsBetweenInterval($schedule[$i]->startTime, $punch[$j]->startTime, $schedule[$i]->endTime, $punch[$j]->endTime, 30)) {
-                        $int = Utils::GetInterval($punch[$j]->startTime, $punch[$j]->endTime);
+            $totalCostPerEmployee += $vals["cost"];
+            $totalCostPerEmployee += $offTracks["cost"];
 
-                        $g->add($int);
-                        $punch[$j]->interval = $int;
+            $totalCost += $totalCostPerEmployee;
 
-                        $payInDollar = Utils::CalculateSalary($int, $punch[$j]->baseSalary + $punch[$j]->bonusSalary);
+            $totalMinutes = Utils::CalculateMinutes($f->diff($dtWorkd)) - Utils::CalculateMinutes($f->diff($vals["scheduled"]));
+            //$schedule[$startIndex]->difference = Utils::MinutesToTimeString($totalMinutes);
 
-                        $acc_total_Payed += $payInDollar;
-
-
-                        $punch[$j]->totalPay = $payInDollar;
-
-
-                        if(!isset($acc_corresp[$punch[$j]->id])){
-                            $correspnds[$punch[$j]->id] = $punch[$j];
-                            $acc_corresp[$punch[$j]->id] = $punch[$j];
-                        }
-
-
-
-                        //unset($punch[$j]);
-                    }
-                }
-            }
-
-            $schedule[$i]->corresponds = $correspnds;
-
-
-            // Cest le premier employee
-            if($lastEmpl == "") {
-                $lastEmpl = $schedule[$i]->idEmployee;
-                $e->add($interval);
-
-            // Cest le meme employee
-            } else if($lastEmpl == $schedule[$i]->idEmployee){
-                $e->add($interval);
-
-            } else {
-                // On vien de finir de parcourir un employee
-                $schedule[$startIndex]->total = Utils::IntervalToString($f->diff($e));
-                $schedule[$startIndex]->totalWorked = Utils::IntervalToString($f->diff($g));
-                $schedule[$startIndex]->totalPayed = $acc_total_Payed;
-
-
-                $unMatchesSum =
-
-
-                $schedule[$startIndex]->offTrack = $acc_corresp_off_track;
-
-                $sum_hours_scheduled->add($f->diff($e));
-                $sum_hours_worked->add($f->diff($g));
-                $sum_cost_calculated += $acc_total_Payed;
-
-                $totalMinutes = Utils::CalculateMinutes($f->diff($g)) - Utils::CalculateMinutes($f->diff($e));
-                $schedule[$startIndex]->difference = Utils::MinutesToTimeString($totalMinutes);
-
-                $startIndex = $i;
-                $e = new DateTime('00:00');
-                $g = new DateTime('00:00');
-                $acc_total_Payed = 0;
-
-                $lastEmpl = $schedule[$i]->idEmployee;
-                $e->add($interval);
-
-                $acc_corresp = null;
-                $acc_corresp_off_track = null;
-            }
-
-            // A la fin completement, on met le total dans le premiere ligne
-            // correspondant a lemployee.
-            // * Il est imperatif de trier la liste et dordonner celle-ci par nom d<employee.
-            if($i === $nbItems){
-                // Le startIndex est un index qui indique a quel endroit se situe le premier
-                // employee pr lui inserer des totalite. Ex: total heures travailler
-                $schedule[$startIndex]->total = Utils::IntervalToString($f->diff($e));
-                $schedule[$startIndex]->totalWorked = Utils::IntervalToString($f->diff($g));
-                $schedule[$startIndex]->totalPayed = $acc_total_Payed;
-
-                for($k = 0; $k < count($punch); $k++){
-                    /*if($punch[$k]->idEmployee == $schedule[$i]->idEmployee){
-                        $acc_corresp_off_track[] = $punch[$k];
-                    }*/
-                    $acc_corresp_off_track[] = array($punch[$k]->idEmployee, $schedule[$i]->idEmployee);
-                }
-                $schedule[$startIndex]->offTrack = $punch;
-
-
-                $sum_hours_scheduled->add($f->diff($e));
-                $sum_hours_worked->add($f->diff($g));
-                $sum_cost_calculated += $acc_total_Payed;
-
-                $totalMinutes = Utils::CalculateMinutes($f->diff($g)) - Utils::CalculateMinutes($f->diff($e));
-                $schedule[$startIndex]->difference = Utils::MinutesToTimeString($totalMinutes);
-            }
-
-            // Clean the array
-            $correspnds = null;
+            $employeeIDs[$i]->daySchedules = $vals["daySchedules"];
+            $employeeIDs[$i]->infos = (object)array(
+                "scheduled" => Utils::IntervalToString($f->diff($vals["scheduled"])),
+                "worked" => Utils::IntervalToString($f->diff($dtWorkd)),
+                "difference" => Utils::MinutesToTimeString($totalMinutes),
+                "cost" => $totalCostPerEmployee
+            );
+            $employeeIDs[$i]->offTracks = $offTracks["punches"];
         }
-
         $scheduleInfos = array();
         $summary = array(
-            'scheduled' => Utils::IntervalToString($f->diff($sum_hours_scheduled)),
-            'worked' => Utils::IntervalToString($f->diff($sum_hours_worked)),
-            'cost' => $sum_cost_calculated
+            'scheduled' => Utils::IntervalToString($f->diff($totalEmplScheduledHours)),
+            'worked' => Utils::IntervalToString($f->diff($totalEmplWorkedHours)),
+            'cost' => $totalCost
         );
 
         $scheduleInfos['summary'] = $summary;
-        $scheduleInfos['grid'] = $schedule;
+        $scheduleInfos['grid'] = $employeeIDs;
         // On met le sommaire et le grille dans l<object
         return $scheduleInfos;
     }
+
+
+
 
     public function track($id)
     {
         $schedule = Schedule::GetById($id);
         $scheduleInfos = $this->CalculateSchedulesAndPunches(Schedule::GetScheduleEmployees($id),
-                                                             Punch::GetByInterval($schedule->startDate, $schedule->endDate));
+            Punch::GetByInterval($schedule->startDate, $schedule->endDate));
         //$punches = $this->CalculateSchedulesAndPunches());
 
         $view = \View::make('POS.Schedule.track')->with('ViewBag', array(

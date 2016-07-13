@@ -34,146 +34,109 @@
             <div class="panel panel-default">
                 <div class="panel-body">
 
-                            <?php
-                            $s_lastEmpl = "";
-                            $s_totalHours = 0;
-                            $s_totalMinutes = 0;
+                <?php
+                    //var_dump($ViewBag['scheduleInfos']['grid']);
+                    foreach($ViewBag['scheduleInfos']['grid'] as $employee){
+                ?>
+                    <div class="col-lg-12 tracking-bloc">
+                        <h2>{{ $employee->firstName . " " . $employee->lastName }}</h2>
+                        <div class="employee">
+                            <label>Total Scheduled: </label>{{ $employee->infos->scheduled }}
+                            <label>Total Worked: </label>{{ $employee->infos->worked }}
+                            @if($employee->infos->difference[0] != "-")
+                                <span class="positive-green">{{ $employee->infos->difference }}</span>
+                            @else
+                                <span class="negative-red">{{ $employee->infos->difference }}</span>
+                            @endif
+                            <label>Cost Calculated: </label>{{ round($employee->infos->cost, 2) . " $"}}
+                        </div>
+                <?php
+                        foreach($employee->daySchedules as $daySchedule){
+                        ?>
 
-                            $s_numItems = count($ViewBag['scheduleInfos']['grid']) - 1;
-                            $i = 0;
-                            ?>
-                            {{--@foreach ($ViewBag['scheduleInfos'] as $schedule)--}}
+                    <div class="content">
+                        <div class="header">
+                            <span>{{ $daySchedule->startTime }}</span>
+                            <span>{{ $daySchedule->endTime }}</span>
+                            {{--<span style="color:blue">{{ $schedule->interval->format("%H:%I")}}</span>--}}
+                        </div>
+                        <div class="sub-content">
+                            <div class="row-container">
                                 <?php
-                                    foreach($ViewBag['scheduleInfos']['grid'] as $schedule){
 
-                                        if($s_lastEmpl == "" || $s_lastEmpl != $schedule->idEmployee){
-                                            $s_lastEmpl = $schedule->idEmployee;
 
+                                $e = new DateTime('00:00');
+                                $f = clone($e);
+                                foreach($daySchedule->corresps as $corresp){
+                                $st_pieces = explode(' ', $corresp->startTime);
+                                $et_pieces = explode(' ', $corresp->endTime);
                                 ?>
-                                <div class="col-lg-12 tracking-bloc">
-                                <h2>{{ $schedule->firstName . " " . $schedule->lastName}}</h2>
-                                <div class="employee">
-                                    <h3>Scheduled Hours</h3>
-                                    <label>Total Scheduled: </label>{{ $schedule->total }}
-                                    <label>Total Worked: </label>{{ $schedule->totalWorked }}
-                                    @if($schedule->difference[0] != "-")
-                                        <span class="positive-green">{{ $schedule->difference }}</span>
-                                    @else
-                                        <span class="negative-red">{{ $schedule->difference }}</span>
-                                    @endif
-                                    <label>Cost Calculated: </label>{{ number_format((float)$schedule->totalPayed, 2, '.', '') . " $" }}
+                                <div class="p-row">
+                                    <span>{{ $corresp->id }}</span>
+                                    <span>{{ $st_pieces[0] }}&nbsp;<strong>{{ $st_pieces[1] }}</strong></span>
+                                    <span>{{ $et_pieces[0] }}&nbsp;<strong>{{ $et_pieces[1] }}</strong></span>
+                                    <span style="color:blue">{{ $corresp->interval->format("%H:%I")}}</span>
+                                    <span><strong>{{ $corresp->name }}</strong></span>
+                                    <span>{{ number_format((float)$corresp->totalPay, 2, '.', '') . " $" }}</span>
                                 </div>
-                                <div>
-                                    {{ var_dump($schedule->offTrack) }}
-                                </div>
-                                <?php } ?>
-                                <div class="content">
-                                    <div class="header">
-                                        <span>{{ $schedule->startTime }}</span>
-                                        <span>{{ $schedule->endTime }}</span>
-                                        <span style="color:blue">{{ $schedule->interval->format("%H:%I")}}</span>
-                                    </div>
-                                    <div class="sub-content">
-                                        <div class="row-container">
-                                        <?php
-
-                                            $e = new DateTime('00:00');
-                                            $f = clone($e);
-                                            foreach($schedule->corresponds as $corresp){
-                                                $st_pieces = explode(' ', $corresp->startTime);;
-                                                $et_pieces = explode(' ', $corresp->endTime);
-                                            ?>
-                                            <div class="p-row">
-                                                <span>{{ $st_pieces[0] }}&nbsp;<strong>{{ $st_pieces[1] }}</strong></span>
-                                                <span>{{ $et_pieces[0] }}&nbsp;<strong>{{ $et_pieces[1] }}</strong></span>
-                                                <span style="color:blue">{{ $corresp->interval->format("%H:%I")}}</span>
-                                                <span><strong>{{ $corresp->name }}</strong></span>
-                                                <span>{{ number_format((float)$corresp->totalPay, 2, '.', '') . " $" }}</span>
-                                            </div>
-                                            <?php
-                                                $e->add($corresp->interval);
-                                            }
-                                        ?>
-                                        </div>
-                                        <div class="total-square">
-                                            <span>{{ $f->diff($e)->format("%H:%I") }}</span>
-                                        </div>
-                                    </div>
-                                </div>
-
-
                                 <?php
-                                    if((count($ViewBag['scheduleInfos']['grid']) - 1) != $i){
-                                        if($ViewBag['scheduleInfos']['grid'][$i+1]->idEmployee != $s_lastEmpl){
+                                $e->add($corresp->interval);
+                                }
                                 ?>
-                                    <div class="content">
-                                        <div class="header">
-                                            <span>Off Tracking</span>
-                                        </div>
-                                        <div class="sub-content">
-                                            <div class="row-container">
-                                                <?php
-
-                                                for($z = 0; $z < 10; $z++){
-
-                                                ?>
-                                                <div class="p-row">
-                                                    <span>{{ $z }}</span>
-                                                </div>
-                                                <?php
-
-                                                }
-                                                ?>
-                                            </div>
-                                            <div class="total-square">
-                                                <span>0</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <?php
-                                        }
-                                    } else {
-                                    ?>
-                                <div class="content">
-                                    <div class="header">
-                                        <span>Off Tracking</span>
-                                    </div>
-                                    <div class="sub-content">
-                                        <div class="row-container">
-                                            <?php
-
-                                            for($z = 0; $z < 10; $z++){
-
-                                            ?>
-                                            <div class="p-row">
-                                                <span>{{ $z }}</span>
-                                            </div>
-                                            <?php
-
-                                            }
-                                            ?>
-                                        </div>
-                                        <div class="total-square">
-                                            <span>0</span>
-                                        </div>
-                                    </div>
-                                </div>
-                                </div>
-                                <?php
-                                    }
-                                ?>
-
-                                <?php
-                                        $i++;
-                                    }
-                                ?>
+                            </div>
+                            <div class="total-square">
+                                <span>{{ $f->diff($e)->format("%H:%I") }}</span>
+                            </div>
+                        </div>
                     </div>
 
-                </div>
+
+                        <?php
+                        }
+                        ?>
+                        <div class="content">
+                            <div class="header">
+                                <span>Off Tracking</span>
+                            </div>
+                            <div class="sub-content">
+                                <div class="row-container">
+                        <?php
+                        $e = new DateTime('00:00');
+                        $f = clone($e);
+                        foreach($employee->offTracks as $offTrack){
+
+                        $st_pieces = explode(' ', $offTrack->startTime);
+                        $et_pieces = explode(' ', $offTrack->endTime);
+                        ?>
+
+                        <div class="p-row">
+                            <span>{{ $offTrack->id }}</span>
+                            <span>{{ $st_pieces[0] }}&nbsp;<strong>{{ $st_pieces[1] }}</strong></span>
+                            <span>{{ $et_pieces[0] }}&nbsp;<strong>{{ $et_pieces[1] }}</strong></span>
+                            <span style="color:blue">{{ $offTrack->interval->format("%H:%I")}}</span>
+                            <span><strong>{{ $offTrack->name }}</strong></span>
+                            <span>{{ number_format((float)$offTrack->totalPay, 2, '.', '') . " $" }}</span>
+                        </div>
+                        <?php
+                        $e->add($offTrack->interval);
+                        }
+                        ?>
+
+                    </div>
+                    <div class="total-square">
+                        <span>{{ $f->diff($e)->format("%H:%I") }}</span>
+                    </div>
+                    </div>
+                    </div>
+
+                    </div>
+                    <?php
+                    }
+                ?>
             </div>
         </div>
     </div>
+</div>
 @stop
 
 

@@ -34,7 +34,7 @@ class StatsController extends Controller
         }
         foreach($rawScheduledHours as $monthSheduledHours){
 
-            $scheduledHours[$monthSheduledHours->month] = (int)(Datetime::createFromFormat('H:i:s', $monthSheduledHours->total));
+            $scheduledHours[$monthSheduledHours->month] = (int)(Datetime::createFromFormat('H:i:s', $monthSheduledHours->total)->format('h'));
         }
         $view = \View::make('POS.stats.index')->with('ViewBag', array(
                 'workedHours' => $workedHours,
