@@ -205,36 +205,49 @@ function deleteEvent(){
 
 function addEvent(){
 
-    $dDayNumber = $("#addModal #dayNumber option:selected" ).val();
     $employeeId = parseInt($("#addModal #employeeSelect option:selected" ).val());
     $employeeName = $("#addModal #employeeSelect option:selected" ).text()
 
 
-    var ValidationResult = ModalValidation("#addModal");
+    /*var ValidationResult = ModalValidation("#addModal");
     //console.log(ValidationResult.errors);
-    if(ValidationResult.errors.length == 0) {
+    if(ValidationResult.errors.length == 0) {*/
 
-        var sHM = ($shour < 10 ? '0' + $shour : $shour) + ":" + ($smin < 10 ? '0' + $smin : $smin);
-        var eHM = ($ehour < 10 ? '0' + $ehour : $ehour) + ":" + ($emin < 10 ? '0' + $emin : $emin);
+        var momentStart = $('#addModal #startTimePicker').data("DateTimePicker").date();
+        var momentEnd = $('#addModal #endTimePicker').data("DateTimePicker").date();
 
-        var myDate = new Date($('#addModal #dateClicked').val());
+        var scheduleStartDate = new Date($('#startDate').val());
 
-        if ($dDayNumber == -1) {
+        var a = moment(momentStart);
+        var b = moment(momentEnd);
+        var diffDays = b.diff(a, 'days');
+
+        if ($('#addModal #chkOptAllWeek').is(':checked')) {
 
             for (var i = 1; i <= 7; i++) {
-                var startDate = new Date(moment(formatDate(myDate) + ' ' + sHM)
+
+                //alert(diffDays);
+
+                var startDate = new Date(moment(formatDate(scheduleStartDate))
                     .add(i, 'days')
+                    .add(a.hours(), 'hours')
+                    .add(a.minutes(), 'minutes')
                     .tz(globTimeZoneAMontreal)
                     .format());
 
-                var dateAdd = new Date();
-                if ($ehour < $shour) {
-                    dateAdd = new Date(moment(formatDate(startDate)).add(1, 'days')
-                        .tz(globTimeZoneAMontreal)
-                        .format());
+                var endDateBound = 0;
+                if(diffDays > 0){
+                    endDateBound = diffDays
                 } else {
-                    dateAdd = startDate;
+                    endDateBound = i;
                 }
+
+                var endDate = new Date(moment(formatDate(scheduleStartDate))
+                    .add(endDateBound, 'days')
+                    .add(b.hours(), 'hours')
+                    .add(b.minutes(), 'minutes')
+                    .tz(globTimeZoneAMontreal)
+                    .format());
 
                 $availableColor = "";
                 $employeeColor = GetEmployeeColor($employeeId);
@@ -250,12 +263,8 @@ function addEvent(){
                     id: guid(),
                     title: $employeeName,
                     isAllDay: false,
-                    start: new Date(moment(formatDate(startDate) + ' ' + sHM)
-                        .tz(globTimeZoneAMontreal)
-                        .format()),
-                    end: new Date(moment(formatDate(dateAdd) + ' ' + eHM)
-                        .tz(globTimeZoneAMontreal)
-                        .format()),
+                    start: startDate,
+                    end: endDate,
                     description: '',
                     employeeId: $employeeId,
                     color: $availableColor
@@ -267,14 +276,6 @@ function addEvent(){
 
         } else {
 
-            var dateAdd = null;
-            if ($ehour < $shour) {
-                dateAdd = new Date(moment(formatDate(myDate)).add(1, 'days')
-                    .tz(globTimeZoneAMontreal)
-                    .format());
-            } else {
-                dateAdd = myDate;
-            }
 
             $availableColor = "";
             $employeeColor = GetEmployeeColor($employeeId);
@@ -284,16 +285,14 @@ function addEvent(){
             } else {
                 $availableColor = $employeeColor;
             }
-            
-
 
             var newEvent = {
                 id: guid(),
                 title: $employeeName,
                 color: $availableColor,
                 isAllDay: false,
-                start: new Date(moment(formatDate(myDate) + ' ' + sHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
-                end: new Date(moment(formatDate(dateAdd) + ' ' + eHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
+                start: new Date(moment(momentStart).tz(globTimeZoneAMontreal).format()),
+                end: new Date(moment(momentEnd).tz(globTimeZoneAMontreal).format()),
                 description: '',
                 employeeId: $employeeId
             };
@@ -308,7 +307,7 @@ function addEvent(){
             $("#addModal #displaySuccesses").show();
 
         }
-    } else {
+    /*} else {
 
         $("#addModal #displaySuccesses").hide();
         $("#addModal #displayErrors #errors").empty();
@@ -319,33 +318,21 @@ function addEvent(){
         $("#addModal #displayErrors").show();
         //console.log( key , erro[key] );
 
-    }
+    }*/
 
 }
 
 function dayClick(xDate, xEvent)
 {
-    var datet = new Date(xDate);
-    // Clean form control
-    $('#addModal #sHour').val("");
-    $('#addModal #sMin').val("");
 
-    $('#addModal #eHour').val("");
-    $('#addModal #eMin').val("");
+    $stPick = $('#startTimePicker').data("DateTimePicker");
+    $stPick.clear();
+    $stPick.defaultDate(new Date(moment(xDate).tz(globTimeZoneAMontreal)));
 
-    // Week beginning sunday: 0
-    if(datet.getDay() == 6)
-    {
-        $('#addModal #dayNumber').val(0);
-    } else {
-        // Week beginning sunday: 0
-        $gDay = datet.getDay();
-        $('#addModal #dayNumber').val($gDay);
-    }
+    $etPick = $('#endTimePicker').data("DateTimePicker");
+    $etPick.clear();
+    $etPick.defaultDate(new Date(moment(xDate).add(2, 'hours').tz(globTimeZoneAMontreal)));
 
-
-    var ymd = formatDate(datet);
-    $('#addModal #dateClicked').val(ymd);
 
     $("#addModal #displayErrors").hide();
     $("#addModal #displaySuccesses").hide();

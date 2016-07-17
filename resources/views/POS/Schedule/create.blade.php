@@ -4,6 +4,10 @@
     <script src="{{ @URL::to('js/moment/moment.js') }}"></script>
     <script src="{{ @URL::to('js/moment/moment-timezone.js') }}"></script>
     <script src="{{ @URL::to('js/fullcalendar.min.js') }}"></script>
+
+    <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>
+
     <script src="{{ @URL::to('js/fr-ca.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
@@ -84,45 +88,25 @@
                         <strong>Success!</strong><div class="successMsg"></div>
                     </div>
                     <div class="col-md-6">
-                        {!! Form::text('dateClicked', $ViewBag['startDate'], array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
-                            <div class="col-md-6">
-                                {!! Form::label('sHour', "Hour" ) !!}
-                                {!! Form::text('sHour', old('sHour'), array('class' => 'form-control', 'id' => 'sHour')) !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! Form::label('sMin', "Min" ) !!}
-                                {!! Form::text('sMin', old('sMin'), array('class' => 'form-control', 'id' => 'sMin')) !!}
+                            <div class='input-group date' id="startTimePicker">
+                                <input type='text' id="startTime" class="form-control dark-border" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <h3>End Time</h3>
-                            <div class="col-md-6">
-                                {!! Form::label('eHour', "Hour" ) !!}
-                                {!! Form::text('eHour', old('eHour'), array('class' => 'form-control', 'id' => 'eHour')) !!}
+                            <div class='input-group date' id="endTimePicker">
+                                <input type='text' id="startTime" class="form-control dark-border" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
                             </div>
-                            <div class="col-md-6">
-                                {!! Form::label('eMin', "Min" ) !!}
-                                {!! Form::text('eMin', old('eMin'), array('class' => 'form-control', 'id' => 'eMin')) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <h3>Day</h3>
-                            <select id="dayNumber" class="form-control">
-                                <option value="-1">All Week</option>
-                                <option value="0">Sunday</option>
-                                <option value="1">Monday</option>
-                                <option value="2">Tuesday</option>
-                                <option value="3">Wednesday</option>
-                                <option value="4">Thursday</option>
-                                <option value="5">Friday</option>
-                                <option value="6">Saturday</option>
-                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -138,6 +122,13 @@
                                             @endif >{{ $employee->firstName . " " . $employee->lastName}}</option>
                                 @endforeach
                             </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <h3>Options</h3>
+                                {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
+                                {!! Form::label('lblOptAllWeek', "All this week") !!}
                         </div>
                     </div>
                 </div>
@@ -167,42 +158,23 @@
                         {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
-                            <div class="col-md-6">
-                                {!! Form::label('sHour', "Hour" ) !!}
-                                {!! Form::text('sHour', old('sHour'), array('class' => 'form-control', 'id' => 'sHour')) !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! Form::label('sMin', "Min" ) !!}
-                                {!! Form::text('sMin', old('sMin'), array('class' => 'form-control', 'id' => 'sMin')) !!}
+                            <div class='input-group date' id="startTimePicker">
+                                <input type='text' id="startTime" class="form-control dark-border" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
                             <h3>End Time</h3>
-                            <div class="col-md-6">
-                                {!! Form::label('eHour', "Hour" ) !!}
-                                {!! Form::text('eHour', old('eHour'), array('class' => 'form-control', 'id' => 'eHour')) !!}
+                            <div class='input-group date' id="endTimePicker">
+                                <input type='text' id="startTime" class="form-control dark-border" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
                             </div>
-                            <div class="col-md-6">
-                                {!! Form::label('eMin', "Min" ) !!}
-                                {!! Form::text('eMin', old('eMin'), array('class' => 'form-control', 'id' => 'eMin')) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <h3>Day</h3>
-                            <select id="dayNumber" class="form-control">
-                                <option value="-1">All Week</option>
-                                <option value="0">Sunday</option>
-                                <option value="1">Monday</option>
-                                <option value="2">Tuesday</option>
-                                <option value="3">Wednesday</option>
-                                <option value="4">Thursday</option>
-                                <option value="5">Friday</option>
-                                <option value="6">Saturday</option>
-                            </select>
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -220,6 +192,13 @@
                             </select>
                         </div>
                     </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <h3>Options</h3>
+                            {!! Form::checkbox('name', "0" ) !!}
+                            {!! Form::label('lblOptName', "All this week") !!}
+                        </div>
+                    </div>
                 </div>
 
                 <!-- dialog buttons -->
@@ -230,94 +209,21 @@
             </div>
         </div>
     </div>
-    <div id="editModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- dialog body -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
-                        <strong>Whoops!</strong><br><br>
-                        <ul id="errors"></ul>
-                    </div>
-                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
-                        <strong>Success!</strong><div class="successMsg"></div>
-                    </div>
-                    <div class="col-md-4">
-                        {!! Form::text('dateClicked', $ViewBag['startDate'], array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
-                        <div class="form-group">
-                            <h3>Start Time</h3>
-                            <div class="col-md-6">
-                                {!! Form::label('sHour', "Hour" ) !!}
-                                {!! Form::text('sHour', old('sHour'), array('class' => 'form-control', 'id' => 'sHour')) !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! Form::label('sMin', "Min" ) !!}
-                                {!! Form::text('sMin', old('sMin'), array('class' => 'form-control', 'id' => 'sMin')) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <h3>End Time</h3>
-                            <div class="col-md-6">
-                                {!! Form::label('eHour', "Hour" ) !!}
-                                {!! Form::text('eHour', old('eHour'), array('class' => 'form-control', 'id' => 'eHour')) !!}
-                            </div>
-                            <div class="col-md-6">
-                                {!! Form::label('eMin', "Min" ) !!}
-                                {!! Form::text('eMin', old('eMin'), array('class' => 'form-control', 'id' => 'eMin')) !!}
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            <h3>Day</h3>
-                            <select id="dayNumber" class="form-control">
-                                <option value="0">Sunday</option>
-                                <option value="1">Monday</option>
-                                <option value="2">Tuesday</option>
-                                <option value="3">Wednesday</option>
-                                <option value="4">Thursday</option>
-                                <option value="5">Friday</option>
-                                <option value="6">Saturday</option>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <h3>Employee</h3>
-                            <select id="employeeSelect" name="employeeSelect" class="form-control">
-                                @foreach ($ViewBag['employees'] as $employee)
-                                <option value="{{ $employee->idEmployee }}">{{ $employee->firstName . " " . $employee->lastName}}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
 
-                <!-- dialog buttons -->
-                <div class="modal-footer">
-                    <button id="btnDelEvent" type="button" class="btn btn-danger">Delete</button>
-                    <button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button>
-                </div>
-                <div class="modal-footer"></div>
-            </div>
-        </div>
-    </div>
 @stop
 
 @section("myjsfile")
     <script src="{{ @URL::to('js/utils.js') }}"></script>
     <script src="{{ @URL::to('js/schedulesManage.js') }}"></script>
+
+    <script src="{{ @URL::to('js/moment/moment-timezone-with-data-packed.js') }}"></script>
     <script type="text/javascript">
         // var for edit Event
         var globStoredEvent = null;
         var globStoredCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
         $('#btnAdd').click(function(e) {
-            $('#addModal #sHour').val("");
-            $('#addModal #sMin').val("");
 
-            $('#addModal #eHour').val("");
-            $('#addModal #eMin').val("");
+
             $("#addModal").modal('show');
         });
         $('#btnFinish').click(function(e) {
@@ -339,7 +245,6 @@
         $( "#startDate" ).change(function() {
             if($( "#startDate").val()  != ""){
                 globStoredCalendar.fullCalendar('gotoDate', $('#startDate').val());
-                $( "#dateClicked").val($('#startDate').val());
 
                 var nDate = new Date($('#startDate').val());
                 nDate.setDate(nDate.getDate() + 7);
@@ -354,19 +259,15 @@
             //var $startDate = $('#startDate').val();
         });
 
-
-
-
-        $( "#dayNumber" ).change(function() {
-            //var nDate = new Date();
-            //nDate.setDate(nDate.getFullYear() + "-" +  nDate.getMonth() + "-" + (nDate.getDate() + this.value));
-            var realVal = parseInt(this.value);
-            if(realVal != -1) {
-                realVal += 1;
-                console.log(realVal);
-                var myDate = new Date(new Date($('#startDate').val()).getTime() + (realVal * 24 * 60 * 60 * 1000));
-                $('#dateClicked').val(formatDate(myDate));
-            }
+        $('#addModal #startTimePicker').datetimepicker();
+        $('#addModal #endTimePicker').datetimepicker({
+            //useCurrent: false //Important! See issue #1075
         });
+        /*$("#startTimePicker").on("dp.change", function (e) {
+            $('#endTimePicker').data("DateTimePicker").minDate(e.date);
+        });
+        $("#endTimePicker").on("dp.change", function (e) {
+            $('#startTimePicker').data("DateTimePicker").maxDate(e.date);
+        });*/
     </script>
 @stop
