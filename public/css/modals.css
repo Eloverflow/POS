@@ -24,3 +24,7 @@
 .lumino .dark-border{
 	border: 1px solid #CCCCCC;
 }
+
+.lumino .frmGrpTopFix {
+	margin-top: 10px;
+}

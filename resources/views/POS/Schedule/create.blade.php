@@ -155,7 +155,6 @@
                         <strong>Success!</strong><div class="successMsg"></div>
                     </div>
                     <div class="col-md-6">
-                        {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
                             <h3>Start Time</h3>
                             <div class='input-group date' id="startTimePicker">
@@ -192,13 +191,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
-                        <div class="form-group">
-                            <h3>Options</h3>
-                            {!! Form::checkbox('name', "0" ) !!}
-                            {!! Form::label('lblOptName', "All this week") !!}
-                        </div>
-                    </div>
+
                 </div>
 
                 <!-- dialog buttons -->
@@ -260,9 +253,11 @@
         });
 
         $('#addModal #startTimePicker').datetimepicker();
-        $('#addModal #endTimePicker').datetimepicker({
-            //useCurrent: false //Important! See issue #1075
-        });
+        $('#addModal #endTimePicker').datetimepicker();
+
+        $('#editModal #startTimePicker').datetimepicker();
+        $('#editModal #endTimePicker').datetimepicker();
+
         /*$("#startTimePicker").on("dp.change", function (e) {
             $('#endTimePicker').data("DateTimePicker").minDate(e.date);
         });

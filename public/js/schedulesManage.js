@@ -127,37 +127,19 @@ function postEditSchedules() {
 
 function editEvent(){
 
-    $dDayNumber = $( "#editModal #dayNumber option:selected" ).val();
-    $employeeText = $( "#editModal #employeeSelect option:selected" ).text();
-    $employeeId = parseInt($( "#editModal #employeeSelect option:selected" ).val());
-
-    var ValidationResult = ModalValidation("#editModal");
+    //var ValidationResult = ModalValidation("#editModal");
     //console.log(ValidationResult.errors);
-    if(ValidationResult.errors.length == 0) {
-        var sHM = ($shour < 10 ? '0' + $shour : $shour) + ":" + ($smin < 10 ? '0' + $smin : $smin);
-        var eHM = ($ehour < 10 ? '0' + $ehour : $ehour) + ":" + ($emin < 10 ? '0' + $emin : $emin);
+    //if(ValidationResult.errors.length == 0) {
 
-        var myDate = new Date($('#editModal #dateClicked').val());
+    $employeeId = parseInt($("#editModal #employeeSelect option:selected" ).val());
+    $employeeName = $("#editModal #employeeSelect option:selected" ).text()
 
-        var dateAdd = null;
-        if ($ehour < $shour) {
-            dateAdd = new Date(moment(formatDate(myDate)).add(1, 'days')
-                .tz(globTimeZoneAMontreal)
-                .format());
-        } else {
-            dateAdd = myDate;
-        }
-        console.log(formatDate(dateAdd));
-        //console.log(sHM + " - " + eHM);
+    var momentStart = moment($('#editModal #startTimePicker').data("DateTimePicker").date());
+    var momentEnd = moment($('#editModal #endTimePicker').data("DateTimePicker").date());
 
-
-        console.log(sHM);
-        //console.log(moment("05:00").tz(globTimeZoneAMontreal).format());
-        //console.log(moment(formatDate(dateAdd) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
-
-        globStoredEvent.title = $employeeText;
-        globStoredEvent.start = new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
-        globStoredEvent.end = new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format());
+        globStoredEvent.title = $employeeName;
+        globStoredEvent.start = new Date(momentStart.tz(globTimeZoneAMontreal).format());
+        globStoredEvent.end = new Date(momentEnd.tz(globTimeZoneAMontreal).format());
 
         // ici a voir
         if(globStoredEvent.employeeId != $employeeId){
@@ -175,7 +157,7 @@ function editEvent(){
 
         globStoredEvent.employeeId = $employeeId;
 
-        globStoredCalendar.fullCalendar('updateEvent', globStoredEvent)
+        globStoredCalendar.fullCalendar('updateEvent', globStoredEvent);
 
         $("#editModal #displayErrors").hide();
 
@@ -185,7 +167,8 @@ function editEvent(){
         $("#editModal #displaySuccesses").show();
 
 
-    } else {
+
+    /*} else {
 
         $("#editModal #displaySuccesses").hide();
         $("#editModal #displayErrors #errors").empty();
@@ -196,7 +179,7 @@ function editEvent(){
         $("#editModal #displayErrors").show();
         //console.log( key , erro[key] );
 
-    }
+    }*/
 }
 
 function deleteEvent(){
@@ -213,39 +196,38 @@ function addEvent(){
     //console.log(ValidationResult.errors);
     if(ValidationResult.errors.length == 0) {*/
 
-        var momentStart = $('#addModal #startTimePicker').data("DateTimePicker").date();
-        var momentEnd = $('#addModal #endTimePicker').data("DateTimePicker").date();
+        var momentStart = moment($('#addModal #startTimePicker').data("DateTimePicker").date());
+        var momentEnd = moment($('#addModal #endTimePicker').data("DateTimePicker").date());
 
         var scheduleStartDate = new Date($('#startDate').val());
 
-        var a = moment(momentStart);
-        var b = moment(momentEnd);
+        var a = momentStart.clone().startOf('day');
+        var b = momentEnd.clone().startOf('day');
         var diffDays = b.diff(a, 'days');
 
         if ($('#addModal #chkOptAllWeek').is(':checked')) {
 
             for (var i = 1; i <= 7; i++) {
 
-                //alert(diffDays);
 
                 var startDate = new Date(moment(formatDate(scheduleStartDate))
                     .add(i, 'days')
-                    .add(a.hours(), 'hours')
-                    .add(a.minutes(), 'minutes')
+                    .add(momentStart.hours(), 'hours')
+                    .add(momentStart.minutes(), 'minutes')
                     .tz(globTimeZoneAMontreal)
                     .format());
 
                 var endDateBound = 0;
                 if(diffDays > 0){
-                    endDateBound = diffDays
+                    endDateBound = i + diffDays
                 } else {
                     endDateBound = i;
                 }
 
                 var endDate = new Date(moment(formatDate(scheduleStartDate))
                     .add(endDateBound, 'days')
-                    .add(b.hours(), 'hours')
-                    .add(b.minutes(), 'minutes')
+                    .add(momentEnd.hours(), 'hours')
+                    .add(momentEnd.minutes(), 'minutes')
                     .tz(globTimeZoneAMontreal)
                     .format());
 
@@ -291,8 +273,8 @@ function addEvent(){
                 title: $employeeName,
                 color: $availableColor,
                 isAllDay: false,
-                start: new Date(moment(momentStart).tz(globTimeZoneAMontreal).format()),
-                end: new Date(moment(momentEnd).tz(globTimeZoneAMontreal).format()),
+                start: new Date(momentStart.tz(globTimeZoneAMontreal).format()),
+                end: new Date(momentEnd.tz(globTimeZoneAMontreal).format()),
                 description: '',
                 employeeId: $employeeId
             };
@@ -325,11 +307,11 @@ function addEvent(){
 function dayClick(xDate, xEvent)
 {
 
-    $stPick = $('#startTimePicker').data("DateTimePicker");
+    $stPick = $('#addModal #startTimePicker').data("DateTimePicker");
     $stPick.clear();
     $stPick.defaultDate(new Date(moment(xDate).tz(globTimeZoneAMontreal)));
 
-    $etPick = $('#endTimePicker').data("DateTimePicker");
+    $etPick = $('#addModal #endTimePicker').data("DateTimePicker");
     $etPick.clear();
     $etPick.defaultDate(new Date(moment(xDate).add(2, 'hours').tz(globTimeZoneAMontreal)));
 
@@ -340,27 +322,19 @@ function dayClick(xDate, xEvent)
     $("#addModal").modal('show');
 }
 
-function scheduleClick(xDate, xEvent)
+function scheduleClick(calEvent, jsEvent, view)
 {
-
-    //console.log(xEvent.start.toString());
-    var sDate = new Date(xEvent.start.toString());
-    var eDate = new Date(xEvent.end.toString());
-
-    $('#editModal #dateClicked').val(sDate.getFullYear() +"-" + (sDate.getMonth() +1) + "-" + sDate.getDate()) ;
-    //console.log(sDate);
-    $('#editModal #sHour').val(sDate.getHours());
-    $('#editModal #sMin').val(sDate.getMinutes());
-
-    $('#editModal #eHour').val(eDate.getHours());
-    $('#editModal #eMin').val(eDate.getMinutes());
-
-    // Week beginning sunday: 0
-    $('#editModal #dayNumber').val(sDate.getDay());
-    $('#editModal #employeeSelect').val(xEvent.employeeId);
-    //alert(xEvent.employeeId);
     // Set global var so we can get it when we edit.
-    globStoredEvent = xEvent;
+    globStoredEvent = calEvent;
+
+    $stPick = $('#editModal #startTimePicker').data("DateTimePicker");
+    $stPick.clear();
+    $stPick.defaultDate(new Date(moment(calEvent.start).tz(globTimeZoneAMontreal)));
+
+    $etPick = $('#editModal #endTimePicker').data("DateTimePicker");
+    $etPick.clear();
+    $etPick.defaultDate(new Date(moment(calEvent.end).tz(globTimeZoneAMontreal)));
+
 
     $("#editModal #displayErrors").hide();
     $("#editModal #displaySuccesses").hide();
