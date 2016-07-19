@@ -523,7 +523,7 @@ class ScheduleController extends Controller
             'titleFormat' => $strCalendar,
             'lang' => 'fr-ca'
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(jsEvent, xEvent);}",
+            'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(xEvent, jsEvent, view);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 
@@ -622,7 +622,7 @@ class ScheduleController extends Controller
             'titleFormat' => $strCalendar,
             'lang' => 'fr-ca'
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(jsEvent, xEvent);}",
+            'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(xEvent, jsEvent, view);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 

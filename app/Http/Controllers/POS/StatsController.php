@@ -16,6 +16,7 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 
+use App\Helpers\Utils;
 use DateInterval;
 use DateTime;
 
@@ -27,14 +28,17 @@ class StatsController extends Controller
         // For bar chart Monthly scheduled & worked hours
         $rawWorkedHours = Punch::GetWorkedHoursYear(date("Y"));
         $rawScheduledHours = Schedule::GetScheduledHoursYear(date("Y"));
-        $workedHours = $scheduledHours = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,);
-        foreach($rawWorkedHours as $monthWorkedHours){
+        $workedHours = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,);
+        $scheduledHours = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,);
 
-            $workedHours[$monthWorkedHours->month] = (int)(Datetime::createFromFormat('H:i:s', $monthWorkedHours->total)->format('h'));
+        $curDateTime = new DateTime();
+        foreach($rawWorkedHours as $monthWorkedHours){
+            $parts   = explode(':', $monthWorkedHours->total);
+            $workedHours[$monthWorkedHours->month] = $parts[0];
         }
         foreach($rawScheduledHours as $monthSheduledHours){
-
-            $scheduledHours[$monthSheduledHours->month] = (int)(Datetime::createFromFormat('H:i:s', $monthSheduledHours->total)->format('h'));
+            $parts   = explode(':', $monthSheduledHours->total);
+            $scheduledHours[$monthSheduledHours->month] = $parts[0];
         }
         $view = \View::make('POS.stats.index')->with('ViewBag', array(
                 'workedHours' => $workedHours,

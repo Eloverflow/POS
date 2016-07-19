@@ -4,8 +4,8 @@
 @foreach($tableChoiceLists as $tableChoiceList)
 
     <div class="labelBtn">
-        <label>Item type</label>
-        <a class="btn btn-success pull-right" id="btnAddItemType" href="#"> Add </a>
+        <label>Item Type</label>
+        <a class="btn btn-success pull-right" id="btnAddItemType" href="#"> Create Item Type </a>
     </div>
     <input type="hidden" id="selectedItem" name="{{ $tableChoiceList['dbColumn'] }}" value="@if(isset($tableRow)){{ $tableRow->$tableChoiceList['dbColumn'] }} @endif">
     <div id="tableChoiceList{{$tableIteration}}" class="list-group tableChoiceList">

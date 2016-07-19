@@ -1,6 +1,7 @@
 @extends('master')
 @section('csrfToken')
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
+    <link rel="stylesheet" href="{{ @URL::to('css/graphs.css') }}"/>
     <script src="{{ @URL::to('js/chart.min.js') }}" ></script>
 
 
@@ -17,19 +18,21 @@
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
-                <div class="panel-heading">Montly scheduled & worked hours</div>
+                <div class="panel-heading">Montly scheduled & worked hours this year</div>
                 <div class="panel-body">
                     <div class="canvas-wrapper">
                         <canvas class="main-chart" id="bar-chart" height="350" width="800"></canvas>
+                        <div id="legend"></div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
 @stop
 
 @section("myjsfile")
-
+    <script src="{{ @URL::to('js/utils.js') }}" ></script>
     <script>
         var randomScalingFactor = function(){ return Math.round(Math.random()*120)};
 
@@ -40,6 +43,7 @@
             labels : ["January","February","March","April","May","June","July", "August", "September", "October", "November", "December"],
             datasets : [
                 {
+                    label: "Scheduled Hours",
                     fillColor : "rgba(220,220,220,0.5)",
                     strokeColor : "rgba(220,220,220,0.8)",
                     highlightFill: "rgba(220,220,220,0.75)",
@@ -47,6 +51,7 @@
                     data : scheduledHours
                 },
                 {
+                    label: "Worked Hours",
                     fillColor : "rgba(48, 164, 255, 0.2)",
                     strokeColor : "rgba(48, 164, 255, 0.8)",
                     highlightFill : "rgba(48, 164, 255, 0.75)",
@@ -69,12 +74,29 @@
             $_scaleSteps = 3
         }
 
-        var countries= document.getElementById("bar-chart").getContext("2d");
-        new Chart(countries).Bar(barChartData, {
+        var leg = [];
+        leg.push({ color: 'rgba(220,220,220,0.5)', name: "Scheduled Hours"});
+        leg.push({ color: 'rgba(48, 164, 255, 0.2)', name: "Worked Hours"});
+
+        var legTemplate = genHtmlChartTempl(leg);
+        console.log(legTemplate);
+
+
+        var countries = document.getElementById("bar-chart").getContext("2d");
+        var barChart = new Chart(countries).Bar(barChartData, {
             scaleOverride : true,
             scaleSteps : $_scaleSteps,
             scaleStepWidth : 20,
-            scaleStartValue : 0
+            scaleStartValue : 0,
+            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>kb",
         });
+
+        var legend = barChart.generateLegend();
+
+        var legendHolder = document.createElement('div');
+        legendHolder.innerHTML = legend;
+
+        //and append it to your page somewhere
+        $("#legend").append(legendHolder.firstChild);
     </script>
 @stop

@@ -72,14 +72,17 @@
                         <ul id="errors"></ul>
                     </div>
                     <div class="col-md-12">
-                        <div class="form-group">
+                        <div class="form-group frmGrpTopFix">
                             {!! Form::label('typeName', "Type name" ) !!}
                             {!! Form::text('typeName', null, array('class' => 'form-control', 'id' => 'typeName')) !!}
+                        </div>
+                        <div class="parentSeparation">
+                            <div class="separation"></div>
                         </div>
                         <div class="form-group">
                             <div class="labelBtn">
                                 <div class="col-md-6">
-                                    <label>Fields name</label>
+                                    <label>Fields</label>
                                 </div>
                                 <div class="col-md-4">
                                     {!! Form::text('fieldName', null, array('class' => 'form-control', 'id' => 'fieldName', 'placeholder' => 'Field Name')) !!}
@@ -106,7 +109,7 @@
                         <div class="form-group">
                             <div class="labelBtn">
                                 <div class="col-md-6">
-                                    <label>Sizes name</label>
+                                    <label>Sizes</label>
                                 </div>
                                 <div class="col-md-4">
                                     {!! Form::text('sizeName', null, array('class' => 'form-control', 'id' => 'sizeName', 'placeholder' => 'Size Name')) !!}

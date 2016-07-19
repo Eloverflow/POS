@@ -54,3 +54,15 @@ function getLastSunday(d) {
     t.setDate(t.getDate() - t.getDay());
     return t;
 }
+
+function genHtmlChartTempl(array) {
+    var htmlList = '<ul>';
+    for (var i = 0; i< array.length; i++) {
+        htmlList += '<li>'
+        +'<span style=\"background-color:' + array[i].color + '\"></span>'
+        + array[i].name
+        +'</li>';
+    }
+    htmlList += '</ul>';
+    return htmlList;
+}
