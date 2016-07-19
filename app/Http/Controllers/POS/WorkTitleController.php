@@ -101,7 +101,7 @@ class WorkTitleController extends Controller
 
                 $titleEmployee = Title_Employees::create([
                     'employee_id' => \Input::get('emplId'),
-                    'employee_titles_id' => \Input::get('emplTitleId')
+                    'work_titles_id' => \Input::get('emplTitleId')
                 ]);
 
                 $objTitleEmployee = array (

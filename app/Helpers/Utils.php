@@ -108,6 +108,23 @@ class Utils
 
     // Calculate hours from DateInterval Object
     // Return array with hours and minutes.
+    static public function CalculateHours($interval){
+
+
+        $hours = ($interval->h + ($interval->d * 24))*60;
+
+        $mins = $interval->i;
+
+        if($mins > 30){
+            $hours += 1;
+        }
+
+        return $hours;
+
+    }
+
+    // Calculate hours from DateInterval Object
+    // Return array with hours and minutes.
     static public function CalculateMinutes($interval){
 
 

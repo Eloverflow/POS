@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-6">
             <div class="vcenter">
-                <a class="btn btn-primary pull-right" href="{{ @URL::to('employee/title/create') }}"> Create New </a>
+                <a id="btnCreateNew" class="btn btn-primary pull-right" href="{{ @URL::to('employee/title/create') }}"> Create New </a>
             </div>
         </div>
     </div>
@@ -110,7 +110,7 @@
                             <h3></h3>
                             <select id="employeeSelect" name="employeeSelect" class="form-control">
                                 @foreach ($ViewBag['employees'] as $employee)
-                                    <option value="{{ $employee->idEmployee }}">{{ $employee->firstName }}</option>
+                                    <option value="{{ $employee->idEmployee }}">{{ $employee->firstName . " " . $employee->lastName }}</option>
                                 @endforeach
                             </select>
                         </div>
@@ -131,6 +131,9 @@
 
             $(".viewHide").hide();
 
+            $("#btnCreateNew").bind('click', function () {
+
+            });
             $(".btnAddEmployee").bind("click", function() {
                 //alert();
                 $("#frmTitleId").val($(this).attr("data-emplTitleId"));
@@ -183,10 +186,11 @@
 
 
             $("#frmBtnAddEmpl").bind("click", function() {
-                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-                alert(CSRF_TOKEN);
                 var emplId =  $("#employeeSelect").val();
                 var emplTitleId = $("#frmTitleId").val();
+
+                var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
                 $.ajax({
                     url: '/work/title/add/employee',
                     type: 'POST',
