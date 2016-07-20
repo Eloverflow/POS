@@ -500,9 +500,10 @@ angular.module('starter.controllers')
                             var name = string.split('');
 
                             var count = 0;
+                            var secondColorDark = true;
                             for (var k = 0; k < name.length; k++) {
 
-                                if (count > 6) {
+                                if (count >= 6) {
                                     count = 0
                                 }
 
@@ -513,26 +514,56 @@ angular.module('starter.controllers')
                                 }
 
 
-                                var invertedColor = 15 - currentColor;
+                               /* var invertedColor = 15 - currentColor;
 
 
                                 while (invertedColor > 7) {
                                     invertedColor = invertedColor - 2;
                                 }
+*/
 
+
+                            /*    if(currentColor > 6 && secondColorDark)
+                                {
+                                    secondColorDark = false;
+                                }*/
 
                                 /*console.log(currentColor + " - Inverted to : " + invertedColor);*/
 
                                 sizeColorForName[count] = currentColor;
-                                sizeColorText[count] = invertedColor;
 
 
                                 count++
                             }
 
 
+
+
+
                             for (var o = 0; o < sizeColorForName.length; o++) {
                                 color += letters[sizeColorForName[o]];
+                            }
+
+
+                            var c = color.substring(1);      // strip #
+
+
+                            if(getContrastYIQ(c) == 'white')
+                                secondColorDark = false;
+                            else
+                                secondColorDark = true;
+
+
+                            for (count = 0; count < 6; count++) {
+                                if(secondColorDark)
+                                    sizeColorText[count] = 0;
+                                else
+                                    sizeColorText[count] = 15;
+                            }
+
+
+
+                            for (o = 0; o < sizeColorText.length; o++) {
                                 textColor += letters[sizeColorText[o]];
                             }
 
@@ -1013,6 +1044,12 @@ angular.module('starter.controllers')
                 }
             }
 
+        };
+
+        $scope.changecommandlineStatusLine = function (commandline) {
+                        commandline.status = 2;
+            console.log(commandline.status)
+            $scope.delayedUpdateTable();
         };
 
         /*Add an item to the current command*/
@@ -2645,6 +2682,14 @@ angular.module('starter.controllers')
             } else {
                 // Do something meaningful
             }
+        }
+
+        function getContrastYIQ(hexcolor){
+            var r = parseInt(hexcolor.substr(0,2),16);
+            var g = parseInt(hexcolor.substr(2,2),16);
+            var b = parseInt(hexcolor.substr(4,2),16);
+            var yiq = ((r*299)+(g*587)+(b*114))/1000;
+            return (yiq >= 128) ? 'black' : 'white';
         }
 
 

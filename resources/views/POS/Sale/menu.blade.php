@@ -216,6 +216,12 @@
                     </p>
                 </div>
 
+                <button ng-show="(commandClient[commandCurrentClient].commandline | filter :  { status: 1 }).length > 1" ng-click="changecommandlineStatusLine(commandItem)" href="#"
+                        style="background-color: #30a5ff; width: 100%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
+                            class="glyphicon glyphicon-upload"></span>
+                    Ajouter l'item à la commande
+                </button>
+
             </li>
         </ul>
     </div>
