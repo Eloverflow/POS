@@ -17,7 +17,7 @@
         </div>
         <div class="col-md-6">
             <div class="vcenter">
-                <a id="btnCreateNew" class="btn btn-primary pull-right" href="{{ @URL::to('employee/title/create') }}"> Create New </a>
+                <a id="btnCreateNew" class="btn btn-primary pull-right" href="#"> Create New </a>
             </div>
         </div>
     </div>
@@ -131,9 +131,72 @@
 
             $(".viewHide").hide();
 
+            var isCreatingNew = false;
             $("#btnCreateNew").bind('click', function () {
 
+                if(isCreatingNew == false) {
+                    $("#accordion").prepend('<div id="newWorkTitle">' +
+                            '<div class="viewShow">' +
+                            '<span><h6 id="emplTitleName" class="hsize"></h6> <span id="emplTitleBaseSalary">#salare</span>/h</span>' +
+                            '<span class="editEmplTitle pull-right glyphicon glyphicon-pencil"></span>' +
+                            '</div>' +
+                            '<div class="viewHide">' +
+                            '<span id="emplTitleId" class="hidden">#empltitleid</span>' +
+                            '<div class="cont-block">' +
+                            '<label for="emplTitleName">Title Name :</label>' +
+                            '<br />' +
+                            '<input id="inptTitleName" class="form-control inpt-bar in-Title" type="text" name="emplTitleName">' +
+                            '</div>' +
+                            '<div class="cont-block">' +
+                            '<label for="emplTitleName">Base Salary :</label>' +
+                            '<br />' +
+                            '<input id="inptBaseSalary" class="form-control inpt-bar in-BSalary" type="text" name="emplTitleBaseSalary">' +
+                            '</div>' +
+                            '<span class="cancEmplTitle pull-right glyphicon glyphicon glyphicon-remove"></span>' +
+                            '<span class="doneEmplTitle pull-right glyphicon glyphicon-ok"></span>' +
+                            '</div>' +
+                            '</div>' +
+                            '<div>' +
+                            '<button data-emplTitleId="0" type="button" class="btn btn-success pull-right btnAddEmployee">Add Employee</button>' +
+                            '<table id="tbl-0" class="table">' +
+                            '<thead>' +
+                            '<tr>' +
+                            '<th>#</th>' +
+                            '<th>Full Name</th>' +
+                            '<th>Hire Date</th>' +
+                            '<th></th>' +
+                            '</tr>' +
+                            '</thead>' +
+                            '<tbody>' +
+                            '</tbody>' +
+                            '</table>' +
+                            '</div>');
+
+                    $("#accordion").accordion("refresh");
+
+
+
+                    // The new htmlObject
+                    var newObj = $("#newWorkTitle");
+                    var viewToHide = newObj.find(".viewShow");
+                    var viewToShow = newObj.find(".viewHide");
+
+                    viewToHide.hide();
+
+                    var inputTitleName = viewToShow.find("#inptTitleName");
+                    inputTitleName.focus();
+                    /*var vsTitleName = inputTitleName.text();
+                    console.log(vsTitleName);
+
+                    var vsBaseSalary = viewToHide.find("#emplTitleBaseSalary").text();
+                    console.log(vsBaseSalary);*/
+
+                    isCreatingNew = true;
+                } else {
+                    alert("Please finish creating the current work title !");
+                }
             });
+
             $(".btnAddEmployee").bind("click", function() {
                 //alert();
                 $("#frmTitleId").val($(this).attr("data-emplTitleId"));
