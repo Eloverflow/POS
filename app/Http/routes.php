@@ -23,6 +23,7 @@ Route::controllers([
     'password' => 'Auth\PasswordController',
 ]);
 /* End Authentication */
+Route::get('/website',  function(){return view('POS.Website.websiteLayout'); });
 
 Route::get('/user/password/update', ['uses' => 'Auth\UserController@update','middleware' => 'auth']);
 Route::post('/user/password/update', ['uses' => 'Auth\UserController@updatePassword','middleware' => 'auth']);
