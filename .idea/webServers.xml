@@ -7,6 +7,15 @@
           <advancedOptions>
             <advancedOptions dataProtectionLevel="Private" />
           </advancedOptions>
+          <option name="port" value="22" />
+        </fileTransfer>
+      </webServer>
+      <webServer id="ad648839-f92a-43bc-8d94-9983535df2f9" name="POS" url="http://pos.mirageflow.com">
+        <fileTransfer host="pos.mirageflow.com" port="22" rootFolder="/var/www/POS/" accessType="SFTP" password="dfc7dfc3dfc4dfc3dfcddfdfdfc4dfcbdfd8dfcbdfc8dfcf" username="root">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" />
+          </advancedOptions>
+          <option name="port" value="22" />
         </fileTransfer>
       </webServer>
     </option>

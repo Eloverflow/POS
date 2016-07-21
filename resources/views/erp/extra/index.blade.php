@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">Extra</h1>
+        <h1 class="page-header">Extras</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">

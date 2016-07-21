@@ -11,7 +11,7 @@ class Sale extends Model implements LogsActivityInterface {
     use LogsActivity;
     protected $table = 'sales';
 
-    protected $fillable = array('sale_number', 'cancelled', 'status', 'total', 'taxes', 'subTotal', 'paiement_type', 'slug');
+    protected $fillable = array('sale_number', 'cancelled', 'status', 'total', 'taxes', 'subTotal', 'paiement_type', 'extras', 'slug');
 
 
     public function saleline()

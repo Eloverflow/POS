@@ -510,7 +510,17 @@ class SalesController extends Controller
                                     array_push($result['commandLineIdMat'][count($result['commandLineIdMat']) - 1], $commandLine->id);
                                 } else {
                                     $result['msg'] .= " - Failed at finding the command line";
-                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'status' => $inputItem['status'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras'])]);
+
+                                    if (!empty($inputItem['extras'])) {
+                                        $inputItem['extras'] = json_encode($inputItem['extras']);
+                                    }
+
+                                    if (!empty($inputItem['extras']))
+                                        $extras = $inputItem['extras'];
+                                    else
+                                        $extras = "";
+
+                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'status' => $inputItem['status'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']), 'extras' => $extras]);
 
                                     if ($commandLine == "") {
                                         $result['msg'] .= " - Failed at recording command line";
@@ -584,7 +594,11 @@ class SalesController extends Controller
                                         $inputItem['notes'] = json_encode($inputItem['notes']);
 
                                         //Serialization of extras
-                                        $inputItem['extras'] = json_encode($inputItem['extras']);
+                                        if (!empty($inputItem['extras'])) {
+                                            $inputItem['extras'] = json_encode($inputItem['extras']);
+                                        }
+
+
 
                                         $commandLine->update($inputItem);
                                         $commandLine->save();

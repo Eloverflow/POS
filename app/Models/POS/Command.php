@@ -12,7 +12,7 @@ class Command extends Model implements LogsActivityInterface {
 
     protected $table = 'commands';
 
-    protected $fillable = array('table_id', 'client_id', 'command_number', 'notes', 'status', 'slug');
+    protected $fillable = array('table_id', 'client_id', 'command_number', 'notes', 'status', 'extras', 'slug');
 
 
     public function client()

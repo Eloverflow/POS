@@ -762,7 +762,7 @@ angular.module('starter.controllers')
                     if (typeof $scope.commandClient[$scope.commandCurrentClient].extras === 'undefined' || $scope.commandClient[$scope.commandCurrentClient].extras === null || $scope.commandClient[$scope.commandCurrentClient].extras === "")
                         $scope.commandClient[$scope.commandCurrentClient].extras = [];
 
-                    $scope.commandClient[$scope.commandCurrentClient].extras.push(extra)
+                    $scope.commandClient[$scope.commandCurrentClient].extras.push({name: extra.name, value: extra.value, effect: extra.effect})
                 }
 
                 $scope.updateCommand();
@@ -799,6 +799,7 @@ angular.module('starter.controllers')
 
 
         $scope.chargeBill = function (bill) {
+            var payBillPanel = $('#pay-bill-panel').show();
 
             /*Popup modal for charging client*/
             $scope.showPayBillPanel = true;
@@ -812,23 +813,40 @@ angular.module('starter.controllers')
             /* Will authenticate with the interact or the */
             bill.status = 2;
 
+            billWindow.prepend('<div style="width: 100%; height: 100%; position: absolute;" id="bill-backdrop"></div>')
+
+            var billBackdrop = $('#bill-backdrop')
+
+            billBackdrop.on('click',(function (e) {
+                billBackdrop.remove();
+                payBillPanel.fadeOut(400,"swing",function () {
+                    //payBillPanel.show();
+                })
+                $scope.showPayBillPanel = false;
+          /*      if ($scope.showPayBillPanel) {
+                    var container = $("#pay-bill-panel");
+
+
+                    console.log(e.clientX)
+                    console.log(container.offset().left)
+                    console.log(e.clientY)
+                    console.log(container.offset().top)
+
+                    if (e.clientX < container.offset().left || e.clientX > container.offset().left + container.width() || e.clientY < container.offset().top || e.clientY > container.height())
+                    {
+                        $scope.showPayBillPanel = false;
+                        billBackdrop
+                    }
+                    else {
+                        //Inside the pay-bill-panel
+                    }
+                }
+*/
+            }));
+
 
         };
 
-        billWindow.mouseup(function (e) {
-            if ($scope.showPayBillPanel) {
-                var container = $("#pay-bill-panel");
-
-                if (e.clientX > container.offsetLeft || e.clientX < container.offsetLeft + container.width || e.clientY > container.offsetTop || e.clientY < container.offsetTop + container.height)
-                {
-                    //Inside the pay-bill-panel
-                }
-                else {
-                    $scope.showPayBillPanel = false;
-                }
-            }
-
-        });
 
 
         $scope.paymentType = function (type) {
@@ -1131,7 +1149,7 @@ angular.module('starter.controllers')
                                 if ($scope.bills[d][l].extras[o].effect == '-')
                                     subTotal -= $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity;
                                 else if ($scope.bills[d][l].extras[o].effect == '+')
-                                    subTotal += $scope.bills[d][l].extras[o] * $scope.bills[d][l].quantity;
+                                    subTotal += $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity;
                                 else if ($scope.bills[d][l].extras[o].effect == '*')
                                     subTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity;
                                 else if ($scope.bills[d][l].extras[o].effect == '/')
@@ -1155,7 +1173,7 @@ angular.module('starter.controllers')
                             if ($scope.bills[d].extras[o].effect == '-')
                                 subTotal -= $scope.bills[d].extras[o].value;
                             else if ($scope.bills[d].extras[o].effect == '+')
-                                subTotal += $scope.bills[d].extras[o];
+                                subTotal += $scope.bills[d].extras[o].value;
                             else if ($scope.bills[d].extras[o].effect == '*')
                                 subTotal += subTotal * $scope.bills[d].extras[o].value / 100;
                             else if ($scope.bills[d].extras[o].effect == '/')
@@ -1194,23 +1212,29 @@ angular.module('starter.controllers')
                             if ($scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].effect == '-')
                                 subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].value * $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity;
                             else if ($scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].effect == '+')
-                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o] * $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity;
+                                subTotal += $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].value * $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity;
                             else if ($scope.commandClient[$scope.commandCurrentClient].commandline[i].effect == '*')
                                 subTotal += $scope.commandClient[$scope.commandCurrentClient].commandline[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity;
                             else if ($scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].effect == '/')
                                 subTotal -= $scope.commandClient[$scope.commandCurrentClient].commandline[i].size.price * $scope.commandClient[$scope.commandCurrentClient].commandline[i].extras[o].value / 100 * $scope.commandClient[$scope.commandCurrentClient].commandline[i].quantity;
                     }
 
-                    if (typeof $scope.commandClient[$scope.commandCurrentClient].extras != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].extras != null) {
-                        for (o = 0; o < $scope.commandClient[$scope.commandCurrentClient].extras.length; o++)
-                            if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '-')
-                                subTotal -= $scope.commandClient[$scope.commandCurrentClient].extras[o].value;
-                            else if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '+')
-                                subTotal += $scope.commandClient[$scope.commandCurrentClient].extras[o];
-                            else if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '*')
-                                subTotal += subTotal * $scope.commandClient[$scope.commandCurrentClient].extras[o].value / 100;
-                            else if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '/')
-                                subTotal -= subTotal * $scope.commandClient[$scope.commandCurrentClient].extras[o].value / 100;
+
+
+                }
+                if (typeof $scope.commandClient[$scope.commandCurrentClient].extras != 'undefined' && $scope.commandClient[$scope.commandCurrentClient].extras != null) {
+                    for (o = 0; o < $scope.commandClient[$scope.commandCurrentClient].extras.length; o++){
+                        if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '-')
+                            subTotal -= $scope.commandClient[$scope.commandCurrentClient].extras[o].value;
+                        else if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '+'){
+
+                            console.log($scope.commandClient[$scope.commandCurrentClient].extras[o].value);
+                            subTotal += parseFloat($scope.commandClient[$scope.commandCurrentClient].extras[o].value);
+                        }
+                        else if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '*')
+                            subTotal += subTotal * $scope.commandClient[$scope.commandCurrentClient].extras[o].value / 100;
+                        else if ($scope.commandClient[$scope.commandCurrentClient].extras[o].effect == '/')
+                            subTotal -= subTotal * $scope.commandClient[$scope.commandCurrentClient].extras[o].value / 100;
                     }
 
                 }
@@ -1609,7 +1633,7 @@ angular.module('starter.controllers')
                                         if ($scope.bills[$scope.bills.length - 1][l].extras[o].effect == '-')
                                             subTotal -= $scope.bills[$scope.bills.length - 1][l].extras[o].value * $scope.bills[$scope.bills.length - 1][l].quantity;
                                         else if ($scope.bills[$scope.bills.length - 1][l].extras[o].effect == '+')
-                                            subTotal += $scope.bills[$scope.bills.length - 1][l].extras[o] * $scope.bills[$scope.bills.length - 1][l].quantity;
+                                            subTotal += $scope.bills[$scope.bills.length - 1][l].extras[o].value * $scope.bills[$scope.bills.length - 1][l].quantity;
                                         else if ($scope.bills[$scope.bills.length - 1][l].extras[o].effect == '*')
                                             subTotal += $scope.bills[$scope.bills.length - 1][l].size.price * $scope.bills[$scope.bills.length - 1][l].extras[o].value / 100 * $scope.bills[$scope.bills.length - 1][l].quantity;
                                         else if ($scope.bills[$scope.bills.length - 1][l].extras[o].effect == '/')
@@ -1628,6 +1652,7 @@ angular.module('starter.controllers')
                                 var sale_id = $scope.bills[$scope.bills.length - 1][l].sale_id;
 
                                 console.log('extras');
+                                console.log(extras);
                                 var extras = $scope.bills[$scope.bills.length - 1][l].extras;
 
                                 for (var ob in itemWhereId) {
@@ -1826,8 +1851,8 @@ angular.module('starter.controllers')
         /*Move the selected items or selected bills items to the given bill*/
         $scope.moveToBill = function (bill) {
             $scope.showBillDemo = false;
-            var billSubTotal;
-            var billTotal;
+            var subTotal;
+            var total;
             var billTaxes;
             var o;
             var j;
@@ -1842,32 +1867,32 @@ angular.module('starter.controllers')
                                 $scope.bills[d][l].sale_id = bill.sale_id;
                             }
 
-                            billSubTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
+                            subTotal = $scope.bills[d][l].size.price * $scope.bills[d][l].quantity;
 
                             if (typeof $scope.bills[d][l].extras != 'undefined' && $scope.bills[d][l].extras != null) {
                                 for (o = 0; o < $scope.bills[d][l].extras.length; o++)
                                     if ($scope.bills[d][l].extras[o].effect == '-')
-                                        billSubTotal -= $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity;
+                                        subTotal -= $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity;
                                     else if ($scope.bills[d][l].extras[o].effect == '+')
-                                        billSubTotal += $scope.bills[d][l].extras[o] * $scope.bills[d][l].quantity;
+                                        subTotal += $scope.bills[d][l].extras[o].value * $scope.bills[d][l].quantity;
                                     else if ($scope.bills[d][l].extras[o].effect == '*')
-                                        billSubTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity;
+                                        subTotal += $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity;
                                     else if ($scope.bills[d][l].extras[o].effect == '/')
-                                        billSubTotal -= $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity;
+                                        subTotal -= $scope.bills[d][l].size.price * $scope.bills[d][l].extras[o].value / 100 * $scope.bills[d][l].quantity;
                             }
 
-                            billTotal = billSubTotal;
-                            /*Copy the billTaxes and change its billTotal to 0*/
+                            total = subTotal;
+                            /*Copy the billTaxes and change its total to 0*/
                             billTaxes = angular.copy($scope.taxes);
                             for (j = 0; j < billTaxes.length; j++) {
-                                billTaxes[j].billTotal = billSubTotal * billTaxes[j].value;
-                                billTotal += billTaxes[j].billTotal;
+                                billTaxes[j].total = subTotal * billTaxes[j].value;
+                                total += billTaxes[j].total;
                             }
 
-                            bill.billSubTotal += billSubTotal;
-                            bill.billTotal += billTotal;
+                            bill.subTotal += subTotal;
+                            bill.total += total;
                             for (j = 0; j < billTaxes.length; j++) {
-                                bill.taxes[j].billTotal += billTaxes[j].billTotal;
+                                bill.taxes[j].total += billTaxes[j].total;
                             }
                             bill.push($scope.bills[d][l]);
 
@@ -1895,36 +1920,36 @@ angular.module('starter.controllers')
                             checkedItems[f].sale_id = ''
                         }
 
-                        billSubTotal = checkedItems[f].size.price * checkedItems[f].quantity;
+                        subTotal = checkedItems[f].size.price * checkedItems[f].quantity;
 
                         if (typeof checkedItems[f].extras != 'undefined' && checkedItems[f].extras != null) {
                             for (o = 0; o < checkedItems[f].extras.length; o++)
                                 if (checkedItems[f].extras[o].effect == '-')
-                                    billSubTotal -= checkedItems[f].extras[o].value * checkedItems[f].quantity;
+                                    subTotal -= checkedItems[f].extras[o].value * checkedItems[f].quantity;
                                 else if (checkedItems[f].extras[o].effect == '+')
-                                    billSubTotal += checkedItems[f].extras[o] * checkedItems[f].quantity;
+                                    subTotal += checkedItems[f].extras[o].value * checkedItems[f].quantity;
                                 else if (checkedItems[f].extras[o].effect == '*')
-                                    billSubTotal += checkedItems[f].size.price * checkedItems[f].extras[o].value / 100 * checkedItems[f].quantity;
+                                    subTotal += checkedItems[f].size.price * checkedItems[f].extras[o].value / 100 * checkedItems[f].quantity;
                                 else if (checkedItems[f].extras[o].effect == '/')
-                                    billSubTotal -= checkedItems[f].size.price * checkedItems[f].extras[o].value / 100 * checkedItems[f].quantity;
+                                    subTotal -= checkedItems[f].size.price * checkedItems[f].extras[o].value / 100 * checkedItems[f].quantity;
                         }
 
-                        billTotal = billSubTotal;
+                        total = subTotal;
 
-                        /*Copy the billTaxes and change its billTotal to 0*/
+                        /*Copy the billTaxes and change its total to 0*/
                         billTaxes = angular.copy($scope.taxes);
                         for (j = 0; j < billTaxes.length; j++) {
-                            billTaxes[j].billTotal = billSubTotal * billTaxes[j].value;
-                            billTotal += billTaxes[j].billTotal;
+                            billTaxes[j].total = subTotal * billTaxes[j].value;
+                            total += billTaxes[j].total;
                         }
 
-                        $scope.bills[d].billSubTotal -= billSubTotal;
-                        bill.billSubTotal += billSubTotal;
-                        $scope.bills[d].billTotal -= billTotal;
-                        bill.billTotal += billTotal;
+                        $scope.bills[d].subTotal -= subTotal;
+                        bill.subTotal += subTotal;
+                        $scope.bills[d].total -= total;
+                        bill.total += total;
                         for (j = 0; j < billTaxes.length; j++) {
-                            $scope.bills[d].taxes[j].billTotal -= billTaxes[j].billTotal;
-                            bill.taxes[j].billTotal += billTaxes[j].billTotal;
+                            $scope.bills[d].taxes[j].total -= billTaxes[j].total;
+                            bill.taxes[j].total += billTaxes[j].total;
                         }
 
                         checkedItems[f].checked = false;
@@ -1935,7 +1960,7 @@ angular.module('starter.controllers')
                     }
                     $scope.movingBillItem = false;
 
-                    /*We needed* to recalculate subbillTotal, billTaxes, billTotal of each bill*/
+                    /*We needed* to recalculate subtotal, billTaxes, total of each bill*/
                 }
 
             }
@@ -2009,7 +2034,7 @@ angular.module('starter.controllers')
                                 if (item.extras[o].effect == '-')
                                     subTotal -= item.extras[o].value * item.quantity;
                                 else if (item.extras[o].effect == '+')
-                                    subTotal += item.extras[o] * item.quantity;
+                                    subTotal += item.extras[o].value * item.quantity;
                                 else if (item.extras[o].effect == '*')
                                     subTotal += item.size.price * item.extras[o].value / 100 * item.quantity;
                                 else if (item.extras[o].effect == '/')
@@ -2073,7 +2098,7 @@ angular.module('starter.controllers')
                                 if (item.extras[o].effect == '-')
                                     subTotal -= item.extras[o].value * item.quantity;
                                 else if (item.extras[o].effect == '+')
-                                    subTotal += item.extras[o] * item.quantity;
+                                    subTotal += item.extras[o].value * item.quantity;
                                 else if (item.extras[o].effect == '*')
                                     subTotal += item.size.price * item.extras[o].value / 100 * item.quantity;
                                 else if (item.extras[o].effect == '/')
