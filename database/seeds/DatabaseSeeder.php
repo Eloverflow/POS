@@ -525,6 +525,7 @@ class ClientSeeder extends Seeder {
 }
 
 
+
 class PlanSeeder extends Seeder {
 
     public function run()
