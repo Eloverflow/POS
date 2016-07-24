@@ -140,8 +140,8 @@ class WorkTitleController extends Controller
         $inputs = \Input::all();
 
         $rules = array(
-            'planName' => 'required',
-            'nbFloor' => 'required'
+            'emplTitleName' => 'required',
+            'emplTitleBaseSalary' => 'required'
         );
 
         $message = array(
@@ -159,31 +159,20 @@ class WorkTitleController extends Controller
         else
         {
 
-            $plan = Plan::create([
-                'name' => \Input::get('planName'),
-                'nbFloor' => \Input::get('nbFloor')
-            ]);
-
-            $jsonArray = json_decode(\Input::get('tables'), true);
-            for($i = 0; $i < count($jsonArray); $i++)
-            {
-                Table::create([
-                    "type" => $jsonArray[$i]["tblType"],
-                    "tblNumber" => $jsonArray[$i]["tblNum"],
-                    "noFloor" => $jsonArray[$i]["noFloor"],
-                    'xPos' => $jsonArray[$i]["xPos"],
-                    "yPos" => $jsonArray[$i]["yPos"],
-                    "angle" => $jsonArray[$i]["angle"],
-                    "plan_id" => $plan->id,
-                    "status" => 1
+            $result = WorkTitle::create([
+                    'name' => \Input::get('emplTitleName'),
+                    'baseSalary' => \Input::get('emplTitleBaseSalary')
                 ]);
-            }
 
+            $messages = array(
+                'success' => ("The employee title " . \Input::get('emplTitleName') . " has been successfully created !"),
+                'workTitleId' => $result->id
+            );
+
+            return \Response::json([
+                'success' => $messages
+            ], 201);
         }
-
-        return \Response::json([
-            'success' => "The plan " . \Input::get('planName') . " has been successfully created !"
-        ], 201);
     }
 
     public function postEdit()

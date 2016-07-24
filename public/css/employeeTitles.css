@@ -73,3 +73,33 @@ span.glyphicon {
 .table {
     width: 400px
 }
+
+.viewShow .secondInfo {
+    display: inline-block;
+    background-color: #17902C;
+    margin-left: 15px;
+    height: 28px;
+    border: 1px solid lightgray;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+}
+.viewShow .secondInfo .textCase {
+    padding: 5px;
+    display: inline;
+    color: #FFFFFF;
+}
+
+#accordion .groupHeader {
+    display: inline-block;
+}
+
+.viewShow .secondInfo .hcase {
+    height: 100%;
+    display: inline-block;
+    width: 20px;
+    background-color: beige;
+    color: black;
+    padding: 5px;
+    margin: 0px;
+}
