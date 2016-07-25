@@ -209,3 +209,8 @@ Route::get('/disponibility/details/{id}',  ['uses' => 'POS\DisponibilityControll
 Route::get('/stats',  ['uses' => 'POS\StatsController@index', 'middleware' => 'auth']);
 
 /* End Statistics */
+
+/* Start Calendar */
+Route::get('/calendar',  ['uses' => 'POS\CalendarController@index', 'middleware' => 'auth']);
+Route::get('/calendar/edit',  ['uses' => 'POS\CalendarController@edit', 'middleware' => 'auth']);
+/* End Calendar */
