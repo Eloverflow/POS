@@ -12,6 +12,7 @@
         "barryvdh/laravel-ide-helper": "^2.1",
         "barryvdh/laravel-dompdf": "0.6.*",
         "spatie/activitylog": "*",
+        "spatie/laravel-activitylog": "*",
         "maddhatter/laravel-fullcalendar": "~1.0"
     },
     "require-dev": {
