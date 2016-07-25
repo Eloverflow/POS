@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDayDisponibilitiesTable extends Migration
+class CreateDayAvailabilityTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,10 +12,10 @@ class CreateDayDisponibilitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('day_disponibilities', function (Blueprint $table) {
+        Schema::create('day_availability', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('disponibility_id')->unsigned();
-            $table->foreign('disponibility_id')->references('id')->on('disponibilities');
+            $table->integer('availability_id')->unsigned();
+            $table->foreign('availability_id')->references('id')->on('availability');
             $table->integer('day_number')->unsigned();
             $table->time('startTime');
             $table->time('endTime');
@@ -30,6 +30,6 @@ class CreateDayDisponibilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('day_disponibilities');
+        Schema::drop('day_availability');
     }
 }

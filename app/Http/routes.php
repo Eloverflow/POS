@@ -185,21 +185,21 @@ Route::get('/plan/details/{id}',  ['uses' => 'POS\PlanController@details', 'midd
 Route::get('/api/table-plan/{id}',  ['uses' => 'POS\PlanController@tablePlan']);
 /* End Plan */
 
-/* Start disponibility */
-Route::get('/disponibility',  ['uses' => 'POS\DisponibilityController@index', 'middleware' => 'auth']);
+/* Start availability */
+Route::get('/availability',  ['uses' => 'POS\AvailabilityController@index', 'middleware' => 'auth']);
 
-Route::get('/disponibility/create',  ['uses' => 'POS\DisponibilityController@create', 'middleware' => 'auth']);
-Route::post('/disponibility/create',  ['uses' => 'POS\DisponibilityController@postCreate', 'middleware' => 'auth']);
+Route::get('/availability/create',  ['uses' => 'POS\AvailabilityController@create', 'middleware' => 'auth']);
+Route::post('/availability/create',  ['uses' => 'POS\AvailabilityController@postCreate', 'middleware' => 'auth']);
 
-Route::get('/disponibility/edit/{id}',  ['uses' => 'POS\DisponibilityController@edit', 'middleware' => 'auth']);
-Route::post('/disponibility/edit',  ['uses' => 'POS\DisponibilityController@postedit', 'middleware' => 'auth']);
+Route::get('/availability/edit/{id}',  ['uses' => 'POS\AvailabilityController@edit', 'middleware' => 'auth']);
+Route::post('/availability/edit',  ['uses' => 'POS\AvailabilityController@postedit', 'middleware' => 'auth']);
 
-Route::get('/disponibility/delete/{id}',  ['uses' => 'POS\DisponibilityController@delete', 'middleware' => 'auth']);
-Route::delete('/disponibility/deleteArch/{id}',  ['uses' => 'POS\DisponibilityController@deleteArch', 'middleware' => 'auth']);
-Route::delete('/disponibility/deleteComp/{id}',  ['uses' => 'POS\DisponibilityController@deleteComp', 'middleware' => 'auth']);
+Route::get('/availability/delete/{id}',  ['uses' => 'POS\AvailabilityController@delete', 'middleware' => 'auth']);
+Route::delete('/availability/deleteArch/{id}',  ['uses' => 'POS\AvailabilityController@deleteArch', 'middleware' => 'auth']);
+Route::delete('/availability/deleteComp/{id}',  ['uses' => 'POS\AvailabilityController@deleteComp', 'middleware' => 'auth']);
 
-Route::get('/disponibility/details/{id}',  ['uses' => 'POS\DisponibilityController@details', 'middleware' => 'auth']);
-/* End disponibility */
+Route::get('/availability/details/{id}',  ['uses' => 'POS\AvailabilityController@details', 'middleware' => 'auth']);
+/* End availability */
 
 /* Start Punch */
 

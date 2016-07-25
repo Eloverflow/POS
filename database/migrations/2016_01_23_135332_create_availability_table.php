@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateDisponibilitiesTable extends Migration
+class CreateAvailabilityTable extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateDisponibilitiesTable extends Migration
      */
     public function up()
     {
-        Schema::create('disponibilities', function (Blueprint $table) {
+        Schema::create('availability', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('employee_id')->unsigned();
             $table->foreign('employee_id')->references('id')->on('employees');
@@ -28,6 +28,6 @@ class CreateDisponibilitiesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('disponibilities');
+        Schema::drop('availability');
     }
 }

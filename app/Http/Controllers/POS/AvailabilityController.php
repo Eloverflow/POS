@@ -21,7 +21,7 @@ use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use DateInterval;
 use DateTime;
 
-class DisponibilityController extends Controller
+class AvailabilityController extends Controller
 {
     public function index()
     {
