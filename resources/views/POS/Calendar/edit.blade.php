@@ -19,7 +19,7 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-12 cmd-section">
             <a class="btn btn-primary pull-left" id="btnAdd" href="#"> Add+ </a>
             <a class="btn btn-success pull-right" id="btnFinish" href="#"> Finish </a>
         </div>
@@ -202,31 +202,33 @@
         });
 
         function calendarViewRender (xView, xElement) {
-            var startDate = globStoredCalendar.fullCalendar('getDate');
-            console.log(startDate);
-            var nDate = new Date($('#startDate').val());
-            nDate.setDate(nDate.getDate() + 7);
 
+            /*"[Semaine du "+ xView.start.format("YYYY-MM-DD") + " au "+
+            xView.end.format("YYYY-MM-DD") + "]"*/
 
+            if(xView.type === "agendaWeek"){
+                window.setTimeout(function(){
+                    globStoredCalendar.find('.fc-toolbar > div > h2').empty().append(
+                            "Semaine du " + xView.start.format('YYYY-MM-DD')+ "  au " +
+                             xView.end.format('YYYY-MM-DD')
+                    );
+                },0);
+            }else if(xView.type === "month"){
+                window.setTimeout(function(){
+                    globStoredCalendar.find('.fc-toolbar > div > h2').empty().append(
+                            xView.start.format('YYYY-MM-DD')+ "  au " +
+                            xView.end.format('YYYY-MM-DD')
+                    );
+                },0);
+            } else if(xView.type === "agendaDay"){
+                window.setTimeout(function(){
+                    globStoredCalendar.find('.fc-toolbar > div > h2').empty().append(
+                            xView.start.format('YYYY-MM-DD')
+                    );
+                },0);
+            }
 
         }
-
-        $( "#startDate" ).change(function() {
-            if($( "#startDate").val()  != ""){
-                globStoredCalendar.fullCalendar('gotoDate', $('#startDate').val());
-
-                var nDate = new Date($('#startDate').val());
-                nDate.setDate(nDate.getDate() + 7);
-                $( "#endDate").val(formatDate(nDate));
-
-                globStoredCalendar.find('.fc-toolbar > div > h2').empty().append(
-                        "Semaine du "+ $('#startDate').val() + " au "+
-                        formatDate(nDate)
-                );
-            }
-            //$( "#endDate").val(nDate.getFullYear() + "-" + (nDate.getMonth() + 1) + "-" + nDate.getDate());
-            //var $startDate = $('#startDate').val();
-        });
 
         $('#addModal #startTimePicker').datetimepicker();
         $('#addModal #endTimePicker').datetimepicker();

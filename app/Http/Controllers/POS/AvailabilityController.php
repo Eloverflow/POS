@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\POS;
 
 use App\Http\Controllers\Controller;
-use App\Models\POS\Day_Disponibilities;
-use App\Models\POS\Disponibility;
+use App\Models\POS\Day_Availability;
+use App\Models\POS\Availability;
 use App\Models\POS\Employee;
 use App\Helpers\Utils;
 use App\Models\POS\EmployeeTitle;
@@ -25,8 +25,8 @@ class AvailabilityController extends Controller
 {
     public function index()
     {
-        $disponibilities = Disponibility::getAll();
-        $view = \View::make('POS.Disponibility.index')->with('ViewBag', array(
+        $disponibilities = Availability::getAll();
+        $view = \View::make('POS.Availability.index')->with('ViewBag', array(
             'disponibilities' => $disponibilities
         ));
         return $view;
@@ -35,16 +35,16 @@ class AvailabilityController extends Controller
     public function details($id)
     {
 
-        $disponibility = Disponibility::GetById($id);
+        $disponibility = Availability::GetById($id);
 
         $weekDispos = array(
-            0 => Disponibility::GetDayDisponibilities($id, 0),
-            1 => Disponibility::GetDayDisponibilities($id, 1),
-            2 => Disponibility::GetDayDisponibilities($id, 2),
-            3 => Disponibility::GetDayDisponibilities($id, 3),
-            4 => Disponibility::GetDayDisponibilities($id, 4),
-            5 => Disponibility::GetDayDisponibilities($id, 5),
-            6 => Disponibility::GetDayDisponibilities($id, 6),
+            0 => Availability::GetDayDisponibilities($id, 0),
+            1 => Availability::GetDayDisponibilities($id, 1),
+            2 => Availability::GetDayDisponibilities($id, 2),
+            3 => Availability::GetDayDisponibilities($id, 3),
+            4 => Availability::GetDayDisponibilities($id, 4),
+            5 => Availability::GetDayDisponibilities($id, 5),
+            6 => Availability::GetDayDisponibilities($id, 6),
         );
 
 
@@ -101,7 +101,7 @@ class AvailabilityController extends Controller
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
         ]);
 
-        $view = \View::make('POS.Disponibility.details')->with('ViewBag', array(
+        $view = \View::make('POS.Availability.details')->with('ViewBag', array(
             'disponibility' => $disponibility,
             'calendar' => $calendar
                 )
@@ -111,17 +111,17 @@ class AvailabilityController extends Controller
 
     public function edit($id)
     {
-        $disponibility = Disponibility::GetById($id);
+        $disponibility = Availability::GetById($id);
         $employees = Employee::getAll();
 
         $weekDispos = array(
-            0 => Disponibility::GetDayDisponibilities($id, 0),
-            1 => Disponibility::GetDayDisponibilities($id, 1),
-            2 => Disponibility::GetDayDisponibilities($id, 2),
-            3 => Disponibility::GetDayDisponibilities($id, 3),
-            4 => Disponibility::GetDayDisponibilities($id, 4),
-            5 => Disponibility::GetDayDisponibilities($id, 5),
-            6 => Disponibility::GetDayDisponibilities($id, 6),
+            0 => Availability::GetDayDisponibilities($id, 0),
+            1 => Availability::GetDayDisponibilities($id, 1),
+            2 => Availability::GetDayDisponibilities($id, 2),
+            3 => Availability::GetDayDisponibilities($id, 3),
+            4 => Availability::GetDayDisponibilities($id, 4),
+            5 => Availability::GetDayDisponibilities($id, 5),
+            6 => Availability::GetDayDisponibilities($id, 6),
         );
 
 
@@ -181,7 +181,7 @@ class AvailabilityController extends Controller
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 
-        $view = \View::make('POS.Disponibility.edit')->with('ViewBag', array(
+        $view = \View::make('POS.Availability.edit')->with('ViewBag', array(
                 'disponibility' => $disponibility,
                 'calendar' => $calendar,
                 'employees' => $employees
@@ -216,13 +216,13 @@ class AvailabilityController extends Controller
         else {
 
 
-            Disponibility::where('id',\Input::get('dispoId'))
+            Availability::where('id',\Input::get('dispoId'))
             ->update([
                 'employee_id' => \Input::get('employeeSelect'),
                 'name' => \Input::get('name')
             ]);
 
-            Disponibility::DeleteDayDisponibilities(\Input::get('dispoId'));
+            Availability::DeleteDayDisponibilities(\Input::get('dispoId'));
 
             $jsonArray = json_decode(\Input::get('events'), true);
             for ($i = 0; $i < count($jsonArray); $i++) {
@@ -233,7 +233,7 @@ class AvailabilityController extends Controller
                 $resStop = $dateStop->format('H:i:s');
 
                 //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
-                Day_Disponibilities::create([
+                Day_Availability::create([
                     "disponibility_id" => \Input::get('dispoId'),
                     "day_number" => $jsonArray[$i]["dayIndex"],
                     "startTime" => $resStart,
@@ -243,7 +243,7 @@ class AvailabilityController extends Controller
             }
 
             return \Response::json([
-                'success' => "The Disponibility " . \Input::get('name') . " has been successfully edited !"
+                'success' => "The Availability " . \Input::get('name') . " has been successfully edited !"
             ], 201);
         }
     }
@@ -265,7 +265,7 @@ class AvailabilityController extends Controller
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 
-        $view = \View::make('POS.Disponibility.create')->with('ViewBag', array(
+        $view = \View::make('POS.Availability.create')->with('ViewBag', array(
                 'employees' => $employees,
                 'calendar' => $calendar
             )
@@ -299,7 +299,7 @@ class AvailabilityController extends Controller
         else
         {
 
-            $disponiblity = Disponibility::create([
+            $disponiblity = Availability::create([
                 'employee_id' => \Input::get('employeeSelect'),
                 'name' => \Input::get('name')
             ]);
@@ -314,7 +314,7 @@ class AvailabilityController extends Controller
                 $resStop = $dateStop->format('H:i:s');
 
                 //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
-                Day_Disponibilities::create([
+                Day_Availability::create([
                     "disponibility_id" => $disponiblity->id,
                     "day_number" => $jsonArray[$i]["dayIndex"],
                     "startTime" => $resStart,
@@ -324,7 +324,7 @@ class AvailabilityController extends Controller
             }
 
             return \Response::json([
-                'success' => "The Disponibility " . \Input::get('name') . " has been successfully created !"
+                'success' => "The Availability " . \Input::get('name') . " has been successfully created !"
             ], 201);
         }
     }

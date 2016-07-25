@@ -86,7 +86,7 @@ class CalendarController extends Controller
             'editable' => true,
             'defaultView' => 'agendaWeek',
             'header' => $calendarSettings,
-            'titleFormat' => $strCalendar,
+            'titleFormat' => $strCalendar, // $strCalendar,
             'lang' => 'fr-ca'
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
             'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(xEvent, jsEvent, view);}",

@@ -26,8 +26,8 @@ use App\Models\POS\Table;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Beer;
-use App\Models\POS\Day_Disponibilities;
-use App\Models\POS\Disponibility;
+use App\Models\POS\Day_Availability;
+use App\Models\POS\Availability;
 use App\Models\Auth\User;
 use App\Models\POS\Employee;
 use App\Models\POS\WorkTitle;
@@ -63,8 +63,8 @@ class DatabaseSeeder extends Seeder
         $this->call(WorkTitleSeeder::class);
         $this->call(EmployeeSeeder::class);
 
-        $this->call(DisponibilitiesTableSeeder::class);
-        $this->call(Day_DisponibilitiesTableSeeder::class);
+        $this->call(AvailabilityTableSeeder::class);
+        $this->call(Day_AvailabilityTableSeeder::class);
 
         $this->call(SchedulesTableSeeder::class);
         $this->call(Day_SchedulesTableSeeder::class);
@@ -118,43 +118,43 @@ class PunchesTableSeeder extends Seeder {
 
 }
 
-class DisponibilitiesTableSeeder extends Seeder {
+class AvailabilityTableSeeder extends Seeder {
 
     public function run()
     {
-        DB::table('disponibilities')->delete();
+        DB::table('availability')->delete();
 
-        Disponibility::create(['name' => 'Dispo 1', 'employee_id' => 1]);
+        Availability::create(['name' => 'Dispo 1', 'employee_id' => 1]);
 
-        $this->command->info('Disponibilities table seeded!');
+        $this->command->info('availability table seeded!');
     }
 
 }
 
-class Day_DisponibilitiesTableSeeder extends Seeder {
+class Day_AvailabilityTableSeeder extends Seeder {
 
     public function run()
     {
-        DB::table('day_disponibilities')->delete();
+        DB::table('day_availability')->delete();
 
-        Day_Disponibilities::create(['disponibility_id' => 1,
+        Day_Availability::create(['availability_id' => 1,
             'day_number' => 0,
             'startTime' => date('15:00:00'),
             'endTime' => date('17:00:00')
         ]);
 
-        Day_Disponibilities::create(['disponibility_id' => 1,
+        Day_Availability::create(['availability_id' => 1,
             'day_number' => 0,
             'startTime' => date('18:00:00'),
             'endTime' => date('19:55:00')
         ]);
 
-        Day_Disponibilities::create(['disponibility_id' => 1,
+        Day_Availability::create(['availability_id' => 1,
             'day_number' => 3,
             'startTime' => date('20:00:00'),
             'endTime' => date('03:00:00')
         ]);
-        $this->command->info('Day Disponibilities table seeded!');
+        $this->command->info('Day availability table seeded!');
     }
 
 }

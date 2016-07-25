@@ -809,3 +809,7 @@ li.addTable .glyphicon{
 	width: 100%;/*
 	margin: 20px 0 20px 0;*/
 }
+
+.cmd-section {
+	padding: 5px 15px 5px 15px;
+}
