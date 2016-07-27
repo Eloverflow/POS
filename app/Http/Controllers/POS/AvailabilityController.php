@@ -25,9 +25,9 @@ class AvailabilityController extends Controller
 {
     public function index()
     {
-        $disponibilities = Availability::getAll();
+        $availability = Availability::getAll();
         $view = \View::make('POS.Availability.index')->with('ViewBag', array(
-            'disponibilities' => $disponibilities
+            'availability' => $availability
         ));
         return $view;
     }

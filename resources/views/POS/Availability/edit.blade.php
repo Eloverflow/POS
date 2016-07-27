@@ -11,7 +11,7 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h1 class="page-header">Disponibility Edit</h1>
+            <h1 class="page-header">Availability Edit</h1>
         </div>
     </div>
     <div class="row">
@@ -212,7 +212,7 @@
 
 @section("myjsfile")
     <script src="{{ @URL::to('js/utils.js') }}"></script>
-    <script src="{{ @URL::to('js/disponibilitiesManage.js') }}"></script>
+    <script src="{{ @URL::to('js/availabilityManage.js') }}"></script>
     <script type="text/javascript">
         // var for edit Event
         var globStoredEvent = null;

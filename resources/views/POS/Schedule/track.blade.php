@@ -17,14 +17,14 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <h3>Scheduled Hours</h3>
-                    <label>Total Scheduled: </label>{{ $ViewBag['scheduleInfos']['summary']['scheduled'] }}
-                    <label>Total Worked: </label>{{ $ViewBag['scheduleInfos']['summary']['worked'] }}
+                    <label>Total Scheduled:&nbsp;</label>{{ $ViewBag['scheduleInfos']['summary']['scheduled'] }}
+                    <label>Total Worked:&nbsp;</label>{{ $ViewBag['scheduleInfos']['summary']['worked'] }}
                     {{--@if($schedule->difference[0] != "-")
                         <span class="positive-green">{{ $schedule->difference }}</span>
                     @else
                         <span class="negative-red">{{ $schedule->difference }}</span>
                     @endif--}}
-                    <label>Cost Calculated: </label>{{ number_format((float)$ViewBag['scheduleInfos']['summary']['cost'], 2, '.', '') . " $" }}
+                    <label>Cost Calculated:&nbsp;</label>{{ number_format((float)$ViewBag['scheduleInfos']['summary']['cost'], 2, '.', '') . " $" }}
                 </div>
             </div>
         </div>
@@ -41,14 +41,14 @@
                     <div class="col-lg-12 tracking-bloc">
                         <h2>{{ $employee->firstName . " " . $employee->lastName }}</h2>
                         <div class="employee">
-                            <label>Total Scheduled: </label>{{ $employee->infos->scheduled }}
-                            <label>Total Worked: </label>{{ $employee->infos->worked }}
+                            <label>Total Scheduled:&nbsp;</label>{{ $employee->infos->scheduled }}
+                            <label>Total Worked:&nbsp;</label>{{ $employee->infos->worked }}
                             @if($employee->infos->difference[0] != "-")
                                 <span class="positive-green">{{ $employee->infos->difference }}</span>
                             @else
                                 <span class="negative-red">{{ $employee->infos->difference }}</span>
                             @endif
-                            <label>Cost Calculated: </label>{{ round($employee->infos->cost, 2) . " $"}}
+                            <label>Cost Calculated:&nbsp;</label>{{ round($employee->infos->cost, 2) . " $"}}
                         </div>
                 <?php
                         foreach($employee->daySchedules as $daySchedule){

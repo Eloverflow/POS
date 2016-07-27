@@ -3,7 +3,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-6">
-            <h1 class="page-header">Disponibilities</h1>
+            <h1 class="page-header">Availability</h1>
         </div>
         <div class="col-md-6">
             <div class="vcenter">
@@ -30,17 +30,17 @@
                         </tr>
                         </thead>
                         <tbody>
-                        @foreach ($ViewBag['disponibilities'] as $disponibility)
+                        @foreach ($ViewBag['availability'] as $availability)
                             <tr>
-                                <td>{{ $disponibility->idDisponibility }}</td>
-                                <td>{{ $disponibility->name }}</td>
-                                <td>{{ $disponibility->firstName . " - " . $disponibility->lastName }}</td>
-                                <td>{{ $disponibility->created_at }}</td>
-                                <td>{{ $disponibility->updated_at }}</td>
-                                <td><a href="{{ URL::to('disponibility/details', $disponibility->idDisponibility) }}">Details</a>
-                                    <a href="{{ URL::to('disponibility/edit', $disponibility->idDisponibility) }}">Edit</a>
-                                    <a href="{{ URL::to('disponibility/delete', $disponibility->idDisponibility) }}">Delete</a>
-                                    <a href="{{ URL::to('disponibility/download', $disponibility->idDisponibility) }}">Download</a></td>
+                                <td>{{ $availability->idDisponibility }}</td>
+                                <td>{{ $availability->name }}</td>
+                                <td>{{ $availability->firstName . " - " . $availability->lastName }}</td>
+                                <td>{{ $availability->created_at }}</td>
+                                <td>{{ $availability->updated_at }}</td>
+                                <td><a href="{{ URL::to('availability/details', $availability->idDisponibility) }}">Details</a>
+                                    <a href="{{ URL::to('availability/edit', $availability->idDisponibility) }}">Edit</a>
+                                    <a href="{{ URL::to('availability/delete', $availability->idDisponibility) }}">Delete</a>
+                                    <a href="{{ URL::to('availability/download', $availability->idDisponibility) }}">Download</a></td>
                             </tr>
                         @endforeach
 
