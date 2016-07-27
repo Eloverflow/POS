@@ -140,9 +140,9 @@
                                         @foreach($tableChildren as $tableChild)
                                             @foreach($tableChild['columns'] as $column)
                                                 <td>
-                                                @if($tableChildRows[$i]->$tableChild['name'] != null)
+                                               {{-- @if($tableChildRows[$i]->$tableChild['name'] != null)
                                                     {{ $tableChildRows[$i]->$tableChild['name']->$column }}
-                                                @endif
+                                                @endif--}}
                                                 </td>
                                             @endforeach
                                         @endforeach
