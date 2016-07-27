@@ -19,8 +19,8 @@
     </div>
 
     <div class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-warning pull-right" id="btnEdit" href="{{ @URL::to('calendar/edit') }}"> Edit </a>
+        <div class="col-lg-12 cmd-section">
+            <a class="btn btn-warning pull-right" id="btnEdit" href="{{ @URL::to('calendar/edit') }}"><span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit </a>
         </div>
     </div>
 @stop
