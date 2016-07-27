@@ -11,20 +11,20 @@
 
     <div class="row">
         <div class="col-md-6">
-            <h1 class="page-header">Disponibility Edit</h1>
+            <h1 class="page-header">Availability Create</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    {{--'style' => 'display:none;visibility:hidden;'--}}
                     {!! Form::open(array('url' => 'disponibility/create', 'role' => 'form', 'id' => 'frmDispoCreate')) !!}
-                    {!! Form::text('dispoId', $ViewBag['disponibility']->idDisponibility, array('class' => 'form-control', 'id' => 'dispoId', 'style' => 'display:none;visibility:hidden;')) !!}
+
                     <div id="displayErrors" style="display:none;" class="alert alert-danger">
                         <strong>Whoops!</strong> There were some problems with your input.<br><br>
                         <ul id="errors"></ul>
                     </div>
+
                     <fieldset>
                         <legend>Disponibility Informations</legend>
                         <div class="mfs">
@@ -35,7 +35,7 @@
                                         {!! Form::text('name', old('name'), array('class' => 'form-control', 'id' => 'name')) !!}
                                     </div>
                                 @else
-                                    {!! Form::text('name', $ViewBag['disponibility']->name, array('class' => 'form-control', 'id' => 'name')) !!}
+                                    {!! Form::text('name', old('name'), array('class' => 'form-control', 'id' => 'name')) !!}
                                 @endif
                             </div>
 
@@ -45,7 +45,7 @@
                                     @foreach ($ViewBag['employees'] as $employee)
 
                                         <option value="{{ $employee->idEmployee }}" @if(old('employeeSelect'))
-                                            @if($ViewBag['disponibility']->employee_id == $employee->idEmployee)
+                                            @if(old('employeeSelect') == $employee->idEmployee)
                                                 {{ "selected" }}
                                                     @endif
                                                 @endif >{{ $employee->firstName }}</option>
@@ -62,11 +62,11 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-primary pull-left" id="btnAdd" href="#"> Add+ </a>
-            <a class="btn btn-success pull-right" id="btnFinish" href="#"> Finish </a>
+        <div class="col-lg-12 cmd-section">
+                <a class="btn btn-primary pull-left" id="btnAdd" href="#"><span class="glyphicon glyphicon-plus"></span>&nbsp; Add</a>
+                <a class="btn btn-success pull-right" id="btnFinish" href="#"><span class="glyphicon glyphicon-ok"></span>&nbsp; Create </a>
+            </div>
         </div>
-    </div>
 @stop
 
 @section('calendar')
@@ -89,9 +89,6 @@
                     <div id="displayErrors" style="display:none;" class="alert alert-danger">
                         <strong>Whoops!</strong><br><br>
                         <ul id="errors"></ul>
-                    </div>
-                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
-                        <strong>Success!</strong><div class="successMsg"></div>
                     </div>
                     <div class="col-md-4">
                         {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
@@ -153,9 +150,6 @@
                         <strong>Whoops!</strong><br><br>
                         <ul id="errors"></ul>
                     </div>
-                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
-                        <strong>Success!</strong><div class="successMsg"></div>
-                    </div>
                     <div class="col-md-4">
                         {!! Form::text('dateClicked', null, array('class' => 'form-control', 'id' => 'dateClicked', 'style' => 'display:none;visibility:hidden;')) !!}
                         <div class="form-group">
@@ -212,7 +206,7 @@
 
 @section("myjsfile")
     <script src="{{ @URL::to('js/utils.js') }}"></script>
-    <script src="{{ @URL::to('js/disponibilitiesManage.js') }}"></script>
+    <script src="{{ @URL::to('js/availabilityManage.js') }}"></script>
     <script type="text/javascript">
         // var for edit Event
         var globStoredEvent = null;
@@ -231,7 +225,7 @@
         });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
-            postEditDisponibilities(globStoredCalendar);
+            postAddDisponibilities(globStoredCalendar);
 
         });
         $("#btnDelEvent").click(function(){

@@ -341,56 +341,6 @@ function scheduleClick(calEvent, jsEvent, view)
     $("#editModal").modal('show');
 }
 
-function ModalValidation(modal){
-
-    $shour = parseInt($(modal + ' #sHour').val());
-    $smin = parseInt($(modal + ' #sMin').val());
-
-    $ehour = parseInt($(modal + ' #eHour').val());
-    $emin = parseInt($(modal + ' #eMin').val());
-
-    var arrayErrors = [];
-    if(!$.isNumeric($shour) || !$.isNumeric($ehour)){
-        arrayErrors.push("Please enter some valid numbers");
-    } else {
-        if($shour >= 0 && $shour <= 24 && $ehour >= 0 && $ehour <= 24) {
-            if ($.isNumeric($smin)) {
-                if ($smin > 59 || $smin < 0) {
-                    arrayErrors.push("The number of minutes must be between 0 and 59")
-                }
-            } else {
-                if ($(modal + ' #sMin').val() == "") {
-                    $smin = 0;
-                } else {
-                    arrayErrors.push("The number of minutes for start is not valid")
-                }
-            }
-            if ($.isNumeric($emin)) {
-                if ($emin > 59 || $emin < 0) {
-                    arrayErrors.push("The number of minutes must be between 0 and 59")
-                }
-            } else {
-                if ($(modal + ' #eMin').val() == "") {
-                    $emin = 0;
-                } else {
-                    arrayErrors.push("The number of minutes for end is not valid")
-                }
-            }
-        } else {
-            arrayErrors.push("Please select hours between 0 and 24")
-        }
-    }
-
-    var timeObj = {
-        shour: $shour,
-        smin: $smin,
-        ehour: $ehour,
-        emin: $emin
-    };
-    var ValidationResult = {time:timeObj, errors:arrayErrors};
-    return ValidationResult;
-}
-
 function GetEmployeeColor(idEmployee)
 {
     var emplColor = "";

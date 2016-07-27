@@ -53,9 +53,9 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-12">
-            <a class="btn btn-primary pull-left" id="btnAdd" href="#"> Add+ </a>
-            <a class="btn btn-success pull-right" id="btnFinish" href="#"> Create </a>
+        <div class="col-lg-12 cmd-section">
+            <a class="btn btn-primary pull-left" id="btnAdd" href="#"><span class="glyphicon glyphicon-plus"></span>&nbsp; Add </a>
+            <a class="btn btn-success pull-right" id="btnFinish" href="#"><span class="glyphicon glyphicon-ok"></span>&nbsp; Create </a>
         </div>
     </div>
 @stop

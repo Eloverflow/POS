@@ -44,6 +44,9 @@ class StatsController extends Controller
                 'workedHours' => $workedHours,
                 'scheduledHours' => $scheduledHours
             ));
+        
+        
+        
         return $view;
     }
 
