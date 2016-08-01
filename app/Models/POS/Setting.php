@@ -10,6 +10,10 @@ class Setting extends Model
 
     protected $fillable = array('taxes', 'plan_id', 'use_time_24', 'language', 'timezone', 'daylight', 'ipaddress', 'use_email');
 
+    protected $casts = [
+        'taxes' => 'json'
+    ];
+
     /* public function UserRole()
         {*/
     /*Will belong to administrators*/
