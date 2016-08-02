@@ -140,9 +140,8 @@
                                         @foreach($tableChildren as $tableChild)
                                             @foreach($tableChild['columns'] as $column)
                                                 <td>
-                                                    <?php $name  = $tableChild['name']; ?>
-                                                @if($tableChildRows[$i]->$name != null)
-                                                    {{ $tableChildRows[$i]->$name->$column }}
+                                                @if($tableChildRows[$i]->$tableChild['name'] != null)
+                                                    {{ $tableChildRows[$i]->$tableChild['name']->$column }}
                                                 @endif
                                                 </td>
                                             @endforeach

@@ -100,16 +100,9 @@
             scaleOverride : true,
             scaleSteps : $_scaleSteps,
             scaleStepWidth : 20,
-            scaleStartValue : 0,
-            tooltipTemplate: "<%if (label){%><%=label%>: <%}%><%= value %>kb",
+            scaleStartValue : 0
         });
 
-        var legend = barChart.generateLegend();
 
-        var legendHolder = document.createElement('div');
-        legendHolder.innerHTML = legend;
-
-        //and append it to your page somewhere
-        $("#legend").append(legendHolder.firstChild);
     </script>
 @stop
