@@ -3,9 +3,10 @@
 namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\Traits\LogsActivity;
+use Spatie\Activitylog\LogsActivity;
+use Spatie\Activitylog\LogsActivityInterface;
 
-class CommandLine extends Model{
+class CommandLine extends Model implements LogsActivityInterface {
 
     use LogsActivity;
     protected $table = 'command_lines';
@@ -33,7 +34,7 @@ class CommandLine extends Model{
      * @param string $eventName
      * @return string
      */
-   /* public function getActivityDescriptionForEvent($eventName)
+    public function getActivityDescriptionForEvent($eventName)
     {
         if ($eventName == 'created')
         {
@@ -51,5 +52,5 @@ class CommandLine extends Model{
         }
 
         return '';
-    }*/
+    }
 }
