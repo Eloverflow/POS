@@ -30,7 +30,8 @@
                                 <div class="form-group">
                                     {!! Form::label('title', "Language" ) !!}
                                     <select name="language" class="form-control" style="width: 200px">
-                                        <option value="{{ $menuSetting['language'] }}" selected>{{ $menuSetting['language']  }}</option>
+                                        <option value="fr" @if($menuSetting['language'] == "fr") selected @endif >Français</option>
+                                        <option value="en" @if($menuSetting['language'] == "en") selected @endif >English</option>
                                     </select>
                                 </div>
                             </div>

@@ -26,8 +26,8 @@ class Language {
      */
     public function handle($request, Closure $next)
     {
-       // $this->app->setLocale(Setting::all()->last()->language);
-        $this->app->setLocale('en');
+        $this->app->setLocale(Setting::all()->last()->language);
+        //$this->app->setLocale('en');
         return $next($request);
     }
 

@@ -99,10 +99,10 @@ $userMenuTabs = array
             {{--<li><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> RFID Tables</a></li>--}}
             <li><a href="{{ URL::to('plan') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> {{ Lang::get('menu.plans') }}</a></li>
             {{--<li><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> RFID Request</a></li>--}}
-            <li><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> {{ Lang::get('menu.statistics') }}Punch</a></li>
+            <li><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> {{ Lang::get('menu.punch') }}</a></li>
             <li><a href="{{ URL::to('menu') }}"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> {{ Lang::get('menu.posMenu') }}</a></li>
             <li><a href="{{ URL::to('activity-log') }}"><svg class="glyph stroked internal hard drive"><use xlink:href="#stroked-internal-hard-drive"/></svg> {{ Lang::get('menu.activityLog') }}</a></li>
-            <li><a href="{{ URL::to('menu-settings') }}"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"/></svg> {{ Lang::get('menu.statistics') }}Settings</a></li>
+            <li><a href="{{ URL::to('menu-settings') }}"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"/></svg> {{ Lang::get('menu.settings') }}</a></li>
             <li role="presentation" class="divider"></li>
         @else
             <li><a href="{{ URL::to('auth/login') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.loginPage') }}</a></li><li role="presentation" class="divider"></li>
