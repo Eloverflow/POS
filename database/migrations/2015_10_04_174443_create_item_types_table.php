@@ -23,7 +23,6 @@ class CreateItemTypesTable extends Migration
             $table->increments('id');
             $table->string('field_names')->nullable();
             $table->string('size_names')->nullable();
-            $table->json('quantity_reducer')->nullable();
             $table->string('type');
             $table->string('slug')->unique();
             $table->timestamps();

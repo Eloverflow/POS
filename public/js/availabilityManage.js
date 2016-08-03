@@ -113,113 +113,88 @@ function postEditDisponibilities($storedCalendar) {
 
 }
 
-function editEvent($storedCalendar){
+function editEvent(){
+
+    var momentStart = moment($('#editModal #startTimePicker').data("DateTimePicker").date());
+    var momentEnd = moment($('#editModal #endTimePicker').data("DateTimePicker").date());
+
+    globStoredEvent.title = "Dispo";
+    globStoredEvent.start = new Date(momentStart.tz(globTimeZoneAMontreal).format());
+    globStoredEvent.end = new Date(momentEnd.tz(globTimeZoneAMontreal).format());
+
+    // ici a voir
+    if(globStoredEvent.employeeId != $employeeId){
+        $availableColor = "";
+        $employeeColor = GetEmployeeColor($employeeId);
+        if($employeeColor == ""){
+            $availableColors = GetAvailableColors();
+            $availableColor = $availableColors[0];
+            globStoredEvent.color = $availableColor;
+        } else {
+            $availableColor = $employeeColor;
+            globStoredEvent.color = $availableColor;
+        }
+    }
 
 
-    var ValidationResult = ModalValidation("#editModal");
-    //console.log(ValidationResult.errors);
-    if(ValidationResult.errors.length == 0) {
 
-        var sHM = ($shour < 10 ? '0' + $shour : $shour) + ":" + ($smin < 10 ? '0' + $smin : $smin);
-        var eHM = ($ehour < 10 ? '0' + $ehour : $ehour) + ":" + ($emin < 10 ? '0' + $emin : $emin);
+    globStoredCalendar.fullCalendar('updateEvent', globStoredEvent);
 
-        var myDate = new Date($('#editModal #dateClicked').val());
+    $("#editModal #displayErrors").hide();
 
-        console.log(myDate);
-        $dDayNumber = $("#editModal #dayNumber option:selected").val();
+    $("#editModal #displaySuccesses .successMsg").empty();
+    $("#editModal #displaySuccesses .successMsg").append('The moment has been edited succesfully !');
 
-        var dateAdd = null;
-        if ($ehour < $shour) {
-            dateAdd = new Date(moment(formatDate(myDate)).add(1, 'days')
+    $("#editModal #displaySuccesses").show();
+
+}
+
+function addEvent($storedCalendar) {
+
+    $dDayNumber = $("#addModal #dayNumber option:selected").val();
+
+    var momentStart = moment($('#addModal #startTimePicker').data("DateTimePicker").date());
+    var momentEnd = moment($('#addModal #endTimePicker').data("DateTimePicker").date());
+
+    var scheduleStartDate = new Date($('#startDate').val());
+
+    var a = momentStart.clone().startOf('day');
+    var b = momentEnd.clone().startOf('day');
+    var diffDays = b.diff(a, 'days');
+
+    if ($dDayNumber == -1) {
+
+        for (var i = 1; i <= 7; i++) {
+
+
+            var startDate = new Date(moment(formatDate(scheduleStartDate))
+                .add(i, 'days')
+                .add(momentStart.hours(), 'hours')
+                .add(momentStart.minutes(), 'minutes')
                 .tz(globTimeZoneAMontreal)
                 .format());
-        } else {
-            dateAdd = myDate;
-        }
 
-        globStoredEvent.title = "Dispo";
-        globStoredEvent.start = new Date(moment(formatDate(myDate) + ' ' + sHM).tz(globTimeZoneAMontreal).format());
-        globStoredEvent.end = new Date(moment(formatDate(dateAdd) + ' ' + eHM).tz(globTimeZoneAMontreal).format());
-
-        $storedCalendar.fullCalendar('updateEvent', globStoredEvent);
-
-        $("#editModal #displayErrors").hide();
-
-        $("#editModal #displaySuccesses .successMsg").empty();
-        $("#editModal #displaySuccesses .successMsg").append('The moment has been edited succesfully !');
-
-        $("#editModal #displaySuccesses").show();
-
-
-    } else {
-
-        $("#editModal #displaySuccesses").hide();
-        $("#editModal #displayErrors #errors").empty();
-        for(var x = 0; x < ValidationResult.errors.length; x++) {
-            $("#editModal #displayErrors #errors").append('<li class="errors">' + ValidationResult.errors[x] + '</li>');
-            //$("#errors").append('<li class="errors">' + arrayErrors[i] + '</li>');
-        }
-        $("#editModal #displayErrors").show();
-        //console.log( key , erro[key] );
-
-    }
-}
-function addEvent($storedCalendar){
-
-    var ValidationResult = ModalValidation("#addModal");
-    //console.log(ValidationResult.errors);
-    if(ValidationResult.errors.length == 0) {
-
-        var sHM = ($shour < 10 ? '0' + $shour : $shour) + ":" + ($smin < 10 ? '0' + $smin : $smin);
-        var eHM = ($ehour < 10 ? '0' + $ehour : $ehour) + ":" + ($emin < 10 ? '0' + $emin : $emin);
-
-        var myDate = new Date($('#addModal #dateClicked').val());
-
-        $dDayNumber = $("#addModal #dayNumber option:selected").val();
-
-        if ($dDayNumber == -1) {
-
-            for (var i = 1; i <= 7; i++) {
-                var startDate = new Date(moment(formatDate(myDate) + ' ' + sHM)
-                    .add(i, 'days')
-                    .tz(globTimeZoneAMontreal)
-                    .format());
-
-                var dateAdd = new Date();
-                if ($ehour < $shour) {
-                    dateAdd = new Date(moment(formatDate(startDate)).add(1, 'days')
-                        .tz(globTimeZoneAMontreal)
-                        .format());
-                } else {
-                    dateAdd = startDate;
-                }
-
-                var newEvent = {
-                    id: guid(),
-                    title: "Dispo",
-                    isAllDay: false,
-                    start: new Date(moment(formatDate(startDate) + ' ' + sHM)
-                        .tz(globTimeZoneAMontreal)
-                        .format()),
-                    end: new Date(moment(formatDate(dateAdd) + ' ' + eHM)
-                        .tz(globTimeZoneAMontreal)
-                        .format()),
-                    description: ''
-                };
-
-                $storedCalendar.fullCalendar('addEventSource', [newEvent]);
-
+            var endDateBound = 0;
+            if (diffDays > 0) {
+                endDateBound = i + diffDays
+            } else {
+                endDateBound = i;
             }
 
-        } else {
+            var endDate = new Date(moment(formatDate(scheduleStartDate))
+                .add(endDateBound, 'days')
+                .add(momentEnd.hours(), 'hours')
+                .add(momentEnd.minutes(), 'minutes')
+                .tz(globTimeZoneAMontreal)
+                .format());
 
-            var dateAdd = null;
-            if ($ehour < $shour) {
-                dateAdd = new Date(moment(formatDate(myDate)).add(1, 'days')
-                    .tz(globTimeZoneAMontreal)
-                    .format());
+            $availableColor = "";
+            $employeeColor = GetEmployeeColor($employeeId);
+            if ($employeeColor == "") {
+                $availableColors = GetAvailableColors();
+                $availableColor = $availableColors[0];
             } else {
-                dateAdd = myDate;
+                $availableColor = $employeeColor;
             }
 
 
@@ -227,33 +202,46 @@ function addEvent($storedCalendar){
                 id: guid(),
                 title: "Dispo",
                 isAllDay: false,
-                start: new Date(moment(formatDate(myDate) + ' ' + sHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
-                end: new Date(moment(formatDate(dateAdd) + ' ' + eHM).add(1, 'days').tz(globTimeZoneAMontreal).format()),
-                description: ''
+                start: startDate,
+                end: endDate,
+                color: $availableColor
             };
-            $storedCalendar.fullCalendar('addEventSource', [newEvent]);
 
-            $("#addModal #displayErrors").hide();
-
-            $("#addModal #displaySuccesses .successMsg").empty();
-            $("#addModal #displaySuccesses .successMsg").append('The moment has been added succesfully !');
-
-            $("#addModal #displaySuccesses").show();
+            globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
 
         }
+
     } else {
 
-        $("#addModal #displaySuccesses").hide();
-        $("#addModal #displayErrors #errors").empty();
-        for(var x = 0; x < ValidationResult.errors.length; x++) {
-            $("#addModal #displayErrors #errors").append('<li class="errors">' + ValidationResult.errors[x] + '</li>');
-            //$("#errors").append('<li class="errors">' + arrayErrors[i] + '</li>');
+
+        $availableColor = "";
+        $employeeColor = GetEmployeeColor($employeeId);
+        if ($employeeColor == "") {
+            $availableColors = GetAvailableColors();
+            $availableColor = $availableColors[0];
+        } else {
+            $availableColor = $employeeColor;
         }
-        $("#addModal #displayErrors").show();
-        //console.log( key , erro[key] );
+
+        var newEvent = {
+            id: guid(),
+            title: "Dispo",
+            color: $availableColor,
+            isAllDay: false,
+            start: new Date(momentStart.tz(globTimeZoneAMontreal).format()),
+            end: new Date(momentEnd.tz(globTimeZoneAMontreal).format())
+        };
+
+        globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
+
+        $("#addModal #displayErrors").hide();
+
+        $("#addModal #displaySuccesses .successMsg").empty();
+        $("#addModal #displaySuccesses .successMsg").append('The moment has been added succesfully !');
+
+        $("#addModal #displaySuccesses").show();
 
     }
-
 }
 
 function dayClick(xDate, xEvent)
