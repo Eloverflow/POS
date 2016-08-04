@@ -122,21 +122,6 @@ function editEvent(){
     globStoredEvent.start = new Date(momentStart.tz(globTimeZoneAMontreal).format());
     globStoredEvent.end = new Date(momentEnd.tz(globTimeZoneAMontreal).format());
 
-    // ici a voir
-    if(globStoredEvent.employeeId != $employeeId){
-        $availableColor = "";
-        $employeeColor = GetEmployeeColor($employeeId);
-        if($employeeColor == ""){
-            $availableColors = GetAvailableColors();
-            $availableColor = $availableColors[0];
-            globStoredEvent.color = $availableColor;
-        } else {
-            $availableColor = $employeeColor;
-            globStoredEvent.color = $availableColor;
-        }
-    }
-
-
 
     globStoredCalendar.fullCalendar('updateEvent', globStoredEvent);
 
@@ -156,11 +141,14 @@ function addEvent() {
     var momentStart = moment($('#addModal #startTimePicker').data("DateTimePicker").date());
     var momentEnd = moment($('#addModal #endTimePicker').data("DateTimePicker").date());
 
-    var scheduleStartDate = new Date($('#startDate').val());
-
     var a = momentStart.clone().startOf('day');
     var b = momentEnd.clone().startOf('day');
     var diffDays = b.diff(a, 'days');
+
+    var scheduleStartDate = new Date(
+        globStoredCalendar.fullCalendar('getView').start.tz(globTimeZoneAMontreal)
+            .format()
+    );
 
     if ($dDayNumber == -1) {
 
@@ -188,45 +176,32 @@ function addEvent() {
                 .tz(globTimeZoneAMontreal)
                 .format());
 
-            $availableColor = "";
-            $employeeColor = GetEmployeeColor($employeeId);
-            if ($employeeColor == "") {
-                $availableColors = GetAvailableColors();
-                $availableColor = $availableColors[0];
-            } else {
-                $availableColor = $employeeColor;
-            }
-
-
             var newEvent = {
                 id: guid(),
                 title: "Dispo",
                 isAllDay: false,
                 start: startDate,
                 end: endDate,
-                color: $availableColor
+                description: '',
+                color: "#000000"
             };
 
             globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
 
+            $("#addModal #displayErrors").hide();
+
+            $("#addModal #displaySuccesses .successMsg").empty();
+            $("#addModal #displaySuccesses .successMsg").append('The moment has been added succesfully !');
+
+            $("#addModal #displaySuccesses").show();
         }
 
     } else {
 
-
-        $availableColor = "";
-        $employeeColor = GetEmployeeColor($employeeId);
-        if ($employeeColor == "") {
-            $availableColors = GetAvailableColors();
-            $availableColor = $availableColors[0];
-        } else {
-            $availableColor = $employeeColor;
-        }
-
         var newEvent = {
             id: guid(),
             title: "Dispo",
-            color: $availableColor,
+            color: "#0C0C50",
             isAllDay: false,
             start: new Date(momentStart.tz(globTimeZoneAMontreal).format()),
             end: new Date(momentEnd.tz(globTimeZoneAMontreal).format())
@@ -282,7 +257,7 @@ function availClick(calEvent, jsEvent, view)
 }
 
 function deleteEvent(){
-    globS.fullCalendar('removeEvents', globStoredEvent.id);
+    globStoredCalendar.fullCalendar('removeEvents', globStoredEvent.id);
 }
 
 function ModalValidation(modal){
@@ -334,3 +309,4 @@ function ModalValidation(modal){
     var ValidationResult = {time:timeObj, errors:arrayErrors};
     return ValidationResult;
 }
+

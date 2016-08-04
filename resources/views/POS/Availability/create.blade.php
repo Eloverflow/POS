@@ -237,11 +237,19 @@
             addEvent();
         });
 
-        $('#addModal #startTimePicker').datetimepicker();
-        $('#addModal #endTimePicker').datetimepicker();
+        $('#addModal #startTimePicker').datetimepicker({
+            format: 'LT'
+        });
+        $('#addModal #endTimePicker').datetimepicker({
+            format: 'LT'
+        });
 
-        $('#editModal #startTimePicker').datetimepicker();
-        $('#editModal #endTimePicker').datetimepicker();
+        $('#editModal #startTimePicker').datetimepicker({
+            format: 'LT'
+        });
+        $('#editModal #endTimePicker').datetimepicker({
+            format: 'LT'
+        });
 
         $( "#dayNumber" ).change(function() {
             //var nDate = new Date();

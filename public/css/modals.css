@@ -28,3 +28,14 @@
 .lumino .frmGrpTopFix {
 	margin-top: 10px;
 }
+
+.lumino .modal-dialog {
+	position: absolute;
+	top: 80px;
+	right: 100px;
+	bottom: 0;
+	left: 0;
+	z-index: 10040;
+	overflow: auto;
+	overflow-y: auto;
+}

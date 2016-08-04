@@ -199,11 +199,16 @@ function addEvent(){
         var momentStart = moment($('#addModal #startTimePicker').data("DateTimePicker").date());
         var momentEnd = moment($('#addModal #endTimePicker').data("DateTimePicker").date());
 
-        var scheduleStartDate = new Date($('#startDate').val());
+        var scheduleStartDate = new Date(
+            globStoredCalendar.fullCalendar('getView').start.tz(globTimeZoneAMontreal)
+                .format()
+        );
 
         var a = momentStart.clone().startOf('day');
         var b = momentEnd.clone().startOf('day');
         var diffDays = b.diff(a, 'days');
+
+
 
         if ($('#addModal #chkOptAllWeek').is(':checked')) {
 
