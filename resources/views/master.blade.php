@@ -83,31 +83,32 @@ $userMenuTabs = array
     <ul class="nav menu">
 
         @if (Auth::check())
-        <li><a href="{{ URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg> Dashboard</a></li>
-        <li><a href="{{ URL::to('stats') }}"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> Statistics</a></li>
-        <li><a href="{{ URL::to('employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Employees</a></li>
-        <li><a href="{{ URL::to('work/titles') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Work Titles</a></li>
-        <li><a href="{{ URL::to('calendar') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> Calendar</a></li>
-        <li><a href="{{ URL::to('schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> Schedules</a></li>
-        <li><a href="{{ URL::to('availability') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> Availability</a></li>
-        <li><a href="{{ URL::to('items') }}"><svg class="glyph stroked bacon burger"><use xlink:href="#stroked-bacon-burger"/></svg></svg> Items</a></li>
-        <li><a href="{{ URL::to('extras') }}"><svg class="glyph stroked tag"><use xlink:href="#stroked-tag"/></svg> Extras</a></li>
-        <li><a href="{{ URL::to('filters') }}"><svg class="glyph stroked monitor"><use xlink:href="#stroked-monitor"/></svg> Filtres du menu</a></li>
-        {{--<li><a href="{{ URL::to('itemtypes') }}"><svg class="glyph stroked paper coffee cup"><use xlink:href="#stroked-paper-coffee-cup"/></svg> Item Types</a></li>--}}
-        <li><a href="{{ URL::to('inventory') }}"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg> Inventory</a></li>
-        {{--<li><a href="{{ URL::to('clients') }}"><svg class="glyph stroked female user"><use xlink:href="#stroked-female-user"/></svg> Clients</a></li>--}}
-        {{--<li><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> RFID Tables</a></li>--}}
-        <li><a href="{{ URL::to('plan') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> Plans</a></li>
-        {{--<li><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> RFID Request</a></li>--}}
-        <li><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> Punch</a></li>
-        <li><a href="{{ URL::to('menu') }}"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> Menu</a></li>
-        <li><a href="{{ URL::to('activity-log') }}"><svg class="glyph stroked internal hard drive"><use xlink:href="#stroked-internal-hard-drive"/></svg> Activity log</a></li>
-        <li><a href="{{ URL::to('menu-settings') }}"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"/></svg> Settings</a></li>
-        <li role="presentation" class="divider"></li>
+            <li><a href="{{ URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg> {{ Lang::get('menu.dashboard') }}</a></li>
+            <li><a href="{{ URL::to('stats') }}"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> {{ Lang::get('menu.statistics') }}</a></li>
+            <li><a href="{{ URL::to('employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.employees') }}</a></li>
+            <li><a href="{{ URL::to('work/titles') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.workTitles') }}</a></li>
+            <li><a href="{{ URL::to('calendar') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> {{ Lang::get('menu.calendar') }}</a></li>
+            <li><a href="{{ URL::to('schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> {{ Lang::get('menu.schedules') }}</a></li>
+            <li><a href="{{ URL::to('availability') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> {{ Lang::get('menu.availability') }}</a></li>
+            <li><a href="{{ URL::to('items') }}"><svg class="glyph stroked bacon burger"><use xlink:href="#stroked-bacon-burger"/></svg></svg> {{ Lang::get('menu.items') }}</a></li>
+            <li><a href="{{ URL::to('itemtypes') }}"><svg class="glyph stroked paper coffee cup"><use xlink:href="#stroked-paper-coffee-cup"/></svg> {{ Lang::get('menu.itemTypes') }}</a></li>
+            <li><a href="{{ URL::to('extras') }}"><svg class="glyph stroked tag"><use xlink:href="#stroked-tag"/></svg> {{ Lang::get('menu.extras') }}</a></li>
+            <li><a href="{{ URL::to('filters') }}"><svg class="glyph stroked monitor"><use xlink:href="#stroked-monitor"/></svg> {{ Lang::get('menu.posMenuFilter') }}</a></li>
+            <li><a href="{{ URL::to('inventory') }}"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg> {{ Lang::get('menu.inventory') }}</a></li>
+            {{--<li><a href="{{ URL::to('clients') }}"><svg class="glyph stroked female user"><use xlink:href="#stroked-female-user"/></svg> Clients</a></li>--}}
+            {{--<li><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> RFID Tables</a></li>--}}
+            <li><a href="{{ URL::to('plan') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> {{ Lang::get('menu.plans') }}</a></li>
+            {{--<li><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> RFID Request</a></li>--}}
+            <li><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> {{ Lang::get('menu.punch') }}</a></li>
+            <li><a href="{{ URL::to('menu') }}"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> {{ Lang::get('menu.posMenu') }}</a></li>
+            <li><a href="{{ URL::to('activity-log') }}"><svg class="glyph stroked internal hard drive"><use xlink:href="#stroked-internal-hard-drive"/></svg> {{ Lang::get('menu.activityLog') }}</a></li>
+            <li><a href="{{ URL::to('menu-settings') }}"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"/></svg> {{ Lang::get('menu.settings') }}</a></li>
+            <li role="presentation" class="divider"></li>
         @else
-        <li><a href="{{ URL::to('auth/login') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> Login Page</a></li><li role="presentation" class="divider"></li>
+            <li><a href="{{ URL::to('auth/login') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.loginPage') }}</a></li><li role="presentation" class="divider"></li>
         @endif
     </ul>
+
 
 
 </div><!--/.sidebar-->

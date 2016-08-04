@@ -97,7 +97,7 @@ class MenuSettingsTableSeeder extends Seeder {
     {
         DB::table('settings')->delete();
 
-        Setting::create(['taxes' => "[{value: 0.05,name: 'TPS' },{value: 0.09975,name: 'TVQ'}]", 'plan_id'=>1, 'use_time_24'=>true, 'language'=>'Francais', 'timezone'=>'Eastern Standard Time', 'daylight'=>true, 'ipaddress'=>'666.666.666.666', 'use_email'=>true]);
+        Setting::create(['taxes' => "[{value: 0.05,name: 'TPS' },{value: 0.09975,name: 'TVQ'}]", 'plan_id'=>1, 'use_time_24'=>true, 'language'=>'fr', 'timezone'=>'Eastern Standard Time', 'daylight'=>true, 'ipaddress'=>'666.666.666.666', 'use_email'=>true]);
 
         $this->command->info('Menu Settings table seeded!');
     }
@@ -674,11 +674,11 @@ class ExtraSeeder extends Seeder {
         DB::table('extras')->delete();
 
         $extras = array(
-            array('id' => '1','name' => 'Lime','description' => '','effect' => '','value' => '0.00','status' => '0','avail_for_command' => NULL,'slug' => 'Lime1047','created_at' => '2016-06-16 08:24:56','updated_at' => '2016-06-16 08:24:56'),
+            array('id' => '1','name' => 'Lime','description' => '','effect' => '','value' => '0.00','status' => '0','avail_for_command' => 0,'slug' => 'Lime1047','created_at' => '2016-06-16 08:24:56','updated_at' => '2016-06-16 08:24:56'),
             array('id' => '2','name' => 'Bacon','description' => '','effect' => '+','value' => '2.00','status' => '0','avail_for_command' => 1,'slug' => 'Bacon8974','created_at' => '2016-06-16 08:25:27','updated_at' => '2016-06-16 08:25:27'),
-            array('id' => '3','name' => 'Gratuit','description' => '','effect' => '/','value' => '100.00','status' => '0','avail_for_command' => NULL,'slug' => 'Gratuit5238','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
-            array('id' => '4','name' => 'Double price','description' => '','effect' => '*','value' => '100.00','status' => '0','avail_for_command' => NULL,'slug' => 'Double price8669','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
-            array('id' => '5','name' => 'Deduire taxes','description' => '','effect' => '/','value' => '12.99','status' => '0','avail_for_command' => NULL,'slug' => 'Deduire taxes1540','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05')
+            array('id' => '3','name' => 'Gratuit','description' => '','effect' => '/','value' => '100.00','status' => '0','avail_for_command' => 0,'slug' => 'Gratuit5238','created_at' => '2016-06-16 08:25:49','updated_at' => '2016-06-16 08:25:49'),
+            array('id' => '4','name' => 'Double price','description' => '','effect' => '*','value' => '100.00','status' => '0','avail_for_command' => 0,'slug' => 'Double price8669','created_at' => '2016-06-16 08:27:05','updated_at' => '2016-06-16 08:27:05'),
+            array('id' => '5','name' => 'Deduire taxes','description' => '','effect' => '/','value' => '12.99','status' => '0','avail_for_command' => 0,'slug' => 'Deduire taxes1540','created_at' => '2016-06-16 08:28:05','updated_at' => '2016-06-16 08:28:05')
         );
 
         foreach ($extras as $table){
