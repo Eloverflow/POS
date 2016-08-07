@@ -222,6 +222,9 @@ function addEvent() {
 function dayClick(xDate, xEvent)
 {
 
+
+    $( "#addModal #dayNumber" ).val(xDate.day());
+
     $stPick = $('#addModal #startTimePicker').data("DateTimePicker");
     $stPick.clear();
     $stPick.defaultDate(new Date(moment(xDate).tz(globTimeZoneAMontreal)));
@@ -241,6 +244,8 @@ function availClick(calEvent, jsEvent, view)
 {
     // Set global var so we can get it when we edit.
     globStoredEvent = calEvent;
+
+    $( "#editModal #dayNumber" ).val(calEvent.start.day());
 
     $stPick = $('#editModal #startTimePicker').data("DateTimePicker");
     $stPick.clear();

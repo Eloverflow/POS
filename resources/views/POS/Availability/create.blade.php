@@ -251,14 +251,82 @@
             format: 'LT'
         });
 
-        $( "#dayNumber" ).change(function() {
-            //var nDate = new Date();
-            //nDate.setDate(nDate.getFullYear() + "-" +  nDate.getMonth() + "-" + (nDate.getDate() + this.value));
-            var realVal = parseInt(this.value);
-            if(realVal != -1) {
-                var lastSunday = getLastSunday(new Date());
-                var myDate = new Date(lastSunday.getTime() + (realVal * 24 * 60 * 60 * 1000));
-                $('#dateClicked').val(formatDate(myDate));
+        $( "#addModal #dayNumber" ).change(function() {
+            var selectedValue = parseInt(this.value);
+            if( selectedValue != -1) {
+
+                var stDtPicker = $('#addModal #startTimePicker').data("DateTimePicker");
+                var edDtPicker = $('#addModal #endTimePicker').data("DateTimePicker");
+
+                var momentStart = moment(stDtPicker.date());
+                var momentEnd = moment(edDtPicker.date());
+
+                var calStartDate = new Date(
+                        globStoredCalendar.fullCalendar('getView').start.tz(globTimeZoneAMontreal)
+                                .format()
+                );
+
+                momentStart = new Date(moment(formatDate(calStartDate))
+                        .add(selectedValue + 1, 'days')
+                        .add(momentStart.hours(), 'hours')
+                        .add(momentStart.minutes(), 'minutes')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
+
+                momentEnd = new Date(moment(formatDate(calStartDate))
+                        .add(selectedValue + 1, 'days')
+                        .add(momentEnd.hours(), 'hours')
+                        .add(momentEnd.minutes(), 'minutes')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
+
+                stDtPicker.clear();
+                stDtPicker.defaultDate(momentStart);
+
+
+                edDtPicker.clear();
+                edDtPicker.defaultDate(momentEnd);
+
+            }
+        });
+
+        $( "#editModal #dayNumber" ).change(function() {
+            var selectedValue = parseInt(this.value);
+            if(selectedValue != -1) {
+
+                var stDtPicker = $('#addModal #startTimePicker').data("DateTimePicker");
+                var edDtPicker = $('#addModal #endTimePicker').data("DateTimePicker");
+
+                var momentStart = moment(stDtPicker.date());
+                var momentEnd = moment(edDtPicker.date());
+
+                var calStartDate = new Date(
+                        globStoredCalendar.fullCalendar('getView').start.tz(globTimeZoneAMontreal)
+                                .format()
+                );
+
+                momentStart = new Date(moment(formatDate(calStartDate))
+                        .add(selectedValue + 1, 'days')
+                        .add(momentStart.hours(), 'hours')
+                        .add(momentStart.minutes(), 'minutes')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
+
+                momentEnd = new Date(moment(formatDate(calStartDate))
+                        .add(selectedValue + 1, 'days')
+                        .add(momentEnd.hours(), 'hours')
+                        .add(momentEnd.minutes(), 'minutes')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
+
+
+                stDtPicker.clear();
+                stDtPicker.defaultDate(momentStart);
+
+
+                edDtPicker.clear();
+                edDtPicker.defaultDate(momentEnd);
+
             }
         });
     </script>
