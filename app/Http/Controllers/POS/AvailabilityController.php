@@ -177,7 +177,7 @@ class AvailabilityController extends Controller
             'defaultView' => 'agendaWeek',
             'views' => array('agenda' => $colSettings)
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            'eventClick' => "function (xEvent, jsEvent, view){ dispoClick(jsEvent, xEvent);}",
+            'eventClick' => "function (xEvent, jsEvent, view){ availClick(xEvent, jsEvent, view);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 
@@ -259,9 +259,10 @@ class AvailabilityController extends Controller
             'editable' => true,
             'header' => false,
             'defaultView' => 'agendaWeek',
-            'views' => array('agenda' => $colSettings)
+            //'views' => array('agenda' => $colSettings),
+            'lang' => 'fr-ca'
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            'eventClick' => "function (xEvent, jsEvent, view){ dispoClick(jsEvent, xEvent);}",
+            'eventClick' => "function (xEvent, jsEvent, view){ availClick(xEvent, jsEvent, view);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 

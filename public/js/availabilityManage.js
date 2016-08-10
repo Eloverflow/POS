@@ -6,8 +6,8 @@ var globStoredEvent = null;
 var globTimeZoneAMontreal = "America/Montreal";
 moment.tz.add("America/Montreal|EST EDT EWT EPT|50 40 40 40|01010101010101010101010101010101010101010101012301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-28tR0 bV0 2m30 1in0 121u 1nb0 1g10 11z0 1o0u 11zu 1o0u 11zu 3VAu Rzu 1qMu WLu 1qMu WLu 1qKu WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 4kO0 8x40 iv0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0");
 
-function postAddDisponibilities($storedCalendar) {
-    var allEvents = $storedCalendar.fullCalendar('clientEvents');
+function postAddDisponibilities() {
+    var allEvents = globStoredCalendar.fullCalendar('clientEvents');
 
     var arr = [];
 
@@ -58,9 +58,9 @@ function postAddDisponibilities($storedCalendar) {
     });
 
 }
-function postEditDisponibilities($storedCalendar) {
+function postEditDisponibilities() {
 
-    var allEvents = $storedCalendar.fullCalendar('clientEvents');
+    var allEvents = globStoredCalendar.fullCalendar('clientEvents');
 
     var arr = [];
 
@@ -122,21 +122,6 @@ function editEvent(){
     globStoredEvent.start = new Date(momentStart.tz(globTimeZoneAMontreal).format());
     globStoredEvent.end = new Date(momentEnd.tz(globTimeZoneAMontreal).format());
 
-    // ici a voir
-    if(globStoredEvent.employeeId != $employeeId){
-        $availableColor = "";
-        $employeeColor = GetEmployeeColor($employeeId);
-        if($employeeColor == ""){
-            $availableColors = GetAvailableColors();
-            $availableColor = $availableColors[0];
-            globStoredEvent.color = $availableColor;
-        } else {
-            $availableColor = $employeeColor;
-            globStoredEvent.color = $availableColor;
-        }
-    }
-
-
 
     globStoredCalendar.fullCalendar('updateEvent', globStoredEvent);
 
@@ -149,18 +134,21 @@ function editEvent(){
 
 }
 
-function addEvent($storedCalendar) {
+function addEvent() {
 
     $dDayNumber = $("#addModal #dayNumber option:selected").val();
 
     var momentStart = moment($('#addModal #startTimePicker').data("DateTimePicker").date());
     var momentEnd = moment($('#addModal #endTimePicker').data("DateTimePicker").date());
 
-    var scheduleStartDate = new Date($('#startDate').val());
-
     var a = momentStart.clone().startOf('day');
     var b = momentEnd.clone().startOf('day');
     var diffDays = b.diff(a, 'days');
+
+    var scheduleStartDate = new Date(
+        globStoredCalendar.fullCalendar('getView').start.tz(globTimeZoneAMontreal)
+            .format()
+    );
 
     if ($dDayNumber == -1) {
 
@@ -188,45 +176,32 @@ function addEvent($storedCalendar) {
                 .tz(globTimeZoneAMontreal)
                 .format());
 
-            $availableColor = "";
-            $employeeColor = GetEmployeeColor($employeeId);
-            if ($employeeColor == "") {
-                $availableColors = GetAvailableColors();
-                $availableColor = $availableColors[0];
-            } else {
-                $availableColor = $employeeColor;
-            }
-
-
             var newEvent = {
                 id: guid(),
                 title: "Dispo",
                 isAllDay: false,
                 start: startDate,
                 end: endDate,
-                color: $availableColor
+                description: '',
+                color: "#000000"
             };
 
             globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
 
+            $("#addModal #displayErrors").hide();
+
+            $("#addModal #displaySuccesses .successMsg").empty();
+            $("#addModal #displaySuccesses .successMsg").append('The moment has been added succesfully !');
+
+            $("#addModal #displaySuccesses").show();
         }
 
     } else {
 
-
-        $availableColor = "";
-        $employeeColor = GetEmployeeColor($employeeId);
-        if ($employeeColor == "") {
-            $availableColors = GetAvailableColors();
-            $availableColor = $availableColors[0];
-        } else {
-            $availableColor = $employeeColor;
-        }
-
         var newEvent = {
             id: guid(),
             title: "Dispo",
-            color: $availableColor,
+            color: "#0C0C50",
             isAllDay: false,
             start: new Date(momentStart.tz(globTimeZoneAMontreal).format()),
             end: new Date(momentEnd.tz(globTimeZoneAMontreal).format())
@@ -246,61 +221,51 @@ function addEvent($storedCalendar) {
 
 function dayClick(xDate, xEvent)
 {
-    var datet = new Date(xDate);
-    // Clean form control
-    $('#addModal #sHour').val("");
-    $('#addModal #sMin').val("");
 
-    $('#addModal #eHour').val("");
-    $('#addModal #eMin').val("");
+    $( "#addModal #dayNumber" ).val(xDate.day());
 
-    // Week beginning sunday: 0
-    if(datet.getDay() == 6)
-    {
-        $('#addModal #dayNumber').val(0);
-    } else {
-        // Week beginning sunday: 0
-        $gDay = datet.getDay();
-        $('#addModal #dayNumber').val($gDay);
-    }
+    $stPick = $('#addModal #startTimePicker').data("DateTimePicker");
+    $stPick.clear();
+    $stPick.defaultDate(new Date(moment(xDate).tz(globTimeZoneAMontreal)));
 
+    $etPick = $('#addModal #endTimePicker').data("DateTimePicker");
+    $etPick.clear();
+    $etPick.defaultDate(new Date(moment(xDate).add(2, 'hours').tz(globTimeZoneAMontreal)));
 
-    var ymd = formatDate(datet);
-    $('#addModal #dateClicked').val(ymd);
 
     $("#addModal #displayErrors").hide();
     $("#addModal #displaySuccesses").hide();
 
     $("#addModal").modal('show');
+
+
+    console.log('test')
+    console.log(xDate)
 }
 
-function dispoClick(xDate, xEvent)
+function availClick(calEvent, jsEvent, view)
 {
-
-    //console.log(xEvent.start.toString());
-    var sDate = new Date(xEvent.start.toString());
-    var eDate = new Date(xEvent.end.toString());
-
-    $('#editModal #dateClicked').val(sDate.getFullYear() +"-" + (sDate.getMonth() +1) + "-" + sDate.getDate()) ;
-    //console.log(sDate);
-    $('#editModal #sHour').val(sDate.getHours());
-    $('#editModal #sMin').val(sDate.getMinutes());
-
-    $('#editModal #eHour').val(eDate.getHours());
-    $('#editModal #eMin').val(eDate.getMinutes());
-
-    // Week beginning sunday: 0
-    $('#editModal #dayNumber').val(sDate.getDay());
-    //alert(xEvent.employeeId);
     // Set global var so we can get it when we edit.
-    globStoredEvent = xEvent;
+    globStoredEvent = calEvent;
+
+    $( "#editModal #dayNumber" ).val(calEvent.start.day());
+
+    $stPick = $('#editModal #startTimePicker').data("DateTimePicker");
+    $stPick.clear();
+    $stPick.defaultDate(new Date(calEvent.start.tz(globTimeZoneAMontreal)));
+
+    $etPick = $('#editModal #endTimePicker').data("DateTimePicker");
+    $etPick.clear();
+    $etPick.defaultDate(new Date(calEvent.end.tz(globTimeZoneAMontreal)));
+
 
     $("#editModal #displayErrors").hide();
     $("#editModal #displaySuccesses").hide();
     $("#editModal").modal('show');
 }
-function deleteEvent($storedCalendar){
-    $storedCalendar.fullCalendar('removeEvents', globStoredEvent.id);
+
+function deleteEvent(){
+    globStoredCalendar.fullCalendar('removeEvents', globStoredEvent.id);
 }
 
 function ModalValidation(modal){
@@ -352,3 +317,4 @@ function ModalValidation(modal){
     var ValidationResult = {time:timeObj, errors:arrayErrors};
     return ValidationResult;
 }
+

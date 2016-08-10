@@ -146,6 +146,69 @@
             </div>
         </div>
     </div>
+    <div id="editModal" class="lumino modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- dialog body -->
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Edit Moment</h4>
+                </div>
+                <div class="row">
+                    <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                        <strong>Whoops!</strong><br><br>
+                        <ul id="errors"></ul>
+                    </div>
+                    <div id="displaySuccesses" style="display:none;" class="alert alert-success">
+                        <strong>Success!</strong><div class="successMsg"></div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <h3>Start Time</h3>
+                            <div class='input-group date' id="startTimePicker">
+                                <input type='text' id="startTime" class="form-control dark-border" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <h3>End Time</h3>
+                            <div class='input-group date' id="endTimePicker">
+                                <input type='text' id="startTime" class="form-control dark-border" />
+                                    <span class="input-group-addon">
+                                        <span class="glyphicon glyphicon-time"></span>
+                                    </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 pull-right">
+                        <div class="form-group">
+                            <h3>Day</h3>
+                            <select id="dayNumber" class="form-control">
+                                <option value="-1">All Week</option>
+                                <option value="0">Sunday</option>
+                                <option value="1">Monday</option>
+                                <option value="2">Tuesday</option>
+                                <option value="3">Wednesday</option>
+                                <option value="4">Thursday</option>
+                                <option value="5">Friday</option>
+                                <option value="6">Saturday</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- dialog buttons -->
+                <div class="modal-footer">
+                    <button id="btnDelEvent" type="button" class="btn btn-danger">Delete</button>
+                    <button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 @stop
 
 @section("myjsfile")
@@ -177,20 +240,96 @@
             addEvent();
         });
 
-        $('#addModal #startTimePicker').datetimepicker();
-        $('#addModal #endTimePicker').datetimepicker();
+        $('#addModal #startTimePicker').datetimepicker({
+            format: 'hh:mm',
+        });
+        $('#addModal #endTimePicker').datetimepicker({
+            format: 'mm',
+        });
 
-        $('#editModal #startTimePicker').datetimepicker();
-        $('#editModal #endTimePicker').datetimepicker();
+        $('#editModal #startTimePicker').datetimepicker({
+            format: 'mm',
+        });
+        $('#editModal #endTimePicker').datetimepicker({
+            format: 'mm',
+        });
 
-        $( "#dayNumber" ).change(function() {
-            //var nDate = new Date();
-            //nDate.setDate(nDate.getFullYear() + "-" +  nDate.getMonth() + "-" + (nDate.getDate() + this.value));
-            var realVal = parseInt(this.value);
-            if(realVal != -1) {
-                var lastSunday = getLastSunday(new Date());
-                var myDate = new Date(lastSunday.getTime() + (realVal * 24 * 60 * 60 * 1000));
-                $('#dateClicked').val(formatDate(myDate));
+        $( "#addModal #dayNumber" ).change(function() {
+            var selectedValue = parseInt(this.value);
+            if( selectedValue != -1) {
+
+                var stDtPicker = $('#addModal #startTimePicker').data("DateTimePicker");
+                var edDtPicker = $('#addModal #endTimePicker').data("DateTimePicker");
+
+                var momentStart = moment(stDtPicker.date());
+                var momentEnd = moment(edDtPicker.date());
+
+                var calStartDate = new Date(
+                        globStoredCalendar.fullCalendar('getView').start.tz(globTimeZoneAMontreal)
+                                .format()
+                );
+
+                momentStart = new Date(moment(formatDate(calStartDate))
+                        .add(selectedValue + 1, 'days')
+                        .add(momentStart.hours(), 'hours')
+                        .add(momentStart.minutes(), 'minutes')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
+
+                momentEnd = new Date(moment(formatDate(calStartDate))
+                        .add(selectedValue + 1, 'days')
+                        .add(momentEnd.hours(), 'hours')
+                        .add(momentEnd.minutes(), 'minutes')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
+
+                stDtPicker.clear();
+                stDtPicker.defaultDate(momentStart);
+
+
+                edDtPicker.clear();
+                edDtPicker.defaultDate(momentEnd);
+
+            }
+        });
+
+        $( "#editModal #dayNumber" ).change(function() {
+            var selectedValue = parseInt(this.value);
+            if(selectedValue != -1) {
+
+                var stDtPicker = $('#addModal #startTimePicker').data("DateTimePicker");
+                var edDtPicker = $('#addModal #endTimePicker').data("DateTimePicker");
+
+                var momentStart = moment(stDtPicker.date());
+                var momentEnd = moment(edDtPicker.date());
+
+                var calStartDate = new Date(
+                        globStoredCalendar.fullCalendar('getView').start.tz(globTimeZoneAMontreal)
+                                .format()
+                );
+
+                momentStart = new Date(moment(formatDate(calStartDate))
+                        .add(selectedValue + 1, 'days')
+                        .add(momentStart.hours(), 'hours')
+                        .add(momentStart.minutes(), 'minutes')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
+
+                momentEnd = new Date(moment(formatDate(calStartDate))
+                        .add(selectedValue + 1, 'days')
+                        .add(momentEnd.hours(), 'hours')
+                        .add(momentEnd.minutes(), 'minutes')
+                        .tz(globTimeZoneAMontreal)
+                        .format());
+
+
+                stDtPicker.clear();
+                stDtPicker.defaultDate(momentStart);
+
+
+                edDtPicker.clear();
+                edDtPicker.defaultDate(momentEnd);
+
             }
         });
     </script>
