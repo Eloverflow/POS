@@ -152,7 +152,7 @@
                 <!-- dialog body -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Add Moment</h4>
+                    <h4 class="modal-title">Edit Moment</h4>
                 </div>
                 <div class="row">
                     <div id="displayErrors" style="display:none;" class="alert alert-danger">
@@ -202,7 +202,10 @@
                 </div>
 
                 <!-- dialog buttons -->
-                <div class="modal-footer"><button id="btnAddEvent" type="button" class="btn btn-primary">Add</button></div>
+                <div class="modal-footer">
+                    <button id="btnDelEvent" type="button" class="btn btn-danger">Delete</button>
+                    <button id="btnEditEvent" type="button" class="btn btn-primary">Edit</button>
+                </div>
             </div>
         </div>
     </div>
@@ -238,17 +241,17 @@
         });
 
         $('#addModal #startTimePicker').datetimepicker({
-            format: 'LT'
+            format: 'hh:mm',
         });
         $('#addModal #endTimePicker').datetimepicker({
-            format: 'LT'
+            format: 'mm',
         });
 
         $('#editModal #startTimePicker').datetimepicker({
-            format: 'LT'
+            format: 'mm',
         });
         $('#editModal #endTimePicker').datetimepicker({
-            format: 'LT'
+            format: 'mm',
         });
 
         $( "#addModal #dayNumber" ).change(function() {

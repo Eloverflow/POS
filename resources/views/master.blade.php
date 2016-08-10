@@ -5,9 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>POSIO @foreach(Request::segments() as $segment){{ ' | ' . ucwords( str_replace('_', ' ', $segment))}}@endforeach</title>
     <script src="{{ @URL::to('js/jquery/jquery-2.1.4.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/3.3.7/js/bootstrap.min.js') }}"></script>
 @yield('csrfToken')
 {{--Stylesheet call--}}
-    <link href="{{ @URL::to('Framework/Bootstrap/3.3.6/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('Framework/Bootstrap/3.3.7/css/bootstrap.min.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/datepicker3.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
@@ -156,9 +157,9 @@ $userMenuTabs = array
 
 @yield('calendar')
 
-{{--Script call--}}
-<script src="{{ @URL::to('Framework/Bootstrap/3.3.6/js/bootstrap.min.js') }}"></script>
-<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>
+{{--Script call--}}{{--
+<script src="{{ @URL::to('Framework/Bootstrap/3.3.7/js/bootstrap.min.js') }}"></script>
+<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>--}}
 {{--<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>--}}
 {{--
 <script src="{{ @URL::to('Framework/LuminoAdmin/js/chart.min.js') }}"></script>
