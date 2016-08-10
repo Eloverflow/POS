@@ -385,8 +385,115 @@ function customizeWall(){
         }
     });
 
+    function getClosestCircle(x, y, getNext) {
+        var junctionScore = 99999999;
+        var lastBestJunction;
+
+        var boxX = x;
+        var boxY = y;
+
+        var currentScore;
+        for(var n = 0; n < circle.length; n++ ){
+
+            currentScore = Math.pow(boxX - circle[n].left,2) + Math.pow(boxY - circle[n].top,2);
+
+            if(currentScore < junctionScore){
+                lastBestJunction = n;
+                junctionScore = currentScore;
+            }
+
+        }
+
+        if(getNext){
+            if(n < circle.length)
+                lastBestJunction++;
+            else
+                lastBestJunction--;
+        }
+
+        console.log('Top & Left')
+        console.log(circle[lastBestJunction].link1.top)
+        console.log(circle[lastBestJunction].link1.left)
+        console.log('')
+
+        return circle[lastBestJunction];
+    }
+
+    function getClosestWall(x, y) {
+        var junctionScore = 99999999;
+        var lastBestWall;
+
+        var boxX = x;
+        var boxY = y;
+
+        var link;
+        var currentScore;
+        for(var n = 0; n < circle.length; n++ ){
+            if(typeof circle[n].link1 != 'undefined' && circle[n].link1 != null){
+                link = circle[n].link1
+            }
+            else {
+                link = circle[n].link2
+            }
+
+            var x1 = link.get('x1'),
+            y1 = link.get('y1'),
+            x2 = link.get('x2'),
+            y2 = link.get('y2');
+
+
+            currentScore = Math.pow(boxX - x1,2) + Math.pow(boxY - y1,2) +  Math.pow(boxX - x2,2) + Math.pow(boxY - y2,2);
+
+            if(currentScore < junctionScore){
+                lastBestWall = link;
+                junctionScore = currentScore;
+            }
+
+        }
+
+        return lastBestWall;
+    }
+
+    function getLinkList(closestCircle) {
+
+        return [{
+            link: closestCircle.link1,
+            x: closestCircle.link1.get('x1'),
+            y: closestCircle.link1.get('y1')
+        },{
+            link: closestCircle.link1,
+            x: closestCircle.link1.get('x2'),
+            y: closestCircle.link1.get('y2')
+        },{
+            link: closestCircle.link2,
+            x: closestCircle.link2.get('x1'),
+            y: closestCircle.link2.get('y1')
+        },{
+            link: closestCircle.link2,
+            x: closestCircle.link2.get('x2'),
+            y: closestCircle.link2.get('y2')
+        }
+        ];
+    }
+    function getLastBestScore(boxX, boxY, linkList) {
+        var winnerScore =99999999,lastBestScore,currentScorePos;
+
+        for(var k = 0; k < linkList.length; k++ ){
+            currentScorePos = Math.pow(boxX - linkList[k].x,2) + Math.pow(boxY - linkList[k].y,2);
+
+            if(currentScorePos < winnerScore){
+                lastBestScore = k;
+                winnerScore = currentScorePos;
+            }
+        }
+
+
+        return lastBestScore;
+    }
+
     /*Find the best place to cut between the wall and cut*/
     $(window).click(function(e){
+
         if(e.pageX > tabControlContainers.offset().left+5 && e.pageY > tabControlContainers.offset().top+5)
         {
 
@@ -402,75 +509,55 @@ function customizeWall(){
 
                 //console.log('Click event')
                 /*Inside*/
-
-                var junctionScore = 99999999;
-                var lastBestJunction;
-
                 var boxX = parseInt(e.pageX-offsetTab.left);
                 var boxY = parseInt(e.pageY-offsetTab.top);
 
-                var currentScore;
-                for(var n = 0; n < circle.length; n++ ){
 
-                    currentScore = Math.pow(boxX - circle[n].left,2) + Math.pow(boxY - circle[n].top,2);
+                /*Parcourir les point pour former les murs*/
+                var closestWall = getClosestWall(boxX, boxY);
+                console.log('closestWall');
+                console.log(closestWall);
 
-                    if(currentScore < junctionScore){
-                        lastBestJunction = n;
-                        junctionScore = currentScore;
-                    }
+                /*Faire afficher un message si pas sur un mur*/
 
-                }
 
-                console.log('Top & Left')
-                console.log(circle[lastBestJunction].link1.top)
-                console.log(circle[lastBestJunction].link1.left)
-                console.log('')
+                var closestCircle = getClosestCircle(boxX, boxY);
+                //var linkList = getLinkList(closestCircle);
+                //var lastBestScore = getLastBestScore(boxX, boxY, linkList);
 
-                var closestCircle = circle[lastBestJunction];
-                var linkList = [{
-                    link: closestCircle.link1,
-                    x: closestCircle.link1.get('x1'),
-                    y: closestCircle.link1.get('y1')
-                },{
-                    link: closestCircle.link1,
-                    x: closestCircle.link1.get('x2'),
-                    y: closestCircle.link1.get('y2')
-                },{
-                    link: closestCircle.link2,
-                    x: closestCircle.link2.get('x1'),
-                    y: closestCircle.link2.get('y1')
-                },{
-                    link: closestCircle.link2,
-                    x: closestCircle.link2.get('x2'),
-                    y: closestCircle.link2.get('y2')
-                }
-                ];
 
-                var winnerScore =99999999,lastBestScore,currentScorePos;
-
-                for(var k = 0; k < linkList.length; k++ ){
-                    currentScorePos = Math.pow(boxX - linkList[k].x,2) + Math.pow(boxY - linkList[k].y,2);
-
-                    if(currentScorePos < winnerScore){
-                        lastBestScore = k;
-                        winnerScore = currentScorePos;
-                    }
-                }
+                /*if(closestCircle.top < boxY > linkList[lastBestScore].y && closestCircle.left < boxX > linkList[lastBestScore].x ){
+                    closestCircle =  getClosestCircle(boxX, boxY, true);
+                    linkList = getLinkList(closestCircle);
+                    lastBestScore = getLastBestScore(boxX, boxY, linkList);
+                }*/
 
                 //console.log(closestCircle)
                 //console.log(lastBestScore)
                 //console.log(linkList[lastBestScore])
 
                 /* On Set une l'extrémité de la place à x2 et y2, au curseur*/
-                linkList[lastBestScore].link.set({x2: boxX, y2: boxY})
+                /*linkList[lastBestScore].link.set({x2: boxX, y2: boxY})
 
-                /*Create a line from the second point to the cursor point*/
+                /!*Create a line from the second point to the cursor point*!/
                 line.push(makeLine([ boxX, boxY,closestCircle.left, closestCircle.top ]))
                 var newLine = line[line.length-1]
 
-                /*circle at curent cursor position*/
+                /!*circle at curent cursor position*!/
                 circle.push(makeCircle(boxX, boxY,linkList[lastBestScore].link, newLine))
-                var newCircle = circle[circle.length-1]
+                var newCircle = circle[circle.length-1]*/
+
+                    var x2Dest = closestWall.get('x2'),
+                    y2Dest = closestWall.get('y2');
+                 closestWall.set({x2: boxX, y2: boxY})
+
+                 line.push(makeLine([ boxX, boxY,x2Dest, y2Dest ]))
+                 var newLine = line[line.length-1]
+
+                 /*circle at curent cursor position*/
+                 circle.push(makeCircle(boxX, boxY,closestWall, newLine))
+                 var newCircle = circle[circle.length-1]
+
 
                 newLine.link1 = closestCircle
                 newLine.link2 = newCircle
