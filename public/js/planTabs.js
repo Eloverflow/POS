@@ -16,6 +16,12 @@ var rotateParams = {
      }*/
 };
 
+
+var resizeParams = {
+    minHeight: 60,
+    minWidth: 100
+}
+
 var dragParams = {
     containment: "parent",
     /* start:*/
@@ -47,10 +53,16 @@ $("#btnNewSeparation").click(function () {
     var $tabItemID = $('.tabItemID', $info);
     var $tabControl = $("#tabControl");
 
-    $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
+    $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span><span class="glyphicon glyphicon-trash delete-separation"></span></li>');
 
-    $('#' + $tableGUID).resizable().rotatable(rotateParams);
+    $('#' + $tableGUID).resizable(resizeParams).rotatable(rotateParams);
     $('#' + $tableGUID).draggable(dragParams);
+    $('#' + $tableGUID).css({top: 0, left: 0, position: 'absolute'});
+
+    $('.delete-separation').on('click', function() {
+        $(this).parent().remove();
+    });
+
 });
 $("#btnNewPlace").click(function () {
     totalTables += 1;
@@ -198,6 +210,7 @@ var btnDeleteWalls = $("#btnDeleteWalls");
 var bntEditWalls = $("#btnEditWalls");
 var bntCancelEditWalls = $("#btnCancelEditWalls");
 var bntAddWalls = $("#btnAddWalls");
+var wallInfo = $("#wall-info");
 var tabControlContainers;
 var follower = $("#follower");
 
@@ -209,6 +222,7 @@ var stateEditingWall = function () {
     bntCancelEditWalls.show();
     bntSaveWalls.show();
     btnDeleteWalls.show();
+    wallInfo.show();
 
     follower.css('visibility', 'visible')
 
@@ -224,6 +238,7 @@ var stateDisableEditingWall = function () {
     bntCancelEditWalls.hide();
     bntSaveWalls.hide();
     btnDeleteWalls.hide();
+    wallInfo.hide();
 
     follower.css('visibility', 'hidden')
 
@@ -237,6 +252,7 @@ var stateHasNoWall = function () {
     bntSaveWalls.hide();
     btnDeleteWalls.hide();
     bntAddWalls.show();
+    wallInfo.hide();
 
 }
 
@@ -247,6 +263,8 @@ var stateHasWall = function () {
 
 $(document).ready(function () {
     stateDisableEditingWall();
+
+
 })
 
 function deleteWall() {
@@ -527,6 +545,25 @@ function customizeWall(){
         return lastBestWall;
     }
 
+    function newSeparationAtPos(x, y) {
+        $tableGUID = guid();
+        var $info = $('#nested-tabInfo');
+        var $tabItemID = $('.tabItemID', $info);
+        var $tabControl = $("#tabControl");
+
+        $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span><span class="glyphicon glyphicon-trash delete-separation"></span></li>');
+
+        $('#' + $tableGUID).resizable(resizeParams).rotatable(rotateParams);
+        $('#' + $tableGUID).draggable(dragParams);
+        $('#' + $tableGUID).css({top: y, left: x, position: 'absolute'});
+
+        $('.delete-separation').on('click', function() {
+            $(this).parent().remove();
+        });
+
+    }
+
+
     function getLinkList(closestCircle) {
 
         return [{
@@ -649,6 +686,7 @@ function customizeWall(){
                         console.log('link One is the starting point')
                     }
                     else {
+                        /*Maybe never entreing here ?*/
                         newLine.link1 = closestWall.link1;
 
                         /*Replace for the remote circle the linked line*/
@@ -663,10 +701,6 @@ function customizeWall(){
                         console.log('link two is the starting point')
                     }
 
-
-
-                    //closestCircle.link1 = newLine
-
                     /*Adding to visual*/
                     canvas.add(line[line.length-1],circle[circle.length-1]);
 
@@ -674,6 +708,10 @@ function customizeWall(){
                     canvas.bringToFront(circle[circle.length-1]);
                     canvas.renderAll();
                     observeCanvas();
+                }
+                else {
+                    newSeparationAtPos(boxX,boxY);
+                    stateDisableEditingWall();
                 }
 
             }
@@ -755,30 +793,36 @@ function getGoodLink(link){
 function getWalls(){
     var wallPoints = "";
     var noEnd = true;
-    lastCircle = circle[0];
 
-    while(noEnd){
-        if(typeof lastCircle != "undefined") {
-            if (wallPoints != "") {
-                wallPoints += ","
+    if(circle != null && circle.length != 0) {
+        lastCircle = circle[0];
+
+        while (noEnd) {
+            if (typeof lastCircle != "undefined") {
+                if (wallPoints != "") {
+                    wallPoints += ","
+                }
+                wallPoints += lastCircle.left + ":" + lastCircle.top
+                lastCircle = getGoodLink(lastCircle)
+
+                if (typeof lastCircle != "undefined" && lastCircle.top == circle[0].top && lastCircle.left == circle[0].left) {
+                    noEnd = false;
+                    console.log('normalEnd')
+                }
             }
-            wallPoints += lastCircle.left + ":" + lastCircle.top
-            lastCircle = getGoodLink(lastCircle)
-
-            if (typeof lastCircle != "undefined" && lastCircle.top == circle[0].top && lastCircle.left == circle[0].left) {
+            else
                 noEnd = false;
-                console.log('normalEnd')
-            }
-        }
-        else
-            noEnd = false;
 
-        /*console.log('\nChoose')
-         console.log(lastCircle)
-         console.log('\n')
-         console.log('wallPoints')
-         console.log(wallPoints)
-         console.log('\n')*/
+            /*console.log('\nChoose')
+             console.log(lastCircle)
+             console.log('\n')
+             console.log('wallPoints')
+             console.log(wallPoints)
+             console.log('\n')*/
+        }
+    }
+    else {
+        console.error("Please Add wall")
     }
     return wallPoints;
 }

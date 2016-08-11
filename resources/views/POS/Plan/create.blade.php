@@ -27,13 +27,17 @@
         <a id="btnNewTable" class="btn btn-primary" href="#"> New Table </a>
         <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
         <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
-        <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a><br>
+        <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
+        <br>
+        <br>
         <a class="btn btn-info" id="btnAddWalls" href="#"> Add Walls </a>
         <a class="btn btn-info" id="btnEditWalls" href="#"> Edit Walls </a>{{--
         <a class="btn btn-danger" id="btnCancelEditWalls" href="#">Cancel Edit Walls </a>--}}
         <a class="btn btn-success" id="btnSaveWalls" href="#"> Save Walls </a>
         <a class="btn btn-danger" id="btnDeleteWalls"  href="#"> Delete Walls </a>
+        <p id="wall-info"><em>Click near a wall to cut it in half or click inside the walls to add a separation(Rezisable)</em></p>
     </div>
+    <br>
     <div id="follower"><span class="glyphicon glyphicon-plus"></span></div>
     <!--Horizontal Tab-->
     <div id="parentHorizontalTab">
@@ -81,7 +85,8 @@
         $("#btnFinish").click(function () {
             var tblContainers = $(".tablesContainer .tables");
             var listItems = $("#tabControl").find(tblContainers);
-            $arrayFloorTable = [];
+            var $arrayFloorTable = [],
+            $arrayFloorSep = [];
 
             for ($i = 0; $i < listItems.length; $i++) {
                 $liSubItems = $(listItems[$i]).find("li");
@@ -105,7 +110,7 @@
                     } else {
                         radVal = 0;
                     }
-                    $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text());
+                    var $tabNum = parseInt($parsedliSubItem.find("#tableNumber").text()),
                     $typeChr = "";
                     if ($parsedliSubItem.hasClass("tbl")) {
                         $typeChr = "tbl"
@@ -122,7 +127,19 @@
                         yPos: $yPos,
                         angle: radVal
                     };
-                    $arrayFloorTable.push(objTable);
+
+                    if($typeChr == "sep")
+                    {
+                        var objSep = objTable;
+                        objSep.w = $parsedliSubItem.css('width');
+                        objSep.h = $parsedliSubItem.css('height');
+
+                        $arrayFloorSep.push(objSep);
+                    }
+                    else {
+                        $arrayFloorTable.push(objTable);
+                    }
+
                 }
 
             }
@@ -141,7 +158,8 @@
                     planName: planName,
                     nbFloor: nbFloor,
                     wallPoints: getWalls(),
-                    tables: JSON.stringify($arrayFloorTable)
+                    tables: JSON.stringify($arrayFloorTable),
+                    separations: JSON.stringify($arrayFloorSep)
                 },
                 dataType: 'JSON',
                 error: function (xhr, status, error) {
