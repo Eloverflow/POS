@@ -372,6 +372,30 @@ angular.module('starter.controllers')
 
             }
 
+            var separationElements = [];
+            for (var i = 0; i < $scope.plan.separation.length; i++) {
+
+                if ($scope.plan.separation[i].noFloor == $scope.plan.currentFloor) {
+                    /*0.6 is a base reducer*/
+                    var width = $scope.plan.separation[i].w * planXProportion;
+                    var height = $scope.plan.separation[i].h * planYProportion;
+                    var angle = parseFloat($scope.plan.separation[i].angle.substring(0, 4));
+                    var color = '#222';
+
+
+                    // Add element.
+                    separationElements.push({
+                        id: $scope.plan.separation[i].id,
+                        angle: angle,
+                        colour: color,
+                        width: width,
+                        height: height,
+                        top: parseInt($scope.plan.separation[i].yPos) * planYProportion + height / 2,
+                        left: parseInt($scope.plan.separation[i].xPos) * planXProportion
+                    });
+                }
+            }
+
 
             /*For each table inside the plan we push an element inside an array of canvas object*/
             /*We can evaluate table variable here*/
@@ -444,6 +468,32 @@ angular.module('starter.controllers')
                 context.restore();
             });
 
+            // Render separation elements.
+            separationElements.forEach(function (element) {
+                context.save();
+                context.beginPath();
+                context.fillStyle = element.colour;
+
+                /*This next part is to be able to rotate the rectangle using the corner only when needed*/
+                var angle = Math.abs(element.angle);
+                if (angle >= 3.12) {
+                    angle -= 3.12;
+                }
+                if (angle >= 1.5) {
+                    var curHeight = element.height;
+                    if (angle >= 2.15) {
+                        curHeight /= 2;
+                    }
+                    context.translate(element.left + element.height / 2, element.top + curHeight);
+                } else {
+                    context.translate(element.left + element.width / 2, element.top + element.height / 2);
+                }
+
+                context.rotate(element.angle);
+                context.fillRect(-element.width / 2, -element.height / 2, element.width, element.height);
+
+               context.restore();
+            });
 
         };
 

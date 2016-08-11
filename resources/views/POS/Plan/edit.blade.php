@@ -244,7 +244,7 @@
 
                             liList = liList + '<li class="draggable resizable sep" ' +
                                     'id="' + currentguid + '" ' +
-                                    'style="position: absolute; left: ' + $jsonSeparationArray[j]['xPos'] + 'px; top: ' + $jsonSeparationArray[j]['yPos'] + 'px; width: ' + $jsonSeparationArray[j]['w']+ 'px; height: ' + $jsonSeparationArray[j]['h'] +'px; transform: rotate(' + $jsonSeparationArray[j]['angle'] + ');"><span id="posX">' + $jsonSeparationArray[j]['xPos'] + '</span><span id="posY">' + $jsonSeparationArray[j]['yPos'] + '</span><span id="id">' + $jsonSeparationArray[j]['id'] + '</span><span class="glyphicon glyphicon-trash delete-separation"></span></li>'
+                                    'style="position: relative; left: ' + $jsonSeparationArray[j]['xPos'] + 'px; top: ' + $jsonSeparationArray[j]['yPos'] + 'px; width: ' + $jsonSeparationArray[j]['w']+ 'px; height: ' + $jsonSeparationArray[j]['h'] +'px; transform: rotate(' + $jsonSeparationArray[j]['angle'] + ');"><span id="posX">' + $jsonSeparationArray[j]['xPos'] + '</span><span id="posY">' + $jsonSeparationArray[j]['yPos'] + '</span><span id="id">' + $jsonSeparationArray[j]['id'] + '</span><span class="glyphicon glyphicon-trash delete-separation"></span></li>'
 
 
                         }

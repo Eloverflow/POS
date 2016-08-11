@@ -39,6 +39,7 @@ class PlanController extends Controller
     {
         $plan = Plan::where('id', $id)->first();
         $plan->load('table');
+        $plan->load('separation');
         return $plan;
     }
     public function edit($id)
