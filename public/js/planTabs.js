@@ -596,7 +596,7 @@ function customizeWall(){
                     /*Faire afficher un message si pas sur un mur*/
 
 
-                    var closestCircle = getClosestCircle(boxX, boxY);
+                    //var closestCircle = getClosestCircle(boxX, boxY);
                     //var linkList = getLinkList(closestCircle);
                     //var lastBestScore = getLastBestScore(boxX, boxY, linkList);
 
@@ -624,20 +624,48 @@ function customizeWall(){
 
                     var x2Dest = closestWall.get('x2'),
                         y2Dest = closestWall.get('y2');
-                    closestWall.set({x2: boxX, y2: boxY})
+                    closestWall.set({x2: boxX, y2: boxY});
 
-                    line.push(makeLine([ boxX, boxY,x2Dest, y2Dest ]))
-                    var newLine = line[line.length-1]
+                    line.push(makeLine([ boxX, boxY,x2Dest, y2Dest ]));
+                    var newLine = line[line.length-1];
 
                     /*circle at curent cursor position*/
-                    circle.push(makeCircle(boxX, boxY,closestWall, newLine))
-                    var newCircle = circle[circle.length-1]
+                    circle.push(makeCircle(boxX, boxY,closestWall, newLine));
+                    var newCircle = circle[circle.length-1];
+
+                    /*If the link One is the starting point*/
+                    if(closestWall.link1.left == closestWall.get('x1') && closestWall.link1.top == closestWall.get('y1')){
+                        newLine.link2 = closestWall.link2;
+
+                        /*Replace for the remote circle the linked line*/
+                        /*Get the good link to replace by comparing with the closestwall*/
+                        if(closestWall.link2.link1 == closestWall)
+                        closestWall.link2.link1 = newLine;
+                        else
+                        closestWall.link2.link2 = newLine;
+
+                        closestWall.link2 = newCircle;
+                        newLine.link1 = newCircle;
+                        console.log('link One is the starting point')
+                    }
+                    else {
+                        newLine.link1 = closestWall.link1;
+
+                        /*Replace for the remote circle the linked line*/
+                        /*Get the good link to replace by comparing with the closestwall*/
+                        if(closestWall.link1.link1 == closestWall)
+                            closestWall.link1.link1 = newLine;
+                        else
+                            closestWall.link1.link2 = newLine;
+
+                        closestWall.link1 = newCircle;
+                        newLine.link2 = newCircle;
+                        console.log('link two is the starting point')
+                    }
 
 
-                    newLine.link1 = closestCircle
-                    newLine.link2 = newCircle
 
-                    closestCircle.link1 = newLine
+                    //closestCircle.link1 = newLine
 
                     /*Adding to visual*/
                     canvas.add(line[line.length-1],circle[circle.length-1]);
