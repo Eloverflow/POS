@@ -419,6 +419,14 @@ function customizeWall(){
         return circle[lastBestJunction];
     }
 
+    function inBox(x0, y0, rect) {
+        var x1 = Math.min(rect.startX, rect.startX + rect.w);
+        var x2 = Math.max(rect.startX, rect.startX + rect.w);
+        var y1 = Math.min(rect.startY, rect.startY + rect.h);
+        var y2 = Math.max(rect.startY, rect.startY + rect.h);
+        return (x1 <= x0 && x0 <= x2 && y1 <= y0 && y0 <= y2);
+    }
+
     function getClosestWall(x, y) {
         var junctionScore = 99999999;
         var lastBestWall;
@@ -442,9 +450,74 @@ function customizeWall(){
             y2 = link.get('y2');
 
 
-            currentScore = Math.pow(boxX - x1,2) + Math.pow(boxY - y1,2) +  Math.pow(boxX - x2,2) + Math.pow(boxY - y2,2);
+            /*
+            currentScore = Math.pow(boxX - x1,2) + Math.pow(boxY - y1,2) +  Math.pow(boxX - x2,2) + Math.pow(boxY - y2,2);*/
 
-            if(currentScore < junctionScore){
+          /*  var x1 = Math.min(rect.startX, rect.startX + rect.w);
+            var x2 = Math.max(rect.startX, rect.startX + rect.w);
+            var y1 = Math.min(rect.startY, rect.startY + rect.h);
+            var y2 = Math.max(rect.startY, rect.startY + rect.h);*/
+            //currentScore = (x1 <= boxX && boxX <= x2 && y1 <= boxY && boxY <= y2);
+
+            var rect = {
+                startX: 0,
+                startY : 0,
+                w:0,
+                h:0
+            }
+
+            var Dx;
+            var Dy;
+            if(x2 > x1){
+                Dx = Math.abs(x2 - x1);
+                rect.startX = x1
+            }
+            else{
+                Dx = Math.abs(x2 - x1);
+                rect.startX = x2
+            }
+            if(y2 > y1){
+                Dy = Math.abs(y2 - y1);
+                rect.startY = y1
+            }
+            else{
+                Dy = Math.abs(y1 - y2);
+                rect.startY = y2
+            }
+            rect.w = Dx;
+            rect.h = Dy;
+
+            if(rect.startX > 20){
+                rect.startX -= 20;
+            }else {
+                rect.startX -= rect.startX;
+            }
+            if(rect.startY > 20){
+                rect.startY -= 20;
+            }else {
+                rect.startY -= rect.startY;
+            }
+
+            rect.w += 40;
+            rect.h += 40;
+
+
+            console.log('rect')
+            console.log(rect)
+
+
+            currentScore = Math.abs(Dy*boxX - Dx*boxY - x1*y2+x2*y1)/Math.sqrt(Math.pow(Dx, 2) + Math.pow(Dy, 2));
+            console.log('currentScore')
+            console.log(n)
+            console.log(currentScore)
+
+            /*Creating a virtual box that represent the allowed zone for cutting*/
+
+
+
+
+
+            if(currentScore < junctionScore && (inBox(boxX,boxY, rect))){
                 lastBestWall = link;
                 junctionScore = currentScore;
             }
@@ -515,62 +588,66 @@ function customizeWall(){
 
                 /*Parcourir les point pour former les murs*/
                 var closestWall = getClosestWall(boxX, boxY);
-                console.log('closestWall');
-                console.log(closestWall);
 
-                /*Faire afficher un message si pas sur un mur*/
+                if(closestWall != null){
+                    console.log('closestWall');
+                    console.log(closestWall);
 
-
-                var closestCircle = getClosestCircle(boxX, boxY);
-                //var linkList = getLinkList(closestCircle);
-                //var lastBestScore = getLastBestScore(boxX, boxY, linkList);
+                    /*Faire afficher un message si pas sur un mur*/
 
 
-                /*if(closestCircle.top < boxY > linkList[lastBestScore].y && closestCircle.left < boxX > linkList[lastBestScore].x ){
-                    closestCircle =  getClosestCircle(boxX, boxY, true);
-                    linkList = getLinkList(closestCircle);
-                    lastBestScore = getLastBestScore(boxX, boxY, linkList);
-                }*/
+                    var closestCircle = getClosestCircle(boxX, boxY);
+                    //var linkList = getLinkList(closestCircle);
+                    //var lastBestScore = getLastBestScore(boxX, boxY, linkList);
 
-                //console.log(closestCircle)
-                //console.log(lastBestScore)
-                //console.log(linkList[lastBestScore])
 
-                /* On Set une l'extrémité de la place à x2 et y2, au curseur*/
-                /*linkList[lastBestScore].link.set({x2: boxX, y2: boxY})
+                    /*if(closestCircle.top < boxY > linkList[lastBestScore].y && closestCircle.left < boxX > linkList[lastBestScore].x ){
+                     closestCircle =  getClosestCircle(boxX, boxY, true);
+                     linkList = getLinkList(closestCircle);
+                     lastBestScore = getLastBestScore(boxX, boxY, linkList);
+                     }*/
 
-                /!*Create a line from the second point to the cursor point*!/
-                line.push(makeLine([ boxX, boxY,closestCircle.left, closestCircle.top ]))
-                var newLine = line[line.length-1]
+                    //console.log(closestCircle)
+                    //console.log(lastBestScore)
+                    //console.log(linkList[lastBestScore])
 
-                /!*circle at curent cursor position*!/
-                circle.push(makeCircle(boxX, boxY,linkList[lastBestScore].link, newLine))
-                var newCircle = circle[circle.length-1]*/
+                    /* On Set une l'extrémité de la place à x2 et y2, au curseur*/
+                    /*linkList[lastBestScore].link.set({x2: boxX, y2: boxY})
+
+                     /!*Create a line from the second point to the cursor point*!/
+                     line.push(makeLine([ boxX, boxY,closestCircle.left, closestCircle.top ]))
+                     var newLine = line[line.length-1]
+
+                     /!*circle at curent cursor position*!/
+                     circle.push(makeCircle(boxX, boxY,linkList[lastBestScore].link, newLine))
+                     var newCircle = circle[circle.length-1]*/
 
                     var x2Dest = closestWall.get('x2'),
-                    y2Dest = closestWall.get('y2');
-                 closestWall.set({x2: boxX, y2: boxY})
+                        y2Dest = closestWall.get('y2');
+                    closestWall.set({x2: boxX, y2: boxY})
 
-                 line.push(makeLine([ boxX, boxY,x2Dest, y2Dest ]))
-                 var newLine = line[line.length-1]
+                    line.push(makeLine([ boxX, boxY,x2Dest, y2Dest ]))
+                    var newLine = line[line.length-1]
 
-                 /*circle at curent cursor position*/
-                 circle.push(makeCircle(boxX, boxY,closestWall, newLine))
-                 var newCircle = circle[circle.length-1]
+                    /*circle at curent cursor position*/
+                    circle.push(makeCircle(boxX, boxY,closestWall, newLine))
+                    var newCircle = circle[circle.length-1]
 
 
-                newLine.link1 = closestCircle
-                newLine.link2 = newCircle
+                    newLine.link1 = closestCircle
+                    newLine.link2 = newCircle
 
-                closestCircle.link1 = newLine
+                    closestCircle.link1 = newLine
 
-                /*Adding to visual*/
-                canvas.add(line[line.length-1],circle[circle.length-1]);
+                    /*Adding to visual*/
+                    canvas.add(line[line.length-1],circle[circle.length-1]);
 
-                canvas.sendToBack(line[line.length-1]);
-                canvas.bringToFront(circle[circle.length-1]);
-                canvas.renderAll();
-                observeCanvas();
+                    canvas.sendToBack(line[line.length-1]);
+                    canvas.bringToFront(circle[circle.length-1]);
+                    canvas.renderAll();
+                    observeCanvas();
+                }
+
             }
         }
         else{
