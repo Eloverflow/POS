@@ -19,6 +19,8 @@ class CreateCalendarEventsTable extends Migration
             $table->enum('type', ['event', 'unavailability']);
             $table->dateTime('startTime');
             $table->dateTime('endTime');
+            $table->integer('moment_type_id')->unsigned()->nullable();
+            $table->foreign('moment_type_id')->references('id')->on('moment_types');
             $table->integer('employee_id')->unsigned()->nullable();
             $table->foreign('employee_id')->references('id')->on('employees');
             $table->timestamps();

@@ -86,6 +86,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FilterItemTypeSeeder::class);
         $this->call(FilterItemSeeder::class);
 
+        
         Model::reguard();
     }
 }
