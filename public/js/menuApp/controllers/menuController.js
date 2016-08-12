@@ -2513,6 +2513,7 @@ angular.module('starter.controllers')
                             }
 
                             var commandLineId = $scope.commandClient[f + 1].commandline[p].id;
+                            var commandLineServiceNumber = $scope.commandClient[f + 1].commandline[p].service_number;
 
                             $scope.commandClient[f + 1].commandline[p] = angular.copy($.grep($scope.menuItems, function (e) {
                                 return e.id == $scope.commandClient[f + 1].commandline[p].item_id
@@ -2552,6 +2553,7 @@ angular.module('starter.controllers')
                             $scope.commandClient[f + 1].commandline[p].command_id = $scope.commandClient[f + 1].id;
                             $scope.commandClient[f + 1].commandline[p].command_line_id = commandLineId;
                             $scope.commandClient[f + 1].commandline[p].status = status;
+                            $scope.commandClient[f + 1].commandline[p].service_number = commandLineServiceNumber;
 
                         }
                         /*
