@@ -211,8 +211,7 @@ class ItemsController extends Controller
 
         $tableChoiceLists = array($tableChoiceList1);
 
-
-
+        
         return view('erp.item.create',compact('title', 'tableChoiceLists', 'tableColumns'));
     }
 
