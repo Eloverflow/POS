@@ -8,11 +8,16 @@
     | Very useful for navigation, marking if the link is active.
     |
     */
-function isActiveRoute($route, $output = 'active')
+function isActiveRoute($uri='')
 {
-    if (Route::currentRouteName() == $route) {
-        return $output;
+    $active = '';
+
+    if (Request::is(Request::segment(1) . '/' . $uri . '/*') || Request::is(Request::segment(1) . '/' . $uri) || Request::is($uri))
+    {
+        $active = 'active';
     }
+
+    return $active;
 }
 
 /*
