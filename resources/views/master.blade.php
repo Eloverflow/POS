@@ -115,8 +115,8 @@ $userMenuTabs = array
                     <span id="" class="menuLinkText"> {{ Lang::get('menu.addons') }}</span>
                 </a>
                 <ul class="children collapse {{isCollapseIn(['addon/rfid/table','addon/rfid/request'])}}" id="sub-item-1" aria-expanded="false">
-                    <li class="{{isActiveRoute('addon/rfid/table')}}"><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> RFID Tables</a></li>
-                    <li class="{{isActiveRoute('addon/rfid/request')}}"><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> RFID Request</a></li>
+                    <li class="{{isActiveRoute('addon/rfid/table')}}"><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> {{ Lang::get('menu.rfidTables') }}</a></li>
+                    <li class="{{isActiveRoute('addon/rfid/request')}}"><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> {{ Lang::get('menu.rfidRequests') }}</a></li>
                 </ul>
             </li>
             <li role="presentation" class="divider"></li>

@@ -33,6 +33,8 @@ return [
     'settings'     => 'Settings',
     'loginPage'     => 'Login Page',
     'addons'     => 'Add-ons',
+    'rfidTables'     => 'RFID Tables',
+    'rfidRequests'     => 'RFID Requests',
     
 
 ];
