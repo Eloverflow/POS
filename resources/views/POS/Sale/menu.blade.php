@@ -63,7 +63,7 @@
             </div>
             <script type="text/ng-template" id="notePopover.html">
 
-                <span style="position: absolute; top:20px; right:55px; color: #00a5ff" class="glyphicon glyphicon-edit">Service#</span>
+                <span style="position: absolute; top:20px; right:70px; color: #00a5ff" class="glyphicon glyphicon-edit" ng-click="addServiceNumberToCommandline(commandItem)">Service <% commandItem.service_number %></span>
 
                 <div class="form-group">
                     <label style="color: #000">Ajouter une note :</label>
