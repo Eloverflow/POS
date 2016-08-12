@@ -52,12 +52,16 @@
                         </div>
                 <?php
                         foreach($employee->daySchedules as $daySchedule){
+                        $dsSt = explode(' ', $daySchedule->startTime);
+                        $dtEt = explode(' ', $daySchedule->endTime);
+
                         ?>
 
                     <div class="content">
                         <div class="header">
-                            <span>{{ $daySchedule->startTime }}</span>
-                            <span>{{ $daySchedule->endTime }}</span>
+                            <span>{{ $dsSt[0] }}&nbsp;<strong>{{ $dsSt[1] }}</strong></span>
+                            <span>{{ $dtEt[0] }}&nbsp;<strong>{{ $dtEt[1] }}</strong></span>
+                            <span style="color:blue">{{ $daySchedule->interval->format("%H:%I")}}</span>
                             {{--<span style="color:blue">{{ $schedule->interval->format("%H:%I")}}</span>--}}
                         </div>
                         <div class="sub-content">
@@ -72,7 +76,6 @@
                                 $et_pieces = explode(' ', $corresp->endTime);
                                 ?>
                                 <div class="p-row">
-                                    <span>{{ $corresp->id }}</span>
                                     <span>{{ $st_pieces[0] }}&nbsp;<strong>{{ $st_pieces[1] }}</strong></span>
                                     <span>{{ $et_pieces[0] }}&nbsp;<strong>{{ $et_pieces[1] }}</strong></span>
                                     <span style="color:blue">{{ $corresp->interval->format("%H:%I")}}</span>

@@ -8,6 +8,8 @@ var globRefEventId = null;
 var globTimeZoneAMontreal = "America/Montreal";
 moment.tz.add("America/Montreal|EST EDT EWT EPT|50 40 40 40|01010101010101010101010101010101010101010101012301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-28tR0 bV0 2m30 1in0 121u 1nb0 1g10 11z0 1o0u 11zu 1o0u 11zu 3VAu Rzu 1qMu WLu 1qMu WLu 1qKu WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 4kO0 8x40 iv0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0");
 
+// Events Setters Section
+
 $('#btnAdd').click(function(e) {
 
     $calendarStartDate = new Date(
@@ -27,6 +29,11 @@ $('#btnAdd').click(function(e) {
 
     $("#addModal").modal('show');
 });
+
+
+// End Events Setters Section
+
+// Http Request Section
 
 function postAddSchedules() {
 
@@ -145,6 +152,131 @@ function postEditSchedules() {
 
 }
 
+// End Http Request Section
+
+function addEvent(){
+
+    $employeeId = parseInt($("#addModal #employeeSelect option:selected" ).val());
+    $employeeName = $("#addModal #employeeSelect option:selected" ).text()
+
+
+    /*var ValidationResult = ModalValidation("#addModal");
+     //console.log(ValidationResult.errors);
+     if(ValidationResult.errors.length == 0) {*/
+
+    var momentStart = moment($('#addModal #startTimePicker').data("DateTimePicker").date());
+    var momentEnd = moment($('#addModal #endTimePicker').data("DateTimePicker").date());
+
+    var scheduleStartDate = new Date(
+        globStoredCalendar.fullCalendar('getView').start.tz(globTimeZoneAMontreal)
+            .format()
+    );
+
+    var a = momentStart.clone().startOf('day');
+    var b = momentEnd.clone().startOf('day');
+    var diffDays = b.diff(a, 'days');
+
+
+
+    if ($('#addModal #chkOptAllWeek').is(':checked')) {
+
+        for (var i = 1; i <= 7; i++) {
+
+
+            var startDate = new Date(moment(formatDate(scheduleStartDate))
+                .add(i, 'days')
+                .add(momentStart.hours(), 'hours')
+                .add(momentStart.minutes(), 'minutes')
+                .tz(globTimeZoneAMontreal)
+                .format());
+
+            var endDateBound = 0;
+            if(diffDays > 0){
+                endDateBound = i + diffDays
+            } else {
+                endDateBound = i;
+            }
+
+            var endDate = new Date(moment(formatDate(scheduleStartDate))
+                .add(endDateBound, 'days')
+                .add(momentEnd.hours(), 'hours')
+                .add(momentEnd.minutes(), 'minutes')
+                .tz(globTimeZoneAMontreal)
+                .format());
+
+            $availableColor = "";
+            $employeeColor = GetEmployeeColor($employeeId);
+            if($employeeColor == ""){
+                $availableColors = GetAvailableColors();
+                $availableColor = $availableColors[0];
+            } else {
+                $availableColor = $employeeColor;
+            }
+
+
+            var newEvent = {
+                id: guid(),
+                title: $employeeName,
+                isAllDay: false,
+                start: startDate,
+                end: endDate,
+                description: '',
+                employeeId: $employeeId,
+                color: $availableColor
+            };
+
+            globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
+
+        }
+
+    } else {
+
+
+        $availableColor = "";
+        $employeeColor = GetEmployeeColor($employeeId);
+        if($employeeColor == ""){
+            $availableColors = GetAvailableColors();
+            $availableColor = $availableColors[0];
+        } else {
+            $availableColor = $employeeColor;
+        }
+
+        var newEvent = {
+            id: guid(),
+            title: $employeeName,
+            color: $availableColor,
+            isAllDay: false,
+            start: new Date(momentStart.tz(globTimeZoneAMontreal).format()),
+            end: new Date(momentEnd.tz(globTimeZoneAMontreal).format()),
+            description: '',
+            employeeId: $employeeId
+        };
+
+        globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
+
+        $("#addModal #displayErrors").hide();
+
+        $("#addModal #displaySuccesses .successMsg").empty();
+        $("#addModal #displaySuccesses .successMsg").append('The moment has been added succesfully !');
+
+        $("#addModal #displaySuccesses").show();
+
+    }
+    /*} else {
+
+     $("#addModal #displaySuccesses").hide();
+     $("#addModal #displayErrors #errors").empty();
+     for(var x = 0; x < ValidationResult.errors.length; x++) {
+     $("#addModal #displayErrors #errors").append('<li class="errors">' + ValidationResult.errors[x] + '</li>');
+     //$("#errors").append('<li class="errors">' + arrayErrors[i] + '</li>');
+     }
+     $("#addModal #displayErrors").show();
+     //console.log( key , erro[key] );
+
+     }*/
+
+}
+
 function editEvent(){
 
     //var ValidationResult = ModalValidation("#editModal");
@@ -157,177 +289,57 @@ function editEvent(){
     var momentStart = moment($('#editModal #startTimePicker').data("DateTimePicker").date());
     var momentEnd = moment($('#editModal #endTimePicker').data("DateTimePicker").date());
 
-        globStoredEvent.title = $employeeName;
-        globStoredEvent.start = new Date(momentStart.tz(globTimeZoneAMontreal).format());
-        globStoredEvent.end = new Date(momentEnd.tz(globTimeZoneAMontreal).format());
+    globStoredEvent.title = $employeeName;
+    globStoredEvent.start = new Date(momentStart.tz(globTimeZoneAMontreal).format());
+    globStoredEvent.end = new Date(momentEnd.tz(globTimeZoneAMontreal).format());
 
-        // ici a voir
-        if(globStoredEvent.employeeId != $employeeId){
-            $availableColor = "";
-            $employeeColor = GetEmployeeColor($employeeId);
-            if($employeeColor == ""){
-                $availableColors = GetAvailableColors();
-                $availableColor = $availableColors[0];
-                globStoredEvent.color = $availableColor;
-            } else {
-                $availableColor = $employeeColor;
-                globStoredEvent.color = $availableColor;
-            }
+    // ici a voir
+    if(globStoredEvent.employeeId != $employeeId){
+        $availableColor = "";
+        $employeeColor = GetEmployeeColor($employeeId);
+        if($employeeColor == ""){
+            $availableColors = GetAvailableColors();
+            $availableColor = $availableColors[0];
+            globStoredEvent.color = $availableColor;
+        } else {
+            $availableColor = $employeeColor;
+            globStoredEvent.color = $availableColor;
         }
+    }
 
-        globStoredEvent.employeeId = $employeeId;
+    globStoredEvent.employeeId = $employeeId;
 
-        globStoredCalendar.fullCalendar('updateEvent', globStoredEvent);
+    globStoredCalendar.fullCalendar('updateEvent', globStoredEvent);
 
-        $("#editModal #displayErrors").hide();
+    $("#editModal #displayErrors").hide();
 
-        $("#editModal #displaySuccesses .successMsg").empty();
-        $("#editModal #displaySuccesses .successMsg").append('The moment has been edited succesfully !');
+    $("#editModal #displaySuccesses .successMsg").empty();
+    $("#editModal #displaySuccesses .successMsg").append('The moment has been edited succesfully !');
 
-        $("#editModal #displaySuccesses").show();
+    $("#editModal #displaySuccesses").show();
 
 
 
     /*} else {
 
-        $("#editModal #displaySuccesses").hide();
-        $("#editModal #displayErrors #errors").empty();
-        for(var x = 0; x < ValidationResult.errors.length; x++) {
-            $("#editModal #displayErrors #errors").append('<li class="errors">' + ValidationResult.errors[x] + '</li>');
-            //$("#errors").append('<li class="errors">' + arrayErrors[i] + '</li>');
-        }
-        $("#editModal #displayErrors").show();
-        //console.log( key , erro[key] );
+     $("#editModal #displaySuccesses").hide();
+     $("#editModal #displayErrors #errors").empty();
+     for(var x = 0; x < ValidationResult.errors.length; x++) {
+     $("#editModal #displayErrors #errors").append('<li class="errors">' + ValidationResult.errors[x] + '</li>');
+     //$("#errors").append('<li class="errors">' + arrayErrors[i] + '</li>');
+     }
+     $("#editModal #displayErrors").show();
+     //console.log( key , erro[key] );
 
-    }*/
+     }*/
 }
 
 function deleteEvent(){
     globStoredCalendar.fullCalendar('removeEvents', globStoredEvent.id);
 }
 
-function addEvent(){
 
-    $employeeId = parseInt($("#addModal #employeeSelect option:selected" ).val());
-    $employeeName = $("#addModal #employeeSelect option:selected" ).text()
-
-
-    /*var ValidationResult = ModalValidation("#addModal");
-    //console.log(ValidationResult.errors);
-    if(ValidationResult.errors.length == 0) {*/
-
-        var momentStart = moment($('#addModal #startTimePicker').data("DateTimePicker").date());
-        var momentEnd = moment($('#addModal #endTimePicker').data("DateTimePicker").date());
-
-        var scheduleStartDate = new Date(
-            globStoredCalendar.fullCalendar('getView').start.tz(globTimeZoneAMontreal)
-                .format()
-        );
-
-        var a = momentStart.clone().startOf('day');
-        var b = momentEnd.clone().startOf('day');
-        var diffDays = b.diff(a, 'days');
-
-
-
-        if ($('#addModal #chkOptAllWeek').is(':checked')) {
-
-            for (var i = 1; i <= 7; i++) {
-
-
-                var startDate = new Date(moment(formatDate(scheduleStartDate))
-                    .add(i, 'days')
-                    .add(momentStart.hours(), 'hours')
-                    .add(momentStart.minutes(), 'minutes')
-                    .tz(globTimeZoneAMontreal)
-                    .format());
-
-                var endDateBound = 0;
-                if(diffDays > 0){
-                    endDateBound = i + diffDays
-                } else {
-                    endDateBound = i;
-                }
-
-                var endDate = new Date(moment(formatDate(scheduleStartDate))
-                    .add(endDateBound, 'days')
-                    .add(momentEnd.hours(), 'hours')
-                    .add(momentEnd.minutes(), 'minutes')
-                    .tz(globTimeZoneAMontreal)
-                    .format());
-
-                $availableColor = "";
-                $employeeColor = GetEmployeeColor($employeeId);
-                if($employeeColor == ""){
-                    $availableColors = GetAvailableColors();
-                    $availableColor = $availableColors[0];
-                } else {
-                    $availableColor = $employeeColor;
-                }
-
-
-                var newEvent = {
-                    id: guid(),
-                    title: $employeeName,
-                    isAllDay: false,
-                    start: startDate,
-                    end: endDate,
-                    description: '',
-                    employeeId: $employeeId,
-                    color: $availableColor
-                };
-
-                globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
-
-            }
-
-        } else {
-
-
-            $availableColor = "";
-            $employeeColor = GetEmployeeColor($employeeId);
-            if($employeeColor == ""){
-                $availableColors = GetAvailableColors();
-                $availableColor = $availableColors[0];
-            } else {
-                $availableColor = $employeeColor;
-            }
-
-            var newEvent = {
-                id: guid(),
-                title: $employeeName,
-                color: $availableColor,
-                isAllDay: false,
-                start: new Date(momentStart.tz(globTimeZoneAMontreal).format()),
-                end: new Date(momentEnd.tz(globTimeZoneAMontreal).format()),
-                description: '',
-                employeeId: $employeeId
-            };
-
-            globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
-
-            $("#addModal #displayErrors").hide();
-
-            $("#addModal #displaySuccesses .successMsg").empty();
-            $("#addModal #displaySuccesses .successMsg").append('The moment has been added succesfully !');
-
-            $("#addModal #displaySuccesses").show();
-
-        }
-    /*} else {
-
-        $("#addModal #displaySuccesses").hide();
-        $("#addModal #displayErrors #errors").empty();
-        for(var x = 0; x < ValidationResult.errors.length; x++) {
-            $("#addModal #displayErrors #errors").append('<li class="errors">' + ValidationResult.errors[x] + '</li>');
-            //$("#errors").append('<li class="errors">' + arrayErrors[i] + '</li>');
-        }
-        $("#addModal #displayErrors").show();
-        //console.log( key , erro[key] );
-
-    }*/
-
-}
+// Calendar Functions Section
 
 function dayClick(xDate, xEvent)
 {
@@ -366,6 +378,9 @@ function scheduleClick(calEvent, jsEvent, view)
     $("#editModal").modal('show');
 }
 
+// End Calendar Functions Section
+
+// Custom Functions Section
 function GetEmployeeColor(idEmployee)
 {
     var emplColor = "";
@@ -397,7 +412,7 @@ function GetAvailableColors()
         "#00502A",
         "#256500",
         "#737300"
-        ];
+    ];
 
 
     if(allEvents.length == 0){
@@ -406,11 +421,11 @@ function GetAvailableColors()
         for(var i = 0; i < niceColors.length; i++){
 
             /*var colorFound = false;
-            for(var j = 0; j < globUsedColors.length; j++){
-                if(niceColors[i] == globUsedColors[j]["color"]){
-                    colorFound = true;
-                }
-            }*/
+             for(var j = 0; j < globUsedColors.length; j++){
+             if(niceColors[i] == globUsedColors[j]["color"]){
+             colorFound = true;
+             }
+             }*/
 
 
             var colorFound = false;
@@ -435,3 +450,5 @@ function GetAvailableColors()
 
     return availableColors;
 }
+
+// End Custom Functions Section

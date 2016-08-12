@@ -27,7 +27,8 @@
 	width: 15%;
 	float: right;
 	min-height: 50px;
-	background-color: #ff3333;
+	background-color: #00bd66;
+	border-radius: 0px 0px 15px 0px;
 }
 
 .tracking-bloc .sub-content .total-square span {
