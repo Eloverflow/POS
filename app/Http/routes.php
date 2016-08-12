@@ -134,8 +134,8 @@ Route::post('/addon/rfid/request',  ['uses' => 'Addons\Rfid\RfidRequestControlle
 Route::post('/addon/rfid/checkRequest',  ['uses' => 'Addons\Rfid\RfidRequestController@checkTableRequest', 'middleware' => 'auth']);
 
 Route::get('/addon/rfid/table',  ['uses' => 'Addons\Rfid\RfidTableController@index', 'middleware' => 'auth']);
-Route::get('/addon/rfid/table/{slug}',  ['uses' => 'Addons\Rfid\RfidTableController@edit', 'middleware' => 'auth']);
-Route::post('/addon/rfid/table/{slug}',  ['uses' => 'Addons\Rfid\RfidTableController@update', 'middleware' => 'auth']);
+Route::get('/addon/rfid/table/edit/{slug}',  ['uses' => 'Addons\Rfid\RfidTableController@edit', 'middleware' => 'auth']);
+Route::post('/addon/rfid/table/edit/{slug}',  ['uses' => 'Addons\Rfid\RfidTableController@update', 'middleware' => 'auth']);
 Route::post('/addon/rfid/beers',  ['uses' => 'Addons\Rfid\RfidTableController@getBeers', 'middleware' => 'auth']);
 
 /* Start schedule */

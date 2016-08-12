@@ -33,12 +33,14 @@
                                 @foreach($tableChoiceLists as $tableChoiceList)
 
                                     <label for="{{ $tableChoiceList['dbColumn'] }}">{{ $tableChoiceList["title"] }}</label>
-                                    <input class="form-control input{{$tableIteration}}" type="hidden" id="{{ $tableChoiceList['dbColumn'] }}" name="{{ $tableChoiceList['dbColumn'] }}" value="{{ $tableRow->$tableChoiceList['dbColumn'] }}">
+                                    <?php $dbColumn = $tableChoiceList['dbColumn'] ?>
+                                    <input class="form-control input{{$tableIteration}}" type="hidden" id="{{ $tableChoiceList['dbColumn'] }}" name="{{ $tableChoiceList['dbColumn'] }}" value="{{ $tableRow->$dbColumn }}">
                                     <div id="tableChoiceList{{$tableIteration}}" class="list-group tableChoiceList">
                                         @foreach($tableChoiceList["table"] as $oneChoice)
-                                            <a id="{{$oneChoice->id}}" class="list-group-item tableChoice choiceList{{$tableIteration}} @if($oneChoice->id == $tableRow->$tableChoiceList['dbColumn'] ) active @endif' ">
-                                                <h4 class="list-group-item-heading">{{ $oneChoice->$tableChoiceList["titleColumn"] }}</h4>
-                                                <p class="list-group-item-text">{{ $oneChoice->$tableChoiceList["contentColumn"] }}</p>
+                                            <?php $titleColumn = $tableChoiceList["titleColumn"]; $contentColumn = $tableChoiceList["contentColumn"] ?>
+                                            <a id="{{$oneChoice->id}}" class="list-group-item tableChoice choiceList{{$tableIteration}} @if($oneChoice->id == $tableRow->$dbColumn ) active @endif' ">
+                                                <h4 class="list-group-item-heading">{{ $oneChoice->$titleColumn }}</h4>
+                                                <p class="list-group-item-text">{{ $oneChoice->$contentColumn }}</p>
                                             </a>
                                         @endforeach
                                     </div>
