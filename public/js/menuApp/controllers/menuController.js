@@ -475,6 +475,7 @@ angular.module('starter.controllers')
                 context.fillStyle = element.colour;
 
                 /*This next part is to be able to rotate the rectangle using the corner only when needed*/
+                /*Not as efficient as needed*/
                 var angle = Math.abs(element.angle);
                 if (angle >= 3.12) {
                     angle -= 3.12;

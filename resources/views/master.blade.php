@@ -84,7 +84,7 @@ $userMenuTabs = array
     <ul class="nav menu">
 
         @if (Auth::check())
-            <li><a href="{{ URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg> {{ Lang::get('menu.dashboard') }}</a></li>
+            <li class=""><a href="{{ URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg> {{ Lang::get('menu.dashboard') }}</a></li>
             <li><a href="{{ URL::to('stats') }}"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> {{ Lang::get('menu.statistics') }}</a></li>
             <li><a href="{{ URL::to('employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.employees') }}</a></li>
             <li><a href="{{ URL::to('work/titles') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.workTitles') }}</a></li>
