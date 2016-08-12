@@ -43,6 +43,10 @@ class Plan extends Model
     {
         return $this->hasMany('App\Models\POS\Table', 'plan_id', 'id');
     }
+    public function separation()
+    {
+        return $this->hasMany('App\Models\POS\Separation', 'plan_id', 'id');
+    }
 
 
 

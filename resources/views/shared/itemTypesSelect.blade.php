@@ -10,13 +10,14 @@
     <div id="tableChoiceList{{$tableIteration}}" class="list-group tableChoiceList">
         @foreach($tableChoiceList["table"] as $oneChoice)
             <span id="{{$oneChoice->id}}" class="list-group-item tableChoice choiceList{{$tableIteration}} active' @if(isset($tableRow) && $oneChoice->id == $tableRow->$tableChoiceList['dbColumn']) active @endif ">
+                <?php $titleColumn = $tableChoiceList["titleColumn"]; ?>
                 @if($tableChoiceList["contentColumn"] != '' )
                     <a class="view" href="{{ $tableChoiceList["postUrl"]}}/edit/{{$oneChoice->slug}}"><span class="glyphicon glyphicon-edit"></span></a>
-                    <h4 class="list-group-item-heading">{{ $oneChoice->$tableChoiceList["titleColumn"] }}</h4>
+                    <h4 class="list-group-item-heading">{{ $oneChoice->$titleColumn }}</h4>
                     <p class="list-group-item-text">{{ $oneChoice->$tableChoiceList["contentColumn"] }}</p>
                 @else
                     <a class="view" href="{{ $tableChoiceList["postUrl"]}}/edit/{{$oneChoice->slug}}"><span class="glyphicon glyphicon-edit"></span></a>
-                    <h2 class="list-group-item-heading">{{ $oneChoice->$tableChoiceList["titleColumn"] }}</h2>
+                    <h2 class="list-group-item-heading">{{ $oneChoice->$titleColumn }}</h2>
                     <p class="list-group-item-text">{{ $oneChoice->created_at }}</p>
                 @endif
 

@@ -16,6 +16,12 @@ var rotateParams = {
      }*/
 };
 
+
+var resizeParams = {
+    minHeight: 60,
+    minWidth: 100
+}
+
 var dragParams = {
     containment: "parent",
     /* start:*/
@@ -47,10 +53,16 @@ $("#btnNewSeparation").click(function () {
     var $tabItemID = $('.tabItemID', $info);
     var $tabControl = $("#tabControl");
 
-    $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span></li>');
+    $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span><span class="glyphicon glyphicon-trash delete-separation"></span></li>');
 
-    $('#' + $tableGUID).resizable().rotatable(rotateParams);
+    $('#' + $tableGUID).resizable(resizeParams).rotatable(rotateParams);
     $('#' + $tableGUID).draggable(dragParams);
+    $('#' + $tableGUID).css({top: 0, left: 0, position: 'absolute'});
+
+    $('.delete-separation').on('click', function() {
+        $(this).parent().remove();
+    });
+
 });
 $("#btnNewPlace").click(function () {
     totalTables += 1;
@@ -198,6 +210,7 @@ var btnDeleteWalls = $("#btnDeleteWalls");
 var bntEditWalls = $("#btnEditWalls");
 var bntCancelEditWalls = $("#btnCancelEditWalls");
 var bntAddWalls = $("#btnAddWalls");
+var wallInfo = $("#wall-info");
 var tabControlContainers;
 var follower = $("#follower");
 
@@ -209,6 +222,7 @@ var stateEditingWall = function () {
     bntCancelEditWalls.show();
     bntSaveWalls.show();
     btnDeleteWalls.show();
+    wallInfo.show();
 
     follower.css('visibility', 'visible')
 
@@ -224,6 +238,7 @@ var stateDisableEditingWall = function () {
     bntCancelEditWalls.hide();
     bntSaveWalls.hide();
     btnDeleteWalls.hide();
+    wallInfo.hide();
 
     follower.css('visibility', 'hidden')
 
@@ -237,6 +252,7 @@ var stateHasNoWall = function () {
     bntSaveWalls.hide();
     btnDeleteWalls.hide();
     bntAddWalls.show();
+    wallInfo.hide();
 
 }
 
@@ -247,6 +263,8 @@ var stateHasWall = function () {
 
 $(document).ready(function () {
     stateDisableEditingWall();
+
+
 })
 
 function deleteWall() {
@@ -385,8 +403,207 @@ function customizeWall(){
         }
     });
 
+    function getClosestCircle(x, y, getNext) {
+        var junctionScore = 99999999;
+        var lastBestJunction;
+
+        var boxX = x;
+        var boxY = y;
+
+        var currentScore;
+        for(var n = 0; n < circle.length; n++ ){
+
+            currentScore = Math.pow(boxX - circle[n].left,2) + Math.pow(boxY - circle[n].top,2);
+
+            if(currentScore < junctionScore){
+                lastBestJunction = n;
+                junctionScore = currentScore;
+            }
+
+        }
+
+        if(getNext){
+            if(n < circle.length)
+                lastBestJunction++;
+            else
+                lastBestJunction--;
+        }
+
+        console.log('Top & Left')
+        console.log(circle[lastBestJunction].link1.top)
+        console.log(circle[lastBestJunction].link1.left)
+        console.log('')
+
+        return circle[lastBestJunction];
+    }
+
+    function inBox(x0, y0, rect) {
+        var x1 = Math.min(rect.startX, rect.startX + rect.w);
+        var x2 = Math.max(rect.startX, rect.startX + rect.w);
+        var y1 = Math.min(rect.startY, rect.startY + rect.h);
+        var y2 = Math.max(rect.startY, rect.startY + rect.h);
+        return (x1 <= x0 && x0 <= x2 && y1 <= y0 && y0 <= y2);
+    }
+
+    function getClosestWall(x, y) {
+        var junctionScore = 99999999;
+        var lastBestWall;
+
+        var boxX = x;
+        var boxY = y;
+
+        var link;
+        var currentScore;
+        for(var n = 0; n < circle.length; n++ ){
+            if(typeof circle[n].link1 != 'undefined' && circle[n].link1 != null){
+                link = circle[n].link1
+            }
+            else {
+                link = circle[n].link2
+            }
+
+            var x1 = link.get('x1'),
+            y1 = link.get('y1'),
+            x2 = link.get('x2'),
+            y2 = link.get('y2');
+
+
+            /*
+            currentScore = Math.pow(boxX - x1,2) + Math.pow(boxY - y1,2) +  Math.pow(boxX - x2,2) + Math.pow(boxY - y2,2);*/
+
+          /*  var x1 = Math.min(rect.startX, rect.startX + rect.w);
+            var x2 = Math.max(rect.startX, rect.startX + rect.w);
+            var y1 = Math.min(rect.startY, rect.startY + rect.h);
+            var y2 = Math.max(rect.startY, rect.startY + rect.h);*/
+            //currentScore = (x1 <= boxX && boxX <= x2 && y1 <= boxY && boxY <= y2);
+
+            var rect = {
+                startX: 0,
+                startY : 0,
+                w:0,
+                h:0
+            }
+
+            var Dx;
+            var Dy;
+            if(x2 > x1){
+                Dx = Math.abs(x2 - x1);
+                rect.startX = x1
+            }
+            else{
+                Dx = Math.abs(x2 - x1);
+                rect.startX = x2
+            }
+            if(y2 > y1){
+                Dy = Math.abs(y2 - y1);
+                rect.startY = y1
+            }
+            else{
+                Dy = Math.abs(y1 - y2);
+                rect.startY = y2
+            }
+            rect.w = Dx;
+            rect.h = Dy;
+
+            if(rect.startX > 20){
+                rect.startX -= 20;
+            }else {
+                rect.startX -= rect.startX;
+            }
+            if(rect.startY > 20){
+                rect.startY -= 20;
+            }else {
+                rect.startY -= rect.startY;
+            }
+
+            rect.w += 40;
+            rect.h += 40;
+
+
+            console.log('rect')
+            console.log(rect)
+
+
+            currentScore = Math.abs(Dy*boxX - Dx*boxY - x1*y2+x2*y1)/Math.sqrt(Math.pow(Dx, 2) + Math.pow(Dy, 2));
+            console.log('currentScore')
+            console.log(n)
+            console.log(currentScore)
+
+            /*Creating a virtual box that represent the allowed zone for cutting*/
+
+
+
+
+
+            if(currentScore < junctionScore && (inBox(boxX,boxY, rect))){
+                lastBestWall = link;
+                junctionScore = currentScore;
+            }
+
+        }
+
+        return lastBestWall;
+    }
+
+    function newSeparationAtPos(x, y) {
+        $tableGUID = guid();
+        var $info = $('#nested-tabInfo');
+        var $tabItemID = $('.tabItemID', $info);
+        var $tabControl = $("#tabControl");
+
+        $("[aria-labelledby='" + $tabItemID.text() + "'] .tables").append('<li class="draggable sep" id="' + $tableGUID + '"><span id="posX"></span><span id="posY"></span><span class="glyphicon glyphicon-trash delete-separation"></span></li>');
+
+        $('#' + $tableGUID).resizable(resizeParams).rotatable(rotateParams);
+        $('#' + $tableGUID).draggable(dragParams);
+        $('#' + $tableGUID).css({top: y, left: x, position: 'absolute'});
+
+        $('.delete-separation').on('click', function() {
+            $(this).parent().remove();
+        });
+
+    }
+
+
+    function getLinkList(closestCircle) {
+
+        return [{
+            link: closestCircle.link1,
+            x: closestCircle.link1.get('x1'),
+            y: closestCircle.link1.get('y1')
+        },{
+            link: closestCircle.link1,
+            x: closestCircle.link1.get('x2'),
+            y: closestCircle.link1.get('y2')
+        },{
+            link: closestCircle.link2,
+            x: closestCircle.link2.get('x1'),
+            y: closestCircle.link2.get('y1')
+        },{
+            link: closestCircle.link2,
+            x: closestCircle.link2.get('x2'),
+            y: closestCircle.link2.get('y2')
+        }
+        ];
+    }
+    function getLastBestScore(boxX, boxY, linkList) {
+        var winnerScore =99999999,lastBestScore,currentScorePos;
+
+        for(var k = 0; k < linkList.length; k++ ){
+            currentScorePos = Math.pow(boxX - linkList[k].x,2) + Math.pow(boxY - linkList[k].y,2);
+
+            if(currentScorePos < winnerScore){
+                lastBestScore = k;
+                winnerScore = currentScorePos;
+            }
+        }
+
+
+        return lastBestScore;
+    }
+
     /*Find the best place to cut between the wall and cut*/
     $(window).click(function(e){
+
         if(e.pageX > tabControlContainers.offset().left+5 && e.pageY > tabControlContainers.offset().top+5)
         {
 
@@ -402,88 +619,101 @@ function customizeWall(){
 
                 //console.log('Click event')
                 /*Inside*/
-
-                var junctionScore = 99999999;
-                var lastBestJunction;
-
                 var boxX = parseInt(e.pageX-offsetTab.left);
                 var boxY = parseInt(e.pageY-offsetTab.top);
 
-                var currentScore;
-                for(var n = 0; n < circle.length; n++ ){
 
-                    currentScore = Math.pow(boxX - circle[n].left,2) + Math.pow(boxY - circle[n].top,2);
+                /*Parcourir les point pour former les murs*/
+                var closestWall = getClosestWall(boxX, boxY);
 
-                    if(currentScore < junctionScore){
-                        lastBestJunction = n;
-                        junctionScore = currentScore;
+                if(closestWall != null){
+                    console.log('closestWall');
+                    console.log(closestWall);
+
+                    /*Faire afficher un message si pas sur un mur*/
+
+
+                    //var closestCircle = getClosestCircle(boxX, boxY);
+                    //var linkList = getLinkList(closestCircle);
+                    //var lastBestScore = getLastBestScore(boxX, boxY, linkList);
+
+
+                    /*if(closestCircle.top < boxY > linkList[lastBestScore].y && closestCircle.left < boxX > linkList[lastBestScore].x ){
+                     closestCircle =  getClosestCircle(boxX, boxY, true);
+                     linkList = getLinkList(closestCircle);
+                     lastBestScore = getLastBestScore(boxX, boxY, linkList);
+                     }*/
+
+                    //console.log(closestCircle)
+                    //console.log(lastBestScore)
+                    //console.log(linkList[lastBestScore])
+
+                    /* On Set une l'extrémité de la place à x2 et y2, au curseur*/
+                    /*linkList[lastBestScore].link.set({x2: boxX, y2: boxY})
+
+                     /!*Create a line from the second point to the cursor point*!/
+                     line.push(makeLine([ boxX, boxY,closestCircle.left, closestCircle.top ]))
+                     var newLine = line[line.length-1]
+
+                     /!*circle at curent cursor position*!/
+                     circle.push(makeCircle(boxX, boxY,linkList[lastBestScore].link, newLine))
+                     var newCircle = circle[circle.length-1]*/
+
+                    var x2Dest = closestWall.get('x2'),
+                        y2Dest = closestWall.get('y2');
+                    closestWall.set({x2: boxX, y2: boxY});
+
+                    line.push(makeLine([ boxX, boxY,x2Dest, y2Dest ]));
+                    var newLine = line[line.length-1];
+
+                    /*circle at curent cursor position*/
+                    circle.push(makeCircle(boxX, boxY,closestWall, newLine));
+                    var newCircle = circle[circle.length-1];
+
+                    /*If the link One is the starting point*/
+                    if(closestWall.link1.left == closestWall.get('x1') && closestWall.link1.top == closestWall.get('y1')){
+                        newLine.link2 = closestWall.link2;
+
+                        /*Replace for the remote circle the linked line*/
+                        /*Get the good link to replace by comparing with the closestwall*/
+                        if(closestWall.link2.link1 == closestWall)
+                        closestWall.link2.link1 = newLine;
+                        else
+                        closestWall.link2.link2 = newLine;
+
+                        closestWall.link2 = newCircle;
+                        newLine.link1 = newCircle;
+                        console.log('link One is the starting point')
+                    }
+                    else {
+                        /*Maybe never entreing here ?*/
+                        newLine.link1 = closestWall.link1;
+
+                        /*Replace for the remote circle the linked line*/
+                        /*Get the good link to replace by comparing with the closestwall*/
+                        if(closestWall.link1.link1 == closestWall)
+                            closestWall.link1.link1 = newLine;
+                        else
+                            closestWall.link1.link2 = newLine;
+
+                        closestWall.link1 = newCircle;
+                        newLine.link2 = newCircle;
+                        console.log('link two is the starting point')
                     }
 
+                    /*Adding to visual*/
+                    canvas.add(line[line.length-1],circle[circle.length-1]);
+
+                    canvas.sendToBack(line[line.length-1]);
+                    canvas.bringToFront(circle[circle.length-1]);
+                    canvas.renderAll();
+                    observeCanvas();
+                }
+                else {
+                    newSeparationAtPos(boxX,boxY);
+                    stateDisableEditingWall();
                 }
 
-                console.log('Top & Left')
-                console.log(circle[lastBestJunction].link1.top)
-                console.log(circle[lastBestJunction].link1.left)
-                console.log('')
-
-                var closestCircle = circle[lastBestJunction];
-                var linkList = [{
-                    link: closestCircle.link1,
-                    x: closestCircle.link1.get('x1'),
-                    y: closestCircle.link1.get('y1')
-                },{
-                    link: closestCircle.link1,
-                    x: closestCircle.link1.get('x2'),
-                    y: closestCircle.link1.get('y2')
-                },{
-                    link: closestCircle.link2,
-                    x: closestCircle.link2.get('x1'),
-                    y: closestCircle.link2.get('y1')
-                },{
-                    link: closestCircle.link2,
-                    x: closestCircle.link2.get('x2'),
-                    y: closestCircle.link2.get('y2')
-                }
-                ];
-
-                var winnerScore =99999999,lastBestScore,currentScorePos;
-
-                for(var k = 0; k < linkList.length; k++ ){
-                    currentScorePos = Math.pow(boxX - linkList[k].x,2) + Math.pow(boxY - linkList[k].y,2);
-
-                    if(currentScorePos < winnerScore){
-                        lastBestScore = k;
-                        winnerScore = currentScorePos;
-                    }
-                }
-
-                //console.log(closestCircle)
-                //console.log(lastBestScore)
-                //console.log(linkList[lastBestScore])
-
-                /* On Set une l'extrémité de la place à x2 et y2, au curseur*/
-                linkList[lastBestScore].link.set({x2: boxX, y2: boxY})
-
-                /*Create a line from the second point to the cursor point*/
-                line.push(makeLine([ boxX, boxY,closestCircle.left, closestCircle.top ]))
-                var newLine = line[line.length-1]
-
-                /*circle at curent cursor position*/
-                circle.push(makeCircle(boxX, boxY,linkList[lastBestScore].link, newLine))
-                var newCircle = circle[circle.length-1]
-
-                newLine.link1 = closestCircle
-                newLine.link2 = newCircle
-
-                closestCircle.link1 = newLine
-
-                /*Adding to visual*/
-                canvas.add(line[line.length-1],circle[circle.length-1]);
-
-                canvas.sendToBack(line[line.length-1]);
-                canvas.bringToFront(circle[circle.length-1]);
-                canvas.renderAll();
-                observeCanvas();
             }
         }
         else{
@@ -563,30 +793,36 @@ function getGoodLink(link){
 function getWalls(){
     var wallPoints = "";
     var noEnd = true;
-    lastCircle = circle[0];
 
-    while(noEnd){
-        if(typeof lastCircle != "undefined") {
-            if (wallPoints != "") {
-                wallPoints += ","
+    if(circle != null && circle.length != 0) {
+        lastCircle = circle[0];
+
+        while (noEnd) {
+            if (typeof lastCircle != "undefined") {
+                if (wallPoints != "") {
+                    wallPoints += ","
+                }
+                wallPoints += lastCircle.left + ":" + lastCircle.top
+                lastCircle = getGoodLink(lastCircle)
+
+                if (typeof lastCircle != "undefined" && lastCircle.top == circle[0].top && lastCircle.left == circle[0].left) {
+                    noEnd = false;
+                    console.log('normalEnd')
+                }
             }
-            wallPoints += lastCircle.left + ":" + lastCircle.top
-            lastCircle = getGoodLink(lastCircle)
-
-            if (typeof lastCircle != "undefined" && lastCircle.top == circle[0].top && lastCircle.left == circle[0].left) {
+            else
                 noEnd = false;
-                console.log('normalEnd')
-            }
-        }
-        else
-            noEnd = false;
 
-        /*console.log('\nChoose')
-         console.log(lastCircle)
-         console.log('\n')
-         console.log('wallPoints')
-         console.log(wallPoints)
-         console.log('\n')*/
+            /*console.log('\nChoose')
+             console.log(lastCircle)
+             console.log('\n')
+             console.log('wallPoints')
+             console.log(wallPoints)
+             console.log('\n')*/
+        }
+    }
+    else {
+        console.error("Please Add wall")
     }
     return wallPoints;
 }

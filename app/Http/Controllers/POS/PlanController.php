@@ -7,6 +7,7 @@ use App\Models\POS\Employee;
 use App\Models\POS\Plan;
 use App\Models\POS\EmployeeTitle;
 use App\Models\POS\Punch;
+use App\Models\POS\Separation;
 use App\Models\POS\Table;
 use App\Models\Project;
 use App\Models\POS\Title_Employees;
@@ -38,16 +39,19 @@ class PlanController extends Controller
     {
         $plan = Plan::where('id', $id)->first();
         $plan->load('table');
+        $plan->load('separation');
         return $plan;
     }
     public function edit($id)
     {
         $plan = Plan::GetById($id);
         $tables =  Table::GetByPlanId($id);
+        $separations =  Separation::where('plan_id', $id)->get();
         $view = \View::make('POS.Plan.edit')
             ->with('ViewBag', array (
                 'plan' => $plan,
-                'tables' => json_encode($tables)
+                'tables' => json_encode($tables),
+                'separations' => json_encode($separations)
             ));
         return $view;
     }
@@ -84,8 +88,7 @@ class PlanController extends Controller
                 'errors' => $messages
             ], 422);
         }
-        else
-        {
+        else {
 
             $plan = Plan::where('id', $id)->first();
 
@@ -94,33 +97,71 @@ class PlanController extends Controller
 
             $jsonArray = json_decode(\Input::get('tables'), true);
 
-            for($i = 0; $i < count($jsonArray); $i++)
-            {
+            for ($i = 0; $i < count($jsonArray); $i++) {
 
                 $jsonArray[$i]["tblNumber"] = $jsonArray[$i]["tblNum"];
                 $jsonArray[$i]["type"] = $jsonArray[$i]["tblType"];
                 $jsonArray[$i]["plan_id"] = $id;
 
 
-                if(!empty($jsonArray[$i]["id"]))
-                {
+                if (!empty($jsonArray[$i]["id"])) {
                     $table = Table::where('id', $jsonArray[$i]["id"])->first();
 
-                    if($table != ""){
+                    if ($table != "") {
                         $table->update($jsonArray[$i]);
-                    }else{
+                    } else {
                         /*No table found at ID*/
                     }
-                }
-                else
-                {
+                } else {
                     $table = Table::create($jsonArray[$i]);
-                    if($table == "") {
+                    if ($table == "") {
                         //Failed at creating table
                     }
                 }
 
             }
+
+            $jsonArraySep = json_decode(\Input::get('separations'), true);
+
+            $separations = Separation::where('plan_id', $id)->get();
+
+            if (count($separations) > count($jsonArraySep)) {
+                /*Removing deleted commands lines*/
+
+                foreach ($separations as $separation) {
+                    $isMissing = true;
+
+                    foreach ($jsonArraySep as $inputSeparation) {
+                        if ($separation['id'] == $inputSeparation['id'])
+                            $isMissing = false;
+                    }
+
+                    if ($isMissing) {
+                        $separation->delete();
+                        /*Deleting a command line*/
+                    }
+                }
+            }
+
+            for ($i = 0; $i < count($jsonArraySep); $i++) {
+                $jsonArraySep[$i]["plan_id"] = $id;
+
+                if (!empty($jsonArraySep[$i]["id"])) {
+                    $separation = Separation::where('id', $jsonArraySep[$i]["id"])->first();
+
+                    if ($separation != "") {
+                        $separation->update($jsonArraySep[$i]);
+                    } else {
+                        /*No table found at ID*/
+                    }
+                } else {
+                    $separation = Separation::create($jsonArraySep[$i]);
+                    if ($separation == "") {
+                        //Failed at creating table
+                    }
+                }
+            }
+
 
         }
 
@@ -177,6 +218,16 @@ class PlanController extends Controller
                 }
 
             }
+
+        $jsonArraySep = json_decode(\Input::get('separations'), true);
+        for ($i = 0; $i < count($jsonArraySep); $i++) {
+            $jsonArraySep[$i]["plan_id"] = $plan->id;
+
+                $separation = Separation::create($jsonArraySep[$i]);
+                if ($separation == "") {
+                    //Failed at creating table
+                }
+        }
 
             return \Response::json([
                 'success' => "The plan " . \Input::get('planName') . " has been successfully created !"

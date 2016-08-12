@@ -14,7 +14,7 @@ class ItemType extends Model
     protected $table = 'item_types';
 
 
-    protected $fillable = array('type', 'field_names', 'size_names', 'slug');
+    protected $fillable = array('type', 'field_names', 'size_names', 'quantity_reducer', 'slug');
 
     public function item()
     {

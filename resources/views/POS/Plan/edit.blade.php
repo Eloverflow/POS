@@ -26,18 +26,23 @@
     <span style="visibility: hidden" id="wallPoints">{{ $ViewBag['plan']->wallPoints }}</span>
     <br/>
     {!! Form::text('jsonTables', $ViewBag['tables'], array('class' => 'form-control', 'id' => 'jsonTables', 'style' => 'display:none;visibility:hidden;')) !!}
+    {!! Form::text('jsonSeparations', $ViewBag['separations'], array('class' => 'form-control', 'id' => 'jsonSeparations', 'style' => 'display:none;visibility:hidden;')) !!}
     <div id="rowCmd">
         <a id="btnNewTable" class="btn btn-primary" href="#"> New Table </a>
         <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
         <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
-        <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a><br>
+        <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
+        <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
+        <br>
+        <br>
         <a class="btn btn-info" id="btnAddWalls" href="#"> Add Walls </a>
         <a class="btn btn-info" id="btnEditWalls" href="#"> Edit Walls </a>{{--
         <a class="btn btn-danger" id="btnCancelEditWalls" href="#">Cancel Edit Walls </a>--}}
         <a class="btn btn-success" id="btnSaveWalls" href="#"> Save Walls </a>
         <a class="btn btn-danger" id="btnDeleteWalls"  href="#"> Delete Walls </a>
-        <a class="btn btn-success pull-right" id="btnFinish" href="#"> Update </a>
+        <p id="wall-info"><em>Click near a wall to cut it in half or click inside the walls to add a separation(Rezisable)</em></p>
     </div>
+    <br>
     <div hidden id="follower"><span class="glyphicon glyphicon-plus"></span></div>
 
     <!--Horizontal Tab-->
@@ -84,7 +89,8 @@
         $("#btnFinish").click(function () {
             var tblContainers = $(".tablesContainer .tables");
             var listItems = $("#tabControl").find(tblContainers);
-            $arrayFloorTable = [];
+            var $arrayFloorTable = [],
+            $arrayFloorSep  = [];
             for ($i = 0; $i < listItems.length; $i++) {
                 $liSubItems = $(listItems[$i]).find("li");
 
@@ -126,7 +132,19 @@
                         yPos: $yPos,
                         angle: radVal
                     };
-                    $arrayFloorTable.push(objTable);
+
+                    if($typeChr == "sep")
+                    {
+                        var objSep = objTable;
+                        objSep.w = $parsedliSubItem.css('width');
+                        objSep.h = $parsedliSubItem.css('height');
+
+                        $arrayFloorSep.push(objSep);
+                    }
+                    else {
+                        $arrayFloorTable.push(objTable);
+                    }
+
                 }
 
             }
@@ -148,8 +166,8 @@
                     planName: planName,
                     wallPoints: wallPoints,
                     nbFloor: nbFloor,
-                    tables: JSON.stringify($arrayFloorTable)
-
+                    tables: JSON.stringify($arrayFloorTable),
+                    separations: JSON.stringify($arrayFloorSep)
                 },
                 dataType: 'JSON',
                 error: function (xhr, status, error) {
@@ -214,10 +232,30 @@
                         }
                     }
 
+                    var $separationArray = [];
+
+                    $jsonSeparationArray = JSON.parse($("#jsonSeparations").val());
+                    for (var j = 0; j < $jsonSeparationArray.length; j++) {
+                        if ($jsonSeparationArray[j]['noFloor'] == ( i - 1 )) {
+
+                            var currentguid = guid();
+
+                            $separationArray.push(currentguid);
+
+                            liList = liList + '<li class="draggable resizable sep" ' +
+                                    'id="' + currentguid + '" ' +
+                                    'style="position: relative; left: ' + $jsonSeparationArray[j]['xPos'] + 'px; top: ' + $jsonSeparationArray[j]['yPos'] + 'px; width: ' + $jsonSeparationArray[j]['w']+ 'px; height: ' + $jsonSeparationArray[j]['h'] +'px; transform: rotate(' + $jsonSeparationArray[j]['angle'] + ');"><span id="posX">' + $jsonSeparationArray[j]['xPos'] + '</span><span id="posY">' + $jsonSeparationArray[j]['yPos'] + '</span><span id="id">' + $jsonSeparationArray[j]['id'] + '</span><span class="glyphicon glyphicon-trash delete-separation"></span></li>'
+
+
+                        }
+                    }
+
+
 
                     $("#tabControl").append("<div class=\"tablesContainer\"><ul class=\"tables\">" + liList + "</ul></div>");
                     $('#parentHorizontalTab li.draggable').rotatable(rotateParams);
                     $('#parentHorizontalTab li.draggable').draggable(dragParams);
+                    $('#parentHorizontalTab li.resizable').resizable(resizeParams);
 
 
                     tabOffset = $('.tablesContainer').last().offset();
@@ -241,6 +279,23 @@
                         console.log(currentTable.offset())
 
                     }
+                    
+                    for (var l = 0; l < $separationArray.length; l++) {
+
+                        var currentSeparation = $('#' + $separationArray[l]);
+
+                        var top = tabOffset.top + parseInt(currentSeparation.find('#posY').text());
+                        var left = tabOffset.left + parseInt(currentSeparation.find('#posX').text());
+
+                        currentSeparation.offset({top: top, left: left});
+
+                        console.log(currentSeparation.offset())
+
+                    }
+
+                    $('.delete-separation').on('click', function() {
+                        $(this).parent().remove();
+                    });
 
 
                 }
