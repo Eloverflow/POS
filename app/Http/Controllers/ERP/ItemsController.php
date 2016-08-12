@@ -111,7 +111,7 @@ class ItemsController extends Controller
         $previousTableRow = Item::findOrNew(($tableRow->id)-1);
         $nextTableRow = Item::findOrNew(($tableRow->id)+1);
 
-        return view('shared.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
+        return view('erp.item.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
     }
 
 
@@ -211,7 +211,7 @@ class ItemsController extends Controller
 
         $tableChoiceLists = array($tableChoiceList1);
 
-        
+
         return view('erp.item.create',compact('title', 'tableChoiceLists', 'tableColumns'));
     }
 
