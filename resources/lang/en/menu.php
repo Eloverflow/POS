@@ -27,10 +27,14 @@ return [
     'plans'     => 'Plans',
     'punch'     => 'Punch',
     'posMenu'     => 'POS Menu',
-    'posMenuFilter'     => 'POS Menu Filter',
+    'menu'     => 'Menu',
+    'posMenuFilter'     => 'Menu Filter',
     'activityLog'     => 'Activity log',
     'settings'     => 'Settings',
     'loginPage'     => 'Login Page',
+    'addons'     => 'Add-ons',
+    'rfidTables'     => 'RFID Tables',
+    'rfidRequests'     => 'RFID Requests',
     
 
 ];

@@ -15,11 +15,12 @@ class ItemTypesController extends \App\Http\Controllers\Controller
 
     public  function index()
     {
-        $items = ItemType::get();
+        /*Main table row to retrieve from DB*/
+        $tableRows = ItemType::get();
         $type = 'All';
         $title = 'ItemTypes';
         $columns = array('id', 'type', 'field_names');
-        return view('erp.items.types.list',compact('items', 'columns', 'type', 'title'));
+        return view('shared.list',compact('tableRows', 'columns', 'type', 'title'));
     }
 
 

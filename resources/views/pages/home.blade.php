@@ -5,7 +5,7 @@
 @section('content')
 <div class="row">
     <div class="col-lg-12">
-        <h1 class="page-header">Dashboard</h1>
+        <h1 class="page-header">{{ Lang::get('home.dashboard') }}</h1>
     </div>
 </div><!--/.row-->
 
@@ -18,7 +18,7 @@
                 </div>
                 <div class="col-sm-9 col-lg-7 widget-right">
                     <div class="large">2</div>
-                    <div class="text-muted">New Orders</div>
+                    <div class="text-muted">{{ Lang::get('home.newOrders') }}</div>
                 </div>
             </div>
         </div>

@@ -53,10 +53,12 @@ angular.module('starter.controllers')
         $scope.showTableModal = false;
         $scope.showPlanModal = false;
         $scope.showDivideBillModal = false;
+        $scope.showPanelCommandLineService = false;
         $scope.showHeaderOptions = true;
         $scope.showBillDemo = false;
         $scope.showPanelOverwriteBill = false;
         $scope.showPayBillPanel = false;
+        $scope.selectedCommandLine = null;
         //
         $scope.paymentCurrentStep = '';
         //
@@ -1604,6 +1606,25 @@ angular.module('starter.controllers')
             else
                 $scope.showPanelOverwriteBill = true;
         };
+
+
+        $scope.togglePanelCommandLineService = function () {
+                $scope.showPanelCommandLineService = !$scope.showPanelCommandLineService;
+        };
+
+        $scope.addServiceNumberToCommandline = function (commandItems) {
+            $scope.selectedCommandLine = commandItems;
+            $scope.showPanelCommandLineService = true;
+
+        }
+
+        $scope.addToServiceNumber = function (number) {
+            $scope.selectedCommandLine.service_number = number;
+            $scope.showPanelCommandLineService = false;
+            $scope.delayedUpdateTable();
+        }
+
+
         $scope.togglePanelOverwriteBill = function () {
             $scope.showPanelOverwriteBill = !$scope.showPanelOverwriteBill;
         };

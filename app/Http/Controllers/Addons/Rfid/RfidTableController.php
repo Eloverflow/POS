@@ -20,13 +20,13 @@ class RfidTableController extends Controller
      */
     public function index()
     {
-        $items = TableRfid::get();
+        $tableRows = TableRfid::get();
 
         $title = "Table";
 
         $columns = array('name','flash_card_hw_code', 'phone_hw_code');
 
-        return view('addins.rfid.table.list', compact('title', 'items', 'columns'));
+        return view('shared.list', compact('title', 'tableRows', 'columns'));
     }
 
     protected function create(Request $request)

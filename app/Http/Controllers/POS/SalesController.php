@@ -504,7 +504,7 @@ class SalesController extends Controller
                                 if (!empty($commandLine)) {
                                     $result['msg'] .= " - Succeeded at finding the command line";/*
                                     $result['inputItem'] = $inputItem;*/
-                                    $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'status' => $inputItem['status'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras'])]);
+                                    $commandLine->update(['cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'status' => $inputItem['status'], 'service_number' => $inputItem['service_number'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras'])]);
                                     $commandLine->save();
                                     $result['msg'] .= " - Command line normally updated";
                                     array_push($result['commandLineIdMat'][count($result['commandLineIdMat']) - 1], $commandLine->id);
@@ -520,7 +520,7 @@ class SalesController extends Controller
                                     else
                                         $extras = "";
 
-                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'status' => $inputItem['status'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']), 'extras' => $extras]);
+                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'status' => $inputItem['status'], 'service_number' => $inputItem['service_number'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']), 'extras' => $extras]);
 
                                     if ($commandLine == "") {
                                         $result['msg'] .= " - Failed at recording command line";
@@ -614,7 +614,7 @@ class SalesController extends Controller
                                         if (!empty($inputCommand['extras']))
                                             $extras = json_encode($inputItem['extras']);
 
-                                        $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'status' => $inputItem['status'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => $notes, 'extras' => $extras]);
+                                        $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'status' => $inputItem['status'], 'service_number' => $inputItem['service_number'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => $notes, 'extras' => $extras]);
 
                                         if ($commandLine == "") {
                                             $result['msg'] .= " - Failed at recording command line";
@@ -637,7 +637,7 @@ class SalesController extends Controller
                                     /* var_dump($command);*/
 
 
-                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'status' => $inputItem['status'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras'])]);
+                                    $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'status' => $inputItem['status'], 'service_number' => $inputItem['service_number'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']), 'extras' => json_encode($inputItem['extras'])]);
                                     array_push($result['commandLineIdMat'][count($result['commandLineIdMat']) - 1], $commandLine->id);
 
                                     if ($commandLine == "") {
