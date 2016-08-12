@@ -63,6 +63,8 @@
             </div>
             <script type="text/ng-template" id="notePopover.html">
 
+                <span style="position: absolute; top:20px; right:55px; color: #00a5ff" class="glyphicon glyphicon-edit">Service#</span>
+
                 <div class="form-group">
                     <label style="color: #000">Ajouter une note :</label>
 
@@ -153,11 +155,11 @@
                     </p>
                 </div>
 
-                <span style="margin-right:2px;color: #30a5ff; position: absolute; top:2px; right:2px; font-size: 16px; width: 15px" class="glyphicon glyphicon-cloud-upload"></span>
+                <span style="margin-right:10px;color: #30a5ff; position: absolute; top:2px; right:2px; font-size: 16px; width: 15px" class="glyphicon glyphicon-cloud-upload"><% commandItem.service_number %></span>
             </li>
             <li ng-show="commandClient[commandCurrentClient].commandline.length > 0">
                 <button ng-hide="commandClient[commandCurrentClient].status == 3" ng-click="cancelCommand(commandClient[commandCurrentClient])" href="#"
-                        style="background-color: #30a5ff; width: 49%; height: 40px; margin-left: 3px; margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
+                        style="background-color: #30a5ff; width: 49%; height: 40px; margin-left: 3px; margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-danger"><span
                             class="glyphicon glyphicon-trash"></span>
                     Annuler la commande
                 </button>
@@ -169,7 +171,7 @@
                 <button ng-show="(commandClient[commandCurrentClient].commandline | filter :  { status: 1 }).length > 0" ng-click="changecommandlineStatus()" href="#"
                         style="background-color: #30a5ff; width: 49%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
                             class="glyphicon glyphicon-upload"></span>
-                    Ajouter à la commande
+                    Tout ajouter à la commande
                 </button>
                 <button ng-hide="(commandClient[commandCurrentClient].commandline | filter :  { status: 1 }).length > 0" ng-click="terminateCommand(commandClient[commandCurrentClient])" href="#"
                         style="background-color: #333; width: 49%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
@@ -216,10 +218,15 @@
                     </p>
                 </div>
 
+                <button ng-show="(commandClient[commandCurrentClient].commandline | filter :  { status: 1 }).length > 1" ng-click="addServiceNumberToCommandline(commandItem)" href="#"
+                        style="background-color: #30a5ff; width: 49%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-default"><span
+                            class="glyphicon glyphicon-time"></span>
+                    Service # <% commandItem.service_number %>
+                </button>
                 <button ng-show="(commandClient[commandCurrentClient].commandline | filter :  { status: 1 }).length > 1" ng-click="changecommandlineStatusLine(commandItem)" href="#"
-                        style="background-color: #30a5ff; width: 100%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
+                        style="background-color: #30a5ff; width: 49%; height: 40px;  margin-bottom: 3px; margin-top: 3px;" type="button" class="btn btn-success"><span
                             class="glyphicon glyphicon-upload"></span>
-                    Ajouter l'item à la commande
+                    Ajouter à la commande
                 </button>
 
             </li>

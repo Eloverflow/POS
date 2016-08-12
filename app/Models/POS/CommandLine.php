@@ -11,7 +11,7 @@ class CommandLine extends Model implements LogsActivityInterface {
     use LogsActivity;
     protected $table = 'command_lines';
 
-    protected $fillable = array('command_id', 'status', 'item_id', 'sale_id', 'extras', 'notes', 'size', 'cost', 'quantity', 'slug');
+    protected $fillable = array('command_id', 'status', 'item_id', 'sale_id', 'extras', 'service_number', 'notes', 'size', 'cost', 'quantity', 'slug');
 
 
     public function item()

@@ -21,6 +21,7 @@ class CreateCommandLinesTable extends Migration
             $table->string('size');
             $table->integer('quantity');
             $table->integer('status')->default(1);
+            $table->integer('service_number')->nullable();
             $table->string('notes');
             $table->float('cost');
             $table->json('extras')->nullable();
