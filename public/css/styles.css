@@ -263,11 +263,11 @@ li.sortable-placeholder {
 {
 	background-color: #B9FF80;
 }
-
+/*
 .sidebar ul.nav ul.children{
 	left: 100px;
 
-}
+}*/
 
 .sidebar ul.nav li.parent{
 }
@@ -277,6 +277,12 @@ li.sortable-placeholder {
 	position: absolute;
 	z-index: -999;
 }*/
+
+.sidebar ul.nav li.parent ul.children li.active a{
+	background-color: #00a5ff;
+	color: #fff!important;
+}
+
 
 .tblIcons
 {

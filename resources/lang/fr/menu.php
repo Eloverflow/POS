@@ -13,7 +13,7 @@ return [
     |
     */
 
-    'dashboard' => 'Table de bord',
+    'dashboard' => 'Tableau de bord',
     'statistics'     => 'Statistiques',
     'employees'     => 'Employées',
     'workTitles'     => 'Titre de travail',
@@ -27,10 +27,12 @@ return [
     'plans'     => 'Plans',
     'punch'     => 'Punch',
     'posMenu'     => 'Menu POS',
-    'posMenuFilter'     => 'Filtres du Menu POS ',
+    'menu'     => 'Menu',
+    'posMenuFilter'     => 'Filtres du Menu',
     'activityLog'     => 'Historique (Log)',
     'settings'     => 'Paramètres',
     'loginPage'     => 'Authentification',
+    'addons'     => 'Add-ons',
     
 
 ];
