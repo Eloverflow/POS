@@ -99,8 +99,12 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group">
+                            <h3>Event Name</h3>
+                            {!! Form::text('name', old('name'), array('class' => 'form-control', 'id' => 'name')) !!}
+                        </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 pull-right">
                         <div class="form-group">
                             <h3>Options</h3>
                             {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
@@ -177,7 +181,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="col-md-6">
+                    <div class="col-md-6 pull-right">
                         <div class="form-group">
                             <h3>Options</h3>
                             {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
@@ -256,6 +260,7 @@
 
         $('#editModal #startTimePicker').datetimepicker();
         $('#editModal #endTimePicker').datetimepicker();
+
 
         /*$("#startTimePicker").on("dp.change", function (e) {
             $('#endTimePicker').data("DateTimePicker").minDate(e.date);

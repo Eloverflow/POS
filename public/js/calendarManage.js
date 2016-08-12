@@ -30,6 +30,25 @@ $('#btnAdd').click(function(e) {
     $("#addModal").modal('show');
 });
 
+$( "#addModal #momentType" ).change(function() {
+    var selectedValue = parseInt(this.value);
+    if(selectedValue == 1)
+    {
+        $('#addModal #employeeSelect').prop('disabled', true);
+    } else {
+        $('#addModal #employeeSelect').prop('disabled', false);
+    }
+});
+
+$( "#editModal #momentType" ).change(function() {
+    var selectedValue = parseInt(this.value);
+    if(selectedValue == 1)
+    {
+        $('#editModal #employeeSelect').prop('disabled', true);
+    } else {
+        $('#editModal #employeeSelect').prop('disabled', false);
+    }
+});
 
 // End Events Setters Section
 
@@ -154,12 +173,27 @@ function postEditSchedules() {
 
 // End Http Request Section
 
-function addEvent(){
+function addEvent() {
 
-    $employeeId = parseInt($("#addModal #employeeSelect option:selected" ).val());
-    $employeeName = $("#addModal #employeeSelect option:selected" ).text()
+    $employeeId = parseInt($("#addModal #employeeSelect option:selected").val());
+    $employeeName = $("#addModal #employeeSelect option:selected").text()
 
-
+    $momentType = parseInt($("#addModal #momentType option:selected").val());
+    switch ($momentType)
+    {
+        case 1:
+            $color = "#0C0C50";
+            $title = "Event";
+            break;
+        case 2:
+            $color = "#b30000";
+            $title = "Unavailability - " + $employeeName;
+            break;
+        case 3:
+            $color = "#003300";
+            $title = "Day Off - " + $employeeName;
+            break;
+    }
     /*var ValidationResult = ModalValidation("#addModal");
      //console.log(ValidationResult.errors);
      if(ValidationResult.errors.length == 0) {*/
@@ -216,13 +250,13 @@ function addEvent(){
 
             var newEvent = {
                 id: guid(),
-                title: $employeeName,
+                title: $title,
                 isAllDay: false,
                 start: startDate,
                 end: endDate,
                 description: '',
                 employeeId: $employeeId,
-                color: $availableColor
+                color: $color
             };
 
             globStoredCalendar.fullCalendar('addEventSource', [newEvent]);
@@ -243,8 +277,8 @@ function addEvent(){
 
         var newEvent = {
             id: guid(),
-            title: $employeeName,
-            color: $availableColor,
+            title: $title,
+            color: $color,
             isAllDay: false,
             start: new Date(momentStart.tz(globTimeZoneAMontreal).format()),
             end: new Date(momentEnd.tz(globTimeZoneAMontreal).format()),
@@ -340,7 +374,6 @@ function deleteEvent(){
 
 
 // Calendar Functions Section
-
 function dayClick(xDate, xEvent)
 {
 
