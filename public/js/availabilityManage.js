@@ -226,11 +226,11 @@ function dayClick(xDate, xEvent)
 
     $stPick = $('#addModal #startTimePicker').data("DateTimePicker");
     $stPick.clear();
-    $stPick.defaultDate(new Date(moment(xDate).tz(globTimeZoneAMontreal)));
+    $stPick.defaultDate(new Date(moment(xDate).format()));
 
     $etPick = $('#addModal #endTimePicker').data("DateTimePicker");
     $etPick.clear();
-    $etPick.defaultDate(new Date(moment(xDate).add(2, 'hours').tz(globTimeZoneAMontreal)));
+    $etPick.defaultDate(new Date(moment(xDate).add(2, 'hours').format()));
 
 
     $("#addModal #displayErrors").hide();
@@ -238,9 +238,6 @@ function dayClick(xDate, xEvent)
 
     $("#addModal").modal('show');
 
-
-    console.log('test')
-    console.log(xDate)
 }
 
 function availClick(calEvent, jsEvent, view)

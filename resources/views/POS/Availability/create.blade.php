@@ -241,17 +241,21 @@
         });
 
         $('#addModal #startTimePicker').datetimepicker({
-            format: 'hh:mm',
+            format: 'LT',
+            timeZone: null
         });
         $('#addModal #endTimePicker').datetimepicker({
-            format: 'mm',
+            format: 'LT',
+            timeZone: null
         });
 
         $('#editModal #startTimePicker').datetimepicker({
-            format: 'mm',
+            format: 'LT',
+            timeZone: null
         });
         $('#editModal #endTimePicker').datetimepicker({
-            format: 'mm',
+            format: 'LT',
+            timeZone: null
         });
 
         $( "#addModal #dayNumber" ).change(function() {
@@ -286,9 +290,9 @@
                 stDtPicker.clear();
                 stDtPicker.defaultDate(momentStart);
 
-
                 edDtPicker.clear();
                 edDtPicker.defaultDate(momentEnd);
+
 
             }
         });
@@ -297,8 +301,8 @@
             var selectedValue = parseInt(this.value);
             if(selectedValue != -1) {
 
-                var stDtPicker = $('#addModal #startTimePicker').data("DateTimePicker");
-                var edDtPicker = $('#addModal #endTimePicker').data("DateTimePicker");
+                var stDtPicker = $('#editModal #startTimePicker').data("DateTimePicker");
+                var edDtPicker = $('#editModal #endTimePicker').data("DateTimePicker");
 
                 var momentStart = moment(stDtPicker.date());
                 var momentEnd = moment(edDtPicker.date());

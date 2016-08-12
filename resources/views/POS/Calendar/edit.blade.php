@@ -77,6 +77,16 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <h3>Type</h3>
+                            <select id="momentType" name="momentType" class="form-control">
+                                <option value="1">Event</option>
+                                <option value="2">Unavailability</option>
+                                <option value="3">Day Off</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <h3>Employee</h3>
                             <select id="employeeSelect" name="employeeSelect" class="form-control">
                                 @foreach ($ViewBag['employees'] as $employee)
@@ -93,8 +103,8 @@
                     <div class="col-md-6">
                         <div class="form-group">
                             <h3>Options</h3>
-                                {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
-                                {!! Form::label('lblOptAllWeek', "All this week") !!}
+                            {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
+                            {!! Form::label('lblOptAllWeek', "All this week") !!}
                         </div>
                     </div>
                 </div>
@@ -144,6 +154,16 @@
                     </div>
                     <div class="col-md-6">
                         <div class="form-group">
+                            <h3>Type</h3>
+                            <select id="momentType" name="momentType" class="form-control">
+                                <option value="1">Event</option>
+                                <option value="2">Unavailability</option>
+                                <option value="3">Day Off</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
                             <h3>Employee</h3>
                             <select id="employeeSelect" name="employeeSelect" class="form-control">
                                 @foreach ($ViewBag['employees'] as $employee)
@@ -157,7 +177,13 @@
                             </select>
                         </div>
                     </div>
-
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <h3>Options</h3>
+                            {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
+                            {!! Form::label('lblOptAllWeek', "All this week") !!}
+                        </div>
+                    </div>
                 </div>
 
                 <!-- dialog buttons -->
@@ -173,18 +199,16 @@
 
 @section("myjsfile")
     <script src="{{ @URL::to('js/utils.js') }}"></script>
-    <script src="{{ @URL::to('js/schedulesManage.js') }}"></script>
+    <script src="{{ @URL::to('js/calendarManage.js') }}"></script>
+
 
     <script src="{{ @URL::to('js/moment/moment-timezone-with-data-packed.js') }}"></script>
     <script type="text/javascript">
         // var for edit Event
         var globStoredEvent = null;
         var globStoredCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
-        $('#btnAdd').click(function(e) {
 
 
-            $("#addModal").modal('show');
-        });
         $('#btnFinish').click(function(e) {
             e.preventDefault();
             //postAddSchedules();
@@ -202,9 +226,6 @@
         });
 
         function calendarViewRender (xView, xElement) {
-
-            /*"[Semaine du "+ xView.start.format("YYYY-MM-DD") + " au "+
-            xView.end.format("YYYY-MM-DD") + "]"*/
 
             if(xView.type === "agendaWeek"){
                 window.setTimeout(function(){
