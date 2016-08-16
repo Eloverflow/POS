@@ -23,6 +23,7 @@ use App\Models\POS\SaleLine;
 use App\Models\POS\Plan;
 use App\Models\POS\Setting;
 use App\Models\POS\Table;
+use App\Models\POS\MomentType;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Beer;
@@ -86,7 +87,7 @@ class DatabaseSeeder extends Seeder
         $this->call(FilterItemTypeSeeder::class);
         $this->call(FilterItemSeeder::class);
 
-        
+        $this->call(MomentTypes::class);
         Model::reguard();
     }
 }
@@ -212,7 +213,6 @@ class UserTableSeeder extends Seeder {
         User::create(['name' => 'Labatt', 'email' => 'labatt@email.com', 'password' => 'pass12345']);
         User::create(['name' => 'Jean Fortin-Moreau', 'email' => 'jfortin-moreau@outlook.com', 'password' => 'inpensable', 'remember_token' => 'ozk5AuCDzT6yoE1AdNiQ0KlaYc76bMzNLSoOWF8kVUj36vIi8H3V3bU2xbm3']);
         User::create(['name' => 'root', 'email' => 'maype.isaelblais@gmail.com', 'password' => 'dollaswag']);
-        User::create(['name' => 'Visiteur(es) Adncomm', 'email' => 'visiteur@adncomm.com', 'password' => 'ItWasAdncomm1337!', 'remember_token' => 'l6JMhYJSwbQj8791LCAhPdkrryYMQQkjbwkqd13MhgEeAyUj3yAfoEXvzmTL']);
         User::create(['name' => 'user_employee', 'email' => 'test-mflow@yopmail.com', 'password' => '11']);
         User::create(['name' => 'Visiteur', 'email' => 'visiteur@mirageflow.com', 'password' => 'Visiteur!']);
         User::create(['name' => 'Alex Breton', 'email' => 'alex.breton@hotmail.co.uk', 'password' => '@lexBreton']);
@@ -790,4 +790,28 @@ class FilterItemSeeder extends Seeder {
         $this->command->info('extras table seeded!');
     }
 
+}
+
+class CalendarSeeder extends Seeder {
+    public function run () {
+
+    }
+}
+
+class MomentTypes extends Seeder {
+    public function run() {
+        DB::table('moment_types')->delete();
+
+        $filter_moment_types = array(
+            array('id' => '1','name' => 'Event'),
+            array('id' => '2','name' => 'Unavailability'),
+            array('id' => '3','name' => 'Day Off')
+        );
+
+        foreach ($filter_moment_types as $table){
+            MomentType::create($table);
+        }
+
+        $this->command->info('Moment Types table seeded!');
+    }
 }

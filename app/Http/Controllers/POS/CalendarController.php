@@ -9,6 +9,7 @@ use App\Models\Beer;
 use App\Models\ERP\Item;
 use App\Models\ERP\ItemType;
 use App\Models\POS\Client;
+use App\Models\POS\MomentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Input;
@@ -80,6 +81,8 @@ class CalendarController extends Controller
             'right' => 'prev, next');
 
         $employees = Employee::getAll();
+        $momentTypes = MomentType::getAll();
+
         $calendar = \Calendar::addEvents($events)->setOptions([
             //'firstDay' => 1,
             'timezone' => 'local', 'EDT', ('America/Montreal'),
@@ -96,6 +99,7 @@ class CalendarController extends Controller
 
         $view = \View::make('POS.Calendar.edit')->with('ViewBag', array(
                 'employees' => $employees,
+                'momentTypes' => $momentTypes,
                 'calendar' => $calendar,
                 'startDate' => $lastSundayStr,
                 'endDate' => $lastDay->format('Y-m-d')
@@ -104,13 +108,7 @@ class CalendarController extends Controller
         return $view;
     }
 
-    public function create()
-    {
-
-
-    }
-
-    public function postCreate()
+    public function postEdit()
     {
         $inputs = \Input::all();
 
