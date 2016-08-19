@@ -126,6 +126,7 @@
             </div>
         </div>
     </div>
+
     <div id="editModal" class="lumino modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
