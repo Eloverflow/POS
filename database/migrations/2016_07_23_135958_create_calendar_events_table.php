@@ -16,9 +16,9 @@ class CreateCalendarEventsTable extends Migration
             $table->increments('id');
             $table->string("name");
             $table->boolean("isAllDay");
-            $table->enum('type', ['event', 'unavailability']);
             $table->dateTime('startTime');
             $table->dateTime('endTime');
+            $table->string("textValue");
             $table->integer('moment_type_id')->unsigned()->nullable();
             $table->foreign('moment_type_id')->references('id')->on('moment_types');
             $table->integer('employee_id')->unsigned()->nullable();

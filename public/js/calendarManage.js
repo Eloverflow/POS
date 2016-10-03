@@ -31,25 +31,27 @@ $('#btnAdd').click(function(e) {
 });
 
 $( "#addModal #momentType" ).change(function() {
-    var selectedValue = parseInt(this.value);
-    if(selectedValue == 1)
-    {
-        $('#addModal #employeeSelect').prop('disabled', true);
-    } else {
-        $('#addModal #employeeSelect').prop('disabled', false);
-    }
+    SelectMomentType(parseInt(this.value), $('#addModal'));
 });
 
 $( "#editModal #momentType" ).change(function() {
-    var selectedValue = parseInt(this.value);
-    if(selectedValue == 1)
-    {
-        $('#editModal #employeeSelect').prop('disabled', true);
-    } else {
-        $('#editModal #employeeSelect').prop('disabled', false);
-    }
+    SelectMomentType(parseInt(this.value), $('#editModal'));
 });
 
+function SelectMomentType($selectedValue, $modal) {
+    if($selectedValue == 1)
+    {
+        $modal.find('#employeeSelect').prop('disabled', true);
+        $modal.find('#eventName').prop('disabled', false);
+        $modal.find('.employee-select').hide();
+        $modal.find('.event-name').show();
+    } else {
+        $modal.find('#employeeSelect').prop('disabled', false);
+        $modal.find('#eventName').prop('disabled', true);
+        $modal.find('.employee-select').show();
+        $modal.find('.event-name').hide();
+    }
+}
 // End Events Setters Section
 
 // Http Request Section
@@ -176,14 +178,15 @@ function postEditSchedules() {
 function addEvent() {
 
     $employeeId = parseInt($("#addModal #employeeSelect option:selected").val());
-    $employeeName = $("#addModal #employeeSelect option:selected").text()
+    $employeeName = $("#addModal #employeeSelect option:selected").text();
+    $eventName = $("#addModal #eventName").val();
 
     $momentType = parseInt($("#addModal #momentType option:selected").val());
     switch ($momentType)
     {
         case 1:
             $color = "#0C0C50";
-            $title = "Event";
+            $title = "Event - " + $eventName;
             break;
         case 2:
             $color = "#b30000";
@@ -256,6 +259,8 @@ function addEvent() {
                 end: endDate,
                 description: '',
                 employeeId: $employeeId,
+                momentTypeId: $momentType,
+                eventName:$eventName,
                 color: $color
             };
 
@@ -283,7 +288,9 @@ function addEvent() {
             start: new Date(momentStart.tz(globTimeZoneAMontreal).format()),
             end: new Date(momentEnd.tz(globTimeZoneAMontreal).format()),
             description: '',
-            employeeId: $employeeId
+            employeeId: $employeeId,
+            momentTypeId: $momentType,
+            eventName:$eventName
         };
 
         globStoredCalendar.fullCalendar('addEventSource', [newEvent]);

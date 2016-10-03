@@ -79,16 +79,18 @@
                         <div class="form-group">
                             <h3>Type</h3>
                             <select id="momentType" name="momentType" class="form-control">
-                                <option value="1">Event</option>
-                                <option value="2">Unavailability</option>
-                                <option value="3">Day Off</option>
+                                @foreach ($ViewBag['momentTypes'] as $momentType)
+                                    <option value="{{ $momentType->id }}">
+                                        {{ $momentType->name}}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="form-group employee-select" style="display: none;">
                             <h3>Employee</h3>
-                            <select id="employeeSelect" name="employeeSelect" class="form-control">
+                            <select id="employeeSelect" name="employeeSelect" class="form-control" disabled>
                                 @foreach ($ViewBag['employees'] as $employee)
 
                                     <option value="{{ $employee->idEmployee }}" @if(old('employeeSelect'))
@@ -99,16 +101,22 @@
                                 @endforeach
                             </select>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group event-name">
                             <h3>Event Name</h3>
-                            {!! Form::text('name', old('name'), array('class' => 'form-control', 'id' => 'name')) !!}
+                            {!! Form::text('name', old('name'), array('class' => 'form-control', 'id' => 'eventName')) !!}
                         </div>
                     </div>
                     <div class="col-md-6 pull-right">
                         <div class="form-group">
                             <h3>Options</h3>
-                            {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
-                            {!! Form::label('lblOptAllWeek', "All this week") !!}
+                            <div>
+                                {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
+                                {!! Form::label('lblOptAllWeek', "All week") !!}
+                            </div>
+                            <div>
+                                {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllDay']) !!}
+                                {!! Form::label('lblOptAllDay', "All day") !!}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -118,6 +126,7 @@
             </div>
         </div>
     </div>
+
     <div id="editModal" class="lumino modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -160,9 +169,11 @@
                         <div class="form-group">
                             <h3>Type</h3>
                             <select id="momentType" name="momentType" class="form-control">
-                                <option value="1">Event</option>
-                                <option value="2">Unavailability</option>
-                                <option value="3">Day Off</option>
+                                @foreach ($ViewBag['momentTypes'] as $momentType)
+                                    <option value="{{ $momentType->id }}">
+                                        {{ $momentType->name}}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
