@@ -7,6 +7,8 @@ use App\Http\Requests;
 use App\Models\Auth\User;
 use App\Models\Beer;
 use App\Models\ERP\Extra;
+use App\Models\POS\Table;
+use App\Models\POS\Command;
 use App\Models\ERP\ExtraItem;
 use App\Models\ERP\ExtraItemType;
 use App\Models\ERP\Item;
@@ -32,8 +34,23 @@ class ActivityLogController extends Controller
 
         foreach ($activities as $activity)
         {
-            $user = User::where('id', $activity->user_id)->get();
-            $employee = Employee::where('userId', $activity->user_id)->get();
+            $user = User::where('id', $activity->causer_id)->first();
+            $employee = Employee::where('userId', $activity->causer_id)->first();
+
+            $attributes = $activity->properties['attributes'];
+
+            if(!empty($attributes)){
+                if(!empty($attributes['command_id'])){
+                    $activity['related_command'] = Command::where('id', $attributes['command_id'])->first();
+                }
+
+                if(!empty($attributes['table_id'])){
+                    $activity['related_table'] = Table::where('id', $attributes['table_id'])->first();
+                }
+                elseif (!empty($activity['related_command'])){
+                    $activity['related_table'] = Table::where('id', $activity['related_command']['table_id'])->first();
+                }
+            }
 
             $activity['user'] = $user;
             $activity['employee'] = $employee;
@@ -50,8 +67,23 @@ class ActivityLogController extends Controller
 
         foreach ($activities as $activity)
         {
-            $user = User::where('id', $activity->user_id)->get();
-            $employee = Employee::where('userId', $activity->user_id)->get();
+            $user = User::where('id', $activity->causer_id)->first();
+            $employee = Employee::where('userId', $activity->causer_id)->first();
+
+            $attributes = $activity->properties['attributes'];
+
+            if(!empty($attributes)){
+                if(!empty($attributes['command_id'])){
+                    $activity['related_command'] = Command::where('id', $attributes['command_id'])->first();
+                }
+
+                if(!empty($attributes['table_id'])){
+                    $activity['related_table'] = Table::where('id', $attributes['table_id'])->first();
+                }
+                elseif (!empty($activity['related_command'])){
+                    $activity['related_table'] = Table::where('id', $activity['related_command']['table_id'])->first();
+                }
+            }
 
             $activity['user'] = $user;
             $activity['employee'] = $employee;
@@ -67,8 +99,23 @@ class ActivityLogController extends Controller
 
         foreach ($activities as $activity)
         {
-            $user = User::where('id', $activity->user_id)->get();
-            $employee = Employee::where('userId', $activity->user_id)->get();
+            $user = User::where('id', $activity->causer_id)->first();
+            $employee = Employee::where('userId', $activity->causer_id)->first();
+
+            $attributes = $activity->properties['attributes'];
+
+            if(!empty($attributes)){
+                if(!empty($attributes['command_id'])){
+                    $activity['related_command'] = Command::where('id', $attributes['command_id'])->first();
+                }
+
+                if(!empty($attributes['table_id'])){
+                    $activity['related_table'] = Table::where('id', $attributes['table_id'])->first();
+                }
+                elseif (!empty($activity['related_command'])){
+                    $activity['related_table'] = Table::where('id', $activity['related_command']['table_id'])->first();
+                }
+            }
 
             $activity['user'] = $user;
             $activity['employee'] = $employee;
@@ -86,8 +133,23 @@ class ActivityLogController extends Controller
         {
             foreach ($activities as $activity)
             {
-                $user = User::where('id', $activity->user_id)->get();
-                $employee = Employee::where('userId', $activity->user_id)->get();
+                $user = User::where('id', $activity->causer_id)->first();
+                $employee = Employee::where('userId', $activity->causer_id)->first();
+
+                $attributes = $activity->properties['attributes'];
+
+                if(!empty($attributes)){
+                    if(!empty($attributes['command_id'])){
+                        $activity['related_command'] = Command::where('id', $attributes['command_id'])->first();
+                    }
+
+                    if(!empty($attributes['table_id'])){
+                        $activity['related_table'] = Table::where('id', $attributes['table_id'])->first();
+                    }
+                    elseif (!empty($activity['related_command'])){
+                        $activity['related_table'] = Table::where('id', $activity['related_command']['table_id'])->first();
+                    }
+                }
 
                 $activity['user'] = $user;
                 $activity['employee'] = $employee;

@@ -3,12 +3,9 @@
 namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\LogsActivity;
-use Spatie\Activitylog\LogsActivityInterface;
 
-class Client extends Model implements LogsActivityInterface {
+class Client extends Model {
 
-    use LogsActivity;
     protected $table = 'clients';
 
     protected $fillable = array('credit' , 'rfid_card_code', 'client_number', 'slug');
@@ -18,7 +15,7 @@ class Client extends Model implements LogsActivityInterface {
      *
      * @param string $eventName
      * @return string
-     */
+     *//*
     public function getActivityDescriptionForEvent($eventName)
     {
         if ($eventName == 'created')
@@ -37,6 +34,6 @@ class Client extends Model implements LogsActivityInterface {
         }
 
         return '';
-    }
+    }*/
 
 }

@@ -17,6 +17,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Input;
 
 class EmployeeController extends Controller
 {
@@ -191,7 +192,7 @@ class EmployeeController extends Controller
 
     public function authenticateEmployee($id)
     {
-        $password = \Input::get('password');
+        $password = Input::get('password');
 
         $employee = Employee::whereId($id)->first();
 
@@ -200,6 +201,7 @@ class EmployeeController extends Controller
 
             $hashCheck = Hash::check($password, $employee->user->password);
             $employee['hashCheck'] = $hashCheck;
+
 
             if($hashCheck)
             {

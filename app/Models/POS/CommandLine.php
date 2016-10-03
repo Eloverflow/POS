@@ -3,12 +3,13 @@
 namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\LogsActivity;
-use Spatie\Activitylog\LogsActivityInterface;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class CommandLine extends Model implements LogsActivityInterface {
+class CommandLine extends Model {
 
     use LogsActivity;
+    protected static $logAttributes = ['command_id', 'status', 'item_id', 'sale_id', 'extras', 'service_number', 'notes', 'size', 'cost', 'quantity'];
+
     protected $table = 'command_lines';
 
     protected $fillable = array('command_id', 'status', 'item_id', 'sale_id', 'extras', 'service_number', 'notes', 'size', 'cost', 'quantity', 'slug');
@@ -33,7 +34,7 @@ class CommandLine extends Model implements LogsActivityInterface {
      *
      * @param string $eventName
      * @return string
-     */
+     *//*
     public function getActivityDescriptionForEvent($eventName)
     {
         if ($eventName == 'created')
@@ -52,5 +53,5 @@ class CommandLine extends Model implements LogsActivityInterface {
         }
 
         return '';
-    }
+    }*/
 }

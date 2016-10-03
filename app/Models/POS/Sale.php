@@ -1,14 +1,14 @@
 <?php
 
 namespace App\Models\POS;
-
+use Spatie\Activitylog\Traits\LogsActivity;
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\LogsActivity;
-use Spatie\Activitylog\LogsActivityInterface;
 
-class Sale extends Model implements LogsActivityInterface {
+class Sale extends Model{
 
     use LogsActivity;
+    protected static $logAttributes = ['sale_number', 'cancelled', 'status', 'total', 'taxes', 'subTotal', 'paiement_type', 'extras'];
+
     protected $table = 'sales';
 
     protected $fillable = array('sale_number', 'cancelled', 'status', 'total', 'taxes', 'subTotal', 'paiement_type', 'extras', 'slug');
@@ -25,7 +25,7 @@ class Sale extends Model implements LogsActivityInterface {
      * @param string $eventName
      * @return string
      */
-    public function getActivityDescriptionForEvent($eventName)
+    /*public function getActivityDescriptionForEvent($eventName)
     {
         if ($eventName == 'created')
         {
@@ -43,5 +43,5 @@ class Sale extends Model implements LogsActivityInterface {
         }
 
         return '';
-    }
+    }*/
 }

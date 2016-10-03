@@ -291,7 +291,7 @@ class SalesController extends Controller
                                     if(!empty($billLine['extras']))
                                         $billLine['extras'] = json_encode($billLine['extras']);
                                     else
-                                        $billLine['extras'] = "";
+                                        $billLine['extras'] = null;
 
                                     if(!empty($billLine['saleLineId'])){
                                         $saleLine = SaleLine::where('id', $billLine['saleLineId'])->first();
@@ -443,7 +443,7 @@ class SalesController extends Controller
                         if (!empty($inputCommand['extras']))
                             $command['extras'] = $inputCommand['extras'];
                         else
-                            $command['extras'] = "";
+                            $command['extras'] = null;
 
 
                         if (!empty($inputCommand['status']))
@@ -518,7 +518,7 @@ class SalesController extends Controller
                                     if (!empty($inputItem['extras']))
                                         $extras = $inputItem['extras'];
                                     else
-                                        $extras = "";
+                                        $extras = null;
 
                                     $commandLine = CommandLine::create(['command_id' => $command->id, 'item_id' => $inputItem['id'], 'size' => $inputItem['size']['name'], 'cost' => $inputItem['size']['price'], 'status' => $inputItem['status'], 'service_number' => !empty($inputItem['service_number']) ? $inputItem['service_number'] : null, 'quantity' => $inputItem['quantity'], 'notes' => json_encode($inputItem['notes']), 'extras' => $extras]);
 
@@ -553,7 +553,7 @@ class SalesController extends Controller
                         if (!empty($inputCommand['notes']))
                             $notes = json_encode($inputCommand['notes']);
 
-                        $extras = "";
+                        $extras = null;
                         if (!empty($inputCommand['extras']))
                             $extras = json_encode($inputCommand['extras']);
 
@@ -610,7 +610,7 @@ class SalesController extends Controller
                                         if (!empty($inputCommand['notes']))
                                             $notes = json_encode($inputItem['notes']);
 
-                                        $extras = "";
+                                        $extras = null;
                                         if (!empty($inputCommand['extras']))
                                             $extras = json_encode($inputItem['extras']);
 

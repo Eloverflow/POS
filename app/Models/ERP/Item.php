@@ -3,18 +3,12 @@
 namespace App\Models\ERP;
 
 use Illuminate\Database\Eloquent\Model;
-use Spatie\Activitylog\LogsActivity;
-use Spatie\Activitylog\LogsActivityInterface;
+use Spatie\Activitylog\Traits\LogsActivity;
 
-class Item extends Model implements LogsActivityInterface {
-
+class Item extends Model  {
     use LogsActivity;
+    protected static $logAttributes = ['name' ,'description', 'item_type_id', 'img_id', 'slug', 'custom_fields_array', 'size_prices_array'];
 
-    /**
-     * The database table used by the model.
-     *
-     * @var string
-     */
     protected $table = 'items';
 
     protected $fillable = array('name' ,'description', 'item_type_id', 'img_id', 'slug', 'custom_fields_array', 'size_prices_array');
@@ -38,7 +32,7 @@ class Item extends Model implements LogsActivityInterface {
      * @param string $eventName
      * @return string
      */
-    public function getActivityDescriptionForEvent($eventName)
+   /* public function getActivityDescriptionForEvent($eventName)
     {
         if ($eventName == 'created')
         {
@@ -56,7 +50,7 @@ class Item extends Model implements LogsActivityInterface {
         }
 
         return '';
-    }
+    }*/
 }
 
 

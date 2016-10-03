@@ -1,10 +1,11 @@
 <?php
 
-use App\Models\Addons\Rfid\TableRfidBeer;
+use Illuminate\Database\Seeder;
+
+
 use App\Models\ERP\Extra;
 use App\Models\ERP\ExtraItemType;
 use App\Models\ERP\Item;
-use App\Models\ERP\ItemFieldList;
 use App\Models\ERP\ItemType;
 use App\Models\ERP\OrderLine;
 use App\Models\ERP\Supplier;
@@ -23,9 +24,6 @@ use App\Models\POS\SaleLine;
 use App\Models\POS\Plan;
 use App\Models\POS\Setting;
 use App\Models\POS\Table;
-use Illuminate\Database\Seeder;
-use Illuminate\Database\Eloquent\Model;
-use App\Models\Beer;
 use App\Models\POS\Day_Availability;
 use App\Models\POS\Availability;
 use App\Models\Auth\User;
@@ -44,8 +42,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
         $this->call(UserTableSeeder::class);
         $this->call(SuppliersTableSeeder::class);
         $this->call(ItemTypesTableSeeder::class);/*
@@ -86,10 +82,9 @@ class DatabaseSeeder extends Seeder
         $this->call(FilterItemTypeSeeder::class);
         $this->call(FilterItemSeeder::class);
 
-        
-        Model::reguard();
     }
 }
+
 
 
 class MenuSettingsTableSeeder extends Seeder {
@@ -98,7 +93,7 @@ class MenuSettingsTableSeeder extends Seeder {
     {
         DB::table('settings')->delete();
 
-        Setting::create(['taxes' => "[{value: 0.05,name: 'TPS' },{value: 0.09975,name: 'TVQ'}]", 'plan_id'=>1, 'use_time_24'=>true, 'language'=>'fr', 'timezone'=>'Eastern Standard Time', 'daylight'=>true, 'ipaddress'=>'666.666.666.666', 'use_email'=>true]);
+        Setting::create(['taxes' => json_encode("[{value: 0.05,name: 'TPS' },{value: 0.09975,name: 'TVQ'}]"), 'plan_id'=>1, 'use_time_24'=>true, 'language'=>'fr', 'timezone'=>'Eastern Standard Time', 'daylight'=>true, 'ipaddress'=>'666.666.666.666', 'use_email'=>true]);
 
         $this->command->info('Menu Settings table seeded!');
     }
@@ -660,8 +655,8 @@ class SaleLineSeeder extends Seeder {
             SaleLine::create($table);
         }
 
-       /* SaleLine::create(['id' => '1', 'sale_id' => '1', 'item_id' => '1' , 'cost' => 3.78, 'quantity' => 5]);
-        SaleLine::create(['id' => '2', 'sale_id' => '1', 'item_id' => '2' , 'cost' => 3.45, 'quantity' => 2]);*/
+        /* SaleLine::create(['id' => '1', 'sale_id' => '1', 'item_id' => '1' , 'cost' => 3.78, 'quantity' => 5]);
+         SaleLine::create(['id' => '2', 'sale_id' => '1', 'item_id' => '2' , 'cost' => 3.45, 'quantity' => 2]);*/
 
         $this->command->info('sale lines table seeded!');
     }

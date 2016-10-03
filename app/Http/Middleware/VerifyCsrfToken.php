@@ -13,14 +13,5 @@ class VerifyCsrfToken extends BaseVerifier
      */
     protected $except = [
         //
-        'addon/*',
-        'disponibility/*',
-        'item/*',
-        'work/*',
-        'items/*',
-        'inventory/*',
-        'menu/*',
-        'employee/*',
-        'plan/*'
     ];
 }

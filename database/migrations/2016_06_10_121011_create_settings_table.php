@@ -15,8 +15,8 @@ class CreateSettingsTable extends Migration
         Schema::create('settings', function (Blueprint $table) {
             $table->increments('id');
             $table->json('taxes');
-            $table->json('note_suggestions_command');
-            $table->json('note_suggestions_command_line');
+            $table->json('note_suggestions_command')->nullable();
+            $table->json('note_suggestions_command_line')->nullable();
             $table->boolean('use_time_24');
             $table->string('language');
             $table->string('timezone');

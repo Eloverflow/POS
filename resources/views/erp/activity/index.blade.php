@@ -96,56 +96,85 @@
             /*finalString += log.id+ ' : ';*/
             finalString += '<span style="color: #30a5ff">[' + log.updated_at + ']</span> ';
 
-            if(log.user[0].name == 'user_employee'){
-                finalString += '<span style="color: #fff">'
-                finalString += log.employee[0].firstName + ' ' +  log.employee[0].lastName
+
+            if(log.user){
+
+                var user_link = "{{ @URL::to('employee/track') }}/" + log.employee.id;
+
+                if(log.user.name == 'user_employee'){
+                    finalString += '<span >';
+                    finalString += '<a style="color: #fff" href="' + user_link + '">';
+                    finalString += log.employee.firstName + ' ' +  log.employee.lastName;
+                    finalString += '</a>';
+                }
+                else{
+                    finalString += '<span style="color: #fff; text-shadow: 0 0 5px rgba(255,255,255,.2);">';
+                    finalString += log.user.name + '(Admin)'
+                }
+            }else{
+                finalString += '<span style="color: #fff; text-shadow: 0 0 5px rgba(255,255,255,.2);">';
+                finalString += '(Server)'
             }
-            else{
-                finalString += '<span style="color: #fff; text-shadow: 0 0 5px rgba(255,255,255,.2);">'
-                finalString += log.user[0].name + '(Admin)'
-            }
-            finalString += '</span>'
-            finalString += ' - '
+
+
+            finalString += '</span>';
+            finalString += ' - ';
 
             try {
-                var logObject = JSON.parse(log.text);
-                if(logObject.type == "created"){
-                    finalString += '<span style="color: green">Created: '
-                    finalString += logObject.msg;
+                //var logObject = JSON.parse(log.text);
+                var logObject = log;
+
+                var type = logObject.subject_type.split('\\');
+                type = type[type.length-1];
+
+                if(logObject.description == "created"){
+                    finalString += '<span style="color: green">Created: ';
+                    finalString += type;
 
                 }
-                else if(logObject.type == "updated"){
-                    finalString += '<span style="color: #30a5ff">Updated: '
-                    finalString += logObject.msg;
+                else if(logObject.description == "updated"){
+                    finalString += '<span style="color: #30a5ff">Updated: ';
+                    finalString += type;
 
                 }
-                else if(logObject.type == "deleted"){
-                    finalString += '<span style="color: red">Deleted: '
-                    finalString += logObject.msg;
+                else if(logObject.description == "deleted"){
+                    finalString += '<span style="color: red">Deleted: ';
+                    finalString += type;
 
                 }
                 else {
-                    finalString += '<span style="color: #8ad919">'
-                    finalString += log.text;
+                    finalString += '<span style="color: #8ad919">';
+                    finalString += log;
                 }
-                finalString += '</span>'
+                finalString += '</span>';
 
-                finalString += '<button onclick="updateScrollDelayed(this)" class="btn btn-info" style="height: 30px; margin: 2px;" data-toggle="collapse" href="#data-'+ log.id + '"> Object </button>'
-                finalString += '<span style="margin-left: 0;" id="data-'+ log.id + '" class="collapse" >'
+                if(logObject['related_table']){
+                    finalString += ' - <span style="color: white">';
+                    finalString += 'Table #' + logObject['related_table'].tblNumber + ' ';
+                    finalString += '</span>';
+                }
 
-                var row = logObject['row']
+                if(logObject['related_command']){
+                    finalString += ' - <span style="color: white">';
+                    finalString += 'Command #' + logObject['related_command'].command_number + ' ';
+                    finalString += '</span>';
+                }
 
-                /*finalString += objectRow;*/
+                finalString += ' <button onclick="updateScrollDelayed(this)" class="btn btn-info" style="height: 30px; margin: 2px;" data-toggle="collapse" href="#data-'+ log.id + '"> Object </button>'
+                finalString += '<span style="margin-left: 0;" id="data-'+ log.id + '" class="collapse" >';
 
-                finalString += '<table style="width: 100%; box-shadow: 2px 2px 6px #222;border: 4px #31b0d5 solid; color: #fff"><tr>'
+                var row = logObject['properties'];
+
+
+                finalString += '<table style="width: 100%; box-shadow: 2px 2px 6px #222;border: 4px #31b0d5 solid; color: #fff"><tr>';
                 $.each(row, function(key, data) {
                     finalString += '<th  style=" padding: 3px; border: 3px #31b0d5 solid; ">';
                     finalString += key;
                     finalString += '</th>';
                 });
-                finalString += '</tr>'
+                finalString += '</tr>';
 
-                finalString += '<tr>'
+                finalString += '<tr>';
                 $.each(row, function(key, data) {
                     finalString += '<td style=" max-width:430px; overflow: auto;  border: 2px #555 solid; border-top: none">';
 
@@ -160,7 +189,6 @@
                     }
                     else {
 
-                        /*finalString += data*/
                         try {
                             var newData = JSON.parse(data);
 
@@ -177,42 +205,19 @@
                                 finalString += data
                             }
 
-                        }catch (e) {/*
-                            console.log("Parsing error:", e);*/
+                        }catch (e) {
 
                             finalString += data
                         }
 
                     }
 
-
-                   /* finalString += data;*/
                     finalString += '</td>';
                 });
                 finalString += '</tr></table>'
 
-
-
-
-
-             /*   $.each(objectRow, function (key, data) {
-                    finalString += 'key :';
-                    finalString += key;
-                    finalString += 'data :';
-                    finalString += data;
-                    $.each(data, function (index, data) {
-                        finalString += 'index :';
-                        finalString += index;
-                        finalString += 'data :';
-                        finalString += data;
-                    })
-                })*/
-
                 finalString += '</span>'
-                /*$('.object')[ $('.object').leng]*/
-            }catch (e) {/*
-                console.log("Parsing error:", e);*/
-
+            }catch (e) {
                 finalString += '<span style="color: #fff">'
                 finalString += log.text;
                 finalString += '</span>'
