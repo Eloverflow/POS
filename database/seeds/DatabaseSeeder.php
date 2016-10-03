@@ -44,8 +44,6 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        Model::unguard();
-
         $this->call(UserTableSeeder::class);
         $this->call(SuppliersTableSeeder::class);
         $this->call(ItemTypesTableSeeder::class);/*
@@ -208,12 +206,12 @@ class UserTableSeeder extends Seeder {
     {
         DB::table('users')->delete();
 
-        User::create(['name' => 'Labatt', 'email' => 'labatt@email.com', 'password' => 'pass12345']);
-        User::create(['name' => 'Jean Fortin-Moreau', 'email' => 'jfortin-moreau@outlook.com', 'password' => 'inpensable', 'remember_token' => 'ozk5AuCDzT6yoE1AdNiQ0KlaYc76bMzNLSoOWF8kVUj36vIi8H3V3bU2xbm3']);
-        User::create(['name' => 'root', 'email' => 'maype.isaelblais@gmail.com', 'password' => 'dollaswag']);
-        User::create(['name' => 'user_employee', 'email' => 'test-mflow@yopmail.com', 'password' => '11']);
-        User::create(['name' => 'Visiteur', 'email' => 'visiteur@mirageflow.com', 'password' => 'Visiteur!']);
-        User::create(['name' => 'Alex Breton', 'email' => 'alex.breton@hotmail.co.uk', 'password' => '@lexBreton']);
+        User::create(['name' => 'Labatt', 'email' => 'labatt@email.com', 'password' => \Hash::make('pass12345')]);
+        User::create(['name' => 'Jean Fortin-Moreau', 'email' => 'jfortin-moreau@outlook.com', 'password' => \Hash::make('inpensable'), 'remember_token' => 'ozk5AuCDzT6yoE1AdNiQ0KlaYc76bMzNLSoOWF8kVUj36vIi8H3V3bU2xbm3']);
+        User::create(['name' => 'root', 'email' => 'maype.isaelblais@gmail.com', 'password' => \Hash::make('dollaswag')]);
+        User::create(['name' => 'user_employee', 'email' => 'test-mflow@yopmail.com', 'password' => \Hash::make('11')]);
+        User::create(['name' => 'Visiteur', 'email' => 'visiteur@mirageflow.com', 'password' => \Hash::make('Visiteur!')]);
+        User::create(['name' => 'Alex Breton', 'email' => 'alex.breton@hotmail.co.uk', 'password' => \Hash::make('@lexBreton')]);
 
 
         $this->command->info('Users table seeded!');
@@ -658,8 +656,8 @@ class SaleLineSeeder extends Seeder {
             SaleLine::create($table);
         }
 
-        /* SaleLine::create(['id' => '1', 'sale_id' => '1', 'item_id' => '1' , 'cost' => 3.78, 'quantity' => 5]);
-         SaleLine::create(['id' => '2', 'sale_id' => '1', 'item_id' => '2' , 'cost' => 3.45, 'quantity' => 2]);*/
+       /* SaleLine::create(['id' => '1', 'sale_id' => '1', 'item_id' => '1' , 'cost' => 3.78, 'quantity' => 5]);
+        SaleLine::create(['id' => '2', 'sale_id' => '1', 'item_id' => '2' , 'cost' => 3.45, 'quantity' => 2]);*/
 
         $this->command->info('sale lines table seeded!');
     }

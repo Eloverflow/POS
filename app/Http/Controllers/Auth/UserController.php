@@ -52,7 +52,7 @@ class UserController extends Controller
             $now_password   = Input::get('now_password');
             if(Hash::check($now_password, Auth::user()->password)){
                 $user = Auth::user();
-                $user->password = Input::get('password');
+                $user->password = \Hash::make(Input::get('password'));
                 $user->save();
                 return Redirect::to('/')->withSuccess('Password successfully updated !');
             }
