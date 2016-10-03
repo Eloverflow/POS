@@ -29,6 +29,12 @@ class PagesController extends Controller
     }
 
 
+    public function websiteLayout()
+    {
+        return view('POS.Website.websiteLayout');
+    }
+
+
 
     /**
      * Show the form for creating a new resource.

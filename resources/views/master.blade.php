@@ -51,18 +51,23 @@ $userMenuTabs = array
         //array('name' => 'Profile', 'href' => '#', 'class' => 'glyph stroked male-user', 'xlink' => 'stroked-male-user'),
         //array('name' => 'Settings', 'href' => '#', 'class'=> 'glyph stroked gear', 'xlink' => 'stroked-gear'),
         array('name' => 'Change password', 'href' => '/user/password/update', 'class'=> 'glyph stroked gear', 'xlink' => 'stroked-gear'),
-        array('name' => 'Logout', 'href' => '/auth/logout', 'class'=> 'glyph stroked cancel', 'xlink' => 'stroked-cancel'),
+        array('name' => 'Logout', 'href' => '/logout', 'class'=> 'glyph stroked cancel', 'xlink' => 'stroked-cancel'),
 );
 ?>
 {{--End of User Menu definition--}}
 {{--User Menu rendering--}}
                     @for ($i = 0; $i < count($userMenuTabs); $i++) {{--For each item in the menu--}}
                     <li>
-                        <a href="{{ @URL::to($userMenuTabs[$i]['href']) }}">
+                        <a href="{{ @URL::to($userMenuTabs[$i]['href']) }}" {{ $userMenuTabs[$i]['href'] == '/logout' ? 'onclick=event.preventDefault();document.getElementById(\'logout-form\').submit();' : '' }}>
                             <svg class="{{ $userMenuTabs[$i]['class'] }}">
                                 <use xlink:href="#{{ $userMenuTabs[$i]['xlink'] }}"></use>
                             </svg> {{ $userMenuTabs[$i]['name'] }}
                         </a>
+                        @if($userMenuTabs[$i]['href'] == '/logout')
+                            <form id="logout-form" action="{{ @URL::to($userMenuTabs[$i]['href']) }}" method="POST" style="display: none;">
+                                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                            </form>
+                        @endif
                     </li>
                     @endfor
 {{--End of User Menu rendering--}}
@@ -124,7 +129,7 @@ $userMenuTabs = array
             <li class="{{isActiveRoute('menu-settings')}}"><a href="{{ URL::to('menu-settings') }}"><svg class="glyph stroked gear"><use xlink:href="#stroked-gear"/></svg> {{ Lang::get('menu.settings') }}</a></li>
             <li role="presentation" class="divider"></li>
         @else
-            <li class="{{isActiveRoute('auth/login')}}"><a href="{{ URL::to('auth/login') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.loginPage') }}</a></li><li role="presentation" class="divider"></li>
+            <li class="{{isActiveRoute('login')}}"><a href="{{ URL::to('login') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.loginPage') }}</a></li><li role="presentation" class="divider"></li>
         @endif
     </ul>
 

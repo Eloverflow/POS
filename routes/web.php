@@ -11,18 +11,13 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-
 Auth::routes();
 
-Route::get('/home', 'HomeController@index');
-
-Route::get('/website',  function(){return view('POS.Website.websiteLayout'); });
+Route::get('/website', ['uses' => 'PagesController@websiteLayout', 'middleware' => 'auth']);
 
 Route::get('/user/password/update', ['uses' => 'Auth\UserController@update','middleware' => 'auth']);
 Route::post('/user/password/update', ['uses' => 'Auth\UserController@updatePassword','middleware' => 'auth']);
+Route::get('/password/email', ['uses' => 'Auth\UserController@forgotPass']);
 
 Route::get('/activity-log',  ['uses' => 'ERP\ActivityLogController@index', 'middleware' => 'auth']);
 Route::get('/activity-log/over/{id}',  ['uses' => 'ERP\ActivityLogController@overId', 'middleware' => 'auth']);
