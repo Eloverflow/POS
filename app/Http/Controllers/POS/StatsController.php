@@ -8,6 +8,7 @@ use App\Models\POS\EmployeeTitle;
 use App\Models\POS\Schedule;
 use App\Models\POS\Punch;
 use App\Models\Project;
+use Illuminate\Support\Facades\Input;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;

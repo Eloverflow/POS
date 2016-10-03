@@ -17,6 +17,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Input;
 
 use DateInterval;
 use DateTime;
@@ -192,7 +193,7 @@ class AvailabilityController extends Controller
 
     public function postEdit()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'name' => 'required',
@@ -216,17 +217,17 @@ class AvailabilityController extends Controller
         else {
 
 
-            Availability::where('id',\Input::get('dispoId'))
+            Availability::where('id',Input::get('dispoId'))
             ->update([
-                'employee_id' => \Input::get('employeeSelect'),
-                'name' => \Input::get('name')
+                'employee_id' => Input::get('employeeSelect'),
+                'name' => Input::get('name')
             ]);
 
-            Availability::DeleteDayDisponibilities(\Input::get('dispoId'));
+            Availability::DeleteDayDisponibilities(Input::get('dispoId'));
 
-            $jsonArray = json_decode(\Input::get('events'), true);
+            $jsonArray = json_decode(Input::get('events'), true);
             for ($i = 0; $i < count($jsonArray); $i++) {
-                //$jsonObj = json_decode(\Input::get('events')[$i], true);
+                //$jsonObj = json_decode(Input::get('events')[$i], true);
                 $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
                 $resStart = $dateStart->format('H:i:s');
                 $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
@@ -234,7 +235,7 @@ class AvailabilityController extends Controller
 
                 //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
                 Day_Availability::create([
-                    "disponibility_id" => \Input::get('dispoId'),
+                    "disponibility_id" => Input::get('dispoId'),
                     "day_number" => $jsonArray[$i]["dayIndex"],
                     "startTime" => $resStart,
                     "endTime" => $resStop
@@ -243,7 +244,7 @@ class AvailabilityController extends Controller
             }
 
             return \Response::json([
-                'success' => "The Availability " . \Input::get('name') . " has been successfully edited !"
+                'success' => "The Availability " . Input::get('name') . " has been successfully edited !"
             ], 201);
         }
     }
@@ -277,7 +278,7 @@ class AvailabilityController extends Controller
 
     public function postCreate()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'name' => 'required',
@@ -301,14 +302,14 @@ class AvailabilityController extends Controller
         {
 
             $disponiblity = Availability::create([
-                'employee_id' => \Input::get('employeeSelect'),
-                'name' => \Input::get('name')
+                'employee_id' => Input::get('employeeSelect'),
+                'name' => Input::get('name')
             ]);
 
-            $jsonArray = json_decode(\Input::get('events'), true);
+            $jsonArray = json_decode(Input::get('events'), true);
             for($i = 0; $i < count($jsonArray); $i++)
             {
-                //$jsonObj = json_decode(\Input::get('events')[$i], true);
+                //$jsonObj = json_decode(Input::get('events')[$i], true);
                 $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
                 $resStart = $dateStart->format('H:i:s');
                 $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
@@ -325,7 +326,7 @@ class AvailabilityController extends Controller
             }
 
             return \Response::json([
-                'success' => "The Availability " . \Input::get('name') . " has been successfully created !"
+                'success' => "The Availability " . Input::get('name') . " has been successfully created !"
             ], 201);
         }
     }

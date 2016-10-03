@@ -18,6 +18,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Input;
 
 class PlanController extends Controller
 {
@@ -68,7 +69,7 @@ class PlanController extends Controller
 
     public function postEdit($id)
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
 
         $rules = array(
@@ -92,10 +93,10 @@ class PlanController extends Controller
 
             $plan = Plan::where('id', $id)->first();
 
-            $plan->update(['wallPoints' => \Input::get('wallPoints')]);
+            $plan->update(['wallPoints' => Input::get('wallPoints')]);
 
 
-            $jsonArray = json_decode(\Input::get('tables'), true);
+            $jsonArray = json_decode(Input::get('tables'), true);
 
             for ($i = 0; $i < count($jsonArray); $i++) {
 
@@ -121,7 +122,7 @@ class PlanController extends Controller
 
             }
 
-            $jsonArraySep = json_decode(\Input::get('separations'), true);
+            $jsonArraySep = json_decode(Input::get('separations'), true);
 
             $separations = Separation::where('plan_id', $id)->get();
 
@@ -166,7 +167,7 @@ class PlanController extends Controller
         }
 
         return \Response::json([
-            'success' => "The plan " . \Input::get('planName') . " has been successfully created !"
+            'success' => "The plan " . Input::get('planName') . " has been successfully created !"
         ], 201);
     }
 
@@ -174,7 +175,7 @@ class PlanController extends Controller
 
     public function postCreate()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'planName' => 'required',
@@ -197,12 +198,12 @@ class PlanController extends Controller
         {
 
             $plan = Plan::create([
-                'name' => \Input::get('planName'),
-                'nbFloor' => \Input::get('nbFloor'),
-                'wallPoints' => \Input::get('wallPoints')
+                'name' => Input::get('planName'),
+                'nbFloor' => Input::get('nbFloor'),
+                'wallPoints' => Input::get('wallPoints')
             ]);
 
-            $jsonArray = json_decode(\Input::get('tables'), true);
+            $jsonArray = json_decode(Input::get('tables'), true);
             for($i = 0; $i < count($jsonArray); $i++)
             {
                     Table::create([
@@ -219,7 +220,7 @@ class PlanController extends Controller
 
             }
 
-        $jsonArraySep = json_decode(\Input::get('separations'), true);
+        $jsonArraySep = json_decode(Input::get('separations'), true);
         for ($i = 0; $i < count($jsonArraySep); $i++) {
             $jsonArraySep[$i]["plan_id"] = $plan->id;
 
@@ -230,7 +231,7 @@ class PlanController extends Controller
         }
 
             return \Response::json([
-                'success' => "The plan " . \Input::get('planName') . " has been successfully created !"
+                'success' => "The plan " . Input::get('planName') . " has been successfully created !"
             ], 201);
     }
 

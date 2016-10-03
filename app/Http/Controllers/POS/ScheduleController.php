@@ -23,6 +23,7 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
+use Illuminate\Support\Facades\Input;
 
 class ScheduleController extends Controller
 {
@@ -158,7 +159,7 @@ class ScheduleController extends Controller
 
     public function postCreate()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'name' => 'required',
@@ -182,12 +183,12 @@ class ScheduleController extends Controller
         {
 
             $schedule = Schedule::create([
-                'name' => \Input::get('name'),
-                'startDate' => \Input::get('startDate'),
-                'endDate' => \Input::get('endDate')
+                'name' => Input::get('name'),
+                'startDate' => Input::get('startDate'),
+                'endDate' => Input::get('endDate')
             ]);
 
-            $jsonArray = json_decode(\Input::get('events'), true);
+            $jsonArray = json_decode(Input::get('events'), true);
             for($i = 0; $i < count($jsonArray); $i++)
             {
                 $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
@@ -204,7 +205,7 @@ class ScheduleController extends Controller
             }
 
             return \Response::json([
-                'success' => "The Schedule " . \Input::get('name') . " has been successfully created !"
+                'success' => "The Schedule " . Input::get('name') . " has been successfully created !"
             ], 201);
         }
     }
@@ -294,7 +295,7 @@ class ScheduleController extends Controller
 
     public function postEdit()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
         $rules = array(
             'name' => 'required',
             'scheduleId' => 'required',
@@ -318,23 +319,23 @@ class ScheduleController extends Controller
         else {
 
 
-            Schedule::where('id',\Input::get('scheduleId'))
+            Schedule::where('id',Input::get('scheduleId'))
                 ->update([
-                    /*'startDate' => \Input::get('startDate'),
-                    'endDate' => \Input::get('endDate'),*/
-                    'name' => \Input::get('name')
+                    /*'startDate' => Input::get('startDate'),
+                    'endDate' => Input::get('endDate'),*/
+                    'name' => Input::get('name')
                 ]);
 
-            Schedule::DeleteDaySchedules(\Input::get('scheduleId'));
+            Schedule::DeleteDaySchedules(Input::get('scheduleId'));
 
-            $jsonArray = json_decode(\Input::get('events'), true);
+            $jsonArray = json_decode(Input::get('events'), true);
             for ($i = 0; $i < count($jsonArray); $i++) {
 
                 $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
                 $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
 
                 Day_Schedules::create([
-                    "schedule_id" => \Input::get('scheduleId'),
+                    "schedule_id" => Input::get('scheduleId'),
                     'employee_id' => $jsonArray[$i]["employeeId"],
                     "startTime" => $dateStart,
                     "endTime" => $dateStop
@@ -343,7 +344,7 @@ class ScheduleController extends Controller
             }
 
             return \Response::json([
-                'success' => "The Schedule " . \Input::get('name') . " has been successfully edited !"
+                'success' => "The Schedule " . Input::get('name') . " has been successfully edited !"
             ], 201);
         }
 

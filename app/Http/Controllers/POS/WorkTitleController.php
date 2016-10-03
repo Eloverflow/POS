@@ -8,6 +8,7 @@ use App\Models\POS\WorkTitle;
 use App\Models\POS\Punch;
 use App\Models\Project;
 use App\Models\POS\Title_Employees;
+use Illuminate\Support\Facades\Input;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
@@ -38,7 +39,7 @@ class WorkTitleController extends Controller
 
     public function delEmployee()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'titleEmployeeId' => 'required'
@@ -59,10 +60,10 @@ class WorkTitleController extends Controller
         else
         {
 
-            $empl =  Employee::GetById(\Input::get('emplId'));
-            $emplTitle  = WorkTitle::getById(\Input::get('emplTitleId'));
+            $empl =  Employee::GetById(Input::get('emplId'));
+            $emplTitle  = WorkTitle::getById(Input::get('emplTitleId'));
 
-            Title_Employees::where("id", "=", \Input::get('titleEmployeeId'))
+            Title_Employees::where("id", "=", Input::get('titleEmployeeId'))
                 ->delete();
 
             return \Response::json([
@@ -73,7 +74,7 @@ class WorkTitleController extends Controller
 
     public function addEmployee()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'emplTitleId' => 'required',
@@ -94,14 +95,14 @@ class WorkTitleController extends Controller
         }
         else
         {
-            $checkTitleEmployee = Title_Employees::getByEmployeeAndTitleId(\Input::get('emplId'), \Input::get('emplTitleId'));
+            $checkTitleEmployee = Title_Employees::getByEmployeeAndTitleId(Input::get('emplId'), Input::get('emplTitleId'));
             if($checkTitleEmployee == null){
-                $empl =  Employee::GetById(\Input::get('emplId'));
-                $emplTitle  = WorkTitle::getById(\Input::get('emplTitleId'));
+                $empl =  Employee::GetById(Input::get('emplId'));
+                $emplTitle  = WorkTitle::getById(Input::get('emplTitleId'));
 
                 $titleEmployee = Title_Employees::create([
-                    'employee_id' => \Input::get('emplId'),
-                    'work_titles_id' => \Input::get('emplTitleId')
+                    'employee_id' => Input::get('emplId'),
+                    'work_titles_id' => Input::get('emplTitleId')
                 ]);
 
                 $objTitleEmployee = array (
@@ -137,7 +138,7 @@ class WorkTitleController extends Controller
 
     public function postCreate()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'emplTitleName' => 'required',
@@ -160,12 +161,12 @@ class WorkTitleController extends Controller
         {
 
             $result = WorkTitle::create([
-                    'name' => \Input::get('emplTitleName'),
-                    'baseSalary' => \Input::get('emplTitleBaseSalary')
+                    'name' => Input::get('emplTitleName'),
+                    'baseSalary' => Input::get('emplTitleBaseSalary')
                 ]);
 
             $messages = array(
-                'success' => ("The employee title " . \Input::get('emplTitleName') . " has been successfully created !"),
+                'success' => ("The employee title " . Input::get('emplTitleName') . " has been successfully created !"),
                 'workTitleId' => $result->id
             );
 
@@ -177,7 +178,7 @@ class WorkTitleController extends Controller
 
     public function postEdit()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'emplTitleId' => 'required',
@@ -200,16 +201,16 @@ class WorkTitleController extends Controller
         else
         {
 
-            WorkTitle::where('id', \Input::get('emplTitleId'))
+            WorkTitle::where('id', Input::get('emplTitleId'))
             ->update([
-                'name' => \Input::get('emplTitleName'),
-                'baseSalary' => \Input::get('emplTitleBaseSalary')
+                'name' => Input::get('emplTitleName'),
+                'baseSalary' => Input::get('emplTitleBaseSalary')
             ]);
 
         }
 
         return \Response::json([
-            'success' => "The employee title " . \Input::get('emplTitleName') . " has been successfully edited !"
+            'success' => "The employee title " . Input::get('emplTitleName') . " has been successfully edited !"
         ], 201);
     }
 

@@ -65,7 +65,7 @@ class EmployeeController extends Controller
 
     public function postEdit()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'firstName' => 'required',
@@ -79,36 +79,36 @@ class EmployeeController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            if (\Input::has('id')) {
-                return \Redirect::action('POS\EmployeeController@edit', array(\Input::get('idEmployee')))->withErrors($validation)
+            if (Input::has('id')) {
+                return \Redirect::action('POS\EmployeeController@edit', array(Input::get('idEmployee')))->withErrors($validation)
                     ->withInput();
             }
         }
         else
         {
-            $employee = Employee::where('id', \Input::get('idEmployee'))
+            $employee = Employee::where('id', Input::get('idEmployee'))
                 ->update([
-                'firstName' => \Input::get('firstName'),
-                'lastName' => \Input::get('lastName'),
-                'streetAddress' => \Input::get('streetAddress'),
-                'phone' => \Input::get('phone'),
-                'city' => \Input::get('city'),
-                'state' => \Input::get('state'),
-                'pc' => \Input::get('pc'),
-                'nas' => \Input::get('nas'),
-                'userId' => \Input::get('idUser'),
-                'bonusSalary' => \Input::get('bonusSalary'),
-                'birthDate' => \Input::get('birthDate'),
-                'hireDate' => \Input::get('hireDate')
+                'firstName' => Input::get('firstName'),
+                'lastName' => Input::get('lastName'),
+                'streetAddress' => Input::get('streetAddress'),
+                'phone' => Input::get('phone'),
+                'city' => Input::get('city'),
+                'state' => Input::get('state'),
+                'pc' => Input::get('pc'),
+                'nas' => Input::get('nas'),
+                'userId' => Input::get('idUser'),
+                'bonusSalary' => Input::get('bonusSalary'),
+                'birthDate' => Input::get('birthDate'),
+                'hireDate' => Input::get('hireDate')
             ]);
 
             // We delete so we can re-insert properly.
-            Title_Employees::DeleteByEmployeeId(\Input::get('idEmployee'));
+            Title_Employees::DeleteByEmployeeId(Input::get('idEmployee'));
 
-            $employeeTitlesInpt = \Input::get('employeeTitles');
+            $employeeTitlesInpt = Input::get('employeeTitles');
             for($i = 0; $i < count($employeeTitlesInpt); $i++){
                 Title_Employees::create([
-                    'employee_id' => \Input::get('idEmployee'),
+                    'employee_id' => Input::get('idEmployee'),
                     'employee_titles_id' => $employeeTitlesInpt[$i]
                 ]);
             }
@@ -127,7 +127,7 @@ class EmployeeController extends Controller
 
     public function postCreate()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'firstName' => 'required',
@@ -141,7 +141,7 @@ class EmployeeController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            if (\Input::has('id')) {
+            if (Input::has('id')) {
                 return \Redirect::action('POS\EmployeeController@create')->withErrors($validation)
                     ->withInput();
             }
@@ -150,28 +150,28 @@ class EmployeeController extends Controller
         {
             $user = User::create([
                 'name' => 'user_employee',
-                'email' => \Input::get('email'),
-                'password' => \Input::get('password')
+                'email' => Input::get('email'),
+                'password' => Input::get('password')
             ]);
 
             $user->save();
 
             $employee = Employee::create([
-                'firstName' => \Input::get('firstName'),
-                'lastName' => \Input::get('lastName'),
-                'streetAddress' => \Input::get('streetAddress'),
-                'phone' => \Input::get('phone'),
-                'city' => \Input::get('city'),
-                'state' => \Input::get('state'),
-                'pc' => \Input::get('pc'),
-                'nas' => \Input::get('nas'),
+                'firstName' => Input::get('firstName'),
+                'lastName' => Input::get('lastName'),
+                'streetAddress' => Input::get('streetAddress'),
+                'phone' => Input::get('phone'),
+                'city' => Input::get('city'),
+                'state' => Input::get('state'),
+                'pc' => Input::get('pc'),
+                'nas' => Input::get('nas'),
                 'userId' => $user->id,
-                'bonusSalary' => \Input::get('bonusSalary'),
-                'birthDate' => \Input::get('birthDate'),
-                'hireDate' => \Input::get('hireDate')
+                'bonusSalary' => Input::get('bonusSalary'),
+                'birthDate' => Input::get('birthDate'),
+                'hireDate' => Input::get('hireDate')
             ]);
 
-            $employeeTitlesInpt = \Input::get('employeeTitles');
+            $employeeTitlesInpt = Input::get('employeeTitles');
             for($i = 0; $i < count($employeeTitlesInpt); $i++){
                 Title_Employees::create([
                     'employee_id' => $employee->id,

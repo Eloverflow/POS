@@ -9,7 +9,7 @@ use App\Models\ERP\Item;
 use App\Models\ERP\ItemType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 use Redirect;
 use Session;
@@ -244,7 +244,7 @@ class ItemsController extends Controller
 
     public function postCreate()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'name' => 'required',
@@ -279,7 +279,7 @@ class ItemsController extends Controller
             ]);
 
             return \Response::json([
-                'success' => "The Item " . \Input::get('name') . " has been successfully created !",
+                'success' => "The Item " . Input::get('name') . " has been successfully created !",
                 'object' => $varItem->id
             ], 201);
 

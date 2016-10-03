@@ -16,7 +16,7 @@ use App\Models\ERP\ItemType;
 use App\Models\POS\Employee;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 use Redirect;
 use Session;

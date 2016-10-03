@@ -8,7 +8,7 @@ use App\Models\ERP\Item;
 use App\Models\ERP\Order;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Redirect;
 use Session;
 use DB;
@@ -202,7 +202,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
     public function postCreate()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'quantity' => 'required',

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\ERP;
 use App\Http\Requests;
 use App\Models\ERP\ItemType;
 use Illuminate\Http\Request;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Redirect;
 use Session;
 use DB;
@@ -39,7 +39,7 @@ class ItemTypesController extends \App\Http\Controllers\Controller
 
     public function postCreate()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'fieldNames' => 'required',
@@ -64,15 +64,15 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         {
 
             $itemType = ItemType::create([
-                'type' => \Input::get('typeName'),
-                'field_names' => \Input::get('fieldNames'),
-                'size_names' => \Input::get('sizeNames'),
-                'slug' => \Input::get('typeName')
+                'type' => Input::get('typeName'),
+                'field_names' => Input::get('fieldNames'),
+                'size_names' => Input::get('sizeNames'),
+                'slug' => Input::get('typeName')
             ]);
 
 
             return \Response::json([
-                'success' => "The Item type " . \Input::get('typeName') . " has been successfully created !",
+                'success' => "The Item type " . Input::get('typeName') . " has been successfully created !",
                 'object' => $itemType->id
             ], 201);
         }

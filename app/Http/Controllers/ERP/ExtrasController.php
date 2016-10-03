@@ -12,7 +12,7 @@ use App\Models\ERP\Item;
 use App\Models\ERP\ItemType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 use Redirect;
 use Session;
@@ -113,7 +113,7 @@ class ExtrasController extends Controller
     public  function postCreate()
     {
 
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'name' => 'required'
@@ -175,7 +175,7 @@ class ExtrasController extends Controller
     public  function update($slug)
     {
 
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'name' => 'required'

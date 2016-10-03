@@ -12,7 +12,7 @@ use App\Models\POS\Client;
 use App\Models\POS\MomentType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 use Redirect;
 use Session;
@@ -110,7 +110,7 @@ class CalendarController extends Controller
 
     public function postEdit()
     {
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'name' => 'required',
@@ -134,12 +134,12 @@ class CalendarController extends Controller
         {
 
             $schedule = Schedule::create([
-                'name' => \Input::get('name'),
-                'startDate' => \Input::get('startDate'),
-                'endDate' => \Input::get('endDate')
+                'name' => Input::get('name'),
+                'startDate' => Input::get('startDate'),
+                'endDate' => Input::get('endDate')
             ]);
 
-            $jsonArray = json_decode(\Input::get('events'), true);
+            $jsonArray = json_decode(Input::get('events'), true);
             for($i = 0; $i < count($jsonArray); $i++)
             {
                 $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
@@ -156,7 +156,7 @@ class CalendarController extends Controller
             }
 
             return \Response::json([
-                'success' => "The Schedule " . \Input::get('name') . " has been successfully created !"
+                'success' => "The Schedule " . Input::get('name') . " has been successfully created !"
             ], 201);
         }
     }

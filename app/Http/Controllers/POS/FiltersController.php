@@ -113,7 +113,7 @@ class FiltersController extends Controller
     public  function postCreate()
     {
 
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'name' => 'required'
@@ -175,7 +175,7 @@ class FiltersController extends Controller
     public  function update($slug)
     {
 
-        $inputs = \Input::all();
+        $inputs = Input::all();
 
         $rules = array(
             'name' => 'required'
