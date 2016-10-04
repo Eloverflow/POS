@@ -8,6 +8,8 @@ env:
 
 dist: trusty
 sudo: required
+services:
+  - mysql
 
 before_script:
   - bash .travis_install-mysql-5.7.sh
