@@ -6,26 +6,20 @@ php:
 env:
   - DB=mysql
 
-services:
-  - mysql
-
 before_script:
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
   - chmod -R ug+rwx storage bootstrap/cache
-  - chmod +x .travis_create_db.sh; ./.travis_create_db.sh
-  - php artisan clear-compiled --no-interaction -vvv
+  - mysql -e 'create database testing;' -uroot
   - php artisan migrate:install --no-interaction -vvv
 
 script:
- - php artisan migrate --no-interaction -vvv
- - php artisan db:seed --no-interaction -vvv
+ - php artisan migrate --env="testing" --no-interaction -vvv
+ - php artisan db:seed --env="testing" --no-interaction -vvv
  - vendor/bin/phpunit
 
 
 after_script:
   - ls -laR storage
   - cat storage/logs/*
-
-sudo: required
