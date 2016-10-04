@@ -15,4 +15,3 @@ sudo dpkg -i mysql-apt-config_0.7.3-1_all.deb
 sudo apt-get update
 sudo apt-get install -y mysql-community-server
 
-sudo mysql -e "UPDATE user SET Password=PASSWORD('thisisastring') where USER='root';FLUSH PRIVILEGES;" -u root mysql
