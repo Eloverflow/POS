@@ -3,6 +3,12 @@ language: php
 php:
   - 7.0
 
+services:
+  - mysql
+
+before_install:
+  - mysql -e "create database IF NOT EXISTS test;" -uroot
+
 before_script:
   - cp .env.travis .env
   - mysql -e 'create database homestead_test;'
