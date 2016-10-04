@@ -11,6 +11,6 @@ debconf-set-selections <<< 'mysql-apt-config mysql-apt-config/select-tools selec
 debconf-set-selections <<< 'mysql-apt-config mysql-apt-config/unsupported-platform select abort'
 
 wget http://dev.mysql.com/get/mysql-apt-config_0.7.3-1_all.deb
-dpkg -i mysql-apt-config_0.7.3-1_all.deb
-apt-get update
-apt-get install -y mysql-server-5.7
+sudo dpkg -i mysql-apt-config_0.7.3-1_all.deb
+sudo apt-get update
+sudo apt-get install -y mysql-server-5.7
