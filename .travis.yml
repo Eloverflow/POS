@@ -6,12 +6,16 @@ php:
 env:
   - DB=mysql
 
+services:
+  - mysql
+
 before_script:
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
   - chmod -R ug+rwx storage bootstrap/cache
   - chmod +x .travis_create_db.sh; ./.travis_create_db.sh
+  - php artisan clear-compiled --no-interaction -vvv
   - php artisan migrate:install --no-interaction -vvv
 
 script:
