@@ -20,5 +20,5 @@ script:
  - php artisan db:seed --env=testing --no-interaction -vvv
  - vendor/bin/phpunit
 
- matrix:
-  fast_finish: true
+matrix:
+ fast_finish: true
