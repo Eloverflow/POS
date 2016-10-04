@@ -15,4 +15,4 @@ sudo apt-get install -y mysql-community-server
 
 DB_TEST_PASSWORD=$(sudo grep 'temporary password' /var/log/mysql/error.log)
 
-echo DB_TEST_PASSWORD
+echo $DB_TEST_PASSWORD
