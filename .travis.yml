@@ -11,7 +11,6 @@ before_script:
   - mysql -e 'create database testing;'
   - composer self-update
   - composer install --no-interaction
-  - chgrp -R www-data storage bootstrap/cache
   - chmod -R ug+rwx storage bootstrap/cache
   - php artisan migrate:install --env=testing --no-interaction -vvv
 
