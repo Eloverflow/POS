@@ -2858,7 +2858,8 @@ angular.module('starter.controllers')
                             chooseWorkTitle();
                         }
                         else {
-                            if($scope.showWorkTitlesModal) $scope.showWorkTitlesModal = false;
+                            if($scope.showWorkTitlesModal)
+                                $scope.showWorkTitlesModal = false;
                             $('#displayMessage').prepend(getSuccessMessage(data["message"]));
                         }
                     }
