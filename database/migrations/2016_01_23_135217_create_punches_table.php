@@ -16,6 +16,7 @@ class CreatePunchesTable extends Migration
             $table->increments('id');
             $table->dateTime('startTime');
             $table->dateTime('endTime')->nullable();
+            $table->boolean('unauthorized')->nullable();
             $table->integer('work_title_id')->unsigned();
             $table->foreign('work_title_id')->references('id')->on('work_titles');
             $table->integer('employee_id')->unsigned();

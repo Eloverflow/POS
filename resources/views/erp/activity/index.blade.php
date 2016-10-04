@@ -99,9 +99,10 @@
 
             if(log.user){
 
-                var user_link = "{{ @URL::to('employee/track') }}/" + log.employee.id;
 
                 if(log.user.name == 'user_employee'){
+                    var user_link = "{{ @URL::to('employee/track') }}/" + log.employee.id;
+
                     finalString += '<span >';
                     finalString += '<a style="color: #fff" href="' + user_link + '">';
                     finalString += log.employee.firstName + ' ' +  log.employee.lastName;
@@ -160,10 +161,18 @@
                     finalString += '</span>';
                 }
 
+                var row = logObject['properties'];
+
+                if(row['attributes'] && row['attributes'].unauthorized){
+
+                    finalString += ' - <span style="color: red">';
+                    finalString += 'Unauthorized';
+                    finalString += '</span>';
+                }
+
                 finalString += ' <button onclick="updateScrollDelayed(this)" class="btn btn-info" style="height: 30px; margin: 2px;" data-toggle="collapse" href="#data-'+ log.id + '"> Object </button>'
                 finalString += '<span style="margin-left: 0;" id="data-'+ log.id + '" class="collapse" >';
 
-                var row = logObject['properties'];
 
 
                 finalString += '<table style="width: 100%; box-shadow: 2px 2px 6px #222;border: 4px #31b0d5 solid; color: #fff"><tr>';

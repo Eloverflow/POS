@@ -8,10 +8,10 @@ use Spatie\Activitylog\Traits\LogsActivity;
 class Punch extends Model
 {
     use LogsActivity;
-    protected static $logAttributes = ['startTime', 'endTime', 'employee_id', 'work_title_id', 'created_at'];
+    protected static $logAttributes = ['startTime', 'endTime', 'employee_id', 'work_title_id', 'created_at', 'unauthorized'];
 
     //
-    protected $fillable = ['startTime', 'endTime', 'employee_id', 'work_title_id', 'created_at'];
+    protected $fillable = ['startTime', 'endTime', 'employee_id', 'work_title_id', 'created_at', 'unauthorized'];
 
     public static function GetLatestPunch($idEmployee)
     {

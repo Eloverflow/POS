@@ -6,8 +6,10 @@ use App\Http\Controllers\Controller;
 use App\Models\POS\Employee;
 use App\Models\POS\EmployeeTitle;
 use App\Models\POS\Punch;
+use App\Models\POS\WorkTitle;
 use App\Models\Project;
 use App\Models\Auth\User;
+use Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;
 use Illuminate\Foundation\Bus\DispatchesJobs;
@@ -174,6 +176,12 @@ class PunchController extends Controller
         $employeePunch = Punch::where('employee_id', $employeeId)->get()->last();
         //var_dump($employeePunch);
 
+
+        $employee = Employee::whereId($employeeId)->first();
+
+        if(!empty($employee))
+        Auth::loginUsingId($employee['userId']);
+
         if (!empty($employeePunch)) {
             if($employeePunch->endTime == 0){
 
@@ -192,7 +200,22 @@ class PunchController extends Controller
                     ]);
                 }
                 else{
-                    Punch::create(['work_title_id' => $workTitleId, 'startTime' => date("Y-m-d H:i:s"), 'employee_id' => $employeeId]);
+
+                    $unauthorized = true;
+                    $employees = WorkTitle::getEmployeesByTitleId($workTitleId);
+
+                  /*  return response()->json(['status' => 'Error',
+                        'message' =>  'The employee punch was closed. Give a work title for the new punch',
+                        '$employees' =>  $employees,
+                        '$employeeId' =>  (int)$employeeId
+                    ]);*/
+                    foreach($employees as $currentEmployee){
+                        if(!empty($currentEmployee) && $currentEmployee->idEmployee == (int)$employeeId){
+                            $unauthorized = false;
+                        }
+                    }
+
+                    Punch::create(['work_title_id' => $workTitleId, 'startTime' => date("Y-m-d H:i:s"), 'employee_id' => $employeeId, 'unauthorized' => $unauthorized]);
                     return response()->json(['status' => 'Success',
                         'message' =>  'The employee has been successfully punched in !'
                     ]);
@@ -209,7 +232,16 @@ class PunchController extends Controller
                     ]);
                 }
                 else{
-                    Punch::create(['work_title_id' => $workTitleId, 'startTime' => date("Y-m-d H:i:s"), 'employee_id' => $employeeId]);
+                    $unauthorized = true;
+                    $employees = WorkTitle::getEmployeesByTitleId($workTitleId);
+
+                    foreach($employees as $employee){
+                        if($employee.id == $employeeId){
+                            $unauthorized = false;
+                        }
+                    }
+
+                    Punch::create(['work_title_id' => $workTitleId, 'startTime' => date("Y-m-d H:i:s"), 'employee_id' => $employeeId, 'unauthorized' => $unauthorized]);
                     return response()->json(['status' => 'Success',
                         'message' =>  'The employee has been successfully punched in !'
                     ]);

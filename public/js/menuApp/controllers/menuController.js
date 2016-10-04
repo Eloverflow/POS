@@ -1899,9 +1899,9 @@ angular.module('starter.controllers')
             if(($filter("filter")(workTitle.cntEmployees, {idEmployee: $scope.mainText})).length > 0){
                 $scope.workTitle = workTitle;
             }else {
-                confirm('Are you sure ?', function () {
+                if(confirm('You don\'t own this role, are you sure ?')){
                     $scope.workTitle = workTitle;
-                });
+                }
             }
 
             $scope.chooseWorkTitleCallback();
