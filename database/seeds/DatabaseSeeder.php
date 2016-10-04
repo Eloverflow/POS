@@ -452,7 +452,7 @@ class EmployeeSeeder extends Seeder {
             'state' => 'Quebec',
             'pc' => 'a1a1a1',
             'nas' => '123456789',
-            'userId' => 5,
+            'userId' => 4,
             'bonusSalary' => 1,
             'birthDate' => date('2016-01-01'),
             'hireDate' => date('2016-01-01')

@@ -11,7 +11,7 @@ class FilterItemType extends Model
 
     public function filter()
     {
-        return $this->belongsTo('App\Models\ERP\filter', 'filter_id', 'id');
+        return $this->belongsTo('App\Models\POS\filter', 'filter_id', 'id');
     }
 
     public function itemtype()
