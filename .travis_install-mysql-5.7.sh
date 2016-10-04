@@ -1,6 +1,4 @@
 #!/bin/bash
-export DEBIAN_FRONTEND=noninteractive
-
 sudo debconf-set-selections <<< 'mysql-apt-config mysql-apt-config/repo-codename select trusty'
 sudo debconf-set-selections <<< 'mysql-apt-config mysql-apt-config/repo-distro select ubuntu'
 sudo debconf-set-selections <<< 'mysql-apt-config mysql-apt-config/repo-url string http://repo.mysql.com/apt/'
