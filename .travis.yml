@@ -7,7 +7,7 @@ services:
   - mysql
 
 before_install:
-  - mysql -e "create database IF NOT EXISTS test;" -uroot
+  - mysql -e "create database IF NOT EXISTS POS;" -uroot
 
 before_script:
   - cp .env.travis .env
@@ -19,6 +19,3 @@ script:
  - php artisan migrate:refresh --no-interaction -vvv
  - php artisan db:seed --no-interaction -vvv
  - vendor/bin/phpunit
-
-matrix:
- fast_finish: true
