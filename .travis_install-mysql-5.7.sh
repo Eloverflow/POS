@@ -13,4 +13,4 @@ sudo debconf-set-selections <<< 'mysql-apt-config mysql-apt-config/unsupported-p
 wget http://dev.mysql.com/get/mysql-apt-config_0.7.3-1_all.deb
 sudo dpkg -i mysql-apt-config_0.7.3-1_all.deb
 sudo apt-get update
-sudo apt-get install -y mysql-server-5.7
+sudo apt-get install -y mysql-community-server
