@@ -11,6 +11,7 @@ sudo: required
 
 before_script:
   - bash .travis_install-mysql-5.7.sh
+  - mysql -V
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
