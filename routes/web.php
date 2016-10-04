@@ -107,6 +107,7 @@ Route::post('/work/title/create',  ['uses' => 'POS\WorkTitleController@postCreat
 Route::post('/work/title/edit',  ['uses' => 'POS\WorkTitleController@postEdit', 'middleware' => 'auth']);
 Route::post('/work/title/add/employee',  ['uses' => 'POS\WorkTitleController@addEmployee', 'middleware' => 'auth']);
 Route::delete('/work/title/del/employee',  ['uses' => 'POS\WorkTitleController@delEmployee', 'middleware' => 'auth']);
+Route::get('/work/titles/list',  ['uses' => 'POS\WorkTitleController@raw', 'middleware' => 'auth']);
 
 
 Route::get('/employee/edit/{id}',  ['uses' => 'POS\EmployeeController@edit', 'middleware' => 'auth']);

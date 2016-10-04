@@ -1343,6 +1343,17 @@ body{
 	background-color: #FFF;
 }*/
 
+.employee-work-title-modal .modal-content button{
+	padding: 30px;
+	font-size: 35px;
+	margin: 5px;
+	width: 100%;
+}
+.employee-work-title-modal .modal-content{
+	background-color: #222;
+	opacity: 0.9;
+}
+
 .employee-modal .modal-content{
 	background-color: #222;
 	opacity: 0.9;

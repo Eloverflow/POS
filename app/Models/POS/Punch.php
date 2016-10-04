@@ -3,11 +3,15 @@
 namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
+use Spatie\Activitylog\Traits\LogsActivity;
 
 class Punch extends Model
 {
+    use LogsActivity;
+    protected static $logAttributes = ['startTime', 'endTime', 'employee_id', 'work_title_id', 'created_at'];
+
     //
-    protected $fillable = ['inout', 'isIn', 'employee_id', 'punchTime', 'created_at'];
+    protected $fillable = ['startTime', 'endTime', 'employee_id', 'work_title_id', 'created_at'];
 
     public static function GetLatestPunch($idEmployee)
     {

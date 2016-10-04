@@ -138,7 +138,7 @@
                 </tr>
                 <tr>
                     <td colspan="4" id="displayMessage">
-                        <input type="text" name="mainText" value="<% mainText %>" class="form-control" id="mainText">
+                        <input type="number" name="mainText" value="<% mainText %>" class="form-control" id="mainText">
                         <em style="color: white; font-size: 18px;">Utilisez : 3 : 11</em>
                     </td>
 
@@ -174,6 +174,11 @@
                 </tr>
                 </tbody>
             </table>
+    </div>
+</modal>
+<modal title="Role sur le planché" id="choseWorkTitle" class="center-modal employee-work-title-modal" visible="showWorkTitlesModal">
+    <div ng-repeat="workTitle in workTitles">
+        <button ng-click="setWorkTitle(workTitle)" class="btn  <% (workTitle.cntEmployees | filter : {idEmployee: mainText}).length > 0 ? 'btn-success' : 'btn-danger' %>"><% workTitle.name %></button>
     </div>
 </modal>
 

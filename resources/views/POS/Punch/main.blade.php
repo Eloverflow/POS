@@ -4,6 +4,7 @@
     <script src="{{ @URL::to('js/utils.js') }}"></script>
     <script src="{{ @URL::to('js/numPad.js') }}"></script>
     <script src="{{ @URL::to('js/punchEmployee.js') }}"></script>
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
 
 @section('content')

@@ -18,9 +18,9 @@ angular.module('starter.controllers')
         var planTableWidth = 95.8 * 0.8;
         var planTableHeight = 45.8 * 0.8;
         //
-        $scope.filters = {};
+        $scope.filters = [];
         //
-        $scope.menuFilters = {};
+        $scope.menuFilters = [];
         //
         $scope.menuItemTypes = [];
         //Pannel 100%/100% to block the user if no employee is authenticated
@@ -54,6 +54,7 @@ angular.module('starter.controllers')
         $scope.showPlanModal = false;
         $scope.showDivideBillModal = false;
         $scope.showPanelCommandLineService = false;
+        $scope.showWorkTitlesModal = false;
         $scope.showHeaderOptions = true;
         $scope.showBillDemo = false;
         $scope.showPanelOverwriteBill = false;
@@ -716,6 +717,22 @@ angular.module('starter.controllers')
 
         getReq.send($url, null, $callbackFunction);
         /*End loadind element - After the callback if exist*/
+        
+        $scope.getWorkTitle = function () {
+
+            $url = 'http://pos.mirageflow.com/work/titles/list';
+            var $callbackFunctionFilterList = function (response) {
+
+                console.log("Work title list received inside response");
+
+                $scope.workTitles = response.workTitles;
+                console.log(response)
+            };
+
+
+            getReq.send($url, null, $callbackFunctionFilterList);
+        };
+        $scope.getWorkTitle();
 
         $scope.filteredItems = [];
 
@@ -1873,6 +1890,29 @@ angular.module('starter.controllers')
             }
         };
 
+        var chooseWorkTitle = function () {
+            $scope.showWorkTitlesModal = true;
+        }
+
+        $scope.setWorkTitle = function (workTitle) {
+
+            if(($filter("filter")(workTitle.cntEmployees, {idEmployee: $scope.mainText})).length > 0){
+                $scope.workTitle = workTitle;
+            }else {
+                confirm('Are you sure ?')
+                $scope.workTitle = workTitle;
+            }
+
+            $scope.chooseWorkTitleCallback();
+
+        };
+
+        $scope.chooseWorkTitleCallback = function () {
+            if($scope.workTitle)
+                punchEmployee($scope.workTitle.emplTitleId);
+        };
+
+
         /*Employee numpad triggers - will authenticate or validate password on Enter click*/
         $scope.padClick = function ($value) {
             switch ($value) {
@@ -1884,6 +1924,7 @@ angular.module('starter.controllers')
                     break;
                 case 'clk':
                     punchEmployee();
+
                     break;
                 case 'ent':
                     if ($scope.validation) {
@@ -2789,6 +2830,39 @@ angular.module('starter.controllers')
             var b = parseInt(hexcolor.substr(4,2),16);
             var yiq = ((r*299)+(g*587)+(b*114))/1000;
             return (yiq >= 128) ? 'black' : 'white';
+        }
+
+        function punchEmployee(workTitleId) {
+
+
+            var $selectedEmployeeText = $('#mainText').val();
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                url: '/employee/punch',
+                type: 'POST',
+                data: {
+                    _token: CSRF_TOKEN,
+                    EmployeeNumber: $selectedEmployeeText,
+                    WorkTitleId: workTitleId
+                },
+                dataType: 'JSON',
+                success: function (data) {
+                    console.log(data);
+                    if (data["status"] == "Error" && !data["requireWorkTitle"]) {
+                        $('#displayMessage').prepend(getErrorMessage(data["message"]));
+                    }
+                    else {
+                        if(data["requireWorkTitle"]){
+                            chooseWorkTitle();
+                        }
+                        else {
+                            if($scope.showWorkTitlesModal) $scope.showWorkTitlesModal = false;
+                            $('#displayMessage').prepend(getSuccessMessage(data["message"]));
+                        }
+                    }
+                }
+            });
         }
 
 

@@ -167,32 +167,53 @@ class PunchController extends Controller
     public function ajaxPunchEmployee()
     {
         $employeeId =  Input::get('EmployeeNumber');
+        $workTitleId =  Input::get('WorkTitleId');
 
         $validEmplId = 100 - $employeeId;
-        $employee = Punch::GetLatestPunch($employeeId);
-        //var_dump($employee);
+        //$employee = Punch::GetLatestPunch($employeeId);
+        $employeePunch = Punch::where('employee_id', $employeeId)->get()->last();
+        //var_dump($employeePunch);
 
-        if (count($employee)) {
-            if($employee->inout == "in"){
-                Punch::create(['inout' => 'out', 'employee_id' => $employeeId]);
+        if (!empty($employeePunch)) {
+            if($employeePunch->endTime == 0){
+
+                $employeePunch->update(['endTime' => date("Y-m-d H:i:s")]);
+
                 return response()->json(['status' => 'Success',
                     'message' =>  'The employee has been successfully punched out !'
                 ]);
             }
-            else if($employee->inout == "out") {
-                Punch::create(['inout' => 'in', 'employee_id' => $employeeId]);
-                return response()->json(['status' => 'Success',
-                    'message' =>  'The employee has been successfully punched in !'
-                ]);
+            else {
+
+                if(empty($workTitleId)){
+                    return response()->json(['status' => 'Error',
+                        'message' =>  'The employee punch was closed. Give a work title for the new punch',
+                        'requireWorkTitle' =>  true
+                    ]);
+                }
+                else{
+                    Punch::create(['work_title_id' => $workTitleId, 'startTime' => date("Y-m-d H:i:s"), 'employee_id' => $employeeId]);
+                    return response()->json(['status' => 'Success',
+                        'message' =>  'The employee has been successfully punched in !'
+                    ]);
+                }
             }
 
         }
         else{
             if(is_null(Employee::getById($employeeId)) == false){
-                Punch::create(['inout' => 'in', 'employee_id' => $employeeId]);
-                return response()->json(['status' => 'Success',
-                    'message' =>  'The employee has been successfully punched in !'
-                ]);
+                if(empty($workTitleId)){
+                    return response()->json(['status' => 'Error',
+                        'message' =>  'No employee punch were found. Give a work title for the new punch',
+                        'requireWorkTitle' =>  true
+                    ]);
+                }
+                else{
+                    Punch::create(['work_title_id' => $workTitleId, 'startTime' => date("Y-m-d H:i:s"), 'employee_id' => $employeeId]);
+                    return response()->json(['status' => 'Success',
+                        'message' =>  'The employee has been successfully punched in !'
+                    ]);
+                }
             }
             else {
                 return response()->json(['status' => 'Error',

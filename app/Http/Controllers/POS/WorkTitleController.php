@@ -37,6 +37,20 @@ class WorkTitleController extends Controller
         return $view;
     }
 
+
+    public function raw()
+    {
+        $workTitles = WorkTitle::getAll();
+        $employeesList = Employee::GetAll();
+
+        for($i = 0; $i < count($workTitles); $i++){
+            $employees = WorkTitle::getEmployeesByTitleId($workTitles[$i]->emplTitleId);
+            $workTitles[$i]->{"cntEmployees"} = $employees;
+        }
+
+        return [ 'workTitles' => $workTitles];
+    }
+
     public function delEmployee()
     {
         $inputs = Input::all();
