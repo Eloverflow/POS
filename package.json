@@ -1,4 +1,11 @@
 {
+  "name": "POSIO",
+  "version": "1.2.0",
+  "description": "Point of sales software",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Eloverflow/POS.git"
+  },
   "private": true,
   "scripts": {
     "prod": "gulp --production",
