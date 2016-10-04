@@ -23,3 +23,5 @@ script:
 after_script:
   - ls -laR storage
   - cat storage/logs/*
+
+sudo: required
