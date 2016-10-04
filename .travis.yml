@@ -6,16 +6,20 @@ php:
 services:
   - mysql
 
-before_install:
-  - mysql -e "create database IF NOT EXISTS POS;" -uroot
-
 before_script:
   - cp .env.travis .env
   - composer self-update
   - composer install --no-interaction
   - chmod -R ug+rwx storage bootstrap/cache
+  - chmod +x .travis_create_db.sh; ./.travis_create_db.sh
+  - php artisan migrate:install --no-interaction -vvv
 
 script:
- - php artisan migrate:refresh --no-interaction -vvv
+ - php artisan migrate --no-interaction -vvv
  - php artisan db:seed --no-interaction -vvv
  - vendor/bin/phpunit
+
+
+after_script:
+  - ls -laR storage
+  - cat storage/logs/*
