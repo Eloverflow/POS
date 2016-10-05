@@ -23,6 +23,10 @@ class VisitTest extends TestCase
     public function testPageEmployees()
     {
         $this->visit('/')
+            ->type('visitor@mirageflow.com', 'email')
+            ->type('Visiteur!', 'password')
+            ->press('btn-login')
+            ->seePageIs('/')
             ->click('Employees')
             ->seePageIs('/employee');
     }
