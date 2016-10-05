@@ -6,7 +6,7 @@ POSIO is a web application. An effective and intuitive POS.
 
 ## Official Documentation
 
-Documentation for the Application can be found on the [Mirageflow website](http://pos.mirageflow.com/docs).
+Documentation for the Application can be found on the [Mirageflow website](http://mirageflow.com).
 
 ## Security Vulnerabilities
 
