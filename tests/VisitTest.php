@@ -14,7 +14,7 @@ class VisitTest extends TestCase
     public function testBasic()
     {
         $this->visit('/')
-             ->see('POSIO | Login');
+             ->see('Dashboard');
     }
 
     public function testPageStats()
