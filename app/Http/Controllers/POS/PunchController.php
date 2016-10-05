@@ -235,8 +235,8 @@ class PunchController extends Controller
                     $unauthorized = true;
                     $employees = WorkTitle::getEmployeesByTitleId($workTitleId);
 
-                    foreach($employees as $employee){
-                        if($employee.id == $employeeId){
+                    foreach($employees as $currentEmployee){
+                        if(!empty($currentEmployee) && $currentEmployee->idEmployee == (int)$employeeId){
                             $unauthorized = false;
                         }
                     }
