@@ -13,13 +13,6 @@ class VisitTest extends TestCase
              ->see('Login');
     }
 
-    public function testPageStats()
-    {
-        $this->visit('/')
-            ->click('Statistics')
-            ->seePageIs('/stats');
-    }
-
     public function testLogin()
     {
         $this->visit('/login')
@@ -28,6 +21,17 @@ class VisitTest extends TestCase
             ->press('btn-login')
             ->seePageIs('/');
 
+    }
+
+    public function testPageStats()
+    {
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
+            ->click('Statistics')
+            ->seePageIs('/stats');
     }
 
     public function testPageEmployees()
