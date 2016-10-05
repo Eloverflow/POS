@@ -79,4 +79,53 @@ class VisitTest extends TestCase
             ->click('Menu')
             ->seePageIs('/menu');
     }
+
+    public function testPagePlans()
+    {
+        $this->visit('/')
+            ->click('Plans')
+            ->seePageIs('/plan');
+    }
+
+    public function testPageItems()
+    {
+        $this->visit('/')
+            ->click('Items')
+            ->seePageIs('/items');
+    }
+
+    public function testPageItemTypes()
+    {
+        $this->visit('/')
+            ->click('Item Types')
+            ->seePageIs('/itemtypes');
+    }
+
+    public function testPageExtras()
+    {
+        $this->visit('/')
+            ->click('Extras')
+            ->seePageIs('/extras');
+    }
+
+    public function testPageMenuFiler()
+    {
+        $this->visit('/')
+            ->click('Menu Filer')
+            ->seePageIs('/filters');
+    }
+
+    public function testPageActivityLog()
+    {
+        $this->visit('/')
+            ->click('Activity log')
+            ->seePageIs('/activity-log');
+    }
+
+    public function testPageSettings()
+    {
+        $this->visit('/')
+            ->click('Settings')
+            ->seePageIs('/menu-settings');
+    }
 }
