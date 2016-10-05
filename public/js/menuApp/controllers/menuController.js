@@ -393,7 +393,7 @@ angular.module('starter.controllers')
                         colour: color,
                         width: width,
                         height: height,
-                        top: parseInt($scope.plan.separation[i].yPos) * planYProportion + height / 2,
+                        top: parseInt($scope.plan.separation[i].yPos) * planYProportion,
                         left: parseInt($scope.plan.separation[i].xPos) * planXProportion
                     });
                 }
