@@ -18,21 +18,40 @@
     </div>--}}
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default">
-                <div class="panel-body">
+            @if (count($articles) === 0)
+                ... no articles found
+            @elseif (count($articles) >= 1)
+                @foreach($articles as $articleType=>$currentArticle)
+                    @foreach($currentArticle as $article)
+                        <div class="panel panel-default">
+                            <div class="panel-heading">{{ucwords( str_replace('_', ' ', $articleType))}}
 
-                    @if (count($articles) === 0)
-                        ... html showing no articles found
-                    @elseif (count($articles) >= 1)
-                        ... print out results
-                        @foreach($articles as $article)
-                            print article
-                        @endforeach
-                    @endif
-
-                </div>
-
-            </div>
+                                @if($articleType == 'work_title')
+                                    <span class="pull-right">
+                                        <a href="{{@URL::to('/work/titles')}}">
+                                            View
+                                        </a>
+                                    </span>
+                                @else
+                                    <span class="pull-right">
+                                        <a href="{{@URL::to($articleType . '/details/' . $article['attributes']['id'])}}">
+                                            Details
+                                        </a>
+                                        <a href="{{@URL::to($articleType . '/edit/' . $article['attributes']['id'])}}">
+                                            Edit
+                                        </a>
+                                    </span>
+                                @endif
+                            </div>
+                            <div class="panel-body">
+                                @foreach($article['attributes'] as $key=>$value)
+                                    {{$key}} : {{ $value }}<br>
+                                @endforeach
+                            </div>
+                        </div>
+                    @endforeach
+                @endforeach
+            @endif
         </div>
     </div>
 @stop

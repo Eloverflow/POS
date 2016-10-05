@@ -36,27 +36,5 @@ class Table extends Model {
      *
      * @param string $eventName
      * @return string
-     *//*
-    public function getActivityDescriptionForEvent($eventName)
-    {
-        if ($eventName == 'created')
-        {
-            $plan = $this->plan;
-            return '{"msg" : "Table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
-        }
-
-        if ($eventName == 'updated')
-        {
-            $plan = $this->plan;
-            return '{"msg" : "Table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
-        }
-
-        if ($eventName == 'deleted')
-        {
-            $plan = $this->plan;
-            return '{"msg" : "Table #' . $this->tblNumber  . ' - Status -> ' . $this->status  . ' - type: ' . $this->type . (!empty($plan) ? ' plan: ' .$plan['name'] : ''). ' - floor #' . $this->noFloor .  ' ","row" : ' . $this . ',"type" : "' . $eventName . '"}';
-        }
-
-        return '';
-    }*/
+     */
 }

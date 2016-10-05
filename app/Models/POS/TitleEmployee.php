@@ -4,8 +4,9 @@ namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Title_Employees extends Model
+class TitleEmployee extends Model
 {
+
     //
     protected $table = 'title_employees';
     protected $fillable = ['employee_id', 'work_titles_id'];

@@ -3,9 +3,12 @@
 namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Employee extends Model
 {
+    use Searchable;
+
     protected $fillable = ['firstName', 'lastName', 'streetAddress', 'phone', 'city', 'state', 'pc', 'nas','userId', 'password', 'salt', 'bonusSalary', 'birthDate', 'hireDate' ];
 
     public static function getById($id)

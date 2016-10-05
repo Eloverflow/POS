@@ -4,8 +4,10 @@ namespace App\Models\ERP;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Laravel\Scout\Searchable;
 
 class Item extends Model  {
+    use Searchable;
     use LogsActivity;
     protected static $logAttributes = ['name' ,'description', 'item_type_id', 'img_id', 'slug', 'custom_fields_array', 'size_prices_array'];
 

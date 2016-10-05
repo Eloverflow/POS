@@ -4,10 +4,12 @@ namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
 use Spatie\Activitylog\Traits\LogsActivity;
+use Laravel\Scout\Searchable;
 
 class Command extends Model{
     
     use LogsActivity;
+    use Searchable;
     protected static $logAttributes = ['table_id', 'client_id', 'command_number', 'notes', 'status', 'extras'];
 
     protected $table = 'commands';

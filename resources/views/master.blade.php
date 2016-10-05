@@ -81,9 +81,9 @@ $userMenuTabs = array
 </nav>
 
 <div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-    <form role="search">
+    <form role="search" action="{{ @URL::to('/search') }}" method="get">
         <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search">
+            <input type="text"  name="q" class="form-control" placeholder="Search">
         </div>
     </form>
     <ul class="nav menu">

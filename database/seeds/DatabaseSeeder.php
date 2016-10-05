@@ -25,14 +25,14 @@ use App\Models\POS\SaleLine;
 use App\Models\POS\Plan;
 use App\Models\POS\Setting;
 use App\Models\POS\Table;
-use App\Models\POS\Day_Availability;
+use App\Models\POS\DayAvailability;
 use App\Models\POS\MomentType;
 use App\Models\POS\Availability;
 use App\Models\Auth\User;
 use App\Models\POS\Employee;
 use App\Models\POS\WorkTitle;
 use App\Models\POS\Schedule;
-use App\Models\POS\Day_Schedules;
+use App\Models\POS\DaySchedules;
 use App\Models\POS\Punch;
 
 class DatabaseSeeder extends Seeder
@@ -135,19 +135,19 @@ class Day_AvailabilityTableSeeder extends Seeder {
     {
         DB::table('day_availability')->delete();
 
-        Day_Availability::create(['availability_id' => 1,
+        DayAvailability::create(['availability_id' => 1,
             'day_number' => 0,
             'startTime' => date('15:00:00'),
             'endTime' => date('17:00:00')
         ]);
 
-        Day_Availability::create(['availability_id' => 1,
+        DayAvailability::create(['availability_id' => 1,
             'day_number' => 0,
             'startTime' => date('18:00:00'),
             'endTime' => date('19:55:00')
         ]);
 
-        Day_Availability::create(['availability_id' => 1,
+        DayAvailability::create(['availability_id' => 1,
             'day_number' => 3,
             'startTime' => date('20:00:00'),
             'endTime' => date('03:00:00')
@@ -176,19 +176,19 @@ class Day_SchedulesTableSeeder extends Seeder {
     {
         DB::table('day_schedules')->delete();
 
-        Day_Schedules::create(['schedule_id' => 1,
+        DaySchedules::create(['schedule_id' => 1,
             'employee_id' => 1,
             'startTime' => date('2016-06-06 15:00:00'),
             'endTime' => date('2016-06-06 17:00:00')
         ]);
 
-        Day_Schedules::create(['schedule_id' => 1,
+        DaySchedules::create(['schedule_id' => 1,
             'employee_id' => 1,
             'startTime' => date('2016-06-07 18:00:00'),
             'endTime' => date('2016-06-07 19:55:00')
         ]);
 
-        Day_Schedules::create(['schedule_id' => 1,
+        DaySchedules::create(['schedule_id' => 1,
             'employee_id' => 1,
             'startTime' => date('2016-06-09 20:00:00'),
             'endTime' => date('2016-06-10 03:00:00')
@@ -239,8 +239,8 @@ class OrdersTableSeeder extends Seeder {
     {
         DB::table('orders')->delete();
 
-        Order::create(['supplier_id' => '1', 'command_number' => '1000141']);
-        Order::create(['supplier_id' => '1', 'command_number' => '1000148']);
+        Order::create(['supplier_id' => '1', 'command_number' => '3000141']);
+        Order::create(['supplier_id' => '1', 'command_number' => '3000148']);
 
         $this->command->info('Orders table seeded!');
     }
@@ -566,10 +566,10 @@ class CommandSeeder extends Seeder {
         DB::table('commands')->delete();
 
         $commands = array(
-            array('id' => '1','notes' => '[{"note":"Ne pas faire"}]','status' => '1','command_number' => '1','table_id' => '1','client_id' => '2','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:33:43'),
-            array('id' => '2','notes' => '','status' => '1','command_number' => '2','table_id' => '1','client_id' => '3','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:33:43'),
-            array('id' => '3','notes' => '','status' => '1','command_number' => '3','table_id' => '2','client_id' => '4','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:33:53'),
-            array('id' => '4','notes' => '','status' => '1','command_number' => '4','table_id' => '2','client_id' => '5','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:33:53')
+            array('id' => '1','notes' => '[{"note":"Ne pas faire"}]','status' => '1','command_number' => '20000001','table_id' => '1','client_id' => '2','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:33:43'),
+            array('id' => '2','notes' => '','status' => '1','command_number' => '20000002','table_id' => '1','client_id' => '3','created_at' => '2016-06-10 18:33:43','updated_at' => '2016-06-10 18:33:43'),
+            array('id' => '3','notes' => '','status' => '1','command_number' => '20000003','table_id' => '2','client_id' => '4','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:33:53'),
+            array('id' => '4','notes' => '','status' => '1','command_number' => '20000004','table_id' => '2','client_id' => '5','created_at' => '2016-06-10 18:33:53','updated_at' => '2016-06-10 18:33:53')
         );
 
         foreach ($commands as $table){
@@ -619,10 +619,10 @@ class SaleSeeder extends Seeder {
         DB::table('sales')->delete();
 
         $sales = array(
-            array('id' => '1','cancelled' => '0','sale_number' => '0','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:20:03','updated_at' => '2016-06-10 18:20:03'),
-            array('id' => '2','cancelled' => '0','sale_number' => '0','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:20:03','updated_at' => '2016-06-10 18:20:03'),
-            array('id' => '3','cancelled' => '0','sale_number' => '0','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10'),
-            array('id' => '4','cancelled' => '0','sale_number' => '0','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10')
+            array('id' => '1','cancelled' => '0','sale_number' => '10000001','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:20:03','updated_at' => '2016-06-10 18:20:03'),
+            array('id' => '2','cancelled' => '0','sale_number' => '10000002','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:20:03','updated_at' => '2016-06-10 18:20:03'),
+            array('id' => '3','cancelled' => '0','sale_number' => '10000003','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10'),
+            array('id' => '4','cancelled' => '0','sale_number' => '10000004','subTotal' => NULL,'total' => NULL,'created_at' => '2016-06-10 18:34:10','updated_at' => '2016-06-10 18:34:10')
         );
 
 

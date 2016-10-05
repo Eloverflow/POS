@@ -3,10 +3,11 @@
 namespace App\Models\ERP;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class Extra extends Model
 {
-
+    use Searchable;
 
     protected $table = 'extras';
 

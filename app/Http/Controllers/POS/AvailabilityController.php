@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\POS;
 
 use App\Http\Controllers\Controller;
-use App\Models\POS\Day_Availability;
+use App\Models\POS\DayAvailability;
 use App\Models\POS\Availability;
 use App\Models\POS\Employee;
 use App\Helpers\Utils;
@@ -234,7 +234,7 @@ class AvailabilityController extends Controller
                 $resStop = $dateStop->format('H:i:s');
 
                 //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
-                Day_Availability::create([
+                DayAvailability::create([
                     "disponibility_id" => Input::get('dispoId'),
                     "day_number" => $jsonArray[$i]["dayIndex"],
                     "startTime" => $resStart,
@@ -316,7 +316,7 @@ class AvailabilityController extends Controller
                 $resStop = $dateStop->format('H:i:s');
 
                 //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
-                Day_Availability::create([
+                DayAvailability::create([
                     "disponibility_id" => $disponiblity->id,
                     "day_number" => $jsonArray[$i]["dayIndex"],
                     "startTime" => $resStart,

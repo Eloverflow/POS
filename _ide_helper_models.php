@@ -320,13 +320,13 @@ namespace App\Models\POS{
  * @property string $endTime
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Availability whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Availability whereAvailabilityId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Availability whereDayNumber($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Availability whereStartTime($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Availability whereEndTime($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Availability whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Availability whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DayAvailability whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DayAvailability whereAvailabilityId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DayAvailability whereDayNumber($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DayAvailability whereStartTime($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DayAvailability whereEndTime($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DayAvailability whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DayAvailability whereUpdatedAt($value)
  */
 	class Day_Availability extends \Eloquent {}
 }
@@ -389,13 +389,13 @@ namespace App\Models\POS{
  * @property string $endTime
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Schedules whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Schedules whereScheduleId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Schedules whereEmployeeId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Schedules whereStartTime($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Schedules whereEndTime($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Schedules whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Day_Schedules whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DaySchedules whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DaySchedules whereScheduleId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DaySchedules whereEmployeeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DaySchedules whereStartTime($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DaySchedules whereEndTime($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DaySchedules whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\DaySchedules whereUpdatedAt($value)
  */
 	class Day_Schedules extends \Eloquent {}
 }
@@ -479,11 +479,11 @@ namespace App\Models\POS{
  * @property integer $work_titles_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Title_Employees whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Title_Employees whereEmployeeId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Title_Employees whereWorkTitlesId($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Title_Employees whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Title_Employees whereUpdatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\TitleEmployee whereId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\TitleEmployee whereEmployeeId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\TitleEmployee whereWorkTitlesId($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\TitleEmployee whereCreatedAt($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\TitleEmployee whereUpdatedAt($value)
  */
 	class Title_Employees extends \Eloquent {}
 }
@@ -499,6 +499,7 @@ namespace App\Models\POS{
  * @property string $slug
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activity
  * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Client whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Client whereClientNumber($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Client whereCredit($value)
@@ -557,13 +558,16 @@ namespace App\Models\POS{
  * @property integer $id
  * @property string $startTime
  * @property string $endTime
+ * @property boolean $unauthorized
  * @property integer $work_title_id
  * @property integer $employee_id
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Spatie\Activitylog\Models\Activity[] $activity
  * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Punch whereId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Punch whereStartTime($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Punch whereEndTime($value)
+ * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Punch whereUnauthorized($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Punch whereWorkTitleId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Punch whereEmployeeId($value)
  * @method static \Illuminate\Database\Query\Builder|\App\Models\POS\Punch whereCreatedAt($value)

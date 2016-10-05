@@ -3,9 +3,11 @@
 namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
 
 class WorkTitle extends Model
 {
+    use Searchable;
     protected $table = 'work_titles';
     protected $fillable = ['name', 'baseSalary' ];
 

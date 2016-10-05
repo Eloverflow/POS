@@ -7,7 +7,7 @@ use App\Models\POS\Employee;
 use App\Models\POS\WorkTitle;
 use App\Models\POS\Punch;
 use App\Models\Project;
-use App\Models\POS\Title_Employees;
+use App\Models\POS\TitleEmployee;
 use Illuminate\Support\Facades\Input;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\DB;
@@ -77,7 +77,7 @@ class WorkTitleController extends Controller
             $empl =  Employee::GetById(Input::get('emplId'));
             $emplTitle  = WorkTitle::getById(Input::get('emplTitleId'));
 
-            Title_Employees::where("id", "=", Input::get('titleEmployeeId'))
+            TitleEmployee::where("id", "=", Input::get('titleEmployeeId'))
                 ->delete();
 
             return \Response::json([
@@ -109,12 +109,12 @@ class WorkTitleController extends Controller
         }
         else
         {
-            $checkTitleEmployee = Title_Employees::getByEmployeeAndTitleId(Input::get('emplId'), Input::get('emplTitleId'));
+            $checkTitleEmployee = TitleEmployee::getByEmployeeAndTitleId(Input::get('emplId'), Input::get('emplTitleId'));
             if($checkTitleEmployee == null){
                 $empl =  Employee::GetById(Input::get('emplId'));
                 $emplTitle  = WorkTitle::getById(Input::get('emplTitleId'));
 
-                $titleEmployee = Title_Employees::create([
+                $titleEmployee = TitleEmployee::create([
                     'employee_id' => Input::get('emplId'),
                     'work_titles_id' => Input::get('emplTitleId')
                 ]);

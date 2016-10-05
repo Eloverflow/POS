@@ -7,7 +7,7 @@ use App\Models\POS\Employee;
 use App\Models\POS\WorkTitle;
 use App\Models\POS\Punch;
 use App\Models\Project;
-use App\Models\POS\Title_Employees;
+use App\Models\POS\TitleEmployee;
 use App\Models\Auth\User;
 use Auth;
 use Hash;
@@ -51,9 +51,9 @@ class EmployeeController extends Controller
     public function edit($id)
     {
         $employee = Employee::GetById($id);
-        $employeeTitles = Title_Employees::All();
+        $employeeTitles = TitleEmployee::All();
 
-        $employeeTitlesInUse = Title_Employees::getByEmployeeId($id);
+        $employeeTitlesInUse = TitleEmployee::getByEmployeeId($id);
         //DB::table('users')->get();
         $view = \View::make('POS.Employee.edit')->with('ViewBag', array(
             'employee' => $employee,
@@ -103,11 +103,11 @@ class EmployeeController extends Controller
             ]);
 
             // We delete so we can re-insert properly.
-            Title_Employees::DeleteByEmployeeId(Input::get('idEmployee'));
+            TitleEmployee::DeleteByEmployeeId(Input::get('idEmployee'));
 
             $employeeTitlesInpt = Input::get('employeeTitles');
             for($i = 0; $i < count($employeeTitlesInpt); $i++){
-                Title_Employees::create([
+                TitleEmployee::create([
                     'employee_id' => Input::get('idEmployee'),
                     'employee_titles_id' => $employeeTitlesInpt[$i]
                 ]);
@@ -173,7 +173,7 @@ class EmployeeController extends Controller
 
             $employeeTitlesInpt = Input::get('employeeTitles');
             for($i = 0; $i < count($employeeTitlesInpt); $i++){
-                Title_Employees::create([
+                TitleEmployee::create([
                     'employee_id' => $employee->id,
                     'employee_titles_id' => $employeeTitlesInpt[$i]
                 ]);

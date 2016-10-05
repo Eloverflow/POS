@@ -13,6 +13,8 @@
 
 Auth::routes();
 
+Route::get('/search', ['uses' => 'SearchController@search', 'middleware' => 'auth']);
+
 Route::get('/website', ['uses' => 'PagesController@websiteLayout', 'middleware' => 'auth']);
 
 Route::get('/user/password/update', ['uses' => 'Auth\UserController@update','middleware' => 'auth']);

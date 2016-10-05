@@ -16,7 +16,7 @@ class CreateCommandsTable extends Migration
             $table->increments('id');
             $table->string('notes')->nullable();
             $table->boolean('status')->nullable();
-            $table->integer('command_number')->nullable();
+            $table->integer('command_number')->unique();
             $table->integer('table_id')->unsigned();
             $table->foreign('table_id')->references('id')->on('tables')->nullable();
             $table->integer('client_id')->unsigned();

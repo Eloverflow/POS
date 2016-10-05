@@ -4,7 +4,7 @@ namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Day_Availability extends Model
+class DayAvailability extends Model
 {
     //
     protected $table = 'day_availability';

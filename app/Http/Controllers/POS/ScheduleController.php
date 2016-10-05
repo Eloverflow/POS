@@ -10,7 +10,7 @@ use App\Models\Project;
 use App\Helpers\Utils;
 use App\Models\POS\Schedule;
 use App\Models\POS\Punch;
-use App\Models\POS\Day_Schedules;
+use App\Models\POS\DaySchedules;
 use App\Models\POS\Disponibility;
 
 use App\Models\POS\Shared\CalendarEvent;
@@ -195,7 +195,7 @@ class ScheduleController extends Controller
                 $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
                 $employeeId = $jsonArray[$i]["employeeId"];
 
-                Day_Schedules::create([
+                DaySchedules::create([
                     "schedule_id" => $schedule->id,
                     'employee_id' => $employeeId,
                     "startTime" => $dateStart,
@@ -334,7 +334,7 @@ class ScheduleController extends Controller
                 $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
                 $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
 
-                Day_Schedules::create([
+                DaySchedules::create([
                     "schedule_id" => Input::get('scheduleId'),
                     'employee_id' => $jsonArray[$i]["employeeId"],
                     "startTime" => $dateStart,

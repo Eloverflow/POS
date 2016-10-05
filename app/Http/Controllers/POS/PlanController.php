@@ -10,7 +10,7 @@ use App\Models\POS\Punch;
 use App\Models\POS\Separation;
 use App\Models\POS\Table;
 use App\Models\Project;
-use App\Models\POS\Title_Employees;
+use App\Models\POS\TitleEmployee;
 use App\Models\Auth\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Html\HtmlServiceProvider;

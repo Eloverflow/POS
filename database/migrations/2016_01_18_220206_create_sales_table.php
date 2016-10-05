@@ -17,7 +17,7 @@ class CreateSalesTable extends Migration
             $table->boolean('cancelled');
             $table->boolean('status')->nullable();
             $table->string('paiement_type')->nullable();
-            $table->integer('sale_number')->nullable();
+            $table->integer('sale_number')->unique();
             $table->float('subTotal')->nullable();
             $table->float('total')->nullable();
             $table->json('extras')->nullable();

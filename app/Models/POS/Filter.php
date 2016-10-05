@@ -3,9 +3,12 @@
 namespace App\Models\POS;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Scout\Searchable;
+
 
 class Filter extends Model
 {
+    use Searchable;
     protected $table = 'filters';
 
     protected $fillable = ['name', 'description', 'type',  'status', 'importance', 'slug'];
