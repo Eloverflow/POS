@@ -12,7 +12,4 @@ wget http://dev.mysql.com/get/mysql-apt-config_0.7.3-1_all.deb
 sudo dpkg -i mysql-apt-config_0.7.3-1_all.deb
 sudo apt-get update
 sudo apt-get install -y mysql-community-server
-
-DB_TEST_PASSWORD=$(sudo grep 'temporary password' /var/log/mysqld.log)
-
-echo $DB_TEST_PASSWORD
+sudo mysql -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'superstringpassword';" --user=root
