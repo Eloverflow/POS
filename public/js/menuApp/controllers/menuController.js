@@ -46,7 +46,7 @@ angular.module('starter.controllers')
         //Msg on employee auth panel
         var msgEnterEmployeeNumber = "Entrez votre numéro d'employé";
         var msgEnterEmployeePassword = "Entrez votre mot de passe";
-        $scope.mainText = ""; //Current msg on employee auth panel
+        $scope.employeeInput = ""; //Current msg on employee auth panel
         //Boolean toggle for displaying multiple panels
         $scope.showBillWindow = false;
         $scope.showEmployeeModal = false;
@@ -116,7 +116,7 @@ angular.module('starter.controllers')
         //
         var modalChangeEmployee = $('#changeEmployee');
         //
-        var mainText = $('#mainText');
+        var employeeInput = $('#employeeInput');
         /*End of Initializing variables*/
 
         /*When the user become idle*/
@@ -673,8 +673,8 @@ angular.module('starter.controllers')
                 window.loading_screen.finish();
 
                 $scope.numPadMsg = msgEnterEmployeeNumber;
-                mainText.attr('type', 'text');
-                mainText.attr('placeholder', 'Numéro d\'employé');
+                employeeInput.attr('type', 'text');
+                employeeInput.attr('placeholder', 'Numéro d\'employé');
                 /*
                  $scope.authenticateEmployee();*/
                 $scope.changeEmployee();
@@ -1828,11 +1828,11 @@ angular.module('starter.controllers')
 
                         $scope.validation = false;
                         $scope.numPadMsg = msgEnterEmployeeNumber;
-                        mainText.attr('type', 'text');
-                        mainText.attr('placeholder', 'Numéro d\'employé');
+                        employeeInput.attr('type', 'text');
+                        employeeInput.attr('placeholder', 'Numéro d\'employé');
                         $scope.numPadErrMsg = response.error;
                         $scope.showEmployeeModal = true;
-                        $scope.mainText = '';
+                        $scope.employeeInput = '';
                     }
 
 
@@ -1850,9 +1850,9 @@ angular.module('starter.controllers')
 
                 $scope.numPadErrMsg = '';
                 $scope.numPadMsg = msgEnterEmployeeNumber;
-                mainText.attr('type', 'text');
-                mainText.attr('placeholder', 'Numéro d\'employé');
-                $scope.mainText = '';
+                employeeInput.attr('type', 'text');
+                employeeInput.attr('placeholder', 'Numéro d\'employé');
+                $scope.employeeInput = '';
                 $scope.validation = false;
             }
         };
@@ -1860,9 +1860,9 @@ angular.module('starter.controllers')
         /*Return to employee number on employee modal*/
         $scope.changeEmployeeStepBack = function () {
             $scope.numPadMsg = msgEnterEmployeeNumber;
-            mainText.attr('type', 'text');
-            mainText.attr('placeholder', 'Numéro d\'employé');
-            $scope.mainText = '';
+            employeeInput.attr('type', 'text');
+            employeeInput.attr('placeholder', 'Numéro d\'employé');
+            $scope.employeeInput = '';
             $scope.validation = false;
             $scope.numPadErrMsg = ''
         };
@@ -1879,14 +1879,14 @@ angular.module('starter.controllers')
                 $scope.numPadErrMsg = '';
                 $scope.newUserId = $scope.currentEmploye.id;
                 $scope.numPadMsg = msgEnterEmployeePassword;
-                mainText.attr('placeholder', 'Mot de passe');
-                mainText.attr('type', 'password');
+                employeeInput.attr('placeholder', 'Mot de passe');
+                employeeInput.attr('type', 'password');
 
                 /*We need to validate*/
                 $scope.validation = true;
 
                 /*Empty the field*/
-                $scope.mainText = '';
+                $scope.employeeInput = '';
             }
         };
 
@@ -1896,7 +1896,7 @@ angular.module('starter.controllers')
 
         $scope.setWorkTitle = function (workTitle) {
 
-            if(($filter("filter")(workTitle.cntEmployees, {idEmployee: $scope.mainText})).length > 0){
+            if(($filter("filter")(workTitle.cntEmployees, {idEmployee: $scope.employeeInput})).length > 0){
                 $scope.workTitle = workTitle;
             }else {
                 if(confirm('You don\'t own this role, are you sure ?')){
@@ -1916,42 +1916,46 @@ angular.module('starter.controllers')
 
         /*Employee numpad triggers - will authenticate or validate password on Enter click*/
         $scope.padClick = function ($value) {
-            switch ($value) {
-                case 'dl':
-                    $scope.mainText = $scope.mainText.slice(0, -1);
-                    break;
-                case 'cl':
-                    $scope.mainText = "";
-                    break;
-                case 'clk':
-                    punchEmployee();
+            if(typeof $value == 'string'){
+                switch ($value) {
+                    case 'dl':
+                        $scope.employeeInput = $scope.employeeInput.slice(0, -1);
+                        break;
+                    case 'cl':
+                        $scope.employeeInput = "";
+                        break;
+                    case 'clk':
+                        punchEmployee();
 
-                    break;
-                case 'ent':
-                    if ($scope.validation) {
-                        $scope.newUserPassword = $scope.mainText;
-                        $scope.authenticateEmployee();
-                    }
-                    else {
-                        $scope.numPadErrMsg = '';
-                        $scope.newUserId = $scope.mainText;
-                        $scope.numPadMsg = msgEnterEmployeePassword;
-                        mainText.attr('placeholder', 'Mot de passe');
-                        mainText.attr('type', 'password');
+                        break;
+                    case 'ent':
+                        if ($scope.validation) {
+                            $scope.newUserPassword = $scope.employeeInput;
+                            $scope.authenticateEmployee();
+                        }
+                        else {
+                            $scope.numPadErrMsg = '';
+                            $scope.newUserId = $scope.employeeInput;
+                            $scope.numPadMsg = msgEnterEmployeePassword;
+                            employeeInput.attr('placeholder', 'Mot de passe');
+                            employeeInput.attr('type', 'password');
 
-                        /*We need to validate*/
-                        $scope.validation = true;
+                            /*We need to validate*/
+                            $scope.validation = true;
 
-                        /*Empty the field*/
-                        $scope.mainText = '';
-                    }
-                    break;
-                case 'pt':
-                    $scope.mainText = $scope.mainText + ".";
-                    break;
-                default:
-                    $scope.mainText = $scope.mainText + $value;
+                            /*Empty the field*/
+                            $scope.employeeInput = '';
+                        }
+                        break;
+                    case 'pt':
+                        $scope.employeeInput = $scope.employeeInput + ".";
+                        break;
+                }
 
+
+            }
+            else{
+                $scope.employeeInput = $scope.employeeInput + $value;
             }
 
         };
@@ -2836,7 +2840,7 @@ angular.module('starter.controllers')
         function punchEmployee(workTitleId) {
 
 
-            var $selectedEmployeeText = $('#mainText').val();
+            var $selectedEmployeeText = $('#employeeInput').val();
             var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
             $.ajax({
