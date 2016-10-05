@@ -119,7 +119,7 @@ class VisitTest extends TestCase
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
             ->visit('/')
-            ->click('Menu')
+            ->click('MenuPOS')
             ->seePageIs('/menu');
     }
 
