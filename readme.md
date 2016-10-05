@@ -1,6 +1,6 @@
 # POSIO
 
-[![Build Status](https://travis-ci.com/Eloverflow/POS.svg)](https://travis-ci.com/Eloverflow/POS)
+[![Build Status](https://travis-ci.com/Eloverflow/POS.svg?token=PFygioyDgzxMpNS55Zz4)](https://travis-ci.com/Eloverflow/POS)
 
 POSIO is a web application. An effective and intuitive POS.
 
