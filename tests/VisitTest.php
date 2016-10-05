@@ -22,13 +22,24 @@ class VisitTest extends TestCase
 
     public function testPageEmployees()
     {
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
+            ->click('Employees')
+            ->seePageIs('/employee');
+
+    }
+
+    public function testLogin()
+    {
         $this->visit('/')
             ->type('visitor@mirageflow.com', 'email')
             ->type('Visiteur!', 'password')
             ->press('btn-login')
-            ->seePageIs('/')
-            ->click('Employees')
-            ->seePageIs('/employee');
+            ->seePageIs('/');
+
     }
 
     public function testPageWorkTitles()
