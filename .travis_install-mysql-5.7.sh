@@ -12,4 +12,4 @@ wget http://dev.mysql.com/get/mysql-apt-config_0.7.3-1_all.deb
 sudo dpkg -i mysql-apt-config_0.7.3-1_all.deb
 sudo apt-get update
 sudo apt-get install -y mysql-community-server
-sudo mysql -e "update user set authentication_string = password(superstringpassword) where user='root';flush privileges;" --user=root
+sudo mysql -e "USE mysql;update user set authentication_string = password(superstringpassword) where user='root';flush privileges;" --user=root
