@@ -6,15 +6,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 class VisitTest extends TestCase
 {
-    /**
-     * A basic functional test example.
-     *
-     * @return void
-     */
+    /*Will redirect to login*/
     public function testBasic()
     {
         $this->visit('/')
-             ->see('Dashboard');
+             ->see('Login');
     }
 
     public function testPageStats()
