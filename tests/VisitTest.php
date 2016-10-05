@@ -20,6 +20,16 @@ class VisitTest extends TestCase
             ->seePageIs('/stats');
     }
 
+    public function testLogin()
+    {
+        $this->visit('/login')
+            ->type('visitor@mirageflow.com', 'email')
+            ->type('Visiteur!', 'password')
+            ->press('btn-login')
+            ->seePageIs('/');
+
+    }
+
     public function testPageEmployees()
     {
         $user = factory(App\Models\Auth\User::class)->create();
@@ -32,110 +42,156 @@ class VisitTest extends TestCase
 
     }
 
-    public function testLogin()
-    {
-        $this->visit('/')
-            ->type('visitor@mirageflow.com', 'email')
-            ->type('Visiteur!', 'password')
-            ->press('btn-login')
-            ->seePageIs('/');
-
-    }
-
     public function testPageWorkTitles()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Work Titles')
             ->seePageIs('/work/titles');
     }
 
     public function testPageCalendar()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Calendar')
             ->seePageIs('/calendar');
     }
 
     public function testPageSchedules()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Schedules')
             ->seePageIs('/schedule');
     }
 
     public function testPageAvailability()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Availability')
             ->seePageIs('/availability');
     }
 
     public function testPageInventory()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Inventory')
             ->seePageIs('/inventory');
     }
 
     public function testPageClients()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Clients')
             ->seePageIs('/clients');
     }
 
     public function testPageMenu()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Menu')
             ->seePageIs('/menu');
     }
 
     public function testPagePlans()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Plans')
             ->seePageIs('/plan');
     }
 
     public function testPageItems()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Items')
             ->seePageIs('/items');
     }
 
     public function testPageItemTypes()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Item Types')
             ->seePageIs('/itemtypes');
     }
 
     public function testPageExtras()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Extras')
             ->seePageIs('/extras');
     }
 
     public function testPageMenuFiler()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Menu Filer')
             ->seePageIs('/filters');
     }
 
     public function testPageActivityLog()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Activity log')
             ->seePageIs('/activity-log');
     }
 
     public function testPageSettings()
     {
-        $this->visit('/')
+        $user = factory(App\Models\Auth\User::class)->create();
+
+        $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
+            ->visit('/')
             ->click('Settings')
             ->seePageIs('/menu-settings');
     }
