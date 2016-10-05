@@ -15,8 +15,8 @@ class VisitTest extends TestCase
 
     public function testLogin()
     {
-        $this->visit('/login')
-            ->type('visitor@mirageflow.com', 'email')
+        $this->visit('/')
+            ->type('visiteur@mirageflow.com', 'email')
             ->type('Visiteur!', 'password')
             ->press('btn-login')
             ->seePageIs('/');
