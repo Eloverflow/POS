@@ -15,8 +15,6 @@ class POSMenuTest extends TestCase
             ->visit('/menu');
 
         sleep(10); // Give the time to Angular for loading
-        
-        $this->see('Entrez votre numéro d\'employé');
 
         $this->click('btn-menu-3')
             ->click('btn-menu-enter')
@@ -34,8 +32,6 @@ class POSMenuTest extends TestCase
             ->visit('/menu');
 
         sleep(10); // Give the time to Angular for loading
-
-        $this->see('Entrez votre numéro d\'employé');
 
         $this->click('btn-menu-3')
             ->click('btn-menu-clk')
