@@ -14,7 +14,7 @@ class EmployeesTest extends TestCase
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
             ->visit('/employee')
-            ->click('btn-create-employee')
+            ->press('btn-create-employee')
             ->seePageIs('/employee/create')
             ->type('testing@mirageflow.com', 'email')
             ->type('1111', 'password')
@@ -30,7 +30,7 @@ class EmployeesTest extends TestCase
             ->type('1.50', 'bonusSalary')
             ->type('01/01/2016', 'birthDate')
             ->type('01/01/2016', 'hireDate')
-            ->click('btn-create-employee')
+            ->press('btn-create-employee')
             ->seePageIs('/employee')
             ->see('The employee has been successfully created !');
 
