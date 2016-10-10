@@ -15,7 +15,7 @@ class EmployeesTest extends TestCase
             ->visit('/employee')
             ->click('btn-create-employee')
             ->seePageIs('/employee/create')
-            ->type('test@mirageflow.com', 'email')
+            ->type('testing@mirageflow.com', 'email')
             ->type('1111', 'password')
             ->type('Test', 'firstName')
             ->type('Testing', 'lastName')
