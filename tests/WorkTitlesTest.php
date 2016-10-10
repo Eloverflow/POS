@@ -4,7 +4,7 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class EmployeesTest extends TestCase
+class WorkTitlesTest extends TestCase
 {
 
     public function testCreateWorkTitle()
