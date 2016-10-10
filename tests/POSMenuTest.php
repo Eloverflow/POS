@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class POSMenuTest extends TestCase
 {
 
-    public function testPagePOSMenu()
+   /* public function testPagePOSMenu()
     {
         $user = factory(App\Models\Auth\User::class)->create();
 
@@ -43,7 +43,7 @@ class POSMenuTest extends TestCase
             ->see('The employee has been successfully punched in !')
             ->click('btn-menu-clk')
             ->see('The employee has been successfully punched out !');
-    }
+    }*/
 
 
 }
