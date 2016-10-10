@@ -15,6 +15,7 @@ class POSMenuTest extends TestCase
             ->visit('/')
             ->click('MenuPOS')
             ->seePageIs('/menu')
+            ->timeouts()->implicitWait(4000)
             ->click('btn-menu-3')
             ->click('btn-menu-enter')
             ->click('btn-menu-1')
@@ -22,6 +23,7 @@ class POSMenuTest extends TestCase
             ->click('btn-menu-enter')
             ->see('Commande - Client: #1');
     }
+
     public function testPagePOSMenuPunch()
     {
         $user = factory(App\Models\Auth\User::class)->create();
@@ -30,6 +32,7 @@ class POSMenuTest extends TestCase
             ->visit('/')
             ->click('MenuPOS')
             ->seePageIs('/menu')
+            ->timeouts()->implicitWait(4000)
             ->click('btn-menu-3')
             ->click('btn-menu-clk')
             ->click('btn-Barmaid')
