@@ -16,7 +16,7 @@ class AvailabilityTest extends TestCase
             ->withSession(['foo' => 'bar'])
             ->visit('/availability/create')
             ->type('Test Availability', 'name')
-            ->select(4, 'employeeSelect') //Previously created
+            ->select(3, 'employeeSelect') //Previously created
             ->click('btnAdd')
             ->type('8:00 AM', 'startTime')
             ->type('5:00 PM', 'endTime')
