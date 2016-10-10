@@ -25,7 +25,7 @@ class EmployeesTest extends TestCase
             ->type('Bout d\'apic', 'city')
             ->type('QC', 'state')
             ->type('A0A0A0', 'pc')
-            ->select([2,3], 'employeeTitles')
+            ->select([2,3], 'employeeTitles[]')
             ->type('1.50', 'bonusSalary')
             ->type('01/01/2016', 'birthDate')
             ->type('01/01/2016', 'hireDate')
