@@ -52,13 +52,13 @@
 
 
                                         <span class="btnCancel pull-right glyphicon glyphicon glyphicon-remove"></span>
-                                        <span class="btnOk pull-right glyphicon glyphicon-ok"></span>
+                                        <span id="btn-confirm-work-title" class="btnOk pull-right glyphicon glyphicon-ok"></span>
 
                                     </div>
                                 </div>
 
                                 <div>
-                                    <button data-emplTitleId="{{ $workTitle->emplTitleId }}" type="button" class="btn btn-success pull-right btnAddEmployee">Add Employee</button>
+                                    <button id="btn-add-employee" data-emplTitleId="{{ $workTitle->emplTitleId }}" type="button" class="btn btn-success pull-right btnAddEmployee">Add Employee</button>
                                         <table id="tbl-{{ $workTitle->emplTitleId }}" class="table">
                                             <thead>
                                                 <tr>
