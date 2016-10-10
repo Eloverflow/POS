@@ -16,7 +16,7 @@ $(document).ready(function(){
                 '<div class="groupHeader"><h6 id="emplTitleName" class="hsize"></h6> <span id="emplTitleBaseSalary" class="secondInfo"><p class="textCase"></p><p class="hcase">h</p></span></div>' +
                 '<span class="editEmplTitle pull-right glyphicon glyphicon-pencil"></span>' +
                 '</div>' +
-                '<div class="viewHide">' +
+                '<a class="viewHide">' +
                 '<span id="emplTitleId" class="hidden"></span>' +
                 '<div class="cont-block">' +
                 '<label for="emplTitleName">Title Name :</label>' +
@@ -29,7 +29,9 @@ $(document).ready(function(){
                 '<input id="inptBaseSalary" class="form-control inpt-bar in-BSalary" type="text" name="emplTitleBaseSalary">' +
                 '</div>' +
                 '<span class="btnCancel pull-right glyphicon glyphicon glyphicon-remove"></span>' +
+                '<a id="btn-confirm-work-title">' +
                 '<span class="btnOk pull-right glyphicon glyphicon-ok"></span>' +
+                '</a>' +
                 '</div>' +
                 '</div>' +
                 '<div id="newWorkTitleContent">' +

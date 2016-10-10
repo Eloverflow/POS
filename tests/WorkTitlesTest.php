@@ -14,10 +14,10 @@ class WorkTitlesTest extends TestCase
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
             ->visit('/work/titles')
-            ->press('btnCreateNew')
+            ->click('btnCreateNew')
             ->type('Towel Dryer', 'emplTitleName')
             ->type('0.1', 'emplTitleBaseSalary')
-            ->press('btn-confirm-work-title')
+            ->click('btn-confirm-work-title')
             ->see('Towel Dryer');
 
     }
@@ -29,9 +29,9 @@ class WorkTitlesTest extends TestCase
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
             ->visit('/work/titles')
-            ->press('btn-add-employee')
+            ->click('btn-add-employee')
             ->select(4, 'employeeSelect') //Previously created
-            ->press('frmBtnAddEmpl')
+            ->click('frmBtnAddEmpl')
             ->see('Test Testing');
 
     }

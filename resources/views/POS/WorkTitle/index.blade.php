@@ -52,13 +52,13 @@
 
 
                                         <span class="btnCancel pull-right glyphicon glyphicon glyphicon-remove"></span>
-                                        <span id="btn-confirm-work-title" class="btnOk pull-right glyphicon glyphicon-ok"></span>
+                                        <a id="btn-confirm-work-title"><span class="btnOk pull-right glyphicon glyphicon-ok"></span></a>
 
                                     </div>
                                 </div>
 
                                 <div>
-                                    <button id="btn-add-employee" data-emplTitleId="{{ $workTitle->emplTitleId }}" type="button" class="btn btn-success pull-right btnAddEmployee">Add Employee</button>
+                                    <a id="btn-add-employee" data-emplTitleId="{{ $workTitle->emplTitleId }}" type="button" class="btn btn-success pull-right btnAddEmployee">Add Employee</a>
                                         <table id="tbl-{{ $workTitle->emplTitleId }}" class="table">
                                             <thead>
                                                 <tr>
@@ -120,7 +120,7 @@
 
 
                 <!-- dialog buttons -->
-                <div class="modal-footer"><button id="frmBtnAddEmpl" type="button" class="btn btn-primary">Add</button></div>
+                <div class="modal-footer"><a id="frmBtnAddEmpl" type="button" class="btn btn-primary">Add</a></div>
             </div>
         </div>
     </div>

@@ -16,15 +16,15 @@ class ScheduleTest extends TestCase
             ->withSession(['foo' => 'bar'])
             ->visit('/schedule/create')
             ->type('Test Schedule', 'name')
-            ->press('btnAdd')
+            ->click('btnAdd')
             ->select(3, 'employeeSelect')
             ->check('chkOptAllWeek')
             ->type('10/08/2016 8:00 AM', 'startTime')
             ->type('10/08/2016 5:00 PM', 'endTime')
-            ->press('btnAddEvent')
+            ->click('btnAddEvent')
             ->see('The moment has been added succesfully !')
             ->see('8:00 - 17:00')
-            ->press('btnFinish')
+            ->click('btnFinish')
             ->seePageIs('/schedule')
             ->see('Test Schedule');
 

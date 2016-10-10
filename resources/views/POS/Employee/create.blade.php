@@ -198,7 +198,7 @@
                                 </div>
                             </div>
                         </fieldset>
-                        <input id="btn-create-employee" class="btn btn-primary" type="submit" value="Create">
+                        {!! Form::submit('Create', array('id' => 'btn-create-employee', 'class' => 'btn btn-primary')) !!}
                         {!! Form::close() !!}
                     </div>
                 </div>

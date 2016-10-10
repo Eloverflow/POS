@@ -13,9 +13,7 @@ class EmployeesTest extends TestCase
 
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
-            ->visit('/employee')
-            ->press('btn-create-employee')
-            ->seePageIs('/employee/create')
+            ->visit('/employee/create')
             ->type('testing@mirageflow.com', 'email')
             ->type('1111', 'password')
             ->type('Test', 'firstName')

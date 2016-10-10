@@ -144,33 +144,33 @@
 
                 </tr>
                 <tr>
-                    <td colspan="2"><button class="button" ng-mousedown="padClick('dl')">Del</button></td>
-                    <td colspan="2"><button class="button" ng-mousedown="padClick('cl')">Clear</button></td>
+                    <td colspan="2"><a class="button" ng-mousedown="padClick('dl')">Del</a></td>
+                    <td colspan="2"><a class="button" ng-mousedown="padClick('cl')">Clear</a></td>
                 </tr>
 
                 <tr>
-                    <td><button class="button" ng-mousedown="padClick(7)">7</button></td>
-                    <td><button class="button" ng-mousedown="padClick(8)">8</button></td>
-                    <td><button class="button" ng-mousedown="padClick(9)">9</button></td>
-                    <td rowspan="2"><button id="btn-menu-clk" class="button" ng-click="padClick('clk')">Clock in/out</button></td>
+                    <td><a class="button" ng-mousedown="padClick(7)">7</a></td>
+                    <td><a class="button" ng-mousedown="padClick(8)">8</a></td>
+                    <td><a class="button" ng-mousedown="padClick(9)">9</a></td>
+                    <td rowspan="2"><a id="btn-menu-clk" class="button" ng-click="padClick('clk')">Clock in/out</a></td>
                 </tr>
 
                 <tr>
-                    <td><button class="button" ng-mousedown="padClick(4)">4</button></td>
-                    <td><button class="button" ng-mousedown="padClick(5)">5</button></td>
-                    <td><button class="button" ng-mousedown="padClick(6)">6</button></td>
+                    <td><a class="button" ng-mousedown="padClick(4)">4</a></td>
+                    <td><a class="button" ng-mousedown="padClick(5)">5</a></td>
+                    <td><a class="button" ng-mousedown="padClick(6)">6</a></td>
                 </tr>
 
                 <tr>
-                    <td><button id="btn-menu-1" class="button" ng-mousedown="padClick(1)">1</button></td>
-                    <td><button class="button" ng-mousedown="padClick(2)">2</button></td>
-                    <td><button id="btn-menu-3" class="button" ng-mousedown="padClick(3)">3</button></td>
-                    <td rowspan="2"><button id="btn-menu-enter" class="button" ng-mousedown="padClick('ent')">Ent</button></td>
+                    <td><a id="btn-menu-1" class="button" ng-mousedown="padClick(1)">1</a></td>
+                    <td><a class="button" ng-mousedown="padClick(2)">2</a></td>
+                    <td><a id="btn-menu-3" class="button" ng-mousedown="padClick(3)">3</a></td>
+                    <td rowspan="2"><a id="btn-menu-enter" class="button" ng-mousedown="padClick('ent')">Ent</a></td>
                 </tr>
 
                 <tr>
-                    <td colspan="2"><button class="button" ng-mousedown="padClick(0)">0</button></td>
-                    <td><button class="button" ng-mousedown="padClick('pt')">.</button></td>
+                    <td colspan="2"><a class="button" ng-mousedown="padClick(0)">0</a></td>
+                    <td><a class="button" ng-mousedown="padClick('pt')">.</a></td>
                 </tr>
                 </tbody>
             </table>

@@ -17,14 +17,14 @@ class AvailabilityTest extends TestCase
             ->visit('/availability/create')
             ->type('Test Availability', 'name')
             ->select(3, 'employeeSelect') //Previously created
-            ->click('#btnAdd')
+            ->click('btnAdd')
             ->type('8:00 AM', 'startTime')
             ->type('5:00 PM', 'endTime')
             ->select(-1, 'dayNumber') //All week
-            ->click('#btnAddEvent')
+            ->click('btnAddEvent')
             ->see('The moment has been added succesfully !')
             ->see('8:00 - 5:00')
-            ->click('#btnFinish')
+            ->click('btnFinish')
             ->seePageIs('/availability')
             ->see('Test Availability');
 
