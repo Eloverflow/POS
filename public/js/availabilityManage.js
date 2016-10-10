@@ -25,7 +25,7 @@ function postAddDisponibilities() {
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
     $.ajax({
-        url: '/disponibility/create',
+        url: '/availability/create',
         type: 'POST',
         async: true,
         data: {
@@ -52,7 +52,7 @@ function postAddDisponibilities() {
         success: function(xhr) {
             [].forEach.call( Object.keys( xhr ), function( key ) {
                 alert(xhr[key]);
-                window.location.replace("/disponibility");
+                window.location.replace("/availability");
             });
         }
     });
@@ -78,7 +78,7 @@ function postEditDisponibilities() {
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
     $.ajax({
-        url: '/disponibility/edit',
+        url: '/availability/edit',
         type: 'POST',
         async: true,
         data: {
@@ -106,7 +106,7 @@ function postEditDisponibilities() {
         success: function(xhr) {
             [].forEach.call( Object.keys( xhr ), function( key ) {
                 alert(xhr[key]);
-                window.location.replace("/disponibility");
+                window.location.replace("/availability");
             });
         }
     });

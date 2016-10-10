@@ -235,7 +235,7 @@ class AvailabilityController extends Controller
 
                 //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
                 DayAvailability::create([
-                    "disponibility_id" => Input::get('dispoId'),
+                    "availability_id" => Input::get('dispoId'),
                     "day_number" => $jsonArray[$i]["dayIndex"],
                     "startTime" => $resStart,
                     "endTime" => $resStop
@@ -317,7 +317,7 @@ class AvailabilityController extends Controller
 
                 //$date = date("H:i:s", $jsonArray[$i]["StartTime"]);
                 DayAvailability::create([
-                    "disponibility_id" => $disponiblity->id,
+                    "availability_id" => $disponiblity->id,
                     "day_number" => $jsonArray[$i]["dayIndex"],
                     "startTime" => $resStart,
                     "endTime" => $resStop

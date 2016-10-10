@@ -23,7 +23,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-                    {!! Form::open(array('url' => 'disponibility/create', 'role' => 'form', 'id' => 'frmDispoCreate')) !!}
+                    {!! Form::open(array('url' => 'availability/create', 'role' => 'form', 'id' => 'frmDispoCreate')) !!}
 
                     <div id="displayErrors" style="display:none;" class="alert alert-danger">
                         <strong>Whoops!</strong> There were some problems with your input.<br><br>
