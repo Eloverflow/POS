@@ -12,6 +12,7 @@ class POSMenuTest extends TestCase
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
             ->visit('/menu');
 
         sleep(10); // Give the time to Angular for loading
@@ -29,6 +30,7 @@ class POSMenuTest extends TestCase
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
             ->visit('/menu');
 
         sleep(10); // Give the time to Angular for loading

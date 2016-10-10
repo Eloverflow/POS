@@ -13,6 +13,7 @@ class AvailabilityTest extends TestCase
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
             ->visit('/availability/create')
             ->type('Test Availability', 'name')
             ->select(4, 'employeeSelect') //Previously created

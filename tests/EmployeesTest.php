@@ -12,6 +12,7 @@ class EmployeesTest extends TestCase
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
             ->visit('/employee')
             ->click('btn-create-employee')
             ->seePageIs('/employee/create')

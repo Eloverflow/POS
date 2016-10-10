@@ -12,6 +12,7 @@ class WorkTitlesTest extends TestCase
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
             ->visit('/work/titles')
             ->click('btnCreateNew')
             ->type('Towel Dryer', 'emplTitleName')
@@ -26,6 +27,7 @@ class WorkTitlesTest extends TestCase
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
+            ->withSession(['foo' => 'bar'])
             ->visit('/work/titles')
             ->click('btn-add-employee')
             ->select(4, 'employeeSelect') //Previously created
