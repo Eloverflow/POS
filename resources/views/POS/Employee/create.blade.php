@@ -197,7 +197,8 @@
                                     @endif
                                 </div>
                             </div>
-                        {!! Form::submit('Create', array('class' => 'btn btn-primary')) !!}
+                        </fieldset>
+                        {!! Form::submit('Create', array('id' => 'btn-create-employee', 'class' => 'btn btn-primary')) !!}
                         {!! Form::close() !!}
                     </div>
                 </div>

@@ -29,7 +29,8 @@ class EmployeesTest extends TestCase
             ->type('1.50', 'bonusSalary')
             ->type('01/01/2016', 'birthDate')
             ->type('01/01/2016', 'hireDate')
-            ->seePageIs('/employee/create')
+            ->click('btn-create-employee')
+            ->seePageIs('/employee')
             ->see('The employee has been successfully created !');
 
     }
