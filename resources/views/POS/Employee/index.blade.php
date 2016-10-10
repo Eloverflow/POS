@@ -7,7 +7,7 @@
         </div>
         <div class="col-md-6">
             <div class="vcenter">
-                <a class="btn btn-primary pull-right" href="{{ @URL::to('employee/create') }}"> Create New </a>
+                <a class="btn btn-primary pull-right" id="btn-create-employee" href="{{ @URL::to('employee/create') }}"> Create New </a>
             </div>
         </div>
     </div>

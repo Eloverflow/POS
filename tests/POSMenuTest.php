@@ -16,7 +16,7 @@ class POSMenuTest extends TestCase
             ->click('MenuPOS')
             ->seePageIs('/menu');
 
-        sleep(4000);
+        sleep(4000); // Give the time to Angular for loading
 
         $this->click('btn-menu-3')
             ->click('btn-menu-enter')
@@ -35,7 +35,7 @@ class POSMenuTest extends TestCase
             ->click('MenuPOS')
             ->seePageIs('/menu');
 
-        sleep(4000);
+        sleep(4000); // Give the time to Angular for loading
 
         $this->click('btn-menu-3')
             ->click('btn-menu-clk')
