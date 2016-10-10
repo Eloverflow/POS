@@ -4,11 +4,11 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class AvailabilityTest extends TestCase
+class ScheduleTest extends TestCase
 {
 
 
-    public function testCreateAvailability()
+    public function testCreateSchedule()
     {
         $user = factory(App\Models\Auth\User::class)->create();
 
