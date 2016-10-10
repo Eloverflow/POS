@@ -14,9 +14,11 @@ class POSMenuTest extends TestCase
         $this->actingAs($user)
             ->visit('/')
             ->click('MenuPOS')
-            ->seePageIs('/menu')
-            ->sleep(4000)
-            ->click('btn-menu-3')
+            ->seePageIs('/menu');
+
+        sleep(4000);
+
+        $this->click('btn-menu-3')
             ->click('btn-menu-enter')
             ->click('btn-menu-1')
             ->click('btn-menu-1')
@@ -31,9 +33,11 @@ class POSMenuTest extends TestCase
         $this->actingAs($user)
             ->visit('/')
             ->click('MenuPOS')
-            ->seePageIs('/menu')
-            ->sleep(4000)
-            ->click('btn-menu-3')
+            ->seePageIs('/menu');
+
+        sleep(4000);
+
+        $this->click('btn-menu-3')
             ->click('btn-menu-clk')
             ->click('btn-Barmaid')
             ->see('The employee has been successfully punched in !')
