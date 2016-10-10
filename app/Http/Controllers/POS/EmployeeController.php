@@ -175,7 +175,7 @@ class EmployeeController extends Controller
             for($i = 0; $i < count($employeeTitlesInpt); $i++){
                 TitleEmployee::create([
                     'employee_id' => $employee->id,
-                    'employee_titles_id' => $employeeTitlesInpt[$i]
+                    'work_titles_id' => $employeeTitlesInpt[$i]
                 ]);
             }
             return \Redirect::action('POS\EmployeeController@index')->withSuccess('The employee has been successfully created !');
