@@ -175,7 +175,7 @@
                         <div class="form-group">
                             <h3>End Time</h3>
                             <div class='input-group date' id="endTimePicker">
-                                <input type='text' id="startTime" class="form-control dark-border" />
+                                <input type='text' id="endTime" class="form-control dark-border" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
                                     </span>
