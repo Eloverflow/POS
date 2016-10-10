@@ -60,6 +60,7 @@ class DatabaseSeeder extends Seeder
 
         $this->call(WorkTitleSeeder::class);
         $this->call(EmployeeSeeder::class);
+        $this->call(TitleEnployeeSeeder::class);
 
         $this->call(AvailabilityTableSeeder::class);
         $this->call(Day_AvailabilityTableSeeder::class);
@@ -483,6 +484,19 @@ class WorkTitleSeeder extends Seeder {
         WorkTitle::create([
             'name' => 'Cuisinier',
             'baseSalary' => 12,
+        ]);
+    }
+}
+
+
+class TitleEnployeeSeeder extends Seeder {
+    public function run()
+    {
+        DB::table('title_employees')->delete();
+
+        \App\Models\POS\TitleEmployee::create([
+            'employee_id' => 3,
+            'work_titles_id' => 1,
         ]);
     }
 }

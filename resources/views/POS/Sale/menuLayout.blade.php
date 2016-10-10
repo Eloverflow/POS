@@ -152,7 +152,7 @@
                     <td><button class="button" ng-mousedown="padClick(7)">7</button></td>
                     <td><button class="button" ng-mousedown="padClick(8)">8</button></td>
                     <td><button class="button" ng-mousedown="padClick(9)">9</button></td>
-                    <td rowspan="2"><button class="button" ng-click="padClick('clk')">Clock in/out</button></td>
+                    <td rowspan="2"><button id="btn-menu-clk" class="button" ng-click="padClick('clk')">Clock in/out</button></td>
                 </tr>
 
                 <tr>
@@ -162,10 +162,10 @@
                 </tr>
 
                 <tr>
-                    <td><button class="button" ng-mousedown="padClick(1)">1</button></td>
+                    <td><button id="btn-menu-1" class="button" ng-mousedown="padClick(1)">1</button></td>
                     <td><button class="button" ng-mousedown="padClick(2)">2</button></td>
-                    <td><button class="button" ng-mousedown="padClick(3)">3</button></td>
-                    <td rowspan="2"><button class="button" ng-mousedown="padClick('ent')">Ent</button></td>
+                    <td><button id="btn-menu-3" class="button" ng-mousedown="padClick(3)">3</button></td>
+                    <td rowspan="2"><button id="btn-menu-enter" class="button" ng-mousedown="padClick('ent')">Ent</button></td>
                 </tr>
 
                 <tr>
@@ -178,7 +178,7 @@
 </modal>
 <modal title="Role sur le planché" id="choseWorkTitle" class="center-modal employee-work-title-modal" visible="showWorkTitlesModal">
     <div ng-repeat="workTitle in workTitles">
-        <button ng-click="setWorkTitle(workTitle)" class="btn  <% (workTitle.cntEmployees | filter : {idEmployee: mainText}).length > 0 ? 'btn-success' : 'btn-danger' %>"><% workTitle.name %></button>
+        <button ng-click="setWorkTitle(workTitle)" id="btn-<%workTitle.name%>" ng-show="(workTitle.cntEmployees | filter : {idEmployee: mainText}).length > 0" class="btn btn-success"><% workTitle.name %></button>
     </div>
 </modal>
 

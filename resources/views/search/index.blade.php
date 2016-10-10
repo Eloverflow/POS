@@ -47,7 +47,7 @@
                             </div>
                             <div class="panel-body">
                                 @foreach($article['attributes'] as $key=>$value)
-                                    @if($key != "updated_at" && $key != "created_at" && $key != "slug" && $key != "id"  && !strpos($key, "id"))
+                                    @if($key != "updated_at" && $key != "created_at" && $key != "slug" && $key != "password" && $key != "remember_token" && $key != "id"  && !strpos($key, "id"))
                                     {{$key}} : {{ $value }}<br>
                                     @endif
                                 @endforeach
