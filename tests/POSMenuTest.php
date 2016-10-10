@@ -21,8 +21,12 @@ class POSMenuTest extends TestCase
             ->click('btn-menu-enter')
             ->click('btn-menu-1')
             ->click('btn-menu-1')
-            ->click('btn-menu-enter')
-            ->see('Commande - Client: #1');
+            ->click('btn-menu-enter');
+
+
+        sleep(3); // Give the time to Angular for loading
+
+        $this->see('Commande - Client: #1');
     }
 
     public function testPagePOSMenuPunch()
@@ -36,8 +40,11 @@ class POSMenuTest extends TestCase
         sleep(10); // Give the time to Angular for loading
 
         $this->click('btn-menu-3')
-            ->click('btn-menu-clk')
-            ->click('btn-Barmaid')
+            ->click('btn-menu-clk');
+
+        sleep(3); // Give the time to Angular for loading
+
+        $this->click('btn-Barmaid')
             ->see('The employee has been successfully punched in !')
             ->click('btn-menu-clk')
             ->see('The employee has been successfully punched out !');

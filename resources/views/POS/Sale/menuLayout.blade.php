@@ -144,33 +144,33 @@
 
                 </tr>
                 <tr>
-                    <td colspan="2"><a class="button" ng-mousedown="padClick('dl')">Del</a></td>
-                    <td colspan="2"><a class="button" ng-mousedown="padClick('cl')">Clear</a></td>
+                    <td colspan="2"><a class="btn button" ng-mousedown="padClick('dl')">Del</a></td>
+                    <td colspan="2"><a class="btn button" ng-mousedown="padClick('cl')">Clear</a></td>
                 </tr>
 
                 <tr>
-                    <td><a class="button" ng-mousedown="padClick(7)">7</a></td>
-                    <td><a class="button" ng-mousedown="padClick(8)">8</a></td>
-                    <td><a class="button" ng-mousedown="padClick(9)">9</a></td>
-                    <td rowspan="2"><a id="btn-menu-clk" class="button" ng-click="padClick('clk')">Clock in/out</a></td>
+                    <td><a class="btn button" ng-mousedown="padClick(7)">7</a></td>
+                    <td><a class="btn button" ng-mousedown="padClick(8)">8</a></td>
+                    <td><a class="btn button" ng-mousedown="padClick(9)">9</a></td>
+                    <td rowspan="2"><a id="btn-menu-clk" class="btn button" ng-click="padClick('clk')">Clock in/out</a></td>
                 </tr>
 
                 <tr>
-                    <td><a class="button" ng-mousedown="padClick(4)">4</a></td>
-                    <td><a class="button" ng-mousedown="padClick(5)">5</a></td>
-                    <td><a class="button" ng-mousedown="padClick(6)">6</a></td>
+                    <td><a class="btn button" ng-mousedown="padClick(4)">4</a></td>
+                    <td><a class="btn button" ng-mousedown="padClick(5)">5</a></td>
+                    <td><a class="btn button" ng-mousedown="padClick(6)">6</a></td>
                 </tr>
 
                 <tr>
-                    <td><a id="btn-menu-1" class="button" ng-mousedown="padClick(1)">1</a></td>
-                    <td><a class="button" ng-mousedown="padClick(2)">2</a></td>
-                    <td><a id="btn-menu-3" class="button" ng-mousedown="padClick(3)">3</a></td>
-                    <td rowspan="2"><a id="btn-menu-enter" class="button" ng-mousedown="padClick('ent')">Ent</a></td>
+                    <td><a id="btn-menu-1" class="btn button" ng-mousedown="padClick(1)">1</a></td>
+                    <td><a class="btn button" ng-mousedown="padClick(2)">2</a></td>
+                    <td><a id="btn-menu-3" class="btn button" ng-mousedown="padClick(3)">3</a></td>
+                    <td rowspan="2"><a id="btn-menu-enter" class="btn button" ng-mousedown="padClick('ent')">Ent</a></td>
                 </tr>
 
                 <tr>
-                    <td colspan="2"><a class="button" ng-mousedown="padClick(0)">0</a></td>
-                    <td><a class="button" ng-mousedown="padClick('pt')">.</a></td>
+                    <td colspan="2"><a class="btn button" ng-mousedown="padClick(0)">0</a></td>
+                    <td><a class="btn button" ng-mousedown="padClick('pt')">.</a></td>
                 </tr>
                 </tbody>
             </table>
@@ -178,7 +178,7 @@
 </modal>
 <modal title="Role sur le planché" id="choseWorkTitle" class="center-modal employee-work-title-modal" visible="showWorkTitlesModal">
     <div ng-repeat="workTitle in workTitles">
-        <button ng-click="setWorkTitle(workTitle)" id="btn-<%workTitle.name%>" ng-show="(workTitle.cntEmployees | filter : {idEmployee: mainText}).length > 0" class="btn btn-success"><% workTitle.name %></button>
+        <a ng-click="setWorkTitle(workTitle)" id="btn-<%workTitle.name%>" ng-show="(workTitle.cntEmployees | filter : {idEmployee: mainText}).length > 0" class="btn btn-success"><% workTitle.name %></a>
     </div>
 </modal>
 
