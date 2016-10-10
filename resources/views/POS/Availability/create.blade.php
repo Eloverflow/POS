@@ -142,7 +142,7 @@
                 </div>
 
                 <!-- dialog buttons -->
-                <div class="modal-footer"><button id="btnAddEvent" type="button" class="btn btn-primary">Add</button></div>
+                <div class="modal-footer"><a id="btnAddEvent" type="button" class="btn btn-primary">Add</a></div>
             </div>
         </div>
     </div>
