@@ -12,11 +12,9 @@ class POSMenuTest extends TestCase
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
-            ->visit('/')
-            ->click('MenuPOS')
-            ->seePageIs('/menu');
+            ->visit('/menu');
 
-        sleep(5); // Give the time to Angular for loading
+        sleep(10); // Give the time to Angular for loading
 
         $this->click('btn-menu-3')
             ->click('btn-menu-enter')
@@ -31,11 +29,9 @@ class POSMenuTest extends TestCase
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
-            ->visit('/')
-            ->click('MenuPOS')
-            ->seePageIs('/menu');
+            ->visit('/menu');
 
-        sleep(5); // Give the time to Angular for loading
+        sleep(10); // Give the time to Angular for loading
 
         $this->click('btn-menu-3')
             ->click('btn-menu-clk')
