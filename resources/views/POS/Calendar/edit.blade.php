@@ -37,6 +37,7 @@
             </div>
         </div>
     </div>
+
     <div id="addModal" class="lumino modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
