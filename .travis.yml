@@ -12,7 +12,8 @@ services:
   - mysql
 
 before_script:
-  - bash .travis_install-mysql-5.7_selenium.sh
+  - bash .travis_install-mysql-5.7.sh
+  - bash .travis_install-selenium.sh
   - mysql -V
   - cp .env.travis .env
   - composer self-update
