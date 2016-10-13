@@ -56,7 +56,7 @@ function SelectMomentType($selectedValue, $modal) {
 
 // Http Request Section
 
-function postAddSchedules() {
+function postCalendarMoments() {
 
 
     var allEvents = globStoredCalendar.fullCalendar('clientEvents');
@@ -73,11 +73,6 @@ function postAddSchedules() {
         arr.push(myArray)
     }
 
-
-    var $scheduleName = $('#name').val();
-    var $startDate = $('#startDate').val();
-    var $endDate = $('#endDate').val();
-
     //$('#frmDispoCreate').submit();
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
@@ -87,9 +82,6 @@ function postAddSchedules() {
         async: true,
         data: {
             _token: CSRF_TOKEN,
-            name: $scheduleName,
-            startDate: $startDate,
-            endDate: $endDate,
             events: JSON.stringify(arr)
 
         },
@@ -116,63 +108,6 @@ function postAddSchedules() {
     });
 
 }
-function postEditSchedules() {
-
-    var allEvents = globStoredCalendar.fullCalendar('clientEvents');
-
-    var arr = [];
-
-    for (var i = 0; i < allEvents.length; i++){
-        var dDate  = new Date(allEvents[i].start.toString());
-        var myArray = {StartTime: allEvents[i].start.toString(), EndTime: allEvents[i].end.toString(), employeeId:allEvents[i].employeeId};
-        arr.push(myArray)
-    }
-
-    var $scheduleId = $('#scheduleId').val();
-    var $scheduleName = $('#name').val();
-    var $startDate  = $('#startDate').val();
-    var $endDate  = $('#endDate').val();
-
-    //$('#frmDispoCreate').submit();
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
-
-    $.ajax({
-        url: '/schedule/edit',
-        type: 'POST',
-        async: true,
-        data: {
-            _token: CSRF_TOKEN,
-            name: $scheduleName,
-            scheduleId: $scheduleId,
-            startDate: $startDate,
-            endDate: $endDate,
-            events: JSON.stringify(arr)
-
-        },
-        dataType: 'JSON',
-        error: function (xhr, status, error) {
-            var erro = jQuery.parseJSON(xhr.responseText);
-            $("#errors").empty();
-            //$("##errors").append('<ul id="errorsul">');
-            [].forEach.call( Object.keys( erro ), function( key ){
-                [].forEach.call( Object.keys( erro[key] ), function( keyy ) {
-                    $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
-                });
-                //console.log( key , erro[key] );
-            });
-            //$("#displayErrors").append('</ul>');
-            $("#displayErrors").show();
-        },
-        success: function(xhr) {
-            [].forEach.call( Object.keys( xhr ), function( key ) {
-                alert(xhr[key]);
-                window.location.replace("/schedule");
-            });
-        }
-    });
-
-}
-
 // End Http Request Section
 
 function addEvent() {

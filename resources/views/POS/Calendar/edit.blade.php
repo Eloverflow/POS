@@ -228,7 +228,7 @@
         $('#btnFinish').click(function(e) {
             e.preventDefault();
             //postAddSchedules();
-
+            postCalendarMoments();
         });
         $("#btnDelEvent").click(function(){
             deleteEvent();
