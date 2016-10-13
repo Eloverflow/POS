@@ -7,11 +7,14 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 {
 
+
+
     protected function setUp()
     {
         $this->setBrowser('chrome');
         $this->setBrowserUrl('http://www.mirageflow.com/');
     }
+
 
     public function testTitle()
     {
