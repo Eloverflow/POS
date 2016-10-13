@@ -4,6 +4,23 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
+
+function login($browser){
+    //navigate to the login page
+    $browser->click("link=Login");
+    $browser->waitForPageToLoad(CONST_WAIT_PERIOD);
+    //enter the user & password
+    $browser->type("edit-name", "myuser");
+    $browser->type("edit-pass", "mypassword");
+    $browser->click("edit-submit");
+    $browser->waitForPageToLoad(CONST_WAIT_PERIOD);
+}
+
+function logout($browser){
+    $browser->click("link=Log out");
+}
+
+
 class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 {
 
@@ -11,14 +28,17 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     protected function setUp()
     {
+        $this->setHost('localhost');
         $this->setBrowser('chrome');
-        $this->setBrowserUrl('http://www.mirageflow.com/');
+        $this->setBrowserUrl('http://localhost');
     }
 
 
     public function testTitle()
     {
-        $this->url('http://www.mirageflow.com/');
+        $this->open("/");
+        login($this);
+        $this->url('http://www.test.com/');
         $this->assertEquals('POSIO | LoginShouidFailNow?', $this->title());
     }
 /*
