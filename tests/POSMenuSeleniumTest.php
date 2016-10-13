@@ -19,7 +19,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     public function testTitle()
     {
         $this->url('http://www.mirageflow.com/');
-        $this->assertEquals('POSIO | Login', $this->title());
+        $this->assertEquals('POSIO | LoginShouidFailNow?', $this->title());
     }
 /*
 
