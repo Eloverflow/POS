@@ -207,4 +207,5 @@ Route::get('/stats',  ['uses' => 'POS\StatsController@index', 'middleware' => 'a
 /* Start Calendar */
 Route::get('/calendar',  ['uses' => 'POS\CalendarController@index', 'middleware' => 'auth']);
 Route::get('/calendar/edit',  ['uses' => 'POS\CalendarController@edit', 'middleware' => 'auth']);
+Route::post('/calendar/edit',  ['uses' => 'POS\CalendarController@postedit', 'middleware' => 'auth']);
 /* End Calendar */

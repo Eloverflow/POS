@@ -10,6 +10,7 @@ use App\Models\ERP\Item;
 use App\Models\ERP\ItemType;
 use App\Models\POS\Client;
 use App\Models\POS\MomentType;
+use App\Models\POS\CalendarEvent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
@@ -133,21 +134,21 @@ class CalendarController extends Controller
         else
         {
 
-            $schedule = Schedule::create([
-                'name' => Input::get('name'),
-                'startDate' => Input::get('startDate'),
-                'endDate' => Input::get('endDate')
-            ]);
-
             $jsonArray = json_decode(Input::get('events'), true);
             for($i = 0; $i < count($jsonArray); $i++)
             {
                 $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
                 $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
                 $employeeId = $jsonArray[$i]["employeeId"];
+                $momentTypeId = $jsonArray[$i]["momentTypeId"];
+                $eventName = $jsonArray[$i]["name"];
+                $isAllDay = $jsonArray[$i]["isAllDay"];
 
-                Day_Schedules::create([
-                    "schedule_id" => $schedule->id,
+
+                CalendarEvent::create([
+                    "name" => $eventName,
+                    "isAllDay" => $isAllDay,
+                    "moment_type_id" => $momentTypeId,
                     'employee_id' => $employeeId,
                     "startTime" => $dateStart,
                     "endTime" => $dateStop
