@@ -7,7 +7,7 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class WorkTitlesTest extends TestCase
 {
 
-    public function testCreateWorkTitle()
+  /*  public function testCreateWorkTitle()
     {
         $user = factory(App\Models\Auth\User::class)->create();
 
@@ -20,7 +20,7 @@ class WorkTitlesTest extends TestCase
             ->click('btn-confirm-work-title')
             ->see('Towel Dryer');
 
-    }
+    }*/
 
     public function testAddEmployeeToWorkTitle()
     {
