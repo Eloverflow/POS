@@ -27,14 +27,13 @@ class CalendarController extends Controller
 
     public  function index()
     {
+        $events = [];
 
         $date = new DateTime();
         $date->modify('Sunday last week');
         $lastSundayStr = $date->format('Y-m-d');
 
         $lastDay = $date->add(new DateInterval('P6D'));
-
-        $calendarEvents = $this->GetCalendarEvents();
 
         $strCalendar = "[Semaine du " . $lastSundayStr . " au " . $lastDay->format('Y-m-d') . "]";
 
