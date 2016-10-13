@@ -66,9 +66,12 @@ function postCalendarMoments() {
     for (var i = 0; i < allEvents.length; i++){
         var dDate  = new Date(allEvents[i].start.toString());
         var myArray = {
+            name: allEvents[i].eventName,
+            isAllDay: allEvents[i].isAllDay,
             StartTime: allEvents[i].start.toString(),
             EndTime: allEvents[i].end.toString(),
-            employeeId:allEvents[i].employeeId
+            employeeId: allEvents[i].employeeId,
+            momentTypeId: allEvents[i].momentTypeId
         };
         arr.push(myArray)
     }
@@ -77,7 +80,7 @@ function postCalendarMoments() {
     var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
     $.ajax({
-        url: '/schedule/create',
+        url: '/calendar/create',
         type: 'POST',
         async: true,
         data: {
