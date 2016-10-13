@@ -4,12 +4,12 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class POSMenuTestSelenium extends PHPUnit_Extensions_Selenium2TestCase
+class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 {
 
     protected function setUp()
     {
-        $this->setBrowser('firefox');
+        $this->setBrowser('chrome');
         $this->setBrowserUrl('http://www.mirageflow.com/');
     }
 
