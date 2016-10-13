@@ -4,19 +4,19 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class WebPOSMenuTest extends PHPUnit_Extensions_Selenium2TestCase
+class POSMenuTestSelenium extends PHPUnit_Extensions_Selenium2TestCase
 {
 
     protected function setUp()
     {
         $this->setBrowser('firefox');
-        $this->setBrowserUrl('http://www.example.com/');
+        $this->setBrowserUrl('http://www.mirageflow.com/');
     }
 
     public function testTitle()
     {
-        $this->url('http://www.example.com/');
-        $this->assertEquals('Example WWW Page', $this->title());
+        $this->url('http://www.mirageflow.com/');
+        $this->assertEquals('POSIO | Login', $this->title());
     }
 /*
 
