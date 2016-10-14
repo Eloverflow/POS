@@ -37,33 +37,45 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     }
 
 
-    public function testTitle()
+    public function testLogin()
     {
         $this->url('http://pos.mirageflow.com/');
         $this->login();
-        //login($this);
-        $this->assertEquals('POSIO | Login', $this->title());
+        $this->assertEquals('POSIO', $this->title());
     }
 
 
-    public function testPagePOSMenu()
+    public function loginPOSMenu()
     {
-        $this->url('http://pos.mirageflow.com/');
+        $this->url('http://pos.mirageflow.com/menu');
         $this->login();
         $this->waitForPageToLoad(10);
-
-        $this->click('btn-menu-3');
-        $this->click('btn-menu-enter');
-        $this->click('btn-menu-1');
-        $this->click('btn-menu-1');
-        $this->click('btn-menu-enter');
-
-
+        $this->byId('btn-menu-3')->click();
+        $this->byId('btn-menu-enter')->click();
+        $this->byId('btn-menu-1')->click();
+        $this->byId('btn-menu-1')->click();
+        $this->byId('btn-menu-enter')->click();
         $this->waitForPageToLoad(3);
 
-        $this->assertEquals('POSIO | Menu', $this->title());
 
         //$this->see('Commande - Client: #1');
+    }
+
+
+    public function testLoginPOSMenu()
+    {
+        $this->loginPOSMenu();
+        $this->assertEquals('POSIO | Menu', $this->title());
+    }
+
+
+    public function testBasicPOSMenu()
+    {
+        $this->loginPOSMenu();
+
+        $command_client = $this->byCssSelector('h2')->text();
+
+        $this->assertEquals('Commande - Client: #1', $command_client);
     }
 
    /* public function testPagePOSMenuPunch()
