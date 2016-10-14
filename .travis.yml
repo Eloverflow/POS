@@ -15,6 +15,7 @@ install:
   - sudo apt-get install -y default-jre unzip xvfb
   - wget http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
+  - mv chromedriver /usr/bin/
   - wget https://goo.gl/LSKE9I -O selenium-server-standalone-3.0.0.jar
   - DISPLAY=:1 xvfb-run java -jar selenium-server-standalone-3.0.0.jar
 
