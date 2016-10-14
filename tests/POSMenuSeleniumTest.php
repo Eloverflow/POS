@@ -28,7 +28,6 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     protected function setUp()
     {
-        $this->setHost('localhost');
         $this->setBrowser('firefox');
         $this->setBrowserUrl('http://localhost');
     }
@@ -38,8 +37,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     {
         $this->url("/");
         login($this);
-        $this->url('http://www.test.com/');
-        $this->assertEquals('POSIO | LoginShouidFailNow?', $this->title());
+        $this->assertEquals('POSIO | Login', $this->title());
     }
 /*
 
