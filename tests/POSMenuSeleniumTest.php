@@ -6,18 +6,11 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 
 function login($browser){
-    //navigate to the login page
-    $browser->click("link=Login");
-    $browser->waitForPageToLoad(CONST_WAIT_PERIOD);
     //enter the user & password
-    $browser->type("edit-name", "myuser");
-    $browser->type("edit-pass", "mypassword");
-    $browser->click("edit-submit");
-    $browser->waitForPageToLoad(CONST_WAIT_PERIOD);
-}
-
-function logout($browser){
-    $browser->click("link=Log out");
+    $browser->type("email", "visiteur@mirageflow.com");
+    $browser->type("password", "Visiteur!");
+    $browser->click("btn-login");
+    $browser->waitForPageToLoad(2);
 }
 
 
