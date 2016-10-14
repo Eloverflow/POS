@@ -17,7 +17,13 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 {
 
-
+    protected function login()
+    {
+        $this->type("email", "visiteur@mirageflow.com");
+        $this->type("password", "Visiteur!");
+        $this->click("btn-login");
+        $this->waitForPageToLoad(2);
+    }
 
     protected function setUp()
     {
@@ -29,6 +35,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     public function testTitle()
     {
         $this->url('http://pos.mirageflow.com/');
+        $this->login();
         //login($this);
         $this->assertEquals('POSIO | Login', $this->title());
     }
