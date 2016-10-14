@@ -17,10 +17,14 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 {
 
+    protected function waitForPageToLoad($time)
+    {
+        sleep($time);
+    }
     protected function login()
     {
-        $this->type("email", "visiteur@mirageflow.com");
-        $this->type("password", "Visiteur!");
+        //$this->type("email", "visiteur@mirageflow.com");
+        //$this->type("password", "Visiteur!");
         $this->click("btn-login");
         $this->waitForPageToLoad(2);
     }
@@ -39,26 +43,22 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
         //login($this);
         $this->assertEquals('POSIO | Login', $this->title());
     }
-/*
+
 
     public function testPagePOSMenu()
     {
-        $user = factory(App\Models\Auth\User::class)->create();
+        $this->url('http://pos.mirageflow.com/');
+        $this->login();
+        $this->waitForPageToLoad(10);
 
-        $this->actingAs($user)
-            ->withSession(['foo' => 'bar'])
-            ->visit('/menu');
-
-        sleep(10); // Give the time to Angular for loading
-
-        $this->click('btn-menu-3')
-            ->click('btn-menu-enter')
-            ->click('btn-menu-1')
-            ->click('btn-menu-1')
-            ->click('btn-menu-enter');
+        $this->click('btn-menu-3');
+        $this->click('btn-menu-enter');
+        $this->click('btn-menu-1');
+        $this->click('btn-menu-1');
+        $this->click('btn-menu-enter');
 
 
-        sleep(3); // Give the time to Angular for loading
+        $this->waitForPageToLoad(3);
 
         $this->see('Commande - Client: #1');
     }
@@ -83,6 +83,6 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
             ->click('btn-menu-clk')
             ->see('The employee has been successfully punched out !');
     }
-*/
+
 
 }
