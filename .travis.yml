@@ -18,7 +18,7 @@ install:
   - sudo cp chromedriver /usr/bin/
   - sudo chmod 777 /usr/bin/chromedriver
   - wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar -O selenium-server-standalone-2.53.1.jar
-  - DISPLAY=:1 xvfb-run java -jar selenium-server-standalone-2.53.1.jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver
+  - DISPLAY=:1 xvfb-run java -jar selenium-server-standalone-2.53.1.jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver &>/dev/null &
 
 
 before_script:
