@@ -15,10 +15,10 @@ install:
   - sudo apt-get install -y default-jre unzip xvfb
   - wget http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip
   - unzip chromedriver_linux64.zip
-  - sudo mv chromedriver /usr/bin/
+  - sudo cp chromedriver /usr/bin/
   - sudo chmod 777 /usr/bin/chromedriver
-  - wget https://goo.gl/LSKE9I -O selenium-server-standalone-3.0.0.jar
-  - DISPLAY=:1 xvfb-run java -jar selenium-server-standalone-3.0.0.jar &>/dev/null &
+  - wget http://selenium-release.storage.googleapis.com/2.53/selenium-server-standalone-2.53.1.jar -O selenium-server-standalone-2.53.1.jar
+  - DISPLAY=:1 xvfb-run java -jar selenium-server-standalone-2.53.1.jar -Dwebdriver.chrome.driver=/usr/bin/chromedriver
 
 
 before_script:
