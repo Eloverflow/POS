@@ -37,7 +37,7 @@
         <button style="background-color: #444; border-color: #444;position: absolute; right: 0; top:0; padding: 0 0 14px 14px; font-size: 25px; height: 44px; margin-top: 1%;margin-right: 1%;" href="#" ng-click="ajouterClient()" type="button" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span>
         </button>
         <ul class="ng-binding nav menu menu-sale">
-            <li><h2>Commande - Client: #<% commandCurrentClient %></h2>
+            <li><h2 id="command-client-number">Commande - Client: #<% commandCurrentClient %></h2>
 
                 <div uib-popover-template="noteDynamicPopover.templateUrl" popover-title="<% noteDynamicPopover.title %>"
                      popover-placement="<%placement.selected%>" popover-trigger="outsideClick" class="note"><span

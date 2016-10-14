@@ -73,31 +73,34 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     {
         $this->loginPOSMenu();
 
-        $command_client = $this->byCssSelector('h2')->text();
+        $command_client = $this->byId('command-client-number')->text();
 
         $this->assertEquals('Commande - Client: #1', $command_client);
     }
 
-   /* public function testPagePOSMenuPunch()
+    public function testPagePOSMenuPunch()
     {
-        $user = factory(App\Models\Auth\User::class)->create();
 
-        $this->actingAs($user)
-            ->withSession(['foo' => 'bar'])
-            ->visit('/menu');
+        $this->url('http://pos.mirageflow.com/menu');
+        $this->login();
+        $this->waitForPageToLoad(10);
 
-        sleep(10); // Give the time to Angular for loading
+        $this->byId('btn-menu-3')->click();
+        $this->byId('btn-menu-clk')->click();
 
-        $this->click('btn-menu-3')
-            ->click('btn-menu-clk');
 
-        sleep(3); // Give the time to Angular for loading
+        $this->waitForPageToLoad(3);
 
-        $this->click('btn-Barmaid')
-            ->see('The employee has been successfully punched in !')
-            ->click('btn-menu-clk')
-            ->see('The employee has been successfully punched out !');
-    }*/
+        $this->byId('btn-Barmaid')->click();
+
+        $alert =  $this->byClassName('alert')->text();
+
+        $this->assertRegExp('/The employee has been successfully punched in !/i', $alert);
+
+        $this->byId('btn-menu-clk')->click();
+
+        $this->assertRegExp('/The employee has been successfully punched out !/i', $alert);
+    }
 
 
 }
