@@ -4,14 +4,14 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-/*
+
 function login($browser){
     //enter the user & password
     $browser->type("email", "visiteur@mirageflow.com");
     $browser->type("password", "Visiteur!");
     $browser->click("btn-login");
     $browser->waitForPageToLoad(2);
-}*/
+}
 
 
 class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
@@ -22,14 +22,14 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     protected function setUp()
     {
         $this->setBrowser('chrome');
-        $this->setBrowserUrl('http://mirageflow.com/');
+        $this->setBrowserUrl('http://pos.mirageflow.com/');
     }
 
 
     public function testTitle()
     {
-        $this->url('http://mirageflow.com/');
-       // login($this);
+        $this->url('http://pos.mirageflow.com/');
+        login($this);
         $this->assertEquals('POSIO | Login', $this->title());
     }
 /*
