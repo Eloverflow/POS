@@ -28,7 +28,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     public function testTitle()
     {
-        $this->url('/');
+        $this->url('http://localhost');
        // login($this);
         $this->assertEquals('POSIO | Login', $this->title());
     }
