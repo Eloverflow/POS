@@ -1,19 +1,5 @@
 <?php
 
-use Illuminate\Foundation\Testing\WithoutMiddleware;
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-
-
-/*function login($browser){
-    //enter the user & password
-    $browser->type("email", "visiteur@mirageflow.com");
-    $browser->type("password", "Visiteur!");
-    $browser->click("btn-login");
-    $browser->waitForPageToLoad(2);
-}*/
-
-
 class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 {
 
@@ -33,13 +19,13 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     protected function setUp()
     {
         $this->setBrowser('chrome');
-        $this->setBrowserUrl('http://pos.mirageflow.com/');
+        $this->setBrowserUrl('http://localhost');
     }
 
 
     public function testLogin()
     {
-        $this->url('http://pos.mirageflow.com/');
+        $this->url('http://localhost');
         $this->login();
         $this->assertEquals('POSIO', $this->title());
     }
@@ -47,7 +33,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     public function loginPOSMenu()
     {
-        $this->url('http://pos.mirageflow.com/menu');
+        $this->url('http://localhost/menu');
         $this->login();
         $this->waitForPageToLoad(10);
         $this->byId('btn-menu-3')->click();
@@ -81,7 +67,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     public function testPagePOSMenuPunch()
     {
 
-        $this->url('http://pos.mirageflow.com/menu');
+        $this->url('http://localhost/menu');
         $this->login();
         $this->waitForPageToLoad(10);
 
