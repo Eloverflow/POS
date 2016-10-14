@@ -3,6 +3,12 @@
 class ScheduleSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 {
 
+    protected function setUp()
+    {
+        $this->setBrowser('chrome');
+        $this->setBrowserUrl('http://pos.mirageflow.com');
+    }
+
     protected function waitForPageToLoad($time)
     {
         sleep($time);
@@ -14,12 +20,6 @@ class ScheduleSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->byId('btn-login')->click();
 
         $this->waitForPageToLoad(2);
-    }
-
-    protected function setUp()
-    {
-        $this->setBrowser('chrome');
-        $this->setBrowserUrl('http://pos.mirageflow.com');
     }
 
 

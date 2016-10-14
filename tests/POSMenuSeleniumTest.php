@@ -2,6 +2,12 @@
 
 class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 {
+    protected function setUp()
+    {
+        $this->setBrowser('chrome');
+        $this->setBrowserUrl('http://pos.mirageflow.com');
+    }
+
 
     protected function waitForPageToLoad($time)
     {
@@ -14,12 +20,6 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->byId('btn-login')->click();
 
         $this->waitForPageToLoad(2);
-    }
-
-    protected function setUp()
-    {
-        $this->setBrowser('chrome');
-        $this->setBrowserUrl('http://pos.mirageflow.com');
     }
 
 
@@ -56,6 +56,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     public function testBasicPOSMenu()
     {
         $this->loginPOSMenu();
+        $this->waitForPageToLoad(6);
 
         $command_client = $this->byId('command-client-number')->text();
 
@@ -73,9 +74,11 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->byId('btn-menu-clk')->click();
 
 
-        $this->waitForPageToLoad(3);
+        $this->waitForPageToLoad(10);
 
         $this->byId('btn-Barmaid')->click();
+        
+        $this->waitForPageToLoad(10);
 
         $alert =  $this->byClassName('alert')->text();
 
