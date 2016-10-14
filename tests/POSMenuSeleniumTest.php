@@ -22,13 +22,13 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     protected function setUp()
     {
         $this->setBrowser('chrome');
-        $this->setBrowserUrl('http://mireageflow.com/');
+        $this->setBrowserUrl('http://mirageflow.com/');
     }
 
 
     public function testTitle()
     {
-        $this->url('http://mireageflow.com/');
+        $this->url('http://mirageflow.com/');
        // login($this);
         $this->assertEquals('POSIO | Login', $this->title());
     }
