@@ -23,9 +23,10 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     }
     protected function login()
     {
-        //$this->type("email", "visiteur@mirageflow.com");
-        //$this->type("password", "Visiteur!");
-        $this->click("btn-login");
+        $this->byName('email')->value('visiteur@mirageflow.com');
+        $this->byName('password')->value('Visiteur!');
+        $this->byId('btn-login')->click();
+
         $this->waitForPageToLoad(2);
     }
 
