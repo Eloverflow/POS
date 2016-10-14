@@ -26,7 +26,7 @@ class ScheduleSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     public function testCreateSchedule()
     {
 
-        $this->url('http://localhost/schedule/create');
+        $this->url('/schedule/create');
         $this->login();
 
         $this->byId('btn-Barmaid')->click();

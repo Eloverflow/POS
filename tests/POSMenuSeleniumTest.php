@@ -25,7 +25,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     public function testLogin()
     {
-        $this->url('http://localhost');
+        $this->url('/');
         $this->login();
         $this->assertEquals('POSIO', $this->title());
     }
@@ -33,7 +33,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     public function loginPOSMenu()
     {
-        $this->url('http://localhost/menu');
+        $this->url('/menu');
         $this->login();
         $this->waitForPageToLoad(10);
         $this->byId('btn-menu-3')->click();
@@ -43,8 +43,6 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->byId('btn-menu-enter')->click();
         $this->waitForPageToLoad(3);
 
-
-        //$this->see('Commande - Client: #1');
     }
 
 
@@ -67,7 +65,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     public function testPagePOSMenuPunch()
     {
 
-        $this->url('http://localhost/menu');
+        $this->url('/menu');
         $this->login();
         $this->waitForPageToLoad(10);
 
