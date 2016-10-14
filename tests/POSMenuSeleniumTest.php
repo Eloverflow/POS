@@ -5,13 +5,13 @@ use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
 
-function login($browser){
+/*function login($browser){
     //enter the user & password
     $browser->type("email", "visiteur@mirageflow.com");
     $browser->type("password", "Visiteur!");
     $browser->click("btn-login");
     $browser->waitForPageToLoad(2);
-}
+}*/
 
 
 class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
@@ -29,7 +29,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     public function testTitle()
     {
         $this->url('http://pos.mirageflow.com/');
-        login($this);
+        //login($this);
         $this->assertEquals('POSIO | Login', $this->title());
     }
 /*
