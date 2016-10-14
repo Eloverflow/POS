@@ -29,7 +29,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     protected function setUp()
     {
         $this->setHost('localhost');
-        $this->setBrowser('chrome');
+        $this->setBrowser('firefox');
         $this->setBrowserUrl('http://localhost');
     }
 

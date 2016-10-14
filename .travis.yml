@@ -12,11 +12,9 @@ services:
   - mysql
 
 install:
-  - sudo apt-get install -y default-jre unzip
-  - wget http://chromedriver.storage.googleapis.com/2.24/chromedriver_linux64.zip
-  - unzip chromedriver_linux64.zip
+  - sudo apt-get install -y default-jre unzip firefox
   - wget https://goo.gl/LSKE9I -O selenium-server-standalone-3.0.0.jar
-  - sudo java -jar selenium-server-standalone-3.0.0.jar  -Dwebdriver.chrome.driver=chromedriver_linux64/chromedriver
+  - sudo java -jar selenium-server-standalone-3.0.0.jar
 
 
 before_script:
@@ -35,7 +33,7 @@ before_script:
 script:
  - php artisan migrate --env="testing" --no-interaction -vvv
  - php artisan db:seed --env="testing" --no-interaction -vvv
- - vendor/bin/phpunit
+ - vendor/bin/phpunit --verbose
 
 
 after_script:
