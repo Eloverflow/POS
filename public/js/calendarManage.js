@@ -337,6 +337,7 @@ function dayClick(xDate, xEvent)
     $("#addModal").modal('show');
 }
 
+
 function scheduleClick(calEvent, jsEvent, view)
 {
     // Set global var so we can get it when we edit.
