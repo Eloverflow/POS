@@ -69,7 +69,7 @@
                         <div class="form-group">
                             <h3>End Time</h3>
                             <div class='input-group date' id="endTimePicker">
-                                <input type='text' id="startTime" class="form-control dark-border" />
+                                <input type='text' id="endTime" class="form-control dark-border" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
                                     </span>
@@ -159,7 +159,7 @@
                         <div class="form-group">
                             <h3>End Time</h3>
                             <div class='input-group date' id="endTimePicker">
-                                <input type='text' id="startTime" class="form-control dark-border" />
+                                <input type='text' id="endTime" class="form-control dark-border" />
                                     <span class="input-group-addon">
                                         <span class="glyphicon glyphicon-time"></span>
                                     </span>
@@ -179,9 +179,9 @@
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="form-group">
+                        <div class="form-group employee-select" style="display: none;">
                             <h3>Employee</h3>
-                            <select id="employeeSelect" name="employeeSelect" class="form-control">
+                            <select id="employeeSelect" name="employeeSelect" class="form-control" disabled>
                                 @foreach ($ViewBag['employees'] as $employee)
 
                                     <option value="{{ $employee->idEmployee }}" @if(old('employeeSelect'))
@@ -192,12 +192,22 @@
                                 @endforeach
                             </select>
                         </div>
+                        <div class="form-group event-name">
+                            <h3>Event Name</h3>
+                            {!! Form::text('name', old('name'), array('class' => 'form-control', 'id' => 'eventName')) !!}
+                        </div>
                     </div>
                     <div class="col-md-6 pull-right">
                         <div class="form-group">
                             <h3>Options</h3>
-                            {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
-                            {!! Form::label('lblOptAllWeek', "All this week") !!}
+                            <div>
+                                {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllWeek']) !!}
+                                {!! Form::label('lblOptAllWeek', "All week") !!}
+                            </div>
+                            <div>
+                                {!! Form::checkbox('name', 1, null, ['id' => 'chkOptAllDay']) !!}
+                                {!! Form::label('lblOptAllDay', "All day") !!}
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -224,7 +234,6 @@
         var globStoredEvent = null;
         var globStoredCalendar = $('#calendar-' + "{{$ViewBag['calendar']->getId() }}");
 
-
         $('#btnFinish').click(function(e) {
             e.preventDefault();
             //postAddSchedules();
@@ -247,7 +256,7 @@
                 window.setTimeout(function(){
                     globStoredCalendar.find('.fc-toolbar > div > h2').empty().append(
                             "Semaine du " + xView.start.format('YYYY-MM-DD')+ "  au " +
-                             xView.end.format('YYYY-MM-DD')
+                            xView.end.format('YYYY-MM-DD')
                     );
                 },0);
             }else if(xView.type === "month"){
@@ -275,10 +284,10 @@
 
 
         /*$("#startTimePicker").on("dp.change", function (e) {
-            $('#endTimePicker').data("DateTimePicker").minDate(e.date);
-        });
-        $("#endTimePicker").on("dp.change", function (e) {
-            $('#startTimePicker').data("DateTimePicker").maxDate(e.date);
-        });*/
+         $('#endTimePicker').data("DateTimePicker").minDate(e.date);
+         });
+         $("#endTimePicker").on("dp.change", function (e) {
+         $('#startTimePicker').data("DateTimePicker").maxDate(e.date);
+         });*/
     </script>
 @stop

@@ -27,13 +27,14 @@ class CalendarController extends Controller
 
     public  function index()
     {
-        $events = [];
 
         $date = new DateTime();
         $date->modify('Sunday last week');
         $lastSundayStr = $date->format('Y-m-d');
 
         $lastDay = $date->add(new DateInterval('P6D'));
+
+        $calendarEvents = $this->GetCalendarEvents();
 
         $strCalendar = "[Semaine du " . $lastSundayStr . " au " . $lastDay->format('Y-m-d') . "]";
 
@@ -42,7 +43,7 @@ class CalendarController extends Controller
             'right' => 'prev, next');
 
         $employees = Employee::getAll();
-        $calendar = \Calendar::addEvents($events)->setOptions([
+        $calendar = \Calendar::addEvents($calendarEvents)->setOptions([
             //'firstDay' => 1,
             'timezone' => 'local', 'EDT', ('America/Montreal'),
             'editable' => false,
@@ -67,7 +68,7 @@ class CalendarController extends Controller
 
     public  function edit()
     {
-        $events = [];
+        $calendarEvents = $this->GetCalendarEvents();
 
         $date = new DateTime();
         $date->modify('Sunday last week');
@@ -84,7 +85,7 @@ class CalendarController extends Controller
         $employees = Employee::getAll();
         $momentTypes = MomentType::getAll();
 
-        $calendar = \Calendar::addEvents($events)->setOptions([
+        $calendar = \Calendar::addEvents($calendarEvents)->setOptions([
             //'firstDay' => 1,
             'timezone' => 'local', 'EDT', ('America/Montreal'),
             'editable' => true,
@@ -114,9 +115,7 @@ class CalendarController extends Controller
         $inputs = Input::all();
 
         $rules = array(
-            'name' => 'required',
-            'startDate' => 'required',
-            'endDate' => 'required'
+
         );
 
         $message = array(
@@ -157,8 +156,54 @@ class CalendarController extends Controller
             }
 
             return \Response::json([
-                'success' => "The Schedule " . Input::get('name') . " has been successfully created !"
+                'success' => "The Calendar " . Input::get('name') . " has been successfully edited !"
             ], 201);
         }
+    }
+
+    private function GetCalendarEvents() {
+
+        $events = [];
+
+        $calendarEvents = CalendarEvent::GetCalendarMoments();
+
+        for($i = 0; $i < count($calendarEvents); $i++){
+
+            $startDatewithTMZ =  date_create($calendarEvents[$i]->startTime, timezone_open('America/Montreal'));
+            $startOffset = date_offset_get($startDatewithTMZ);
+            $offsetInHourFormat = ($startOffset /60) /60;
+
+            $availableColor = "";
+            switch($calendarEvents[$i]->momentTypeId){
+                case 1:
+                    $availableColor = "#0C0C50";
+                    break;
+                case 2:
+                    $availableColor = "#b30000";
+                    break;
+                case 3:
+                    $availableColor = "#003300";
+                    break;
+            }
+
+            $momentStart = new DateTime($calendarEvents[$i]->startTime . $offsetInHourFormat);
+            $momentEnd = new DateTime($calendarEvents[$i]->endTime . $offsetInHourFormat);
+
+            $events[] = \Calendar::event(
+                $calendarEvents[$i]->momentTypeName . " - " . $calendarEvents[$i]->name,
+                false, //full day event?
+                $momentStart, //start time, must be a ateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                $momentEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+                $calendarEvents[$i]->id,
+                [
+                    'eventName' => $calendarEvents[$i]->name,
+                    'color' => $availableColor,
+                    'employeeId' => $calendarEvents[$i]->employee_id,
+                    'momentTypeId' => $calendarEvents[$i]->momentTypeId
+                ]
+            );
+
+        }
+        return $events;
     }
 }
