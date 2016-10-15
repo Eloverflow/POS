@@ -191,6 +191,10 @@
                                             @endif >{{ $employee->firstName . " " . $employee->lastName}}</option>
                                 @endforeach
                             </select>
+                            <div class="form-group event-name">
+                                <h3>Event Name</h3>
+                                {!! Form::text('name', old('name'), array('class' => 'form-control', 'id' => 'eventName')) !!}
+                            </div>
                         </div>
                         <div class="form-group event-name">
                             <h3>Event Name</h3>
