@@ -190,6 +190,7 @@ class CalendarController extends Controller
 
         $calendarEvents = CalendarEvent::GetCalendarMoments();
 
+
         for($i = 0; $i < count($calendarEvents); $i++){
 
             $startDatewithTMZ =  date_create($calendarEvents[$i]->startTime, timezone_open('America/Montreal'));

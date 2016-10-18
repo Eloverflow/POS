@@ -18,7 +18,6 @@ var onceLoaded = false;
 function eventAfterAllRender() {
     if(!onceLoaded){
         oldEvents = NormalizeCalendarMomentsArray(globStoredCalendar.fullCalendar('clientEvents'));
-        console.log(oldEvents);
         onceLoaded = true;
     }
 }
@@ -117,7 +116,7 @@ function postCalendarMoments() {
 
     oResult = GetUpdateAndDeleteEventsCompare(oldEvents, allEvents);
 
-    console.log(allEvents);
+    console.log(oResult.inserts);
 
     /*$('#frmDispoCreate').submit();*/
 
@@ -188,7 +187,7 @@ function NormalizeCalendarMomentsArray(events){
             isAllDay: events[i].isAllDay,
             startTime: events[i].start.toString(),
             endTime: events[i].end.toString(),
-            eventId: typeof events[i].eventId == 'undefined' ? '' : events[i].eventId,
+            eventId: typeof events[i].eventId == 'undefined' ? null : events[i].eventId,
             /*employeeId: events[i].employeeId,*/
             momentTypeId: events[i].momentTypeId
         };
@@ -213,7 +212,9 @@ function GetUpdateAndDeleteEventsCompare(oldEvents, newEvents){
     var updates = [];
 
     for (var i = 0; i < newEvents.length; i++) {
-        if(typeof newEvents[i].eventId == "undefined") {
+        if(typeof newEvents[i].eventId == "undefined" ||
+                newEvents[i].eventId == null ||
+                newEvents[i].eventId == "") {
             inserts.push(newEvents[i]);
         } else {
             updatesOrSame.push(newEvents[i]);

@@ -20,7 +20,7 @@ class CalendarEvent extends Model
             moment_types.id as momentTypeId,
             moment_types.name as momentTypeName'))
             ->join('moment_types', 'calendar_events.moment_type_id', '=', 'moment_types.id')
-            ->join('employees', 'calendar_events.employee_id', '=', 'employees.id')
+            ->leftJoin('employees', 'calendar_events.employee_id', '=', 'employees.id')
             ->get();
     }
 
