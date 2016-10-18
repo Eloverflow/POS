@@ -8,12 +8,54 @@ var globRefEventId = null;
 var globTimeZoneAMontreal = "America/Montreal";
 moment.tz.add("America/Montreal|EST EDT EWT EPT|50 40 40 40|01010101010101010101010101010101010101010101012301010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010101010|-28tR0 bV0 2m30 1in0 121u 1nb0 1g10 11z0 1o0u 11zu 1o0u 11zu 3VAu Rzu 1qMu WLu 1qMu WLu 1qKu WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 WL0 1qN0 4kO0 8x40 iv0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 1fz0 1cN0 1cL0 1cN0 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1o10 11z0 1qN0 11z0 1o10 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 1cN0 1fz0 1a10 1fz0 1cN0 1cL0 1cN0 1cL0 1cN0 1cL0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 14p0 1lb0 14p0 1lb0 14p0 1nX0 11B0 1nX0 11B0 1nX0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0 Op0 1zb0");
 
-var oldEvents = globStoredCalendar.fullCalendar('clientEvents');
-
 // Events Setters Section
 
 $addModal = $("#addModal");
 $editModal = $('#editModal');
+
+var oldEvents = null;
+var onceLoaded = false;
+function eventAfterAllRender() {
+    if(!onceLoaded){
+        oldEvents = globStoredCalendar.fullCalendar('clientEvents');
+        onceLoaded = true;
+    }
+}
+//The event that is stored directly on dragging start
+var evBeforeDragIsAllDay = null;
+function eventDragStart(oEvent) {
+    evBeforeDragIsAllDay = oEvent.allDay;
+}
+
+function eventDragStop(oEvent) {
+
+}
+
+function eventDrop(oEvent) {
+
+
+    if(evBeforeDragIsAllDay == true){
+
+        /*var eventEndTime = moment(oEvent.start).tz(globTimeZoneAMontreal);
+
+        /!*eventEndTime.add(2, 'hours');*!/
+        oEvent.end = moment(eventEndTime);
+
+        console.log(eventEndTime);
+        console.log(oEvent);*/
+        /*var startTimeCopy = jQuery.extend(true, {}, oEvent.start);*/
+        /*oEvent.end = oEvent.start;
+
+        globStoredCalendar.fullCalendar('updateEvent', oEvent);
+        console.log('all day');*/
+
+        /*strEndTime = oEvent.start.format();
+        oEndTime = moment(strEndTime).add(2, 'hours');
+
+        oEvent.end = oEndTime;
+        globStoredCalendar.fullCalendar('updateEvent', oEvent);*/
+    }
+}
 
 $('#btnAdd').click(function(e) {
 
@@ -74,8 +116,11 @@ function postCalendarMoments() {
 
     var normEvents = NormalizeCalendarMomentsArray(allEvents);
 
+    var normOldEvents  = NormalizeCalendarMomentsArray(oldEvents);
+
+    console.log(GetUpdateAndDeleteEventsCompare(normOldEvents, normEvents));
     //$('#frmDispoCreate').submit();
-    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    /*var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
     $.ajax({
         url: '/calendar/edit',
@@ -106,7 +151,7 @@ function postCalendarMoments() {
                 window.location.replace("/schedule");
             });
         }
-    });
+    });*/
 
 }
 // End Http Request Section
@@ -134,23 +179,76 @@ function NormalizeCalendarMomentsArray(events){
     var eventsArray = [];
 
     for (var i = 0; i < events.length; i++){
-        var dDate  = new Date(events[i].start.toString());
+
         var eventObj = {
-            name: events[i].eventName,
+            /*name: events[i].eventName,*/
             isAllDay: events[i].isAllDay,
             StartTime: events[i].start.toString(),
             EndTime: events[i].end.toString(),
-            employeeId: events[i].employeeId,
+            /*employeeId: events[i].employeeId,*/
             momentTypeId: events[i].momentTypeId
         };
+
+        if(events[i].momentTypeId === 1)
+        {
+            eventObj.name =  events[i].eventName;
+        } else if(events[i].momentTypeId === 2 || events[i].momentTypeId === 3) {
+            eventObj.employeeId =  events[i].employeeId;
+        }
+
+
         eventsArray.push(eventObj)
     }
     return eventsArray;
 }
 
-function GetUpdateAndDeleteEventsCompare(){
+function GetUpdateAndDeleteEventsCompare(oldEvents, newEvents){
+    var inserts = [];
+    var updatesOrSame = [];
+    var deletes = [];
+    var updates = [];
 
+    for (var i = 0; i < newEvents.length; i++) {
+        if(typeof newEvents[i].eventId == "undefined") {
+            inserts.push(newEvents[i]);
+        } else {
+            updatesOrSame.push(newEvents[i]);
+        }
+    }
+
+    // Determines if the object have to be updated or have to stay the same
+    for(var j = 0; j < oldEvents.length; j++){
+        var eventFound = false;
+        for (var k = 0; k < updatesOrSame.length; k++) {
+
+            if(oldEvents[j].eventId === updatesOrSame[k].eventId){
+
+
+                eventFound = true;
+            }
+        }
+        if(!eventFound){
+            deletes.push(oldEvents[j]);
+        }
+
+    }
+
+    return {
+        inserts: inserts,
+        updates: updates,
+        deletes: deletes
+    }
 }
+
+/*function EventIsEqual(event1, event2) {
+    if(event1)
+    isAllDay: events[i].isAllDay,
+        StartTime: events[i].start.toString(),
+        EndTime: events[i].end.toString(),
+        /!*employeeId: events[i].employeeId,*!/
+        momentTypeId: events[i].momentTypeId
+}*/
+
 // End custom function section
 
 function addEvent() {
@@ -307,24 +405,30 @@ function editEvent(){
     var momentStart = moment($('#editModal #startTimePicker').data("DateTimePicker").date());
     var momentEnd = moment($('#editModal #endTimePicker').data("DateTimePicker").date());
 
-    globStoredEvent.title = $employeeName;
+
     globStoredEvent.start = new Date(momentStart.tz(globTimeZoneAMontreal).format());
     globStoredEvent.end = new Date(momentEnd.tz(globTimeZoneAMontreal).format());
 
-    // ici a voir
-    if(globStoredEvent.employeeId != $employeeId){
-        $availableColor = "";
-        $employeeColor = GetEmployeeColor($employeeId);
-        if($employeeColor == ""){
-            $availableColors = GetAvailableColors();
-            $availableColor = $availableColors[0];
-            globStoredEvent.color = $availableColor;
-        } else {
-            $availableColor = $employeeColor;
-            globStoredEvent.color = $availableColor;
-        }
+    $eventName = $editModal.find("#eventName").val();
+    $momentType = parseInt($editModal.find("#momentType option:selected").val());
+    switch ($momentType)
+    {
+        case 1:
+            globStoredEvent.color = "#0C0C50";
+            globStoredEvent.title = "Event - " + $eventName;
+            break;
+        case 2:
+            globStoredEvent.color = "#b30000";
+            globStoredEvent.title = "Unavailability - " + $employeeName;
+            break;
+        case 3:
+            globStoredEvent.color = "#003300";
+            globStoredEvent.title = "Day Off - " + $employeeName;
+            break;
     }
 
+    globStoredEvent.allDay = $editModal.find('#chkOptAllDay').is(':checked');
+    globStoredEvent.employeeId = $employeeId;
     globStoredEvent.employeeId = $employeeId;
 
     globStoredCalendar.fullCalendar('updateEvent', globStoredEvent);

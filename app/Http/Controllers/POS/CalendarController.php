@@ -27,7 +27,7 @@ class CalendarController extends Controller
 
     public  function index()
     {
-        $events = [];
+        $calendarEvents = $this->GetCalendarEvents();
 
         $date = new DateTime();
         $date->modify('Sunday last week');
@@ -50,9 +50,6 @@ class CalendarController extends Controller
             'header' => $calendarSettings,
             'titleFormat' => $strCalendar,
             'lang' => 'fr-ca'
-        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(xEvent, jsEvent, view);}",
-            'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 
         $view = \View::make('POS.Calendar.index')->with('ViewBag', array(
@@ -91,17 +88,25 @@ class CalendarController extends Controller
             'defaultView' => 'agendaWeek',
             'header' => $calendarSettings,
             'titleFormat' => $strCalendar, // $strCalendar,
-            'lang' => 'fr-ca'
+            'lang' => 'fr-ca',
+            'forceEventDuration' => true,
+            'defaultAllDayEventDuration' => '{ days: 1 }',
+            'defaultTimedEventDuration' => '02:00:00'
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
             'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(xEvent, jsEvent, view);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }",
-            'viewRender' => "function(view, element) { calendarViewRender(view, element); }"
+            'viewRender' => "function(view, element) { calendarViewRender(view, element); }",
+            'eventAfterAllRender' => "function() { eventAfterAllRender(); }"
+            /*'eventDragStart' => "function( event, jsEvent, ui, view ) { eventDragStart(event); }",
+            'eventDragStop' => "function( event, jsEvent, ui, view ) { eventDragStop(jsEvent); }",
+            'eventDrop' => "function( event, delta, revertFunc, jsEvent, ui, view ) { eventDrop(event); }"*/
         ]);
 
         $view = \View::make('POS.Calendar.edit')->with('ViewBag', array(
                 'employees' => $employees,
                 'momentTypes' => $momentTypes,
                 'calendar' => $calendar,
+                'calendarEvents' => $calendarEvents,
                 'startDate' => $lastSundayStr,
                 'endDate' => $lastDay->format('Y-m-d')
             )
@@ -137,10 +142,10 @@ class CalendarController extends Controller
             {
                 $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
                 $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
-                $employeeId = $jsonArray[$i]["employeeId"];
+                $employeeId = isset($jsonArray[$i]["employeeId"]) ? $jsonArray[$i]["employeeId"]: null;
                 $momentTypeId = $jsonArray[$i]["momentTypeId"];
-                $eventName = $jsonArray[$i]["name"];
-                $isAllDay = $jsonArray[$i]["isAllDay"];
+                $eventName = isset($jsonArray[$i]["name"]) ? $jsonArray[$i]["name"]: null;
+                $isAllDay = isset($jsonArray[$i]["isAllDay"]) ? 0 : 1;
 
 
                 CalendarEvent::create([
@@ -195,6 +200,7 @@ class CalendarController extends Controller
                 $momentEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
                 $calendarEvents[$i]->id,
                 [
+                    'eventId' => $calendarEvents[$i]->id,
                     'eventName' => $calendarEvents[$i]->name,
                     'color' => $availableColor,
                     'employeeId' => $calendarEvents[$i]->employee_id,
