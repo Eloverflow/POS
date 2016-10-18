@@ -17,7 +17,8 @@ var oldEvents = null;
 var onceLoaded = false;
 function eventAfterAllRender() {
     if(!onceLoaded){
-        oldEvents = globStoredCalendar.fullCalendar('clientEvents');
+        oldEvents = NormalizeCalendarMomentsArray(globStoredCalendar.fullCalendar('clientEvents'));
+        console.log(oldEvents);
         onceLoaded = true;
     }
 }
@@ -112,13 +113,12 @@ $editModal.find("#chkOptAllDay").change(function() {
 function postCalendarMoments() {
 
 
-    var allEvents = globStoredCalendar.fullCalendar('clientEvents');
+    var allEvents = NormalizeCalendarMomentsArray(globStoredCalendar.fullCalendar('clientEvents'));
 
-    var normEvents = NormalizeCalendarMomentsArray(allEvents);
+    console.log(GetUpdateAndDeleteEventsCompare(oldEvents, allEvents));
 
-    var normOldEvents  = NormalizeCalendarMomentsArray(oldEvents);
+    //console.log(normEvents, oldEvents);
 
-    console.log(GetUpdateAndDeleteEventsCompare(normOldEvents, normEvents));
     //$('#frmDispoCreate').submit();
     /*var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
@@ -183,8 +183,9 @@ function NormalizeCalendarMomentsArray(events){
         var eventObj = {
             /*name: events[i].eventName,*/
             isAllDay: events[i].isAllDay,
-            StartTime: events[i].start.toString(),
-            EndTime: events[i].end.toString(),
+            startTime: events[i].start.toString(),
+            endTime: events[i].end.toString(),
+            eventId: typeof events[i].eventId == 'undefined' ? '' : events[i].eventId,
             /*employeeId: events[i].employeeId,*/
             momentTypeId: events[i].momentTypeId
         };
@@ -223,7 +224,9 @@ function GetUpdateAndDeleteEventsCompare(oldEvents, newEvents){
 
             if(oldEvents[j].eventId === updatesOrSame[k].eventId){
 
-
+                if(!EventIsEqual(oldEvents[j], updatesOrSame[k])){
+                    updates.push(updatesOrSame[k]);
+                }
                 eventFound = true;
             }
         }
@@ -240,14 +243,40 @@ function GetUpdateAndDeleteEventsCompare(oldEvents, newEvents){
     }
 }
 
-/*function EventIsEqual(event1, event2) {
-    if(event1)
-    isAllDay: events[i].isAllDay,
+function EventIsEqual(event1, event2) {
+    var isEqual = true;
+    if(event1.name != event2.name){
+        isEqual = false;
+    }
+
+    if(event1.isAllDay != event2.isAllDay){
+        isEqual = false;
+    }
+
+    if(event1.startTime !== event2.startTime){
+        isEqual = false;
+    }
+
+    if(event1.endTime !== event2.endTime){
+        isEqual = false;
+    }
+
+    if(event1.momentTypeId !== event2.momentTypeId){
+        isEqual = false;
+    }
+
+    if(event1.employeeId !== event2.employeeId){
+        isEqual = false;
+    }
+
+    return isEqual;
+
+    /*isAllDay: events[i].isAllDay,
         StartTime: events[i].start.toString(),
         EndTime: events[i].end.toString(),
         /!*employeeId: events[i].employeeId,*!/
-        momentTypeId: events[i].momentTypeId
-}*/
+        momentTypeId: events[i].momentTypeId*/
+}
 
 // End custom function section
 
