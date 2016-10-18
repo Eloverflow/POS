@@ -106,7 +106,7 @@ class CalendarController extends Controller
                 'employees' => $employees,
                 'momentTypes' => $momentTypes,
                 'calendar' => $calendar,
-                'calendarEvents' => $calendarEvents,
+                /*'calendarEvents' => $calendarEvents,*/
                 'startDate' => $lastSundayStr,
                 'endDate' => $lastDay->format('Y-m-d')
             )
@@ -137,25 +137,32 @@ class CalendarController extends Controller
         else
         {
 
-            $jsonArray = json_decode(Input::get('events'), true);
-            for($i = 0; $i < count($jsonArray); $i++)
+            $inserts = json_decode(Input::get('inserts'), true);
+            $updates = json_decode(Input::get('updates'), true);
+            $deletes = json_decode(Input::get('deletes'), true);
+
+
+            /*return \Response::json($this->NormCalEventForBD($updates[0]["eventId"]), 500);*/
+            for($i = 0; $i < count($inserts); $i++)
             {
-                $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
-                $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
-                $employeeId = isset($jsonArray[$i]["employeeId"]) ? $jsonArray[$i]["employeeId"]: null;
-                $momentTypeId = $jsonArray[$i]["momentTypeId"];
-                $eventName = isset($jsonArray[$i]["name"]) ? $jsonArray[$i]["name"]: null;
-                $isAllDay = isset($jsonArray[$i]["isAllDay"]) ? 0 : 1;
 
+                CalendarEvent::create($this->NormCalEventForBD($inserts[$i]));
 
-                CalendarEvent::create([
-                    "name" => $eventName,
-                    "isAllDay" => $isAllDay,
-                    "moment_type_id" => $momentTypeId,
-                    'employee_id' => $employeeId,
-                    "startTime" => $dateStart,
-                    "endTime" => $dateStop
-                ]);
+            }
+
+            for($j = 0; $j < count($updates); $j++)
+            {
+
+                CalendarEvent::where('id', $updates[$j]["eventId"])->update(
+                    $this->NormCalEventForBD($updates[$j])
+                );
+
+            }
+
+            for($k = 0; $k < count($deletes); $k++)
+            {
+
+                CalendarEvent::where('id', $deletes[$k]["eventId"])->delete();
 
             }
 
@@ -163,6 +170,18 @@ class CalendarController extends Controller
                 'success' => "The Calendar " . Input::get('name') . " has been successfully edited !"
             ], 201);
         }
+    }
+
+    private function NormCalEventForBD($event) {
+        return [
+            "name" => isset($event["name"]) ? $event["name"]: null,
+            "isAllDay" => isset($event["isAllDay"]) ? 0 : 1,
+            /*"eventId" => $event["eventId"],*/
+            "moment_type_id" => $event["momentTypeId"],
+            "employee_id" => isset($event["employeeId"]) ? $event["employeeId"]: null,
+            "startTime" => new DateTime($event["startTime"]),
+            "endTime" => new DateTime($event["endTime"])
+        ];
     }
 
     private function GetCalendarEvents() {
@@ -177,16 +196,20 @@ class CalendarController extends Controller
             $startOffset = date_offset_get($startDatewithTMZ);
             $offsetInHourFormat = ($startOffset /60) /60;
 
+            $eventName = "";
             $availableColor = "";
             switch($calendarEvents[$i]->momentTypeId){
                 case 1:
                     $availableColor = "#0C0C50";
+                    $eventName = $calendarEvents[$i]->name;
                     break;
                 case 2:
                     $availableColor = "#b30000";
+                    $eventName = $calendarEvents[$i]->firstName . " " . $calendarEvents[$i]->lastName;
                     break;
                 case 3:
                     $availableColor = "#003300";
+                    $eventName = $calendarEvents[$i]->firstName . " " . $calendarEvents[$i]->lastName;
                     break;
             }
 
@@ -194,7 +217,7 @@ class CalendarController extends Controller
             $momentEnd = new DateTime($calendarEvents[$i]->endTime . $offsetInHourFormat);
 
             $events[] = \Calendar::event(
-                $calendarEvents[$i]->momentTypeName . " - " . $calendarEvents[$i]->name,
+                $calendarEvents[$i]->momentTypeName . " - " . $eventName,
                 false, //full day event?
                 $momentStart, //start time, must be a ateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
                 $momentEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),

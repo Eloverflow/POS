@@ -20,7 +20,6 @@
 
     <div class="row">
         <div class="col-lg-12 cmd-section">
-            {!! Form::text('oldEvents', json_encode($ViewBag['calendarEvents']), array('class' => 'form-control', 'id' => 'oldEvents')) !!}
             <a class="btn btn-primary pull-left" id="btnAdd" href="#"><span class="glyphicon glyphicon-plus"></span>&nbsp; Add</a>
             <a class="btn btn-success pull-right" id="btnFinish" href="#"><span class="glyphicon glyphicon-ok"></span>&nbsp; Finish </a>
         </div>

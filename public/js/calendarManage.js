@@ -115,12 +115,14 @@ function postCalendarMoments() {
 
     var allEvents = NormalizeCalendarMomentsArray(globStoredCalendar.fullCalendar('clientEvents'));
 
-    console.log(GetUpdateAndDeleteEventsCompare(oldEvents, allEvents));
+    oResult = GetUpdateAndDeleteEventsCompare(oldEvents, allEvents);
 
-    //console.log(normEvents, oldEvents);
+    console.log(allEvents);
 
-    //$('#frmDispoCreate').submit();
-    /*var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+    /*$('#frmDispoCreate').submit();*/
+
+
+    var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
     $.ajax({
         url: '/calendar/edit',
@@ -128,8 +130,9 @@ function postCalendarMoments() {
         async: true,
         data: {
             _token: CSRF_TOKEN,
-            events: JSON.stringify(normEvents)
-
+            inserts: JSON.stringify(oResult.inserts),
+            updates: JSON.stringify(oResult.updates),
+            deletes: JSON.stringify(oResult.deletes)
         },
         dataType: 'JSON',
         error: function (xhr, status, error) {
@@ -151,7 +154,7 @@ function postCalendarMoments() {
                 window.location.replace("/schedule");
             });
         }
-    });*/
+    });
 
 }
 // End Http Request Section
@@ -445,20 +448,23 @@ function editEvent(){
         case 1:
             globStoredEvent.color = "#0C0C50";
             globStoredEvent.title = "Event - " + $eventName;
+            globStoredEvent.name = $eventName;
             break;
         case 2:
             globStoredEvent.color = "#b30000";
             globStoredEvent.title = "Unavailability - " + $employeeName;
+            globStoredEvent.employeeId = $employeeId;
             break;
         case 3:
             globStoredEvent.color = "#003300";
             globStoredEvent.title = "Day Off - " + $employeeName;
+            globStoredEvent.employeeId = $employeeId;
             break;
     }
 
     globStoredEvent.allDay = $editModal.find('#chkOptAllDay').is(':checked');
-    globStoredEvent.employeeId = $employeeId;
-    globStoredEvent.employeeId = $employeeId;
+    globStoredEvent.momentTypeId = $momentType;
+
 
     globStoredCalendar.fullCalendar('updateEvent', globStoredEvent);
 

@@ -15,9 +15,12 @@ class CalendarEvent extends Model
     {
         return \DB::table('calendar_events')
             ->select(\DB::raw('calendar_events.*,
+            employees.firstName,
+            employees.lastName,
             moment_types.id as momentTypeId,
             moment_types.name as momentTypeName'))
             ->join('moment_types', 'calendar_events.moment_type_id', '=', 'moment_types.id')
+            ->join('employees', 'calendar_events.employee_id', '=', 'employees.id')
             ->get();
     }
 
