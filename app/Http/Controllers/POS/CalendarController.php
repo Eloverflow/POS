@@ -27,7 +27,7 @@ class CalendarController extends Controller
 
     public  function index()
     {
-        $events = [];
+        $calendarEvents = $this->GetCalendarEvents();
 
         $date = new DateTime();
         $date->modify('Sunday last week');
@@ -42,7 +42,7 @@ class CalendarController extends Controller
             'right' => 'prev, next');
 
         $employees = Employee::getAll();
-        $calendar = \Calendar::addEvents($events)->setOptions([
+        $calendar = \Calendar::addEvents($calendarEvents)->setOptions([
             //'firstDay' => 1,
             'timezone' => 'local', 'EDT', ('America/Montreal'),
             'editable' => false,
@@ -50,9 +50,6 @@ class CalendarController extends Controller
             'header' => $calendarSettings,
             'titleFormat' => $strCalendar,
             'lang' => 'fr-ca'
-        ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
-            'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(xEvent, jsEvent, view);}",
-            'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }"
         ]);
 
         $view = \View::make('POS.Calendar.index')->with('ViewBag', array(
@@ -67,7 +64,7 @@ class CalendarController extends Controller
 
     public  function edit()
     {
-        $events = [];
+        $calendarEvents = $this->GetCalendarEvents();
 
         $date = new DateTime();
         $date->modify('Sunday last week');
@@ -84,24 +81,32 @@ class CalendarController extends Controller
         $employees = Employee::getAll();
         $momentTypes = MomentType::getAll();
 
-        $calendar = \Calendar::addEvents($events)->setOptions([
+        $calendar = \Calendar::addEvents($calendarEvents)->setOptions([
             //'firstDay' => 1,
             'timezone' => 'local', 'EDT', ('America/Montreal'),
             'editable' => true,
             'defaultView' => 'agendaWeek',
             'header' => $calendarSettings,
             'titleFormat' => $strCalendar, // $strCalendar,
-            'lang' => 'fr-ca'
+            'lang' => 'fr-ca',
+            'forceEventDuration' => true,
+            'defaultAllDayEventDuration' => '{ days: 1 }',
+            'defaultTimedEventDuration' => '02:00:00'
         ])->setCallbacks([ //set fullcalendar callback options (will not be JSON encoded)
             'eventClick' => "function (xEvent, jsEvent, view){ scheduleClick(xEvent, jsEvent, view);}",
             'dayClick' => "function(date, xEvent, view) { dayClick(date, xEvent); }",
-            'viewRender' => "function(view, element) { calendarViewRender(view, element); }"
+            'viewRender' => "function(view, element) { calendarViewRender(view, element); }",
+            'eventAfterAllRender' => "function() { eventAfterAllRender(); }"
+            /*'eventDragStart' => "function( event, jsEvent, ui, view ) { eventDragStart(event); }",
+            'eventDragStop' => "function( event, jsEvent, ui, view ) { eventDragStop(jsEvent); }",
+            'eventDrop' => "function( event, delta, revertFunc, jsEvent, ui, view ) { eventDrop(event); }"*/
         ]);
 
         $view = \View::make('POS.Calendar.edit')->with('ViewBag', array(
                 'employees' => $employees,
                 'momentTypes' => $momentTypes,
                 'calendar' => $calendar,
+                /*'calendarEvents' => $calendarEvents,*/
                 'startDate' => $lastSundayStr,
                 'endDate' => $lastDay->format('Y-m-d')
             )
@@ -114,9 +119,7 @@ class CalendarController extends Controller
         $inputs = Input::all();
 
         $rules = array(
-            'name' => 'required',
-            'startDate' => 'required',
-            'endDate' => 'required'
+
         );
 
         $message = array(
@@ -134,31 +137,102 @@ class CalendarController extends Controller
         else
         {
 
-            $jsonArray = json_decode(Input::get('events'), true);
-            for($i = 0; $i < count($jsonArray); $i++)
+            $inserts = json_decode(Input::get('inserts'), true);
+            $updates = json_decode(Input::get('updates'), true);
+            $deletes = json_decode(Input::get('deletes'), true);
+
+
+            /*return \Response::json($this->NormCalEventForBD($updates[0]["eventId"]), 500);*/
+            for($i = 0; $i < count($inserts); $i++)
             {
-                $dateStart = new DateTime($jsonArray[$i]["StartTime"]);
-                $dateStop = new DateTime($jsonArray[$i]["EndTime"]);
-                $employeeId = $jsonArray[$i]["employeeId"];
-                $momentTypeId = $jsonArray[$i]["momentTypeId"];
-                $eventName = $jsonArray[$i]["name"];
-                $isAllDay = $jsonArray[$i]["isAllDay"];
 
+                CalendarEvent::create($this->NormCalEventForBD($inserts[$i]));
 
-                CalendarEvent::create([
-                    "name" => $eventName,
-                    "isAllDay" => $isAllDay,
-                    "moment_type_id" => $momentTypeId,
-                    'employee_id' => $employeeId,
-                    "startTime" => $dateStart,
-                    "endTime" => $dateStop
-                ]);
+            }
+
+            for($j = 0; $j < count($updates); $j++)
+            {
+
+                CalendarEvent::where('id', $updates[$j]["eventId"])->update(
+                    $this->NormCalEventForBD($updates[$j])
+                );
+
+            }
+
+            for($k = 0; $k < count($deletes); $k++)
+            {
+
+                CalendarEvent::where('id', $deletes[$k]["eventId"])->delete();
 
             }
 
             return \Response::json([
-                'success' => "The Schedule " . Input::get('name') . " has been successfully created !"
+                'success' => "The Calendar " . Input::get('name') . " has been successfully edited !"
             ], 201);
         }
+    }
+
+    private function NormCalEventForBD($event) {
+        return [
+            "name" => isset($event["name"]) ? $event["name"]: null,
+            "isAllDay" => isset($event["isAllDay"]) ? 0 : 1,
+            /*"eventId" => $event["eventId"],*/
+            "moment_type_id" => $event["momentTypeId"],
+            "employee_id" => isset($event["employeeId"]) ? $event["employeeId"]: null,
+            "startTime" => new DateTime($event["startTime"]),
+            "endTime" => new DateTime($event["endTime"])
+        ];
+    }
+
+    private function GetCalendarEvents() {
+
+        $events = [];
+
+        $calendarEvents = CalendarEvent::GetCalendarMoments();
+
+
+        for($i = 0; $i < count($calendarEvents); $i++){
+
+            $startDatewithTMZ =  date_create($calendarEvents[$i]->startTime, timezone_open('America/Montreal'));
+            $startOffset = date_offset_get($startDatewithTMZ);
+            $offsetInHourFormat = ($startOffset /60) /60;
+
+            $eventName = "";
+            $availableColor = "";
+            switch($calendarEvents[$i]->momentTypeId){
+                case 1:
+                    $availableColor = "#0C0C50";
+                    $eventName = $calendarEvents[$i]->name;
+                    break;
+                case 2:
+                    $availableColor = "#b30000";
+                    $eventName = $calendarEvents[$i]->firstName . " " . $calendarEvents[$i]->lastName;
+                    break;
+                case 3:
+                    $availableColor = "#003300";
+                    $eventName = $calendarEvents[$i]->firstName . " " . $calendarEvents[$i]->lastName;
+                    break;
+            }
+
+            $momentStart = new DateTime($calendarEvents[$i]->startTime . $offsetInHourFormat);
+            $momentEnd = new DateTime($calendarEvents[$i]->endTime . $offsetInHourFormat);
+
+            $events[] = \Calendar::event(
+                $calendarEvents[$i]->momentTypeName . " - " . $eventName,
+                false, //full day event?
+                $momentStart, //start time, must be a ateTime object or valid DateTime format (http://bit.ly/1z7QWbg)
+                $momentEnd, //end time, must be a DateTime object or valid DateTime format (http://bit.ly/1z7QWbg),
+                $calendarEvents[$i]->id,
+                [
+                    'eventId' => $calendarEvents[$i]->id,
+                    'eventName' => $calendarEvents[$i]->name,
+                    'color' => $availableColor,
+                    'employeeId' => $calendarEvents[$i]->employee_id,
+                    'momentTypeId' => $calendarEvents[$i]->momentTypeId
+                ]
+            );
+
+        }
+        return $events;
     }
 }
