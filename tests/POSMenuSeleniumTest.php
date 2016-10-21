@@ -47,7 +47,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     }
 
-
+/*
     public function testLoginPOSMenu()
     {
         $webdriver = $this;
@@ -65,7 +65,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
         //$this->loginPOSMenu();
         //$this->assertEquals('POSIO | Menu', $this->title());
-    }
+    }*/
 
 
     public function testBasicPOSMenu()
@@ -74,9 +74,23 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->waitUntil(function() use($webdriver){
             try{
 
+                $webdriver->url('/menu');
 
-                $webdriver->loginPOSMenu();
-                $webdriver->waitForPageToLoad(6);
+                $webdriver->byName('email')->value('visiteur@mirageflow.com');
+                $webdriver->byName('password')->value('Visiteur!');
+                $webdriver->byId('btn-login')->click();
+
+                $webdriver->timeouts()->implicitWait(2000);
+                //$webdriver->waitForPageToLoad(2);
+
+                $webdriver->timeouts()->implicitWait(8000);
+                $webdriver->byId('btn-menu-3')->click();
+                $webdriver->byId('btn-menu-enter')->click();
+                $webdriver->byId('btn-menu-1')->click();
+                $webdriver->byId('btn-menu-1')->click();
+                $webdriver->byId('btn-menu-enter')->click();
+                $webdriver->timeouts()->implicitWait(3000);
+
 
                 $command_client = $webdriver->byId('command-client-number')->text();
 
@@ -86,7 +100,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
                 return null;
             }
 
-        }, 5000);
+        }, 20000);
      /*   $this->loginPOSMenu();
         $this->waitForPageToLoad(6);
 
@@ -94,6 +108,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
         $this->assertEquals('Commande - Client: #1', $command_client);*/
     }
+/*
 
     public function testPagePOSMenuPunch()
     {
@@ -150,8 +165,8 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
         $this->byId('btn-menu-clk')->click();
 
-        $this->assertRegExp('/The employee has been successfully punched out !/i', $alert);*/
-    }
+        $this->assertRegExp('/The employee has been successfully punched out !/i', $alert);
+    }*/
 
 
 }

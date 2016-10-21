@@ -22,7 +22,7 @@ class ScheduleSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
         $this->waitForPageToLoad(2);
     }
-    
+/*
     public function testCreateSchedule()
     {
 
@@ -33,7 +33,9 @@ class ScheduleSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
         //$alert =  $this->byClassName('alert')->text();
         $this->assertTrue(true);
-/*
+
+
+        /*
         $this->assertRegExp('/The employee has been successfully punched in !/i', $alert);
 
             ->type('Test Schedule', 'name')
@@ -47,8 +49,8 @@ class ScheduleSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
             ->see('8:00 - 17:00')
             ->click('btnFinish')
             ->seePageIs('/schedule')
-            ->see('Test Schedule');*/
+            ->see('Test Schedule');
 
-    }
+    }*/
 
 }
