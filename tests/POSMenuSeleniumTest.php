@@ -5,7 +5,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     protected function setUp()
     {
         $this->setBrowser('chrome');
-        $this->setBrowserUrl('http://pos.mirageflow.com');
+        $this->setBrowserUrl('http://localhost');
     }
 
 
@@ -70,37 +70,30 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     public function testBasicPOSMenu()
     {
-        $webdriver = $this;
-        $this->waitUntil(function() use($webdriver){
-            try{
 
-                $webdriver->url('/menu');
+        $this->url('/menu');
+        $this->timeouts()->implicitWait(5000);
 
-                $webdriver->byName('email')->value('visiteur@mirageflow.com');
-                $webdriver->byName('password')->value('Visiteur!');
-                $webdriver->byId('btn-login')->click();
+        $this->byName('email')->value('visiteur@mirageflow.com');
+        $this->byName('password')->value('Visiteur!');
+        $this->byId('btn-login')->click();
 
-                $webdriver->timeouts()->implicitWait(2000);
+        $this->timeouts()->implicitWait(2000);
                 //$webdriver->waitForPageToLoad(2);
 
-                $webdriver->timeouts()->implicitWait(8000);
-                $webdriver->byId('btn-menu-3')->click();
-                $webdriver->byId('btn-menu-enter')->click();
-                $webdriver->byId('btn-menu-1')->click();
-                $webdriver->byId('btn-menu-1')->click();
-                $webdriver->byId('btn-menu-enter')->click();
-                $webdriver->timeouts()->implicitWait(3000);
+        $this->timeouts()->implicitWait(8000);
+        $this->byId('btn-menu-3')->click();
+        $this->byId('btn-menu-enter')->click();
+        $this->byId('btn-menu-1')->click();
+        $this->byId('btn-menu-1')->click();
+        $this->byId('btn-menu-enter')->click();
+        $this->timeouts()->implicitWait(3000);
 
 
-                $command_client = $webdriver->byId('command-client-number')->text();
+                $command_client = $this->byId('command-client-number')->text();
 
-                $webdriver->assertEquals('Commande - Client: #1', $command_client);
-                return true;
-            }catch (Exception $ex){
-                return null;
-            }
+        $this->assertEquals('Commande - Client: #1', $command_client);
 
-        }, 20000);
      /*   $this->loginPOSMenu();
         $this->waitForPageToLoad(6);
 
