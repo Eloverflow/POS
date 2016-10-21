@@ -7,7 +7,7 @@ use Laravel\Scout\Searchable;
 
 class Extra extends Model
 {
-    use Searchable;
+    //use Searchable;
 
     protected $table = 'extras';
 

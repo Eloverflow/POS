@@ -8,7 +8,7 @@ use Laravel\Scout\Searchable;
 
 class Filter extends Model
 {
-    use Searchable;
+    //use Searchable;
     protected $table = 'filters';
 
     protected $fillable = ['name', 'description', 'type',  'status', 'importance', 'slug'];

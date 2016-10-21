@@ -8,7 +8,7 @@ use Laravel\Scout\Searchable;
 class Sale extends Model{
 
     use LogsActivity;
-    use Searchable;
+    //use Searchable;
     protected static $logAttributes = ['sale_number', 'cancelled', 'status', 'total', 'taxes', 'subTotal', 'paiement_type', 'extras'];
 
     protected $table = 'sales';
