@@ -50,24 +50,86 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     public function testLoginPOSMenu()
     {
-        $this->loginPOSMenu();
-        $this->assertEquals('POSIO | Menu', $this->title());
+        $webdriver = $this;
+        $this->waitUntil(function() use($webdriver){
+            try{
+                $webdriver->loginPOSMenu();
+                $webdriver->assertEquals('POSIO | Menu', $this->title());
+
+                return true;
+            }catch (Exception $ex){
+                return null;
+            }
+
+        }, 5000);
+
+        //$this->loginPOSMenu();
+        //$this->assertEquals('POSIO | Menu', $this->title());
     }
 
 
     public function testBasicPOSMenu()
     {
-        $this->loginPOSMenu();
+        $webdriver = $this;
+        $this->waitUntil(function() use($webdriver){
+            try{
+
+
+                $webdriver->loginPOSMenu();
+                $webdriver->waitForPageToLoad(6);
+
+                $command_client = $webdriver->byId('command-client-number')->text();
+
+                $webdriver->assertEquals('Commande - Client: #1', $command_client);
+                return true;
+            }catch (Exception $ex){
+                return null;
+            }
+
+        }, 5000);
+     /*   $this->loginPOSMenu();
         $this->waitForPageToLoad(6);
 
         $command_client = $this->byId('command-client-number')->text();
 
-        $this->assertEquals('Commande - Client: #1', $command_client);
+        $this->assertEquals('Commande - Client: #1', $command_client);*/
     }
 
     public function testPagePOSMenuPunch()
     {
+        $webdriver = $this;
+        $this->waitUntil(function() use($webdriver){
+            try{
 
+                $webdriver->url('/menu');
+                $webdriver->login();
+                $webdriver->waitForPageToLoad(10);
+
+                $webdriver->byId('btn-menu-3')->click();
+                $webdriver->byId('btn-menu-clk')->click();
+
+
+                $webdriver->waitForPageToLoad(10);
+
+                $webdriver->byId('btn-Barmaid')->click();
+
+                $webdriver->waitForPageToLoad(10);
+
+                $alert =  $webdriver->byClassName('alert')->text();
+
+                $webdriver->assertRegExp('/The employee has been successfully punched in !/i', $alert);
+
+                $webdriver->byId('btn-menu-clk')->click();
+
+                $webdriver->assertRegExp('/The employee has been successfully punched out !/i', $alert);
+                return true;
+            }catch (Exception $ex){
+                return null;
+            }
+
+        }, 5000);
+
+        /*
         $this->url('/menu');
         $this->login();
         $this->waitForPageToLoad(10);
@@ -79,7 +141,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
         $this->waitForPageToLoad(10);
 
         $this->byId('btn-Barmaid')->click();
-        
+
         $this->waitForPageToLoad(10);
 
         $alert =  $this->byClassName('alert')->text();
@@ -88,7 +150,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
         $this->byId('btn-menu-clk')->click();
 
-        $this->assertRegExp('/The employee has been successfully punched out !/i', $alert);
+        $this->assertRegExp('/The employee has been successfully punched out !/i', $alert);*/
     }
 
 
