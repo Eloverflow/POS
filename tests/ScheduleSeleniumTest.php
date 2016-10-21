@@ -22,8 +22,7 @@ class ScheduleSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
         $this->waitForPageToLoad(2);
     }
-
-
+    
     public function testCreateSchedule()
     {
 
