@@ -11,7 +11,9 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
 
     protected function waitForPageToLoad($time)
     {
-        sleep($time);
+        //sleep($time);
+        //$this->waitUntil()
+        $this->timeouts()->implicitWait($time*1000);
     }
     protected function login()
     {
