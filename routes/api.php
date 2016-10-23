@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 /*Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');*/
+
+
+Route::get('/itemtypes/list',  ['uses' => 'ERP\ItemTypesController@liste', 'middleware' => 'auth']);
+Route::get('/work/titles/list',  ['uses' => 'POS\WorkTitleController@index', 'middleware' => 'auth']);
+Route::get('/api/table-plan/{id}',  ['uses' => 'POS\PlanController@tablePlan']);

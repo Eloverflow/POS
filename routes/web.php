@@ -57,7 +57,6 @@ Route::post('/inventory/create',  ['uses' => 'ERP\InventoriesController@postCrea
 
 
 Route::get('/itemtypes',  ['uses' => 'ERP\ItemTypesController@index', 'middleware' => 'auth']);
-Route::get('/itemtypes/list',  ['uses' => 'ERP\ItemTypesController@liste', 'middleware' => 'auth']);
 Route::get('/itemtypes/edit/{slug}',  ['uses' => 'ERP\ItemTypesController@edit', 'middleware' => 'auth']);
 Route::post('/itemtypes/edit/{slug}',  ['uses' => 'ERP\ItemTypesController@update', 'middleware' => 'auth']);
 
@@ -109,7 +108,6 @@ Route::post('/work/title/create',  ['uses' => 'POS\WorkTitleController@postCreat
 Route::post('/work/title/edit',  ['uses' => 'POS\WorkTitleController@postEdit', 'middleware' => 'auth']);
 Route::post('/work/title/add/employee',  ['uses' => 'POS\WorkTitleController@addEmployee', 'middleware' => 'auth']);
 Route::delete('/work/title/del/employee',  ['uses' => 'POS\WorkTitleController@delEmployee', 'middleware' => 'auth']);
-Route::get('/work/titles/list',  ['uses' => 'POS\WorkTitleController@raw', 'middleware' => 'auth']);
 
 
 Route::get('/employee/edit/{id}',  ['uses' => 'POS\EmployeeController@edit', 'middleware' => 'auth']);
@@ -176,7 +174,6 @@ Route::get('/plan/edit/{id}',  ['uses' => 'POS\PlanController@edit', 'middleware
 Route::post('/plan/edit/{id}',  ['uses' => 'POS\PlanController@postEdit', 'middleware' => 'auth']);
 
 Route::get('/plan/details/{id}',  ['uses' => 'POS\PlanController@details', 'middleware' => 'auth']);
-Route::get('/api/table-plan/{id}',  ['uses' => 'POS\PlanController@tablePlan']);
 /* End Plan */
 
 /* Start availability */
