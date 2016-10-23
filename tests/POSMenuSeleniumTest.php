@@ -5,7 +5,7 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     protected function setUp()
     {
         $this->setBrowser('chrome');
-        $this->setBrowserUrl('http://localhost');
+        $this->setBrowserUrl('http://pos.mirageflow.com');
     }
 
 
@@ -25,12 +25,12 @@ class POSMenuSeleniumTest extends PHPUnit_Extensions_Selenium2TestCase
     }
 
 
-    public function testLogin()
+/*    public function testLogin()
     {
         $this->url('/');
         $this->login();
         $this->assertEquals('POSIO', $this->title());
-    }
+    }*/
 
 
     public function loginPOSMenu()
