@@ -104,7 +104,7 @@ $userMenuTabs = array
                     <span id="" class="menuLinkText">{{ Lang::get('menu.posMenu') }}</span>
                 </a>
                 <ul class="children collapse {{isCollapseIn(['menu','plan','items','itemtypes','extras','filters','punch'])}}" id="sub-item-0" aria-expanded="false">
-                    <li class="{{isActiveRoute('menu')}}"><a name="MenuPOS" href="{{ URL::to('menu') }}"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> {{ Lang::get('menu.menu') }}</a></li>
+                    <li class="{{isActiveRoute('menu')}}"><a name="MenuPOS" href="{{ URL::to('/') }}:8000"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> {{ Lang::get('menu.menu') }}</a></li>
                     <li class="{{isActiveRoute('plan')}}"><a name="Plans" href="{{ URL::to('plan') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> {{ Lang::get('menu.plans') }}</a></li>
                     <li class="{{isActiveRoute('items')}}"><a name="Items" href="{{ URL::to('items') }}"><svg class="glyph stroked bacon burger"><use xlink:href="#stroked-bacon-burger"/></svg></svg> {{ Lang::get('menu.items') }}</a></li>
                     <li class="{{isActiveRoute('itemtypes')}}"><a name="Item Types" href="{{ URL::to('itemtypes') }}"><svg class="glyph stroked paper coffee cup"><use xlink:href="#stroked-paper-coffee-cup"/></svg> {{ Lang::get('menu.itemTypes') }}</a></li>
