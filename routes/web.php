@@ -67,12 +67,10 @@ Route::get('/items/create',  ['uses' => 'ERP\ItemsController@create', 'middlewar
 Route::post('/item/create',  ['uses' => 'ERP\ItemsController@postCreate', 'middleware' => 'auth']);
 Route::get('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@edit', 'middleware' => 'auth']);
 Route::post('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@update', 'middleware' => 'auth']);
-Route::get('/items/liste',  ['uses' => 'ERP\ItemsController@liste', 'middleware' => 'auth']);
 
 Route::get('/items/createe',  ['uses' => 'ERP\ItemsController@createe', 'middleware' => 'auth']);
 
 Route::get('/extras',  ['uses' => 'ERP\ExtrasController@index', 'middleware' => 'auth']);
-Route::get('/extras/list',  ['uses' => 'ERP\ExtrasController@liste', 'middleware' => 'auth']);
 Route::get('/extras/create',  ['uses' => 'ERP\ExtrasController@create', 'middleware' => 'auth']);
 Route::post('/extras/create',  ['uses' => 'ERP\ExtrasController@postCreate', 'middleware' => 'auth']);
 
@@ -80,7 +78,6 @@ Route::get('/extras/edit/{slug}',  ['uses' => 'ERP\ExtrasController@edit', 'midd
 Route::post('/extras/edit/{slug}',  ['uses' => 'ERP\ExtrasController@update', 'middleware' => 'auth']);
 
 Route::get('/filters',  ['uses' => 'POS\FiltersController@index', 'middleware' => 'auth']);
-Route::get('/filters/list',  ['uses' => 'POS\FiltersController@liste', 'middleware' => 'auth']);
 Route::get('/filters/create',  ['uses' => 'POS\FiltersController@create', 'middleware' => 'auth']);
 Route::post('/filters/create',  ['uses' => 'POS\FiltersController@postCreate', 'middleware' => 'auth']);
 
@@ -100,8 +97,6 @@ Route::get('/employee/create',  ['uses' => 'POS\EmployeeController@create', 'mid
 Route::post('/employee/create',  ['uses' => 'POS\EmployeeController@postcreate', 'middleware' => 'auth']);
 
 Route::get('/employee/details/{id}',  ['uses' => 'POS\EmployeeController@details', 'middleware' => 'auth']);
-
-Route::post('/employee/authenticate/{id}',  ['uses' => 'POS\EmployeeController@authenticateEmployee']);
 
 Route::get('/work/titles',  ['uses' => 'POS\WorkTitleController@index', 'middleware' => 'auth']);
 Route::post('/work/title/create',  ['uses' => 'POS\WorkTitleController@postCreate', 'middleware' => 'auth']);

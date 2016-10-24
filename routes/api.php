@@ -18,6 +18,10 @@ use Illuminate\Http\Request;
 })->middleware('auth:api');*/
 
 
-Route::get('/itemtypes/list',  ['uses' => 'ERP\ItemTypesController@liste', 'middleware' => 'auth']);
-Route::get('/work/titles/list',  ['uses' => 'POS\WorkTitleController@index', 'middleware' => 'auth']);
-Route::get('/api/table-plan/{id}',  ['uses' => 'POS\PlanController@tablePlan']);
+Route::get('/itemtypes/list',  ['uses' => 'ERP\ItemTypesController@liste', 'middleware' => 'cors']);
+Route::get('/work/titles/list',  ['uses' => 'POS\WorkTitleController@index', 'middleware' => 'cors']);
+Route::get('/table-plan/{id}',  ['uses' => 'POS\PlanController@tablePlan', 'middleware' => 'cors']);
+Route::get('/items/liste',  ['uses' => 'ERP\ItemsController@liste', 'middleware' => 'cors']);
+Route::get('/filters/list',  ['uses' => 'POS\FiltersController@liste', 'middleware' => 'cors']);
+Route::get('/extras/list',  ['uses' => 'ERP\ExtrasController@liste', 'middleware' => 'cors']);
+Route::post('/employee/authenticate/{id}',  ['uses' => 'POS\EmployeeController@authenticateEmployee', 'middleware' => 'cors']);
