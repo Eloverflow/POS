@@ -13,6 +13,7 @@
         "maddhatter/laravel-fullcalendar": "1.2.*",
         "barryvdh/laravel-ide-helper": "2.2.*",
         "barryvdh/laravel-dompdf": "0.7.*",
+        "barryvdh/laravel-cors": "0.8.*",
         "laravelcollective/html": "5.3.*"
     },
     "require-dev": {

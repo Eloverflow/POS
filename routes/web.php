@@ -39,11 +39,6 @@ Route::post('/menu-settings',  ['uses' => 'POS\SalesController@applyMenuSettings
 
 /*Route::get('/menu/start',  ['uses' => 'POS\SalesController@menuStart', 'middleware' => 'auth']);
 Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware' => 'auth']);*/
-Route::post('/menu/command',  ['uses' => 'POS\SalesController@updateCommand']);
-Route::post('/menu/getCommand',  ['uses' => 'POS\SalesController@getCommand']);
-Route::post('/menu/bill',  ['uses' => 'POS\SalesController@updateBill']);
-Route::post('/menu/delete/bill',  ['uses' => 'POS\SalesController@deleteBills']);
-Route::post('/menu/getBills',  ['uses' => 'POS\SalesController@getBills']);
 
 
 Route::get('/inventory',  ['uses' => 'ERP\InventoriesController@index', 'middleware' => 'auth']);
@@ -113,7 +108,6 @@ Route::get('/employee/delete/{id}',  ['uses' => 'POS\EmployeeController@delete',
 Route::post('/employee/Partialdelete',  ['uses' => 'POS\EmployeeController@ajaxPartdelete', 'middleware' => 'auth']);
 Route::post('/employee/Completedelete',  ['uses' => 'POS\EmployeeController@ajaxCompdelete', 'middleware' => 'auth']);
 
-Route::post('/employee/punch',  ['uses' => 'POS\PunchController@ajaxPunchEmployee', 'middleware' => 'auth']);
 /* End employee */
 
 Route::get('/addon/rfid/request',  ['uses' => 'Addons\Rfid\RfidRequestController@index', 'middleware' => 'auth']);

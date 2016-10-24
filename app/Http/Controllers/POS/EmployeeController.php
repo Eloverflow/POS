@@ -201,6 +201,8 @@ class EmployeeController extends Controller
 
             $hashCheck = Hash::check($password, $employee->user->password);
             $employee['hashCheck'] = $hashCheck;
+            $employee['ecnrypted'] = $employee->user->password;
+            $employee['pass'] = $password;
 
 
             if($hashCheck)
