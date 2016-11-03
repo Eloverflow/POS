@@ -36,6 +36,7 @@ class PlanController extends Controller
         return $view;
     }
 
+    /*For posio menu angilar app*/
     public function tablePlan($id)
     {
         $plan = Plan::where('id', $id)->first();

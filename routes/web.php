@@ -63,8 +63,6 @@ Route::post('/item/create',  ['uses' => 'ERP\ItemsController@postCreate', 'middl
 Route::get('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@edit', 'middleware' => 'auth']);
 Route::post('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@update', 'middleware' => 'auth']);
 
-Route::get('/items/createe',  ['uses' => 'ERP\ItemsController@createe', 'middleware' => 'auth']);
-
 Route::get('/extras',  ['uses' => 'ERP\ExtrasController@index', 'middleware' => 'auth']);
 Route::get('/extras/create',  ['uses' => 'ERP\ExtrasController@create', 'middleware' => 'auth']);
 Route::post('/extras/create',  ['uses' => 'ERP\ExtrasController@postCreate', 'middleware' => 'auth']);

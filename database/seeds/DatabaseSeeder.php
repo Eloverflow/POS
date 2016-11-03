@@ -213,6 +213,7 @@ class UserTableSeeder extends Seeder {
         User::create(['name' => 'user_employee', 'email' => 'test-mflow@yopmail.com', 'password' => \Hash::make('11')]);
         User::create(['name' => 'Visiteur', 'email' => 'visiteur@mirageflow.com', 'password' => \Hash::make('Visiteur!')]);
         User::create(['name' => 'Alex Breton', 'email' => 'alex.breton@hotmail.co.uk', 'password' => \Hash::make('@lexBreton')]);
+        User::create(['name' => 'Bryan St-Piere Hardy', 'email' => 'bryan.st-pierre@mirageflow.com', 'password' => \Hash::make('fuckwordpress')]);
 
 
         $this->command->info('Users table seeded!');

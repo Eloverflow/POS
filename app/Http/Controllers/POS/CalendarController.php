@@ -27,7 +27,7 @@ class CalendarController extends Controller
 
     public  function index()
     {
-        $calendarEvents = $this->GetCalendarEvents();
+        $calendarEvents = $this->GetCalendarEvents(CalendarEvent::GetCalendarMoments());
 
         $date = new DateTime();
         $date->modify('Sunday last week');
@@ -184,11 +184,10 @@ class CalendarController extends Controller
         ];
     }
 
-    private function GetCalendarEvents() {
+    private function GetCalendarEvents($calendarEvents) {
 
         $events = [];
 
-        $calendarEvents = CalendarEvent::GetCalendarMoments();
 
 
         for($i = 0; $i < count($calendarEvents); $i++){

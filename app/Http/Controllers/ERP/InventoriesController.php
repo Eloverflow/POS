@@ -145,60 +145,60 @@ class InventoriesController extends \App\Http\Controllers\Controller
     }
 
     public function create()
-    {
+{
 
-        /*Page Title*/
-        $title = 'Inventory';
+    /*Page Title*/
+    $title = 'Inventory';
 
-        /*$formSections = array(
-            'section1' => array(
-                'title' => '',
-                'fields' => array(
-                    array(
-                        'label' => 'Quantity',
-                        'input' => 'quantity'
-                    ),
-                    array(
-                        'label' => 'Quantity',
-                        'input' => 'quantity'
-                    )
+    /*$formSections = array(
+        'section1' => array(
+            'title' => '',
+            'fields' => array(
+                array(
+                    'label' => 'Quantity',
+                    'input' => 'quantity'
+                ),
+                array(
+                    'label' => 'Quantity',
+                    'input' => 'quantity'
                 )
             )
-        );*/
+        )
+    );*/
 
-        $tableColumns = array('quantity');
-
-
-        $tableChoiceListTable = Item::all();
-        /*select all where type = beer*/
-
-        $tableChoiceListTitle = "Item ID";
-        $tableChoiceListDBColumn = "item_id";
-        $tableChoiceListTitleColumn = "name";
-        $tableChoiceListContentColumn = "description";
-        $tableChoiceListCreateURL = @URL::to('/items');
-
-        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
-
-        /*
-                $tableChoiceListTable = Order::all();
-
-                $tableChoiceListTitle = "Order Number";
-                $tableChoiceListDBColumn = "order_id";
-                $tableChoiceListTitleColumn = "command_number";
-                $tableChoiceListContentColumn = "";
-                $tableChoiceListCreateURL = @URL::to('/orders/create');
-
-                $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn , "postUrl" => $tableChoiceListCreateURL);
-        */
+    $tableColumns = array('quantity');
 
 
-        $tableChoiceLists = array($tableChoiceList1/*, $tableChoiceList2*/);
+    $tableChoiceListTable = Item::all();
+    /*select all where type = beer*/
+
+    $tableChoiceListTitle = "Item ID";
+    $tableChoiceListDBColumn = "item_id";
+    $tableChoiceListTitleColumn = "name";
+    $tableChoiceListContentColumn = "description";
+    $tableChoiceListCreateURL = @URL::to('/items');
+
+    $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
+
+    /*
+            $tableChoiceListTable = Order::all();
+
+            $tableChoiceListTitle = "Order Number";
+            $tableChoiceListDBColumn = "order_id";
+            $tableChoiceListTitleColumn = "command_number";
+            $tableChoiceListContentColumn = "";
+            $tableChoiceListCreateURL = @URL::to('/orders/create');
+
+            $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn , "postUrl" => $tableChoiceListCreateURL);
+    */
 
 
+    $tableChoiceLists = array($tableChoiceList1/*, $tableChoiceList2*/);
 
-        return view('shared.create',compact('title', 'tableChoiceLists', 'tableColumns'));
-    }
+    $formSections = [];
+
+    return view('shared.createOld',compact('title', 'tableChoiceLists', 'tableColumns','formSections'));
+}
 
     public function postCreate()
     {

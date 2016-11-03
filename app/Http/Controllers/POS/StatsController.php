@@ -27,7 +27,7 @@ class StatsController extends Controller
     {
 
         // For bar chart Monthly scheduled & worked hours
-        $rawWorkedHours = Punch::GetWorkedHoursYear(date("Y"));
+        $rawWorkedHours = activity(date("Y"));
         $rawScheduledHours = Schedule::GetScheduledHoursYear(date("Y"));
         $workedHours = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,);
         $scheduledHours = array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,);
