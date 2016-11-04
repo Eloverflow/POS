@@ -1,3 +1,10 @@
+$icon-font-path:  "/assets/fonts/bootstrap/"!default;
+
+@function font-path($path) {
+  @return $path;
+}
+
+
 
 // Body
 $body-bg: #f5f8fa;

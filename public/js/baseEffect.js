@@ -10,11 +10,15 @@ setTimeout(function() { pageScroll.resize(); }, 500);*/
 setTimeout(function() { $('.fc-day-grid-container.fc-scroller').css('height', 'auto'); }, 100);
 */
 
-
+/*This is to give the time to bootstrap table to load*/
 $('#contentPanel').hide(0);
 $('#contentPanel').css('visibility', 'visible');
+$('#contentPanel').fadeIn(200);
+$('.calendar-fix').hide(0);
+$('.calendar-fix').css('visibility', 'visible');
+$('.calendar-fix').fadeIn(200);
 
-$('#contentPanel').show(200);
+
 /*
 $('.datepickerInput').datepicker({
     format: 'yyyy-mm-dd',

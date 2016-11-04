@@ -1,4 +1,4 @@
-@extends('workerLayout')
+@extends('master')
 
 @section("csrfToken")
     <meta name="csrf-token" content="{{ csrf_token() }}"/>

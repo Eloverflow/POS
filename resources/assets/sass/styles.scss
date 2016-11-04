@@ -95,9 +95,6 @@
 
 }
 
-#contentPanel{
-	visibility: hidden;
-}
 
 #terminal{
 	font-size:14px;  font-family: 'Consolas', 'Arial', sans-serif;overflow-y: scroll;height: 570px; width: 100%; padding: 5px; border-radius: 4px; background-color: #333
@@ -590,13 +587,21 @@ li.addTable .glyphicon{
 .row.fixed{
 	width: 100%;
 	height: auto;
-	position: fixed;
+	position: absolute;
 	z-index: 3;
 }
 
 
 #contentPanel{
 	margin-top: 40px;
+
+	/*This is to give the time to bootstrap table to load*/
+	visibility: hidden;
+}
+
+.calendar-fix{
+	/*This is to give the time to bootstrap table to load*/
+	visibility: hidden;
 }
 
 .add-one{;
@@ -796,6 +801,28 @@ li.addTable .glyphicon{
 
 .hiddenRow {
 	padding: 0 !important;
+}
+
+table{
+	width: 100%!important;
+
+}
+
+.fixed-table-toolbar{
+	height: 30px;
+}
+
+.fixed-table-container{
+	border: none!important;
+}
+
+.fixed-table-loading{
+	visibility: hidden;
+}
+
+
+.ui-accordion-content table{
+	width: 400px!important;
 }
 
 .labelBtn {

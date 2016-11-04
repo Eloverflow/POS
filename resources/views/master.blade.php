@@ -8,13 +8,10 @@
     <script src="{{ @URL::to('Framework/Bootstrap/3.3.7/js/bootstrap.min.js') }}"></script>
 @yield('csrfToken')
 {{--Stylesheet call--}}
-    <link href="{{ @URL::to('Framework/Bootstrap/3.3.7/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('css/app.css') }}" rel="stylesheet">
+    <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/datepicker3.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
-    <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-table.css')}}" rel="stylesheet">
-    <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
-    <link href="{{ @URL::to('css/styles.css') }}" rel="stylesheet">
-    <link href="{{ @URL::to('css/modals.css') }}" rel="stylesheet">
     {{--End of Stylesheet call--}}
 
     <!--Icons-->
@@ -104,13 +101,12 @@ $userMenuTabs = array
                     <span id="" class="menuLinkText">{{ Lang::get('menu.posMenu') }}</span>
                 </a>
                 <ul class="children collapse {{isCollapseIn(['menu','plan','items','itemtypes','extras','filters','punch'])}}" id="sub-item-0" aria-expanded="false">
-                    <li class="{{isActiveRoute('menu')}}"><a name="MenuPOS" href="{{ URL::to('/') }}:8000"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> {{ Lang::get('menu.menu') }}</a></li>
+                    <li class="{{isActiveRoute('menu')}}"><a name="MenuPOS" href="{{ URL::to('/posio-menu') }}"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> {{ Lang::get('menu.menu') }}</a></li>
                     <li class="{{isActiveRoute('plan')}}"><a name="Plans" href="{{ URL::to('plan') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> {{ Lang::get('menu.plans') }}</a></li>
                     <li class="{{isActiveRoute('items')}}"><a name="Items" href="{{ URL::to('items') }}"><svg class="glyph stroked bacon burger"><use xlink:href="#stroked-bacon-burger"/></svg></svg> {{ Lang::get('menu.items') }}</a></li>
                     <li class="{{isActiveRoute('itemtypes')}}"><a name="Item Types" href="{{ URL::to('itemtypes') }}"><svg class="glyph stroked paper coffee cup"><use xlink:href="#stroked-paper-coffee-cup"/></svg> {{ Lang::get('menu.itemTypes') }}</a></li>
                     <li class="{{isActiveRoute('extras')}}"><a name="Extras" href="{{ URL::to('extras') }}"><svg class="glyph stroked tag"><use xlink:href="#stroked-tag"/></svg> {{ Lang::get('menu.extras') }}</a></li>
                     <li class="{{isActiveRoute('filters')}}"><a name="Menu Filer" href="{{ URL::to('filters') }}"><svg class="glyph stroked monitor"><use xlink:href="#stroked-monitor"/></svg> {{ Lang::get('menu.posMenuFilter') }}</a></li>
-                    <li class="{{isActiveRoute('punch')}}"><a href="{{ URL::to('punch') }}"><svg class="glyph stroked clock"><use xlink:href="#stroked-clock"/></svg> {{ Lang::get('menu.punch') }}</a></li>
                 </ul>
             </li>
             <li role="presentation" class="divider"></li>
@@ -136,7 +132,7 @@ $userMenuTabs = array
 
 
 </div><!--/.sidebar-->
-<div style="z-index: 100;" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
+<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2">
     <div class="row fixed">
         <ol class="breadcrumb">
             <li><a href="{{ @URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg></a></li>
@@ -180,22 +176,8 @@ $userMenuTabs = array
 
 @yield('calendar')
 
-{{--Script call--}}{{--
-<script src="{{ @URL::to('Framework/Bootstrap/3.3.7/js/bootstrap.min.js') }}"></script>
-<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>--}}
-{{--<script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>--}}
-{{--
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/chart.min.js') }}"></script>
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/chart-data.js') }}"></script>--}}{{--
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart.js') }}"></script>
-<script src="{{ @URL::to('Framework/LuminoAdmin/js/easypiechart-data.js') }}"></script>--}}
 <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-table.min.js') }}"></script>
-{{--<script src="{{ @URL::asset('js/jquery/jquery.nicescroll.min.js') }}"></script>--}}
 <script src="{{ @URL::to('js/baseEffect.js') }}"></script>
-@if(Request::path() == "addon/rfid/table")
-    <script src="{{ @URL::asset('js/jquery/jquery.sortable.js') }}"></script>
-    <script src="{{ @URL::asset('js/listener.js') }}"></script>
-@endif
 {{--End of Script call--}}
 
 @yield('myjsfile')
