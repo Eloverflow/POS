@@ -11,12 +11,17 @@ setTimeout(function() { $('.fc-day-grid-container.fc-scroller').css('height', 'a
 */
 
 /*This is to give the time to bootstrap table to load*/
-$('#contentPanel').hide(0);
-$('#contentPanel').css('visibility', 'visible');
-$('#contentPanel').fadeIn(200);
-$('.calendar-fix').hide(0);
-$('.calendar-fix').css('visibility', 'visible');
-$('.calendar-fix').fadeIn(200);
+var $contentPanel = $('#contentPanel .row');
+if(!$contentPanel.hasClass('no-fade')){
+    $contentPanel.hide(0);
+    $contentPanel.css('visibility', 'visible');
+    $contentPanel.fadeIn(200);
+}
+
+var calendar = $('.calendar-fix');
+calendar.hide(0);
+calendar.css('visibility', 'visible');
+calendar.fadeIn(200);
 
 
 /*

@@ -595,8 +595,17 @@ li.addTable .glyphicon{
 #contentPanel{
 	margin-top: 40px;
 
-	/*This is to give the time to bootstrap table to load*/
-	visibility: hidden;
+
+	.row{
+		/*This is to give the time to bootstrap table to load*/
+		visibility: hidden;
+	}
+
+	.row.no-fade{
+		/*This is to disable the load*/
+		visibility: visible;
+	}
+
 }
 
 .calendar-fix{

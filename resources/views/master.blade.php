@@ -152,9 +152,6 @@ $userMenuTabs = array
 <div id="contentPanel" class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
 
     <div class="row">
-        @yield('titleSection')
-    </div>
-    <div class="row">
         <div class="col-lg-12">
             @if(Session::has('success'))
                 <div id="flash-msg" class="row collapse in">
@@ -165,12 +162,12 @@ $userMenuTabs = array
                     </div>
                 </div>
             @endif
-
-            @yield('content')
-
-            @yield('afterContent')
         </div>
     </div>
+
+    @yield('content')
+
+    @yield('afterContent')
 
 </div>
 
