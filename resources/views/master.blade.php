@@ -88,25 +88,25 @@ $userMenuTabs = array
         @if (Auth::check())
             <li class="{{isActiveRoute('/')}}"><a href="{{ URL::to('/') }}"><svg class="glyph stroked home"><use xlink:href="#stroked-home"></use></svg> {{ Lang::get('menu.dashboard') }}</a></li>
             <li class="{{isActiveRoute('stats')}}"><a name="Statistics" href="{{ URL::to('stats') }}"><svg class="glyph stroked line-graph"><use xlink:href="#stroked-line-graph"></use></svg> {{ Lang::get('menu.statistics') }}</a></li>
-            <li class="{{isActiveRoute('employee')}}"><a name="Employees"  href="{{ URL::to('employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.employees') }}</a></li>
-            <li class="{{isActiveRoute('work/titles')}}"><a name="Work Titles"  href="{{ URL::to('work/titles') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.workTitles') }}</a></li>
-            <li class="{{isActiveRoute('calendar')}}"><a name="Calendar"  href="{{ URL::to('calendar') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> {{ Lang::get('menu.calendar') }}</a></li>
-            <li class="{{isActiveRoute('schedule')}}"><a name="Schedules"  href="{{ URL::to('schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> {{ Lang::get('menu.schedules') }}</a></li>
-            <li class="{{isActiveRoute('availability')}}"><a name="Availability"  href="{{ URL::to('availability') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> {{ Lang::get('menu.availability') }}</a></li>
-            <li class="{{isActiveRoute('inventory')}}"><a name="Inventory"  href="{{ URL::to('inventory') }}"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg> {{ Lang::get('menu.inventory') }}</a></li>
-            <li class="{{isActiveRoute('clients')}}"><a name="Clients"  href="{{ URL::to('clients') }}"><svg class="glyph stroked female user"><use xlink:href="#stroked-female-user"/></svg> Clients</a></li>
-            <li id="" class="parent {{areActiveRoutes(['menu','plan','items','itemtypes','extras','filters','punch'])}}">
+            <li class="{{areActiveRoutes(['employee', 'employee/*'])}}"><a name="Employees"  href="{{ URL::to('employee') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.employees') }}</a></li>
+            <li class="{{areActiveRoutes(['work/titles', 'work/titles/*'])}}"><a name="Work Titles"  href="{{ URL::to('work/titles') }}"><svg class="glyph stroked male-user"><use xlink:href="#stroked-male-user"></use></svg> {{ Lang::get('menu.workTitles') }}</a></li>
+            <li class="{{areActiveRoutes(['calendar', 'calendar/*'])}}"><a name="Calendar"  href="{{ URL::to('calendar') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> {{ Lang::get('menu.calendar') }}</a></li>
+            <li class="{{areActiveRoutes(['schedule', 'schedule/*'])}}"><a name="Schedules"  href="{{ URL::to('schedule') }}"><svg class="glyph stroked calendar"><use xlink:href="#stroked-calendar"/></svg> {{ Lang::get('menu.schedules') }}</a></li>
+            <li class="{{areActiveRoutes(['availability', 'availability/*'])}}"><a name="Availability"  href="{{ URL::to('availability') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> {{ Lang::get('menu.availability') }}</a></li>
+            <li class="{{areActiveRoutes(['inventory', 'inventory/*'])}}"><a name="Inventory"  href="{{ URL::to('inventory') }}"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg> {{ Lang::get('menu.inventory') }}</a></li>
+            <li class="{{areActiveRoutes(['clients', 'clients/*'])}}"><a name="Clients"  href="{{ URL::to('clients') }}"><svg class="glyph stroked female user"><use xlink:href="#stroked-female-user"/></svg> Clients</a></li>
+            <li id="" class="parent {{areActiveRoutes(['plan', 'plan/*','items', 'items/*','itemtypes','itemtypes/*','extras','extras/*','filters', 'filters/*'])}}">
                 <a id="" data-toggle="collapse" href="#sub-item-0" class="collapsed" aria-expanded="false">
                     <svg id="" class="glyph stroked chevron-down"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-chevron-down"></use></svg>
                     <span id="" class="menuLinkText">{{ Lang::get('menu.posMenu') }}</span>
                 </a>
-                <ul class="children collapse {{isCollapseIn(['menu','plan','items','itemtypes','extras','filters','punch'])}}" id="sub-item-0" aria-expanded="false">
-                    <li class="{{isActiveRoute('menu')}}"><a name="MenuPOS" href="{{ URL::to('/posio-menu') }}"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> {{ Lang::get('menu.menu') }}</a></li>
-                    <li class="{{isActiveRoute('plan')}}"><a name="Plans" href="{{ URL::to('plan') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> {{ Lang::get('menu.plans') }}</a></li>
-                    <li class="{{isActiveRoute('items')}}"><a name="Items" href="{{ URL::to('items') }}"><svg class="glyph stroked bacon burger"><use xlink:href="#stroked-bacon-burger"/></svg></svg> {{ Lang::get('menu.items') }}</a></li>
-                    <li class="{{isActiveRoute('itemtypes')}}"><a name="Item Types" href="{{ URL::to('itemtypes') }}"><svg class="glyph stroked paper coffee cup"><use xlink:href="#stroked-paper-coffee-cup"/></svg> {{ Lang::get('menu.itemTypes') }}</a></li>
-                    <li class="{{isActiveRoute('extras')}}"><a name="Extras" href="{{ URL::to('extras') }}"><svg class="glyph stroked tag"><use xlink:href="#stroked-tag"/></svg> {{ Lang::get('menu.extras') }}</a></li>
-                    <li class="{{isActiveRoute('filters')}}"><a name="Menu Filer" href="{{ URL::to('filters') }}"><svg class="glyph stroked monitor"><use xlink:href="#stroked-monitor"/></svg> {{ Lang::get('menu.posMenuFilter') }}</a></li>
+                <ul class="children collapse {{isCollapseIn(['plan', 'plan/*', 'items', 'items/*','itemtypes','itemtypes/*','extras','extras/*','filters', 'filters/*'])}}" id="sub-item-0" aria-expanded="false">
+                    <li><a name="MenuPOS" href="{{ URL::to('/posio-menu') }}"><svg class="glyph stroked app window with content"><use xlink:href="#stroked-app-window-with-content"/></svg> {{ Lang::get('menu.menu') }}</a></li>
+                    <li class="{{areActiveRoutes(['plan', 'plan/*'])}}"><a name="Plans" href="{{ URL::to('plan') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> {{ Lang::get('menu.plans') }}</a></li>
+                    <li class="{{areActiveRoutes(['items', 'items/*'])}}"><a name="Items" href="{{ URL::to('items') }}"><svg class="glyph stroked bacon burger"><use xlink:href="#stroked-bacon-burger"/></svg></svg> {{ Lang::get('menu.items') }}</a></li>
+                    <li class="{{areActiveRoutes(['itemtypes','itemtypes/*'])}}"><a name="Item Types" href="{{ URL::to('itemtypes') }}"><svg class="glyph stroked paper coffee cup"><use xlink:href="#stroked-paper-coffee-cup"/></svg> {{ Lang::get('menu.itemTypes') }}</a></li>
+                    <li class="{{areActiveRoutes(['extras','extras/*'])}}"><a name="Extras" href="{{ URL::to('extras') }}"><svg class="glyph stroked tag"><use xlink:href="#stroked-tag"/></svg> {{ Lang::get('menu.extras') }}</a></li>
+                    <li class="{{areActiveRoutes(['filters', 'filters/*'])}}"><a name="Menu Filer" href="{{ URL::to('filters') }}"><svg class="glyph stroked monitor"><use xlink:href="#stroked-monitor"/></svg> {{ Lang::get('menu.posMenuFilter') }}</a></li>
                 </ul>
             </li>
             <li role="presentation" class="divider"></li>
