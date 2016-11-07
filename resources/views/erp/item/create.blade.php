@@ -40,7 +40,7 @@
 
                         @if(isset($tableChoiceLists))
                             <div class="form-group">
-                                @include('shared.choiceList')
+                                @include('erp.item.choiceList')
                             </div>
                         @endif
 

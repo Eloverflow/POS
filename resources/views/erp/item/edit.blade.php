@@ -81,7 +81,7 @@
                         @endif
 
                         @if(isset($tableChoiceLists))
-                            @include('shared.choiceList')
+                            @include('erp.item.choiceList')
                         @endif
 
 

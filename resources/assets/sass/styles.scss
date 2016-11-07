@@ -499,7 +499,7 @@ li.addTable .glyphicon{
 .tableChoiceList{
 	visibility: hidden;
 	overflow-y: scroll;
-	height: 150px;
+	height: 250px;
 	margin-bottom: 0;
 }
 
@@ -554,6 +554,9 @@ li.addTable .glyphicon{
 	background: rgba(0,0,0,0);
 }
 
+form{
+	overflow-x: hidden;
+}
 
 .tableChoiceListArrow{
 	padding: 0;
