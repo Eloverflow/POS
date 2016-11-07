@@ -3,7 +3,6 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
     <script src="{{ @URL::to('js/jquery/jquery-ui.js') }}"></script>
     <link rel="stylesheet" href="{{ @URL::to('css/jquery/jquery-ui.css') }}"/>
-    <link rel="stylesheet" href="{{ @URL::to('css/employeeTitles.css') }}"/>
     <script>
         $(function() {
             $( "#accordion" ).accordion();

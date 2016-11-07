@@ -34,7 +34,10 @@ class PagesController extends Controller
         return view('POS.Website.websiteLayout');
     }
 
-
+    public function posioMenu()
+    {
+        return  redirect('http://pos.mirageflow.com:8000');
+    }
 
     /**
      * Show the form for creating a new resource.

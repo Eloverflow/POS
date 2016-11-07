@@ -10,11 +10,20 @@ setTimeout(function() { pageScroll.resize(); }, 500);*/
 setTimeout(function() { $('.fc-day-grid-container.fc-scroller').css('height', 'auto'); }, 100);
 */
 
+/*This is to give the time to bootstrap table to load*/
+var $contentPanel = $('#contentPanel .row');
+if(!$contentPanel.hasClass('no-fade')){
+    $contentPanel.hide(0);
+    $contentPanel.css('visibility', 'visible');
+    $contentPanel.fadeIn(200);
+}
 
-$('#contentPanel').hide(0);
-$('#contentPanel').css('visibility', 'visible');
+var calendar = $('.calendar-fix');
+calendar.hide(0);
+calendar.css('visibility', 'visible');
+calendar.fadeIn(200);
 
-$('#contentPanel').show(200);
+
 /*
 $('.datepickerInput').datepicker({
     format: 'yyyy-mm-dd',

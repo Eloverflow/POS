@@ -1,4 +1,4 @@
-@extends('workerLayout')
+@extends('master')
 
 @section("csrfToken")
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
@@ -13,68 +13,76 @@
 @stop
 
 @section('content')
-    <div id="displayErrors" style="display:none;" class="alert alert-danger">
-        <strong>Whoops!</strong> There were some problems with your input.<br><br>
-        <ul id="errors"></ul>
-    </div>
-    <h3>Plan name: </h3>
-    <span id="planName">{{ $ViewBag['planName'] }}</span>
-    <h5>Floor Number:</h5>
-    <span id="floorNumber">{{ $ViewBag['nbFloor'] }}</span>
-    <a class="btn btn-success pull-right" id="btnFinish" href="#"> Create </a>
-    <br/>
-    <div id="rowCmd">
-        <a id="btnNewTable" class="btn btn-primary" href="#"> New Table </a>
-        <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
-        <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
-        <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
-        <br>
-        <br>
-        <a class="btn btn-info" id="btnAddWalls" href="#"> Add Walls </a>
-        <a class="btn btn-info" id="btnEditWalls" href="#"> Edit Walls </a>{{--
-        <a class="btn btn-danger" id="btnCancelEditWalls" href="#">Cancel Edit Walls </a>--}}
-        <a class="btn btn-success" id="btnSaveWalls" href="#"> Save Walls </a>
-        <a class="btn btn-danger" id="btnDeleteWalls"  href="#"> Delete Walls </a>
-        <p id="wall-info"><em>Click near a wall to cut it in half or click inside the walls to add a separation(Rezisable)</em></p>
-    </div>
-    <br>
-    <div id="follower"><span class="glyphicon glyphicon-plus"></span></div>
-    <!--Horizontal Tab-->
-    <div id="parentHorizontalTab">
-        <ul class="resp-tabs-list hor_1">
 
-        </ul>
-        <div id="tabControl" class="resp-tabs-container hor_1">
+<div class="row no-fade">
+    <div class="panel panel-default">
+        <div class="panel-body">
 
-        </div>
-    </div>
-    <div id="nested-tabInfo">
-        Selected tab: <span class="tabName"></span>
-        Selected tab ID: <span class="tabItemID"></span>
-    </div>
+            <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                <ul id="errors"></ul>
+            </div>
+            <h3>Plan name: </h3>
+            <span id="planName">{{ $ViewBag['planName'] }}</span>
+            <h5>Floor Number:</h5>
+            <span id="floorNumber">{{ $ViewBag['nbFloor'] }}</span>
+            <a class="btn btn-success pull-right" id="btnFinish" href="#"> Create </a>
+            <br/>
+            <div id="rowCmd">
+                <a id="btnNewTable" class="btn btn-primary" href="#"> New Table </a>
+                <a id="btnNewPlace" class="btn btn-primary" href="#"> New Place </a>
+                <a id="btnNewSeparation" class="btn btn-primary" href="#"> New Separation </a>
+                <a class="btn btn-warning" id="btnReOrder" href="#"> Re-order </a>
+                <br>
+                <br>
+                <a class="btn btn-info" id="btnAddWalls" href="#"> Add Walls </a>
+                <a class="btn btn-info" id="btnEditWalls" href="#"> Edit Walls </a>{{--
+                <a class="btn btn-danger" id="btnCancelEditWalls" href="#">Cancel Edit Walls </a>--}}
+                <a class="btn btn-success" id="btnSaveWalls" href="#"> Save Walls </a>
+                <a class="btn btn-danger" id="btnDeleteWalls"  href="#"> Delete Walls </a>
+                <p id="wall-info"><em>Click near a wall to cut it in half or click inside the walls to add a separation(Rezisable)</em></p>
+            </div>
+            <br>
+            <div id="follower"><span class="glyphicon glyphicon-plus"></span></div>
+            <!--Horizontal Tab-->
+            <div id="parentHorizontalTab">
+                <ul class="resp-tabs-list hor_1">
 
-    <div id="editModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <!-- dialog body -->
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <div class="col-md-4">
-                        <div class="form-group">
-                            {!! Form::label('tblNum', "Table Number" ) !!}
-                            {!! Form::text('tblNum', null, array('class' => 'form-control', 'id' => 'tblNum')) !!}
+                </ul>
+                <div id="tabControl" class="resp-tabs-container hor_1">
+
+                </div>
+            </div>
+            <div id="nested-tabInfo">
+                Selected tab: <span class="tabName"></span>
+                Selected tab ID: <span class="tabItemID"></span>
+            </div>
+
+            <div id="editModal" class="modal fade">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <!-- dialog body -->
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    {!! Form::label('tblNum', "Table Number" ) !!}
+                                    {!! Form::text('tblNum', null, array('class' => 'form-control', 'id' => 'tblNum')) !!}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- dialog buttons -->
+                        <div class="modal-footer">
+                            <button id="btnDelTable" type="button" class="btn btn-danger">Delete</button>
+                            <button id="btnEditTable" type="button" class="btn btn-primary">Edit</button>
                         </div>
                     </div>
-                </div>
-
-                <!-- dialog buttons -->
-                <div class="modal-footer">
-                    <button id="btnDelTable" type="button" class="btn btn-danger">Delete</button>
-                    <button id="btnEditTable" type="button" class="btn btn-primary">Edit</button>
                 </div>
             </div>
         </div>
     </div>
+</div>
 @stop
 
 
@@ -234,6 +242,9 @@
 
             stateHasNoWall();
         });
+
+        $('#sidebar-collapse').delay(50).animate({width: 0}, 200);
+        $('.col-sm-9.col-sm-offset-3.col-lg-10.col-lg-offset-2').delay(50).animate({width: '100%', marginLeft: 0, position: 'absolute'}, 200)
 
     </script>
 @stop

@@ -64,7 +64,7 @@ class CalendarController extends Controller
 
     public  function edit()
     {
-        $calendarEvents = $this->GetCalendarEvents();
+        $calendarEvents = $this->GetCalendarEvents(CalendarEvent::GetCalendarMoments());
 
         $date = new DateTime();
         $date->modify('Sunday last week');

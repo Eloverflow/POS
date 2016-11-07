@@ -17,18 +17,9 @@ class CreateInventoriesTable extends Migration
             $table->integer('item_id')->unsigned();
             $table->foreign('item_id')->references('id')->on('items');
             $table->integer('quantity');
+            $table->string('item_size');
             $table->string('slug')->unique();
             $table->timestamps();
         });
-    }
-
-    /**
-     * Reverse the migrations.
-     *
-     * @return void
-     */
-    public function down()
-    {
-        Schema::drop('inventories');
     }
 }

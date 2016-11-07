@@ -16,6 +16,7 @@ Auth::routes();
 Route::get('/search', ['uses' => 'SearchController@search', 'middleware' => 'auth']);
 
 Route::get('/website', ['uses' => 'PagesController@websiteLayout', 'middleware' => 'auth']);
+Route::get('/posio-menu', ['uses' => 'PagesController@posioMenu']);
 
 Route::get('/user/password/update', ['uses' => 'Auth\UserController@update','middleware' => 'auth']);
 Route::post('/user/password/update', ['uses' => 'Auth\UserController@updatePassword','middleware' => 'auth']);
@@ -148,8 +149,8 @@ Route::post('/schedule/AjaxGetEmployeeDaySchedules',  ['uses' => 'POS\ScheduleCo
 
 
 /* Start Punch */
-Route::get('/punch',  ['uses' => 'POS\PunchController@index', 'middleware' => 'auth']);
-Route::get('/keyboard',  ['uses' => 'POS\PunchController@keyboard', 'middleware' => 'auth']);
+/*Route::get('/punch',  ['uses' => 'POS\PunchController@index', 'middleware' => 'auth']);*/
+/*Route::get('/keyboard',  ['uses' => 'POS\PunchController@keyboard', 'middleware' => 'auth']);*/
 /* End Punch */
 
 /* Start Plan */

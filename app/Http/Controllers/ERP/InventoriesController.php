@@ -18,38 +18,20 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
     public function index()
     {
-        $title = 'Inventory';
+        $inventories = Inventory::all();
 
-        /*Main table row to retrieve from DB*/
-        $tableRows = Inventory::all();
-        /*Main table desired column to display*/
-        $tableColumns = array('id', 'quantity');
+   /*     foreach ($inventories as $inventory)
+        {
+            $inventoryItems = ExtraItem::where('inventory_id', $inventory->id)->get();
+            $inventoryItemTypes = ExtraItemType::where('inventory_id', $inventory->id)->get();
 
+            $inventory['items'] = $inventoryItems->load('item');
+            $inventory['itemtypes'] = $inventoryItemTypes->load('itemtype');
+        }*/
 
-        /*Child table name*/
-       /* $tableChildName = "item";*/
-        /*Child table rows*/
-        /*$tableChildRows =  $tableRows->load($tableChildName);*/
-        /*Child table desired column to display*/
-        /*$tableChildColumns = array('name');*/
+        $inventories->load('item');
 
-        /*$tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);*/
-
-        /*--------*/
-
-        /*Child table name*/
-        $tableChildName = "item";
-        /*Child table rows*/
-        $tableChildRows =  $tableRows->load($tableChildName);
-        /*Child table desired column to display*/
-        $tableChildColumns = array('name');
-
-        $tableChild1 = array("name" => $tableChildName,"rows" => $tableChildRows, "columns" => $tableChildColumns);
-
-        $tableChildren = array($tableChild1);
-
-
-        return view('shared.list',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
+        return view('erp.inventory.index',compact('title', 'inventories'));
     }
 
     public function emptyEdit($slug)
@@ -147,57 +129,26 @@ class InventoriesController extends \App\Http\Controllers\Controller
     public function create()
 {
 
-    /*Page Title*/
-    $title = 'Inventory';
+    $items = Item::all();
+    $items->load('itemtype');
 
-    /*$formSections = array(
-        'section1' => array(
-            'title' => '',
-            'fields' => array(
-                array(
-                    'label' => 'Quantity',
-                    'input' => 'quantity'
-                ),
-                array(
-                    'label' => 'Quantity',
-                    'input' => 'quantity'
-                )
-            )
-        )
-    );*/
-
-    $tableColumns = array('quantity');
-
-
-    $tableChoiceListTable = Item::all();
+    $tableChoiceListTable = $items;
     /*select all where type = beer*/
 
-    $tableChoiceListTitle = "Item ID";
-    $tableChoiceListDBColumn = "item_id";
+    $tableChoiceListTitle = "Item";
+    $tableChoiceListDBColumn = "item_type_id";
     $tableChoiceListTitleColumn = "name";
-    $tableChoiceListContentColumn = "description";
+    $tableChoiceListContentColumn = "";
     $tableChoiceListCreateURL = @URL::to('/items');
 
     $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
 
-    /*
-            $tableChoiceListTable = Order::all();
 
-            $tableChoiceListTitle = "Order Number";
-            $tableChoiceListDBColumn = "order_id";
-            $tableChoiceListTitleColumn = "command_number";
-            $tableChoiceListContentColumn = "";
-            $tableChoiceListCreateURL = @URL::to('/orders/create');
-
-            $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn , "postUrl" => $tableChoiceListCreateURL);
-    */
+    $tableChoiceLists = array($tableChoiceList1);
 
 
-    $tableChoiceLists = array($tableChoiceList1/*, $tableChoiceList2*/);
 
-    $formSections = [];
-
-    return view('shared.createOld',compact('title', 'tableChoiceLists', 'tableColumns','formSections'));
+    return view('erp.inventory.create',compact('title', 'tableColumns', 'tableChoiceLists' ));
 }
 
     public function postCreate()

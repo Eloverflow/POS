@@ -32,7 +32,7 @@ class WorkTitleController extends Controller
         $view = \View::make('POS.WorkTitle.index')
             ->with('ViewBag', array (
                 'workTitles' => $workTitles,
-                'employees' => $employeesListca
+                'employees' => $employeesList
             ));
         return $view;
     }

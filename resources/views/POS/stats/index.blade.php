@@ -1,7 +1,6 @@
 @extends('master')
 @section('csrfToken')
     <meta name="csrf-token" content="{{ csrf_token() }}"/>
-    <link rel="stylesheet" href="{{ @URL::to('css/graphs.css') }}"/>
     <script src="{{ @URL::to('js/chart.min.js') }}" ></script>
 
 

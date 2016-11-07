@@ -17,3 +17,9 @@ elixir(mix => {
     mix.sass('app.scss')
        .webpack('app.js');
 });
+
+elixir(function(mix) {
+    mix.browserSync({
+        proxy: 'pos.mirageflow.com'
+    });
+});
