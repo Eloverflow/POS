@@ -20,8 +20,8 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
+                    {!! Form::open(array('url' => 'inventory/create', 'role' => 'form')) !!}
                     <div class="col-md-6">
-                        {!! Form::open(array('url' => 'inventory/create', 'role' => 'form')) !!}
                             @if(isset($tableChoiceLists))
                                 <div class="form-group">
                                     @include('erp.inventory.choiceList')

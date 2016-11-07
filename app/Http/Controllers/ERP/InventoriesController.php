@@ -33,7 +33,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
         return view('erp.inventory.index',compact('title', 'inventories'));
     }
-    
+
     public function edit($slug)
     {
 
@@ -114,7 +114,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
         );
 
         $validation = \Validator::make($inputs, $rules, $message);
-        if($validation -> fails())
+        if($validation->fails())
         {
             return Redirect::action('ERP\InventoriesController@create')->withErrors($validation)
                 ->withInput();

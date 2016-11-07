@@ -16,7 +16,7 @@ function drawFillingForms(xEvent) {
 
     sizesFormHTML += '<div class="form-group">' +
         '<label for="item_size">Item Sizes</label>' +
-        '<select name="item_size" class="form-control">';
+        '<select id="item_size" name="item_size" class="form-control">';
 
     for(var j = 0; j < itemSizes.length; j++){
         sizesFormHTML += '<option value="'+itemSizes[j]+'">'+ itemSizes[j]+'</option>';
@@ -36,7 +36,7 @@ function drawFillingForms(xEvent) {
     * */
 
     sizesFormHTML += '</div>';
-    sizesFormHTML += '<div><label for="quantity" >Quantité</label><input class="form-control" name="quantity" type="number" id="quantity"> </div>';
+    sizesFormHTML += '<div class="form-group"><label for="quantity" >Quantité</label><input class="form-control" name="quantity" type="number" id="quantity"> </div>';
 
     $("#formShowing").append(sizesFormHTML);
 }
