@@ -45,7 +45,7 @@ Route::post('/menu/payer',  ['uses' => 'POS\SalesController@payer', 'middleware'
 Route::get('/inventory',  ['uses' => 'ERP\InventoriesController@index', 'middleware' => 'auth']);
 Route::get('/inventory/edit/{slug}',  ['uses' => 'ERP\InventoriesController@edit', 'middleware' => 'auth']);
 Route::get('/inventory/details/{slug}',  ['uses' => 'ERP\InventoriesController@details', 'middleware' => 'auth']);
-Route::post('/inventory/edit/{slug}',  ['uses' => 'ERP\InventoriesController@update', 'middleware' => 'auth']);
+Route::post('/inventory/edit/{slug}',  ['uses' => 'ERP\InventoriesController@postEdit', 'middleware' => 'auth']);
 Route::get('/inventory/create',  ['uses' => 'ERP\InventoriesController@create', 'middleware' => 'auth']);
 Route::post('/inventory/create',  ['uses' => 'ERP\InventoriesController@postCreate', 'middleware' => 'auth']);
 

@@ -59,19 +59,17 @@ class InventoriesController extends \App\Http\Controllers\Controller
         return view('erp.inventory.details',compact('inventory', 'previousTableRow', 'nextTableRow'));
     }
 
-    public function update($slug, Request $request)
+    public function postEdit($slug, Request $request)
     {
-        $item = Inventory::whereId($slug)->first();
+        $item = Inventory::whereSlug($slug)->first();
 
         $input = $request->all();
 
-        var_dump($input);
-
         $item->update($input);
 
-        Session::flash('flash_message', $slug.' successfully updated!');
+        Session::flash('success', $slug.' successfully updated!');
 
-        return Redirect::back();
+        return Redirect::action('ERP\InventoriesController@index');
     }
 
     public function create()

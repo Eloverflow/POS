@@ -39,10 +39,6 @@
 
 
                     </div>
-                    <div class="col-md-12">
-                        <!-- dialog buttons -->
-                        {!! Form::submit('Metre à jour', array('class' => 'btn btn-primary pull-right ')) !!}
-                    </div>
                 </div>
 
             </div>

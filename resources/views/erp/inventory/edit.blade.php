@@ -21,7 +21,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-12">
-                    {!! Form::open(array('url' => 'inventory/update', 'role' => 'form')) !!}
+                    {!! Form::open(array('url' => 'inventory/edit/'.$inventory->slug, 'role' => 'form')) !!}
 
 
                     <div class="form-group">
@@ -34,7 +34,7 @@
 
                     <div class="form-group">
                         <label for="quantity" >Quantité</label>
-                        <input class="form-control" type="text" id="quantity" name="quantity" value="{{ $inventory->quantity }}">
+                        <input class="form-control" type="number" id="quantity" name="quantity" value="{{ $inventory->quantity }}">
                     </div>
 
 
