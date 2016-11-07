@@ -33,11 +33,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
         return view('erp.inventory.index',compact('title', 'inventories'));
     }
-
-    public function emptyEdit($slug)
-    {
-        
-    }
+    
     public function edit($slug)
     {
 
