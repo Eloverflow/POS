@@ -36,17 +36,30 @@
                                     @endif
                                 </div>
 
+                            <div class="col-lg-6 no-pad">
                                 <div class="form-group">
                                     {!! Form::label('password', "Password" ) !!}
                                     @if($errors->has('password'))
                                         <div class="form-group has-error">
-                                            {!! Form::input('number','password', null, array('class' => 'form-control')) !!}
+                                            {!! Form::password('password', array('class' => 'form-control')) !!}
                                         </div>
                                     @else
-                                        {!! Form::input('number','password', null, array('class' => 'form-control')) !!}
+                                        {!! Form::password('password', array('class' => 'form-control')) !!}
                                     @endif
                                 </div>
-
+                            </div>
+                            <div class="col-lg-6 no-pad">
+                                <div class="form-group">
+                                    {!! Form::label('confirmPassword', "Confirm Password" ) !!}
+                                    @if($errors->has('confirmPassword'))
+                                        <div class="form-group has-error">
+                                            {!! Form::password('confirmPassword', array('class' => 'form-control')) !!}
+                                        </div>
+                                    @else
+                                        {!! Form::password('confirmPassword', array('class' => 'form-control')) !!}
+                                    @endif
+                                </div>
+                            </div>
                                 {{--<div class="form-group">
                                     {!! Form::label('confirmPassword', "Confirm Password" ) !!}
                                     @if($errors->has('confirmPassword'))
