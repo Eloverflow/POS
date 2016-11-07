@@ -373,8 +373,8 @@ class InventoriesTableSeeder extends Seeder {
     {
         DB::table('inventories')->delete();
 
-        Inventory::create(['item_id' => '1', 'item_size' => 'Baril', 'quantity' => '100', 'slug' => 'keith']);
-        Inventory::create(['item_id' => '2', 'item_size' => 'Baril', 'quantity' => '50',  'slug' => 'blue']);
+        Inventory::create(['item_id' => '1', 'item_size' => 'Baril', 'quantity' => '100', 'slug' => 'keith-baril']);
+        Inventory::create(['item_id' => '2', 'item_size' => 'Baril', 'quantity' => '50',  'slug' => 'blue-baril']);
 
         $this->command->info('Inventories table seeded!');
     }

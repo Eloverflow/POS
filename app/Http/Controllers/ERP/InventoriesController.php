@@ -131,7 +131,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
                 $inventories->update(Input::all());
 
-                Session::flash('flash_message', $inventories->slug.' quantity successfully updated!');
+                Session::flash('success', $inventories->slug.' quantity successfully updated!');
 
             }
             else{
@@ -145,7 +145,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
                     'slug' => $itemSlug
                 ]);
 
-                Session::flash('flash_message', $itemSlug . ' successfully created!');
+                Session::flash('success', $itemSlug . ' successfully created!');
             }
 
             return Redirect::back();
