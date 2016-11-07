@@ -14,7 +14,10 @@ return [
     */
 
     'title' => 'Inventaire',
-    'backToInventory' => 'Retour a l\'inventaire',
-    'addToInventory'     => 'Ajouter a l\'inventaire',
+    'backToInventory' => 'Retour à l\'inventaire',
+    'addToInventory'     => 'Ajouter à l\'inventaire',
+    'updateToInventory'     => 'Metre à jour dans l\'inventaire',
+    'detailsInventory'     => 'Détail à l\'inventaire',
+
 
 ];

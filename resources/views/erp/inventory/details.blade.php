@@ -9,7 +9,7 @@
 
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">{{ @Lang::get('inventory.updateToInventory') }}</h1>
+        <h1 class="page-header">{{ @Lang::get('inventory.detailsInventory') }}</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">
@@ -21,21 +21,21 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-12">
-                    {!! Form::open(array('url' => 'inventory/update', 'role' => 'form')) !!}
+                        {!! Form::open(array('url' => 'inventory/update', 'role' => 'form')) !!}
 
 
-                    <div class="form-group">
-                        <label for="item" >Item</label>
-                        <p>{{ $inventory->item->name }}</p>
-                        <label for="item" >Item Size</label>
-                        <p>{{ $inventory->item_size }}</p>
-                    </div>
+                        <div class="form-group">
+                            <label for="item" >Item</label>
+                            <p>{{ $inventory->item->name }}</p>
+                            <label for="item" >Item Size</label>
+                            <p>{{ $inventory->item_size }}</p>
+                        </div>
 
 
-                    <div class="form-group">
-                        <label for="quantity" >Quantité</label>
-                        <input class="form-control" type="text" id="quantity" name="quantity" value="{{ $inventory->quantity }}">
-                    </div>
+                        <div class="form-group">
+                            <label for="quantity" >Quantité</label>
+                            <p>{{ $inventory->quantity }}</p>
+                        </div>
 
 
                     </div>

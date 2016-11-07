@@ -26,12 +26,9 @@
                             <thead>
                             <tr>
                                 <th data-field="id" data-checkbox="true"  >id</th>
-                                <th data-field="name" data-sortable="true" >Quantity</th>
-                                <th data-field="desc" data-sortable="true" >Description</th>
-                                <th data-field="effect" data-sortable="true" >Effet</th>
-                                <th data-field="value" data-sortable="true" >Valeur</th>
-                                <th data-field="items" data-sortable="true" >Items</th>
-                                <th data-field="itemtypes" data-sortable="true" >Item Types</th>
+                                <th data-field="quantity" data-sortable="true" >Quantity</th>
+                                <th data-field="item_id" data-sortable="true" >Item</th>
+                                <th data-field="item_size" data-sortable="true" >Item Size</th>
 
                                 <th>Options</th>
                             </tr>
@@ -44,8 +41,13 @@
                                 <tr>
                                     <td>{{ $inventory->id }}</td>
                                     <td>{{ $inventory->quantity }}</td>
-                                  {{--  <td>@foreach($inventory->items as $item) {{ $item->item->name }} <br> @endforeach</td>--}}
-                                    <td><a href="{{@URL::to('/inventory/edit/' . $inventory->slug)}}">Edit</a></td>
+                                    <td>{{ $inventory->item->name }}</td>
+                                    <td>{{ $inventory->item_size }}</td>
+                                    <td>
+                                        <a href="{{@URL::to('/inventory/details/' . $inventory->slug)}}">Details</a>
+                                        <a href="{{@URL::to('/inventory/edit/' . $inventory->slug)}}">Edit</a>
+                                        <a href="{{@URL::to('/inventory/delete/' . $inventory->slug)}}">Delete</a>
+                                    </td>
                                 </tr>
                             @endforeach()
                             </tbody>
