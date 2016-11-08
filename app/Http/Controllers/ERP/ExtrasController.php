@@ -249,16 +249,11 @@ class ExtrasController extends Controller
         $extra['items'] = $extraItems->load('item');
         $extra['itemtypes'] = $extraItemTypes->load('itemtype');
 
-
-        $items = Item::all();
-        $itemtypes = ItemType::all();
-
-
         /*Previous and Next */
         $previousTableRow = Extra::find(($extra->id)-1);
         $nextTableRow = Extra::find(($extra->id)+1);
 
-        return view('erp.extra.details',compact('extra', 'items', 'itemtypes', 'tableColumns', 'previousTableRow', 'nextTableRow'));
+        return view('erp.extra.details',compact('extra', 'tableColumns', 'previousTableRow', 'nextTableRow'));
     }
 
 }
