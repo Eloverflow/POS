@@ -32,10 +32,13 @@ class EmployeeController extends Controller
     {
         $employee = Employee::GetById($id);
         $punches  = Punch::GetByEmployeeId($id);
+
+        $workTitle = WorkTitle::all();
         //DB::table('users')->get();
         $view = \View::make('POS.Employee.track')->with('ViewBag', array (
             "employee" => $employee,
-            "punches" => $punches
+            "punches" => $punches,
+            "work_titles" => $workTitle
         ));
         return $view;
     }

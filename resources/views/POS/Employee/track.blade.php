@@ -19,7 +19,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-
+                    {!! Form::text('idEmployee', $ViewBag["employee"]->idEmployee, array('style' => 'display:none;visibility:hidden;', 'id' => 'idEmployee')) !!}
                     <div class="form-group">
                         <label>First Name :</label>
                         <p>{{ $ViewBag["employee"]->firstName }}</p>
@@ -42,8 +42,7 @@
                         <tr>
                             <th class="col-md-2" data-field="startTime">Start Time</th>
                             <th class="col-md-2" data-field="endTime">End Time</th>
-                            <th data-field="date">Date</th>
-                            <th data-field="actions"></th>
+                            <th data-field="actions">Options</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -51,7 +50,7 @@
                             <tr>
                                 <td>{{ $punch->startTime }}</td>
                                 <td>{{ $punch->endTime }}</td>
-                                <td><a class="editPunch" href="#" data-id="{{ $punch->id }}">Edit</a>
+                                <td><a class="editPunch" href="#" data-id="{{ $punch->id }}" data-work-title-id="{{ $punch->idWorkTitle }}">Edit</a>
                                     <a class="delPunch" href="#" data-id="{{ $punch->id }}">Delete</a></td>
                             </tr>
                             @endforeach
@@ -65,6 +64,8 @@
     <div id="editModal" class="lumino modal fade">
         <div class="modal-dialog">
             <div class="modal-content">
+                {!! Form::text('idPunch', null, array('style' => 'display:none;visibility:hidden;', 'id' => 'idPunch')) !!}
+                {!! Form::text('idWorkTitle', null, array('style' => 'display:none;visibility:hidden;', 'id' => 'idWorkTitle')) !!}
                 <!-- dialog body -->
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
@@ -108,14 +109,27 @@
                         </div>
                     </div>
 
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <h3>Work Title</h3>
+
+                            <select id="workTitleSelect" name="workTitleSelect" class="form-control dark-border">
+                                @foreach ($ViewBag['work_titles'] as $workTitle)
+
+                                    <option value="{{ $workTitle->id }}" @if(old('workTitleSelect'))
+                                        @if(old('workTitleSelect') == $workTitle->id)
+                                            {{ "selected" }}
+                                                @endif
+                                            @endif >{{ $workTitle->name . "  " . $workTitle->baseSalary}}</option>
+                                @endforeach
+                            </select>
+
+                        </div>
+                    </div>
+
                 </div>
 
                 <!-- dialog buttons -->
-                <div class="modal-footer">
-                    <button id="btnDelPunch" type="button" class="btn btn-danger">Delete</button>
-                    <button id="btnEditPunch" type="button" class="btn btn-primary">Edit</button>
-                </div>
-
                 <div class="modal-footer">
                     <button id="btnDelPunch" type="button" class="btn btn-danger">Delete</button>
                     <button id="btnEditPunch" type="button" class="btn btn-primary">Edit</button>
@@ -134,24 +148,37 @@
     <script type="text/javascript">
         $(document).ready(function (e) {
 
+            // Modal Object
+            $addModal = $("#addModal");
+            $editModal = $("#editModal");
+
+            // Global Access Variables
+            $startTimeCell = null;
+            $endTimeCell = null;
+
+
          $('a.editPunch').bind('click', function(e) {
 
+             $idPunch = $(this).data("id");
+             $idWorkTitle = $(this).data("work-title-id");
+             $selectedRow = $(this).parent().parent();
 
-            console.log($(this).parent());
-            console.log($(this).parent());
-             /*$startTimeMoment =  moment("2016-06-06 19:00:00");
-             $endTimeMoment  = moment();
+             // On set les values
+             $editModal.find("#idPunch").val($idPunch);
+             $editModal.find("#workTitleSelect" ).val($idWorkTitle);
 
-
+             $startTimeCell = $selectedRow.find('td:eq(0)');
+             $endTimeCell = $selectedRow.find('td:eq(1)');
 
              $('#startTimePicker').datetimepicker({
-                 defaultDate: $startTimeMoment
+                 defaultDate: moment($startTimeCell.text())
              });
              $('#endTimePicker').datetimepicker({
-                 // Pass parameters here.
+                 defaultDate: moment($endTimeCell.text())
              });
-             $("#editModal").modal('show');*/
+             $("#editModal").modal('show');
              e.preventDefault();
+
          });
          $('a.delPunch').bind('click', function(e) {
              /*e.preventDefault();*/
@@ -159,7 +186,61 @@
          });
 
         // Les binds pour ce qui concerne les controles dans les modals.
+        $("#btnEditPunch").bind('click', function(e) {
 
+
+            $startTimeMoment = moment($editModal.find("#startTimePicker").data("DateTimePicker").date());
+            $endTimeMoment = moment($editModal.find("#endTimePicker").data("DateTimePicker").date());
+
+            $idPunch = $editModal.find("#idPunch").val();
+            $idWorkTitle = $editModal.find("#workTitleSelect option:selected" ).val();
+            $idEmployee = $("#idEmployee").val();
+
+
+          /*  console.log($startTimeMoment);
+            console.log($endTimeMoment);
+            console.log($idPunch);
+            console.log($idWorkTitle);
+            console.log($idEmployee);*/
+
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                url: '/punch/edit',
+                type: 'POST',
+                async: true,
+                data: {
+                    _token: CSRF_TOKEN,
+                    startTime: $startTimeMoment.format(),
+                    endTime: $endTimeMoment.format(),
+                    idPunch: $idPunch,
+                    idWorkTitle: $idWorkTitle,
+                    idEmployee: $idEmployee
+                },
+                dataType: 'JSON',
+                error: function (xhr, status, error) {
+                    var erro = jQuery.parseJSON(xhr.responseText);
+                    $("#errors").empty();
+                    //$("##errors").append('<ul id="errorsul">');
+                    [].forEach.call( Object.keys( erro ), function( key ){
+                        [].forEach.call( Object.keys( erro[key] ), function( keyy ) {
+                            $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
+                        });
+                        //console.log( key , erro[key] );
+                    });
+                    //$("#displayErrors").append('</ul>');
+                    $("#displayErrors").show();
+                },
+                success: function(xhr) {
+                    $startTimeCell.text($startTimeMoment.format("YYYY-MM-DD HH:mm"));
+                    $endTimeCell.text($endTimeMoment.format("YYYY-MM-DD HH:mm"));
+                    alert(xhr);
+
+                }
+            });
+
+            $("#editModal").modal('hide');
+        })
 
 
         $('#punchDatePicker').datetimepicker({

@@ -26,7 +26,7 @@ class Punch extends Model
 
     public static function GetByEmployeeId($id){
         return \DB::table('punches')
-                ->select(\DB::raw('punches.id, punches.startTime, punches.endTime'))
+                ->select(\DB::raw('punches.id, DATE_FORMAT(punches.startTime,\'%Y-%m-%d %H:%i\') as startTime, DATE_FORMAT(punches.endTime,\'%Y-%m-%d %H:%i\') as endTime, punches.work_title_id as idWorkTitle, punches.employee_id'))
                 ->where('punches.employee_id', '=', $id)
                 ->orderBy('punches.startTime', 'desc')
                 ->get();

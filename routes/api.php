@@ -31,3 +31,4 @@ Route::post('/menu/bill',  ['uses' => 'POS\SalesController@updateBill', 'middlew
 Route::post('/menu/delete/bill',  ['uses' => 'POS\SalesController@deleteBills', 'middleware' => 'cors']);
 Route::post('/menu/getBills',  ['uses' => 'POS\SalesController@getBills', 'middleware' => 'cors']);
 Route::post('/employee/punch',  ['uses' => 'POS\PunchController@ajaxPunchEmployee', 'middleware' => 'cors']);
+/*Route::post('/punch/edit',  ['uses' => 'POS\PunchController@postEdit', 'middleware' => 'cors']);*/

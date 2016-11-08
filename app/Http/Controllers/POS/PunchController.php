@@ -64,8 +64,11 @@ class PunchController extends Controller
         $inputs = Input::all();
 
         $rules = array(
-            'firstName' => 'required',
-            'lastName' => 'required'
+            'startTime' => 'required',
+            'endTime' => 'required',
+            'idPunch' => 'required',
+            'idWorkTitle' => 'required',
+            'idEmployee' => 'required'
         );
 
         $message = array(
@@ -75,31 +78,20 @@ class PunchController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            if (Input::has('id')) {
-                return \Redirect::action('POS\EmployeeController@edit', array(Input::get('idEmployee')))->withErrors($validation)
-                    ->withInput();
-            }
+            return \Response::json($validation->messages(), 400);
         }
         else
         {
-            $employee = Employee::where('id', Input::get('idEmployee'))
+            Punch::where('id', Input::get('idPunch'))
                 ->update([
-                'firstName' => Input::get('firstName'),
-                'lastName' => Input::get('lastName'),
-                'streetAddress' => Input::get('streetAddress'),
-                'phone' => Input::get('phone'),
-                'city' => Input::get('city'),
-                'state' => Input::get('state'),
-                'pc' => Input::get('pc'),
-                'nas' => Input::get('nas'),
-                'employeeTitle' => Input::get('employeeTitle'),
-                'userId' => Input::get('idUser'),
-                'salary' => Input::get('salary'),
-                'birthDate' => Input::get('birthDate'),
-                'hireDate' => Input::get('hireDate')
+                'startTime' => Input::get('startTime'),
+                'endTime' => Input::get('endTime'),
+                'work_title_id' => Input::get('idWorkTitle'),
+                'employee_id' => Input::get('idEmployee')
+
             ]);
 
-            return \Redirect::action('POS\EmployeeController@index');
+            return \Response::json("The punch has been successfully edited !", 200);
         }
     }
 
