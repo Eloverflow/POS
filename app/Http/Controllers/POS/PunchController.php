@@ -107,8 +107,11 @@ class PunchController extends Controller
         $inputs = Input::all();
 
         $rules = array(
-            'firstName' => 'required',
-            'lastName' => 'required'
+            'startTime' => 'required',
+            'endTime' => 'required',
+            'idPunch' => 'required',
+            'idWorkTitle' => 'required',
+            'idEmployee' => 'required'
         );
 
         $message = array(
@@ -118,36 +121,20 @@ class PunchController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
         if($validation -> fails())
         {
-            if (Input::has('id')) {
-                return \Redirect::action('POS\EmployeeController@create')->withErrors($validation)
-                    ->withInput();
-            }
+            return \Response::json($validation->messages(), 400);
         }
         else
         {
-            $user = User::create([
-                'name' => 'default_username',
-                'email' => Input::get('email'),
-                'password' => bcrypt(Input::get('password')),
+            Punch::where('id', Input::get('idPunch'))
+                ->update([
+                    'startTime' => Input::get('startTime'),
+                    'endTime' => Input::get('endTime'),
+                    'work_title_id' => Input::get('idWorkTitle'),
+                    'employee_id' => Input::get('idEmployee')
 
-            ]);
-            $employee = Employee::create([
-                'firstName' => Input::get('firstName'),
-                'lastName' => Input::get('lastName'),
-                'streetAddress' => Input::get('streetAddress'),
-                'phone' => Input::get('phone'),
-                'city' => Input::get('city'),
-                'state' => Input::get('state'),
-                'pc' => Input::get('pc'),
-                'nas' => Input::get('nas'),
-                'employeeTitle' => Input::get('employeeTitle'),
-                'userId' => $user->id,
-                'salary' => Input::get('salary'),
-                'birthDate' => Input::get('birthDate'),
-                'hireDate' => Input::get('hireDate')
-            ]);
+                ]);
 
-            return \Redirect::action('POS\EmployeeController@index')->withSuccess('The employee has been successfully created !');
+            return \Response::json("The punch has been successfully edited !", 200);
         }
     }
 
