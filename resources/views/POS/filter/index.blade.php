@@ -9,11 +9,11 @@
 
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">Filter</h1>
+        <h1 class="page-header">{{ @Lang::get('filter.title') }}</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">
-            <a href="{{@URL::to('/filters/create')}}"  ><button type="button" class="btn btn-primary">Create</button></a>
+            <a href="{{@URL::to('/filters/create')}}"  ><button type="button" class="btn btn-primary">{{ @Lang::get('filter.addToFilter') }}</button></a>
         </div>
     </div>
     <div class="row">

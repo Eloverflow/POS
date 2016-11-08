@@ -70,11 +70,13 @@
                         </div>
 
                     </div>
+                    <div class="col-lg-12">
+                        <!-- dialog buttons -->
+                        {!! Form::submit(@Lang::get('extra.addToExtra'), array('class' => 'btn btn-primary pull-right')) !!}
+                    </div>
 
                 </div>
 
-                <!-- dialog buttons -->
-                {!! Form::submit('Create', array('class' => 'btn btn-primary')) !!}
             </div>
         </div>
     </div>
