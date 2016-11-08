@@ -125,17 +125,22 @@ class PunchController extends Controller
         }
         else
         {
-            Punch::where('id', Input::get('idPunch'))
-                ->update([
+                Punch::create([
                     'startTime' => Input::get('startTime'),
                     'endTime' => Input::get('endTime'),
                     'work_title_id' => Input::get('idWorkTitle'),
                     'employee_id' => Input::get('idEmployee')
-
                 ]);
 
-            return \Response::json("The punch has been successfully edited !", 200);
+            return \Response::json("The punch has been successfully created !", 200);
         }
+    }
+
+    public function postDelete($id)
+    {
+        Punch::where('id', $id)
+            ->delete();
+        return \Response::json("The punch has been successfully deleted !", 200);
     }
 
     public function delete($id)
