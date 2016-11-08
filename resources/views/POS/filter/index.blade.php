@@ -28,8 +28,6 @@
                                 <th data-field="id" data-checkbox="true"  >id</th>
                                 <th data-field="name" data-sortable="true" >Name</th>
                                 <th data-field="desc" data-sortable="true" >Description</th>
-                                <th data-field="effect" data-sortable="true" >Effet</th>
-                                <th data-field="value" data-sortable="true" >Valeur</th>
                                 <th data-field="items" data-sortable="true" >Items</th>
                                 <th data-field="itemtypes" data-sortable="true" >Item Types</th>
 
@@ -45,8 +43,6 @@
                                     <td>{{ $filter->id }}</td>
                                     <td>{{ $filter->name }}</td>
                                     <td>{{ $filter->desc }}</td>
-                                    <td>{{ $filter->effect }}</td>
-                                    <td>{{ $filter->value }}</td>
                                     <td>@foreach($filter->items as $item) {{ $item->item->name }} <br> @endforeach</td>
                                     <td>@foreach($filter->itemtypes as $itemtype) {{ $itemtype->itemtype->type }} <br> @endforeach</td>
                                     <td><a href="{{@URL::to('/filters/edit/' . $filter->slug)}}">Edit</a></td>

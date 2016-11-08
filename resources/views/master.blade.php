@@ -157,7 +157,7 @@ $userMenuTabs = array
                 <div id="flash-msg" class="row collapse in">
                     <div class="col-lg-12">
                         <div id="flash-success" class="alert bg-success" role="alert">
-                            <svg class="glyph stroked checkmark"><use xlink:href="#stroked-checkmark"></use></svg> {{ Session::get('success') }} <a data-toggle="collapse" href="#flash-msg" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
+                            <svg class="glyph stroked checkmark"><use xlink:href="#stroked-checkmark"></use></svg> {{ Session::get('success') }} <a data-dismiss="alert" aria-label="close" href="#flash-msg" class="pull-right"><span class="glyphicon glyphicon-remove"></span></a>
                         </div>
                     </div>
                 </div>

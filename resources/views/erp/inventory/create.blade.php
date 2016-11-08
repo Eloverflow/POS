@@ -20,15 +20,8 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
+                    {!! Form::open(array('url' => 'inventory/create', 'role' => 'form')) !!}
                     <div class="col-md-6">
-                        {!! Form::open(array('url' => 'extras/create', 'role' => 'form')) !!}
-
-                       {{--     <select multiple name="items[]" class="form-control">
-                                @foreach($items as $item)
-                                    <option value="{{ $item->id }}">{{ $item->name }}</option>
-                                @endforeach
-                            </select>--}}
-
                             @if(isset($tableChoiceLists))
                                 <div class="form-group">
                                     @include('erp.inventory.choiceList')
@@ -43,8 +36,11 @@
                         </div>
                     </div>
 
-                    <!-- dialog buttons -->
-                    {!! Form::submit('Ajouter', array('class' => 'btn btn-primary')) !!}
+
+                    <div class="col-md-12">
+                        <!-- dialog buttons -->
+                        {!! Form::submit('Ajouter', array('class' => 'btn btn-primary pull-right ')) !!}
+                    </div>
                 </div>
 
             </div>
