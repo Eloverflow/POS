@@ -79,37 +79,6 @@ class FiltersController extends Controller
 
     }
 
-    public function edit($slug)
-    {
-
-
-        /*Page Title*/
-        $title = 'Filter';
-
-        $tableColumns = array('name', 'description', 'importance');
-
-        $filter = Filter::whereSlug($slug)->first();
-
-        $filterItems = FilterItem::where('filter_id', $filter->id)->get();
-        $filterItemTypes = FilterItemType::where('filter_id', $filter->id)->get();
-
-        $filter['items'] = $filterItems->load('item');
-        $filter['itemtypes'] = $filterItemTypes->load('itemtype');
-
-
-        $items = Item::all();
-        $itemtypes = ItemType::all();
-
-        foreach ($filter['items'] as $item){
-        Item::where('id', $item->id)->get();
-        }
-
-
-
-        return view('POS.filter.edit',compact('title', 'filter', 'tableColumns', 'items', 'itemtypes' ));
-
-    }
-
     public  function postCreate()
     {
 
@@ -171,6 +140,39 @@ class FiltersController extends Controller
         return Redirect::to('/filters')->with('success', '');
 
     }
+
+
+    public function edit($slug)
+    {
+
+
+        /*Page Title*/
+        $title = 'Filter';
+
+        $tableColumns = array('name', 'description', 'importance');
+
+        $filter = Filter::whereSlug($slug)->first();
+
+        $filterItems = FilterItem::where('filter_id', $filter->id)->get();
+        $filterItemTypes = FilterItemType::where('filter_id', $filter->id)->get();
+
+        $filter['items'] = $filterItems->load('item');
+        $filter['itemtypes'] = $filterItemTypes->load('itemtype');
+
+
+        $items = Item::all();
+        $itemtypes = ItemType::all();
+
+        foreach ($filter['items'] as $item){
+            Item::where('id', $item->id)->get();
+        }
+
+
+
+        return view('POS.filter.edit',compact('title', 'filter', 'tableColumns', 'items', 'itemtypes' ));
+
+    }
+
 
     public  function postEdit($slug)
     {
@@ -258,6 +260,28 @@ class FiltersController extends Controller
 
         return view('POS.filter.edit',compact('title','filter', 'tableColumns', 'items', 'itemtypes' ));
 
+    }
+    
+    public function details($slug)
+    {
+        $filter = Filter::whereSlug($slug)->first();
+
+        $filterItems = FilterItem::where('filter_id', $filter->id)->get();
+        $filterItemTypes = FilterItemType::where('filter_id', $filter->id)->get();
+
+        $filterItem = $filterItems->load('item');
+        $filterItemtype = $filterItemTypes->load('itemtype');
+
+        $filter['items'] = $filterItem;
+        $filter['itemtypes'] = $filterItemtype;
+
+
+
+        /*Previous and Next */
+        $previousTableRow = Filter::find(($filter->id)-1);
+        $nextTableRow = Filter::find(($filter->id)+1);
+
+        return view('POS.filter.details',compact('filter', 'previousTableRow', 'nextTableRow'));
     }
 
 }

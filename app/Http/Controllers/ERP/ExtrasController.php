@@ -79,37 +79,6 @@ class ExtrasController extends Controller
 
     }
 
-    public function edit($slug)
-    {
-
-
-        /*Page Title*/
-        $title = 'Extra';
-
-        $tableColumns = array('name', 'description', 'effect', 'value', 'avail_for_command');
-
-        $extra = Extra::whereSlug($slug)->first();
-
-        $extraItems = ExtraItem::where('extra_id', $extra->id)->get();
-        $extraItemTypes = ExtraItemType::where('extra_id', $extra->id)->get();
-
-        $extra['items'] = $extraItems->load('item');
-        $extra['itemtypes'] = $extraItemTypes->load('itemtype');
-
-
-        $items = Item::all();
-        $itemtypes = ItemType::all();
-
-        foreach ($extra['items'] as $item){
-        Item::where('id', $item->id)->get();
-        }
-
-
-
-        return view('erp.extra.edit',compact('title', 'extra', 'tableColumns', 'items', 'itemtypes' ));
-
-    }
-
     public  function postCreate()
     {
 
@@ -147,30 +116,53 @@ class ExtrasController extends Controller
 
 
             if(!empty($inputs['items']))
-            foreach ($inputs['items'] as $itemId){
-                ExtraItem::create(['item_id' => $itemId,'extra_id' =>$extra->id]);
-            }
+                foreach ($inputs['items'] as $itemId){
+                    ExtraItem::create(['item_id' => $itemId,'extra_id' =>$extra->id]);
+                }
 
             if(!empty($inputs['itemtypes']))
-            foreach ($inputs['itemtypes']  as $itemTypeId){
-                ExtraItemType::create(['item_type_id' => $itemTypeId,'extra_id' =>$extra->id]);
-            }
+                foreach ($inputs['itemtypes']  as $itemTypeId){
+                    ExtraItemType::create(['item_type_id' => $itemTypeId,'extra_id' =>$extra->id]);
+                }
 
 
         }
+
+        return Redirect::to('/extras')->with('success', $extra->slug . ' successfully created');
+
+    }
+
+    public function edit($slug)
+    {
+
 
         /*Page Title*/
         $title = 'Extra';
 
         $tableColumns = array('name', 'description', 'effect', 'value', 'avail_for_command');
 
+        $extra = Extra::whereSlug($slug)->first();
+
+        $extraItems = ExtraItem::where('extra_id', $extra->id)->get();
+        $extraItemTypes = ExtraItemType::where('extra_id', $extra->id)->get();
+
+        $extra['items'] = $extraItems->load('item');
+        $extra['itemtypes'] = $extraItemTypes->load('itemtype');
+
+
         $items = Item::all();
         $itemtypes = ItemType::all();
 
+        foreach ($extra['items'] as $item){
+        Item::where('id', $item->id)->get();
+        }
 
-        return Redirect::to('/extras')->with('success', '');
+
+
+        return view('erp.extra.edit',compact('title', 'extra', 'tableColumns', 'items', 'itemtypes' ));
 
     }
+
 
     public  function postEdit($slug)
     {
@@ -238,28 +230,35 @@ class ExtrasController extends Controller
 
         }
 
-        /*Page Title*/
-        $title = 'Extra';
+        return Redirect::to('/extras')->with('success', $extra->slug . ' successfully updated');
+
+    }
+
+    public function details($slug)
+    {
+
 
         $tableColumns = array('name', 'description', 'effect', 'value', 'avail_for_command');
 
-        $items = Item::all();
-        $itemtypes = ItemType::all();
-
         $extra = Extra::whereSlug($slug)->first();
+
 
         $extraItems = ExtraItem::where('extra_id', $extra->id)->get();
         $extraItemTypes = ExtraItemType::where('extra_id', $extra->id)->get();
 
-        $extraItem = $extraItems->load('item');
-        $extraItemtype = $extraItemTypes->load('itemtype');
-
-        $extra['items'] = $extraItem;
-        $extra['itemtypes'] = $extraItemtype;
+        $extra['items'] = $extraItems->load('item');
+        $extra['itemtypes'] = $extraItemTypes->load('itemtype');
 
 
-        return view('erp.extra.edit',compact('title','extra', 'tableColumns', 'items', 'itemtypes' ));
+        $items = Item::all();
+        $itemtypes = ItemType::all();
 
+
+        /*Previous and Next */
+        $previousTableRow = Extra::find(($extra->id)-1);
+        $nextTableRow = Extra::find(($extra->id)+1);
+
+        return view('erp.extra.details',compact('extra', 'items', 'itemtypes', 'tableColumns', 'previousTableRow', 'nextTableRow'));
     }
 
 }

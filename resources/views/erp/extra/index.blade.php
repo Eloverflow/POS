@@ -49,7 +49,11 @@
                                     <td>{{ $extra->value }}</td>
                                     <td>@foreach($extra->items as $item) {{ $item->item->name }} <br> @endforeach</td>
                                     <td>@foreach($extra->itemtypes as $itemtype) {{ $itemtype->itemtype->type }} <br> @endforeach</td>
-                                    <td><a href="{{@URL::to('/extras/edit/' . $extra->slug)}}">Edit</a></td>
+                                    <td>
+                                        <a href="{{@URL::to('/extras/details/' . $extra->slug)}}">Details</a>
+                                        <a href="{{@URL::to('/extras/edit/' . $extra->slug)}}">Edit</a>
+                                        <a href="{{@URL::to('/extras/delete/' . $extra->slug)}}">Delete</a>
+                                    </td>
                                 </tr>
                             @endforeach()
                             </tbody>

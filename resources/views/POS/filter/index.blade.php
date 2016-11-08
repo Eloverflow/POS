@@ -45,7 +45,11 @@
                                     <td>{{ $filter->desc }}</td>
                                     <td>@foreach($filter->items as $item) {{ $item->item->name }} <br> @endforeach</td>
                                     <td>@foreach($filter->itemtypes as $itemtype) {{ $itemtype->itemtype->type }} <br> @endforeach</td>
-                                    <td><a href="{{@URL::to('/filters/edit/' . $filter->slug)}}">Edit</a></td>
+                                    <td>
+                                        <a href="{{@URL::to('/filters/details/' . $filter->slug)}}">Details</a>
+                                        <a href="{{@URL::to('/filters/edit/' . $filter->slug)}}">Edit</a>
+                                        <a href="{{@URL::to('/filters/delete/' . $filter->slug)}}">Delete</a>
+                                    </td>
                                 </tr>
                             @endforeach()
                             </tbody>
