@@ -18,23 +18,49 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-12">
+                        @foreach($tableColumns as $column)
+                            @if($column == 'effect')
+                                <div class="form-group">
+                                    <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
+                                    @if($filter[$column] == "") <p>Aucun</p> @endif
+                                    @if($filter[$column] == "-") <p>Soustraire</p>  @endif
+                                    @if($filter[$column] == "+") <p>Additionner</p>  @endif
+                                    @if($filter[$column] == "/") <p>Soustraire pourcentage</p>  @endif
+                                    @if($filter[$column] == "*") <p>Additionner pourcentage</p>  @endif
+                                </div>
+                            @elseif($column == 'avail_for_command')
+                                <div class="form-group">
+                                    <label for="{{ $column }}" >Peut être appliqué sur commande ?</label>
+                                    @if($filter[$column] == 0)<p>Non</p>@endif
+                                    @if($filter[$column] == 1)<p>Oui</p>@endif
+                                </div>
+                            @else
+                                <div class="form-group">
+                                    <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
+                                    <p>{{ $filter[$column] }}</p>
+                                </div>
+                            @endif
+
+                        @endforeach
+
 
                         <div class="form-group">
-                            <label for="item" >Item</label>
-                            <p>{{ $filter }}</p>
-                            <label for="item" >Item Size</label>
+                            @if(!empty($filter['items']) && count($filter['items']) > 0)
+                                <label for="" >Item:</label>
+                                <p>@foreach($filter['items'] as $filterItem) {{ $filterItem->item->name }}@endforeach</p>
+                            @endif
+
+                            @if(!empty($filter['itemtypes']) && count($filter['itemtypes']) > 0)
+                                <label for="" >Item type:</label>
+                                <p>@foreach($filter['itemtypes'] as $filterItemtype) {{ $filterItemtype->itemtype->type }}@endforeach</p>
+                            @endif
+
                         </div>
-
-
-                        <div class="form-group">
-                            <label for="quantity" >Quantité</label>
-                        </div>
-
 
                     </div>
                 </div>
-
             </div>
+
         </div>
     </div>
 @stop

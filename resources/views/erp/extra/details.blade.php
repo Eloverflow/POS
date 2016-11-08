@@ -45,15 +45,16 @@
 
 
                         <div class="form-group">
-                               @foreach($extra['items'] as $extraItem) {{ $extraItem }}@endforeach</p>
+                            @if(!empty($extra['items']) && count($extra['items']) > 0)
+                                <label for="" >Item:</label>
+                                <p>@foreach($extra['items'] as $extraItem) {{ $extraItem->item->name }}@endforeach</p>
+                            @endif
 
-{{--
-                            <label for="itemtypes[]" >Associer aux types d'items</label>
-                            <select multiple name="itemtypes[]" class="form-control">
-                                @foreach($itemtypes as $itemtype)
-                                    <option value="{{ $itemtype->id }}"  @foreach($extra['itemtypes'] as $extraItemtype) @if($itemtype->id == $extraItemtype->itemtype->id) selected @endif @endforeach>{{ $itemtype->type }}</option>
-                                @endforeach
-                            </select>--}}
+                            @if(!empty($extra['itemtypes']) && count($extra['itemtypes']) > 0)
+                                <label for="" >Item type:</label>
+                                <p>@foreach($extra['itemtypes'] as $extraItemtype) {{ $extraItemtype->itemtype->type }}@endforeach</p>
+                            @endif
+
                         </div>
 
                     </div>
@@ -62,5 +63,4 @@
 
             </div>
         </div>
-    </div>
 @stop

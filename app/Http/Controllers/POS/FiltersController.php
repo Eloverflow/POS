@@ -261,9 +261,11 @@ class FiltersController extends Controller
         return view('POS.filter.edit',compact('title','filter', 'tableColumns', 'items', 'itemtypes' ));
 
     }
-    
+
     public function details($slug)
     {
+        $tableColumns = array('name', 'description', 'importance');
+
         $filter = Filter::whereSlug($slug)->first();
 
         $filterItems = FilterItem::where('filter_id', $filter->id)->get();
@@ -281,7 +283,7 @@ class FiltersController extends Controller
         $previousTableRow = Filter::find(($filter->id)-1);
         $nextTableRow = Filter::find(($filter->id)+1);
 
-        return view('POS.filter.details',compact('filter', 'previousTableRow', 'nextTableRow'));
+        return view('POS.filter.details',compact('filter', 'tableColumns', 'previousTableRow', 'nextTableRow'));
     }
 
 }

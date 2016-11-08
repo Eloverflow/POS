@@ -5,7 +5,10 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
 
-@section('title', 'Extra')
+@section('afterContent')
+    @include('shared.afterContent')
+@stop
+
 
 @section('content')
     <div class="col-md-6">
