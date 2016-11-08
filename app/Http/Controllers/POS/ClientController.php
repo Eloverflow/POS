@@ -58,18 +58,10 @@ class ClientController extends Controller
         return view('POS.Client.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
     }
 
-
-
     public  function postEdit($slug, Request $request)
     {
         /*Main table row to retrieve from DB*/
         $tableRow = Client::whereSlug($slug)->first();
-
-        /*Child table name*//*
-        $tableChild = "itemtype";*/
-        /*Child table rows*//*
-        $tableChildRows = $tableRow->$tableChild;*/
-
 
 
         if( Input::file('image') != null ){
@@ -83,40 +75,14 @@ class ClientController extends Controller
             /*$product->image = 'img/item/'.$filename;
             $product->save();*/
 
-
-            Session::flash('flash_message', $slug.' image updated!');
-
+            Session::flash('success', $slug.' image updated!');
 
             Input::merge(array('img_id' =>  $filename));
 
         }
 
-
-
         $tableRow->update(Input::all());
-
-
-        /*if(is_array($tableChildRows)){
-            foreach($tableChildRows as $tableChildRow){
-                $tableChildRow->update(Input::all());
-            }
-        }
-        else
-        {
-            $tableChildRows->update(Input::all());
-        }*/
-
-        // resizing an uploaded file/*
-
-        /*Image::make(Input::file('image'))->resize(300, 200)->save('foo.jpg');*/
-
-/*
-        $file = Input::file('image');
-        $filename = "test";
-        Image::make($file->getRealPath())->resize('200','200')->save($filename);*/
-
-
-
+        Session::flash('success', $tableRow->slug.' successfully updated');
 
         return Redirect::back();
     }
@@ -168,11 +134,13 @@ class ClientController extends Controller
         else
         {
 
-            Client::create([
+            $client = Client::create([
                 'credit' =>  Input::get('credit'),
                 'rfid_card_code' => Input::get('rfid_card_code'),
                 'slug' => Input::get('rfid_card_code') . '-' . rand(10, 10000)
             ]);
+
+            Session::flash('success', $client->slug.' successfully created');
 
 
             return Redirect::back();
