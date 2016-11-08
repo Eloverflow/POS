@@ -7,10 +7,10 @@
                 <div class="panel-body">
             <!-- Table Content --->
                     <ul class="sortable grid ">
-                    <?php $i = count($items); ?>
+                    <?php $i = count($tableRows); ?>
 
 
-                        @foreach($items as $item)
+                        @foreach($tableRows as $item)
 
 
                             <div class="rfidTable">
@@ -28,7 +28,7 @@
                     @endforeach
 
 
-                    @for( $i; $i < count($items)+1; $i++ )
+                    @for( $i; $i < count($tableRows)+1; $i++ )
                             <div class="rfidTable">
                                 <div class="rfidTableInside">
                                     <ul>

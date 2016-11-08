@@ -57,9 +57,10 @@ Route::post('/item/type/create',  ['uses' => 'ERP\ItemTypesController@postCreate
 
 Route::get('/items',  ['uses' => 'ERP\ItemsController@index', 'middleware' => 'auth']);
 Route::get('/items/create',  ['uses' => 'ERP\ItemsController@create', 'middleware' => 'auth']);
-Route::post('/item/create',  ['uses' => 'ERP\ItemsController@postCreate', 'middleware' => 'auth']);
+Route::post('/items/create',  ['uses' => 'ERP\ItemsController@postCreate', 'middleware' => 'auth']);
+Route::get('/items/details/{slug}',  ['uses' => 'ERP\ItemsController@details', 'middleware' => 'auth']);
 Route::get('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@edit', 'middleware' => 'auth']);
-Route::post('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@update', 'middleware' => 'auth']);
+Route::post('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@postEdit', 'middleware' => 'auth']);
 
 Route::get('/extras',  ['uses' => 'ERP\ExtrasController@index', 'middleware' => 'auth']);
 Route::get('/extras/create',  ['uses' => 'ERP\ExtrasController@create', 'middleware' => 'auth']);
@@ -77,9 +78,10 @@ Route::post('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@update', 
 
 Route::get('/clients',  ['uses' => 'POS\ClientController@index', 'middleware' => 'auth']);
 Route::get('/clients/create',  ['uses' => 'POS\ClientController@create', 'middleware' => 'auth']);
+Route::get('/clients/details/{slug}',  ['uses' => 'POS\ClientController@details', 'middleware' => 'auth']);
 Route::post('/clients/create',  ['uses' => 'POS\ClientController@postCreate', 'middleware' => 'auth']);
 Route::get('/clients/edit/{slug}',  ['uses' => 'POS\ClientController@edit', 'middleware' => 'auth']);
-Route::post('/clients/edit/{slug}',  ['uses' => 'POS\ClientController@update', 'middleware' => 'auth']);
+Route::post('/clients/edit/{slug}',  ['uses' => 'POS\ClientController@postEdit', 'middleware' => 'auth']);
 
 /* Start employee */
 Route::get('/employee',  ['uses' => 'POS\EmployeeController@index', 'middleware' => 'auth']);

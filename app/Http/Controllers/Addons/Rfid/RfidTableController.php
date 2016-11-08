@@ -26,7 +26,7 @@ class RfidTableController extends Controller
 
         $columns = array('name','flash_card_hw_code', 'phone_hw_code');
 
-        return view('shared.list', compact('title', 'tableRows', 'columns'));
+        return view('addins.rfid.table.index', compact('title', 'tableRows', 'columns'));
     }
 
     protected function create(Request $request)

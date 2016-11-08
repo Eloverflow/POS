@@ -32,15 +32,13 @@
 
                         <div class="form-group">
                             <label for="item" >Item</label>
-                            <p>{{ $inventory->item->name }}</p>
+                            <p>{{ $items }}</p>
                             <label for="item" >Item Size</label>
-                            <p>{{ $inventory->item_size }}</p>
                         </div>
 
 
                         <div class="form-group">
                             <label for="quantity" >Quantité</label>
-                            <p>{{ $inventory->quantity }}</p>
                         </div>
 
 

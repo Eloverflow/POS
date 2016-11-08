@@ -61,7 +61,7 @@ class ItemsController extends Controller
         $tableChildren = array($tableChild1);
 
 
-        return view('erp.item.listItems',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
+        return view('erp.item.index',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
     }
 
     public function liste()
@@ -82,6 +82,17 @@ class ItemsController extends Controller
         return $tableRows;
     }
 
+    public function details($slug)
+    {
+        $items = Item::whereSlug($slug)->first();
+
+
+        /*Previous and Next */
+        $previousTableRow = Item::find(($items->id)-1);
+        $nextTableRow = Item::find(($items->id)+1);
+
+        return view('erp.item.details',compact('items', 'previousTableRow', 'nextTableRow'));
+    }
 
     public  function edit($slug)
     {
@@ -108,15 +119,15 @@ class ItemsController extends Controller
 
 
         /*Previous and Next */
-        $previousTableRow = Item::findOrNew(($tableRow->id)-1);
-        $nextTableRow = Item::findOrNew(($tableRow->id)+1);
+        $previousTableRow = Item::find(($tableRow->id)-1);
+        $nextTableRow = Item::find(($tableRow->id)+1);
 
         return view('erp.item.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
     }
 
 
 
-    public  function update($slug, Request $request)
+    public  function postEdit($slug, Request $request)
     {
         /*Main table row to retrieve from DB*/
         $tableRow = Item::whereSlug($slug)->first();

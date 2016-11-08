@@ -41,8 +41,8 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
 
         /*Previous and Next */
-        $previousTableRow = Inventory::findOrNew(($inventory->id)-1);
-        $nextTableRow = Inventory::findOrNew(($inventory->id)+1);
+        $previousTableRow = Inventory::find(($inventory->id)-1);
+        $nextTableRow = Inventory::find(($inventory->id)+1);
 
         return view('erp.inventory.edit',compact('inventory', 'previousTableRow', 'nextTableRow'));
     }
@@ -134,7 +134,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
             }
             else{
 
-                $itemSlug = Item::whereId(Input::get('item_id'))->first()->slug . Input::get('item_size');
+                $itemSlug = Item::whereId(Input::get('item_id'))->first()->slug . '-' . Input::get('item_size');
 
                 Inventory::create([
                     'quantity' =>  Input::get('quantity'),
