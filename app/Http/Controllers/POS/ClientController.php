@@ -38,7 +38,7 @@ class ClientController extends Controller
         /*Main table desired column to display*/
         $tableColumns = array('id', 'credit', 'rfid_card_code');
 
-        return view('shared.list',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
+        return view('POS.Client.index',compact('title','tableRows', 'tableColumns', 'tableChildren', 'tableChildRows', 'tableChildColumns'));
     }
 
     public  function edit($slug)
@@ -52,15 +52,15 @@ class ClientController extends Controller
 
 
         /*Previous and Next */
-        $previousTableRow = Item::findOrNew(($tableRow->id)-1);
-        $nextTableRow = Item::findOrNew(($tableRow->id)+1);
+        $previousTableRow = Client::find(($tableRow->id)-1);
+        $nextTableRow = Client::find(($tableRow->id)+1);
 
-        return view('shared.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
+        return view('POS.Client.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
     }
 
 
 
-    public  function update($slug, Request $request)
+    public  function postEdit($slug, Request $request)
     {
         /*Main table row to retrieve from DB*/
         $tableRow = Client::whereSlug($slug)->first();
@@ -121,6 +121,19 @@ class ClientController extends Controller
         return Redirect::back();
     }
 
+
+    public function details($slug)
+    {
+        $clients = Client::whereSlug($slug)->first();
+
+
+        /*Previous and Next */
+        $previousTableRow = Client::find(($clients->id)-1);
+        $nextTableRow = Client::find(($clients->id)+1);
+
+        return view('POS.Client.details',compact('clients', 'previousTableRow', 'nextTableRow'));
+    }
+
     public function create()
     {
         /*Page Title*/
@@ -129,7 +142,7 @@ class ClientController extends Controller
         $tableColumns = array('credit', 'rfid_card_code');
 
 
-        return view('shared.create',compact('title', 'tableChoiceLists', 'tableColumns'));
+        return view('POS.Client.create',compact('title', 'tableChoiceLists', 'tableColumns'));
     }
 
     public function postCreate()

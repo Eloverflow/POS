@@ -172,7 +172,7 @@ class FiltersController extends Controller
 
     }
 
-    public  function update($slug)
+    public  function postEdit($slug)
     {
 
         $inputs = Input::all();

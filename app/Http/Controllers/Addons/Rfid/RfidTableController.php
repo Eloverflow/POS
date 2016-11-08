@@ -26,7 +26,7 @@ class RfidTableController extends Controller
 
         $columns = array('name','flash_card_hw_code', 'phone_hw_code');
 
-        return view('shared.list', compact('title', 'tableRows', 'columns'));
+        return view('addins.rfid.table.index', compact('title', 'tableRows', 'columns'));
     }
 
     protected function create(Request $request)
@@ -93,7 +93,7 @@ class RfidTableController extends Controller
         return view('addins.rfid.table.edit',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow', 'tableChoiceLists'));
     }
 
-    public function update($slug, Request $request)
+    public function postEdit($slug, Request $request)
     {
         /*Main table row to retrieve from DB*/
         $tableRow = TableRfid::whereSlug($slug)->first();

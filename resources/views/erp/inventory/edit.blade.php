@@ -5,6 +5,12 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
 
+
+@section('afterContent')
+    @include('shared.afterContent')
+@stop
+
+
 @section('title', 'Extra')
 
 @section('content')

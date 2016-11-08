@@ -8,6 +8,7 @@
 
 
 @section('titleSection')
+@include('shared.titleSection')
 @stop
 
 @section('csrfToken')
@@ -17,11 +18,11 @@
 
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">{{ @Lang::get('item.updateToItem') }}</h1>
+        <h1 class="page-header">{{ @Lang::get('client.updateToClient') }}</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">
-            <a class="btn btn-danger pull-right" href="{{ @URL::to('items') }}"> {{ @Lang::get('item.backToItem') }} </a>
+            <a class="btn btn-danger pull-right" href="{{ @URL::to('clients') }}"> {{ @Lang::get('client.backToClient') }} </a>
         </div>
     </div>
     <div class="row">
@@ -94,15 +95,10 @@
                                     @include('erp.item.choiceList')
                                 @endif
 
-
-                                <div id="formShowing">
-
-                                </div>
-
-                                @if(Session::has('error'))
-                                    <p class="errors">{!! Session::get('error') !!}</p>
-                                @endif
-                                <div id="success"> </div>
+                                    @if(Session::has('error'))
+                                        <p class="errors">{!! Session::get('error') !!}</p>
+                                    @endif
+                                    <div id="success"> </div>
 
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                             </div>
@@ -122,45 +118,4 @@
             </div>
         </div>
     </div>
-@stop
-
-
-
-@section("myjsfile")
-    <script src="{{ @URL::to('js/utils.js') }}"></script>
-    <script src="{{ @URL::to('js/itemsManage.js') }}"></script>
-    <script src="{{ @URL::to('js/itemTypesManage.js') }}"></script>
-    <script type="text/javascript">
-        $("#btnAddItemType").click(function () {
-            $("#addModal").modal('show');
-        });
-
-        $("#btnAddFieldName").click(function () {
-            addItemToFieldTable();
-        });
-
-        $("#btnAddSizeName").click(function () {
-            addItemToSizeTable();
-        });
-
-        $('#btnCreateItemType').click(function(e) {
-            e.preventDefault();
-            postAddItemsType();
-
-        });
-
-        $("#btnCreateItem").click(function(e) {
-            postCreateItem();
-        });
-
-        $("#tableChoiceList1 span").on("click", function() {
-            //alert("span click !");
-
-
-            drawFillingForms(this);
-
-
-        });
-
-    </script>
 @stop

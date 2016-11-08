@@ -12,6 +12,14 @@
 @stop
 
 @section('content')
+    <div class="col-md-6">
+        <h1 class="page-header">{{ @Lang::get('client.title') }}</h1>
+    </div>
+    <div class="col-md-6">
+        <div class="vcenter">
+            <a href="{{@URL::to('/clients/create')}}"  ><button type="button" class="btn btn-primary">{{ @Lang::get('client.addToClient') }}</button></a>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-12">
             <div class="panel panel-default">
@@ -152,7 +160,7 @@
                                 @endif
                                 <td class="table-options">
                                     <?php !empty($tableRows[$i]->slug) ? $target = $tableRows[$i]->slug : $target = $tableRows[$i]->id ?>
-                                    <a href="{{ @URL::to(Request::path().'/view/'. $target)}}">Details</a>
+                                    <a href="{{ @URL::to(Request::path().'/details/'. $target)}}">Details</a>
                                     <a href="{{ @URL::to(Request::path().'/edit/'. $target)}}">Edit</a>
                                     <a href="{{ @URL::to(Request::path().'/delete/'. $target)}}">Delete</a>
                                 </td>

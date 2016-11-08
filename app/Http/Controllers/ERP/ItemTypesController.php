@@ -20,7 +20,7 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         $type = 'All';
         $title = 'ItemTypes';
         $columns = array('id', 'type', 'field_names');
-        return view('shared.list',compact('tableRows', 'columns', 'type', 'title'));
+        return view('erp.itemtype.index',compact('tableRows', 'columns', 'type', 'title'));
     }
 
 
@@ -35,6 +35,18 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         /*Main table desired column to display*/
 
         return $tableRows;
+    }
+
+
+    public function create()
+    {
+
+
+        $tableColumns = array('type', 'field_names', 'size_names');
+
+
+
+        return view('erp.itemtype.create',compact('tableColumns' ));
     }
 
     public function postCreate()
@@ -78,15 +90,6 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         }
     }
 
-    /*public  function type($type)
-    {
-        $title = ucfirst($type);
-        $table = 'item_type_' . $type. 's';
-        $items = DB::select('SELECT * FROM item_types INNER JOIN item_type_beers ON item_types.id=item_type_beers.item_type_id' .$table);
-        $columns = array('id', 'style');
-        return view('erp.items.types.list',compact('items', 'columns', 'type', 'title'));
-    }*/
-
     public  function edit($slug)
     {
         $title = 'ItemTypes';
@@ -97,39 +100,15 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         $tableColumns = array('type', 'field_names', 'size_names');
 
 
-        /*$tableChoiceListTable = ItemType::all();*/
-        /*select all where type = beer*/
-
-        /*$tableChoiceListTitle = "Item Type";
-        $tableChoiceListDBColumn = "item_type_id";
-        $tableChoiceListTitleColumn = "type";
-        $tableChoiceListContentColumn = "";
-        $tableChoiceListCreateURL = @URL::to('/itemtypes');
-
-        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn, "postUrl" => $tableChoiceListCreateURL);
-
-        $tableChoiceLists = array($tableChoiceList1, $tableChoiceList2);*/
-
-
         /*Previous and Next */
-        $previousTableRow = ItemType::findOrNew(($tableRow->id)-1);
-        $nextTableRow = ItemType::findOrNew(($tableRow->id)+1);
+        $previousTableRow = ItemType::find(($tableRow->id)-1);
+        $nextTableRow = ItemType::find(($tableRow->id)+1);
 
-        return view('shared.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
+        return view('erp.itemtype.edit',compact('title','tableRow', 'tableColumns', 'tableChoiceLists', 'tableChildColumns', 'previousTableRow', 'nextTableRow'));
 
-        $item = ItemType::whereSlug($slug)->first();
-        $title = 'itemtypes';
-        $next_item = ItemType::findOrNew(($item->id)+1);
-        $previous_item = ItemType::findOrNew(($item->id)-1);
-
-        $customsFields = explode(',', $item->customs_fields_names);
-
-        $columns = array('type', 'fields_names');
-
-        return view('erp.items.types.edit',compact('item', 'customsFields', 'slug', 'title','columns','next_item','previous_item'));
     }
 
-    public  function update($slug, Request $request)
+    public  function postEdit($slug, Request $request)
     {
         $item = ItemType::whereSlug($slug)->first();
 
@@ -142,5 +121,17 @@ class ItemTypesController extends \App\Http\Controllers\Controller
         Session::flash('flash_message', $slug.' successfully updated!');
 
         return Redirect::back();
+    }
+
+    public function details($slug)
+    {
+        $itemtypes = ItemType::whereSlug($slug)->first();
+
+
+        /*Previous and Next */
+        $previousTableRow = ItemType::find(($itemtypes->id)-1);
+        $nextTableRow = ItemType::find(($itemtypes->id)+1);
+
+        return view('erp.itemtype.details',compact('itemtypes', 'previousTableRow', 'nextTableRow'));
     }
 }

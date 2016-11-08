@@ -15,11 +15,11 @@
 
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">{{ @Lang::get('inventory.detailsInventory') }}</h1>
+        <h1 class="page-header">{{ @Lang::get('client.detailsClient') }}</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">
-            <a class="btn btn-danger pull-right" href="{{ @URL::to('inventory') }}"> {{ @Lang::get('inventory.backToInventory') }} </a>
+            <a class="btn btn-danger pull-right" href="{{ @URL::to('clients') }}"> {{ @Lang::get('client.backToClient') }} </a>
         </div>
     </div>
     <div class="row">
@@ -32,15 +32,13 @@
 
                         <div class="form-group">
                             <label for="item" >Item</label>
-                            <p>{{ $inventory->item->name }}</p>
+                            <p>{{ $clients }}</p>
                             <label for="item" >Item Size</label>
-                            <p>{{ $inventory->item_size }}</p>
                         </div>
 
 
                         <div class="form-group">
                             <label for="quantity" >Quantité</label>
-                            <p>{{ $inventory->quantity }}</p>
                         </div>
 
 
