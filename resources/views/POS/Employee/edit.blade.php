@@ -120,7 +120,7 @@
                             <legend>Employee Informations</legend>
                             <div class="mfs">
                                 <div class="form-group">
-                                    <p class="text-warning">* Press shift while selecting for multiple select.</p>
+                                    <p class="text-warning">* Press ctrl and/or shift while selecting for multiple select.</p>
                                     {!! Form::label('title', "Employee Titles" ) !!}
                                     <select multiple name="employeeTitles[]" class="form-control">
                                         <?php $found = false;

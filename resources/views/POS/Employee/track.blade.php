@@ -12,7 +12,7 @@
 @section('content')
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">Track Employee</h1>
+            <h1 class="page-header">Employee Tracking</h1>
         </div>
     </div>
     <div class="row">
@@ -133,6 +133,10 @@
          /*$('#addModal #sHour').val("");
          $('#addModal #sMin').val("");*/
 
+             $startTimeMoment =  moment("2016-06-06 19:00:00");
+             $('#startTimePicker').datetimepicker({
+                 defaultDate: $startTimeMoment
+             });
              $("#editModal").modal('show');
              e.preventDefault();
          });
@@ -142,9 +146,7 @@
          });
 
         // Les binds pour ce qui concerne les controles dans les modals.
-        $('#startTimePicker').datetimepicker({
-            // Pass parameters here.
-        });
+
         $('#endTimePicker').datetimepicker({
             // Pass parameters here.
         });

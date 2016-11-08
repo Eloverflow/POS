@@ -1,5 +1,13 @@
 @extends('master')
+@section('csrfToken')
+    <script src="{{ @URL::to('js/moment/moment.js') }}"></script>
+    <script src="{{ @URL::to('js/moment/moment-timezone.js') }}"></script>
 
+    <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>
+    <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>
+
+    <meta name="csrf-token" content="{{ csrf_token() }}" />
+@stop
 @section('content')
     <div class="row">
         <div class="col-lg-12">
@@ -36,40 +44,30 @@
                                     @endif
                                 </div>
 
-                            <div class="col-lg-6 no-pad">
-                                <div class="form-group">
-                                    {!! Form::label('password', "Password" ) !!}
-                                    @if($errors->has('password'))
-                                        <div class="form-group has-error">
+                                <div class="col-lg-6 col-no-pad">
+                                    <div class="form-group">
+                                        {!! Form::label('pswd', "Password" ) !!}
+                                        @if($errors->has('password'))
+                                            <div class="form-group has-error">
+                                                {!! Form::password('password', array('class' => 'form-control')) !!}
+                                            </div>
+                                        @else
                                             {!! Form::password('password', array('class' => 'form-control')) !!}
-                                        </div>
-                                    @else
-                                        {!! Form::password('password', array('class' => 'form-control')) !!}
-                                    @endif
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
-                            <div class="col-lg-6 no-pad">
-                                <div class="form-group">
-                                    {!! Form::label('confirmPassword', "Confirm Password" ) !!}
-                                    @if($errors->has('confirmPassword'))
-                                        <div class="form-group has-error">
-                                            {!! Form::password('confirmPassword', array('class' => 'form-control')) !!}
-                                        </div>
-                                    @else
-                                        {!! Form::password('confirmPassword', array('class' => 'form-control')) !!}
-                                    @endif
+                                <div class="col-lg-6 col-no-pad col-no-pad-right">
+                                    <div class="form-group">
+                                        {!! Form::label('pswd_confirmation', "Confirm Password" ) !!}
+                                        @if($errors->has('password_confirmation'))
+                                            <div class="form-group has-error">
+                                                {!! Form::password('password_confirmation', array('class' => 'form-control')) !!}
+                                            </div>
+                                        @else
+                                            {!! Form::password('password_confirmation', array('class' => 'form-control')) !!}
+                                        @endif
+                                    </div>
                                 </div>
-                            </div>
-                                {{--<div class="form-group">
-                                    {!! Form::label('confirmPassword', "Confirm Password" ) !!}
-                                    @if($errors->has('confirmPassword'))
-                                        <div class="form-group has-error">
-                                            {!! Form::input('number', 'confirmPassword', null, array('class' => 'form-control')) !!}
-                                        </div>
-                                    @else
-                                        {!! Form::input('number', 'confirmPassword', null, array('class' => 'form-control') ) !!}
-                                    @endif
-                                </div>--}}
                             </div>
                         </fieldset>
                         <fieldset>
@@ -168,13 +166,23 @@
                             <legend>Employee Informations</legend>
                             <div class="mfs">
                                 <div class="form-group">
-                                    <p class="text-warning">* Press shift while selecting for multiple select.</p>
+                                    <p class="text-warning">* Press ctrl and/or shift while selecting for multiple select.</p>
                                     {!! Form::label('title', "Employee Title(s)" ) !!}
-                                    <select multiple name="employeeTitles[]" class="form-control">
-                                        @foreach ($workTitles as $workTitle)
-                                            <option value="{{ $workTitle->id }}">{{ $workTitle->name }}</option>
-                                        @endforeach
-                                    </select>
+                                    @if($errors->has('employeeTitles'))
+                                        <div class="form-group has-error">
+                                            <select multiple name="employeeTitles[]" class="form-control">
+                                                @foreach ($ViewBag['WorkTitles'] as $workTitle)
+                                                    <option value="{{ $workTitle->id }}">{{ $workTitle->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    @else
+                                        <select multiple name="employeeTitles[]" class="form-control">
+                                            @foreach ($ViewBag['WorkTitles'] as $workTitle)
+                                                <option value="{{ $workTitle->id }}">{{ $workTitle->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    @endif
                                 </div>
 
                                 <div class="form-group">
@@ -189,13 +197,13 @@
                                 </div>
 
                                 <div class="form-group">
-                                    {!! Form::label('birthDate', "birthDate" ) !!}
+                                    {!! Form::label('birthDate', "Birth Date" ) !!}
                                     @if($errors->has('birthDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('birthDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                            {!! Form::text('birthDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'birthDate')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('birthDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                        {!! Form::text('birthDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'birthDate')) !!}
                                     @endif
                                 </div>
 
@@ -203,10 +211,10 @@
                                     {!! Form::label('hireDate', "Hire Date" ) !!}
                                     @if($errors->has('hireDate'))
                                         <div class="form-group has-error">
-                                            {!! Form::text('hireDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                            {!! Form::text('hireDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'hireDate')) !!}
                                         </div>
                                     @else
-                                        {!! Form::text('hireDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd')) !!}
+                                        {!! Form::text('hireDate', null, array('class' => 'datepickerInput form-control', 'data-date-format' => 'yyyy-mm-dd', 'id' => 'hireDate')) !!}
                                     @endif
                                 </div>
                             </div>
@@ -219,4 +227,16 @@
         </div>
     </div>
 
+@stop
+
+@section("myjsfile")
+    <script src="{{ @URL::to('js/utils.js') }}"></script>
+
+    <script src="{{ @URL::to('js/moment/moment-timezone-with-data-packed.js') }}"></script>
+    <script type="text/javascript">
+
+        $('#birthDate').datepicker();
+        $('#hireDate').datepicker();
+
+    </script>
 @stop

@@ -69,7 +69,12 @@ class EmployeeController extends Controller
 
         $rules = array(
             'firstName' => 'required',
-            'lastName' => 'required'
+            'lastName' => 'required',
+            'nas' => ['required', 'regex:/^(\d{3}-\d{3}-\d{3})|(\d{3} \d{3} \d{3})|(\d{9})$/'],
+            'phone' => ['required', 'regex:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/'] ,
+            'pc' => ['regex:/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/'],
+            'bonusSalary' => ['regex:/^\d*\.?\d*$/'],
+            'hireDate' => ['required']
         );
 
         $message = array(
@@ -77,18 +82,27 @@ class EmployeeController extends Controller
         );
 
         $validation = \Validator::make($inputs, $rules, $message);
-        if($validation -> fails())
-        {
-            if (Input::has('id')) {
-                return \Redirect::action('POS\EmployeeController@edit', array(Input::get('idEmployee')))->withErrors($validation)
-                    ->withInput();
+
+
+        $validation->after(function($validator) {
+            if (!$this->ValidateSelectedWorkTitles(Input::get('employeeTitles'))) {
+                $validator->errors()->add('employeeTitles', 'At least one of the work title should be selected !');
             }
+        });
+
+
+        if($validation->fails())
+        {
+
+            return \Redirect::action('POS\EmployeeController@edit')->withErrors($validation)
+                ->withInput();
+
         }
         else
         {
+
             $employee = Employee::where('id', Input::get('idEmployee'))
-                ->update([
-                'firstName' => Input::get('firstName'),
+                ->update(['firstName' => Input::get('firstName'),
                 'lastName' => Input::get('lastName'),
                 'streetAddress' => Input::get('streetAddress'),
                 'phone' => Input::get('phone'),
@@ -96,7 +110,6 @@ class EmployeeController extends Controller
                 'state' => Input::get('state'),
                 'pc' => Input::get('pc'),
                 'nas' => Input::get('nas'),
-                'userId' => Input::get('idUser'),
                 'bonusSalary' => Input::get('bonusSalary'),
                 'birthDate' => Input::get('birthDate'),
                 'hireDate' => Input::get('hireDate')
@@ -109,19 +122,20 @@ class EmployeeController extends Controller
             for($i = 0; $i < count($employeeTitlesInpt); $i++){
                 TitleEmployee::create([
                     'employee_id' => Input::get('idEmployee'),
-                    'employee_titles_id' => $employeeTitlesInpt[$i]
+                    'work_titles_id' => $employeeTitlesInpt[$i]
                 ]);
             }
-
-
-            return \Redirect::action('POS\EmployeeController@index');
+            return \Redirect::action('POS\EmployeeController@index')->withSuccess('The employee has been successfully edited !');
         }
     }
 
     public function create()
     {
         $workTitles = WorkTitle::All();
-        $view = \View::make('POS.Employee.create')->with('workTitles', $workTitles);
+        $view = \View::make('POS.Employee.create')
+            ->with('ViewBag', array (
+                'WorkTitles' => $workTitles
+            ));
         return $view;
     }
 
@@ -130,8 +144,16 @@ class EmployeeController extends Controller
         $inputs = Input::all();
 
         $rules = array(
+            'email'=> ['required', 'email'], //'regex:/^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/'
             'firstName' => 'required',
-            'lastName' => 'required'
+            'lastName' => 'required',
+            'nas' => ['required', 'regex:/^(\d{3}-\d{3}-\d{3})|(\d{3} \d{3} \d{3})|(\d{9})$/'],
+            'phone' => ['required', 'regex:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/'] ,
+            'pc' => ['regex:/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/'],
+            'password' => 'required|min:6|confirmed',
+            'password_confirmation' => 'required|min:6',
+            'bonusSalary' => ['regex:/^\d*\.?\d*$/'],
+            'hireDate' => ['required']
         );
 
         $message = array(
@@ -139,12 +161,21 @@ class EmployeeController extends Controller
         );
 
         $validation = \Validator::make($inputs, $rules, $message);
-        if($validation -> fails())
-        {
-            if (Input::has('id')) {
-                return \Redirect::action('POS\EmployeeController@create')->withErrors($validation)
-                    ->withInput();
+
+
+        $validation->after(function($validator) {
+            if (!$this->ValidateSelectedWorkTitles(Input::get('employeeTitles'))) {
+                $validator->errors()->add('employeeTitles', 'At least one of the work title should be selected !');
             }
+        });
+
+
+        if($validation->fails())
+        {
+
+            return \Redirect::action('POS\EmployeeController@create')->withErrors($validation)
+                ->withInput();
+
         }
         else
         {
@@ -221,7 +252,12 @@ class EmployeeController extends Controller
 
         return $employee;
     }
-    
+
+
+    function ValidateSelectedWorkTitles($value) {
+        $min = 1;
+        return count($value) >= $min;
+    }
 
 
 }
