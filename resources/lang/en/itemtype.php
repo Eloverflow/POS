@@ -16,7 +16,7 @@ return [
     'title' => 'Itemtypes',
     'backToItemtype' => 'Back to itemtypes',
     'addToItemtype'     => 'Add to itemtypes',
-    'updateToItemtype'     => 'Update to itemtypes',
-    'detailsItemtype'     => 'Details itemtypes',
+    'updateToItemtype'     => 'Update itemtype',
+    'detailsItemtype'     => 'Details itemtype',
 
 ];

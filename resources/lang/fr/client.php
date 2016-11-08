@@ -13,10 +13,10 @@ return [
     |
     */
 
-    'title' => 'Items',
-    'backToItem' => 'Back to items',
-    'addToItem'     => 'Add to items',
-    'updateToItem'     => 'Update item',
-    'detailsItem'     => 'Details item',
+    'title' => 'Clients',
+    'backToClient' => 'Retour aux clients',
+    'addToClient'     => 'Ajouter aux clients',
+    'updateToClient'     => 'Mettre à jour le client',
+    'detailsClient'     => 'Détails sur le client',
 
 ];

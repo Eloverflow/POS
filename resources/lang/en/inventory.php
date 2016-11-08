@@ -14,9 +14,9 @@ return [
     */
 
     'title' => 'Inventory',
-    'backToInventory' => 'Back to Inventory',
+    'backToInventory' => 'Back to inventory',
     'addToInventory'     => 'Add to inventory',
-    'updateToInventory'     => 'Update to inventory',
+    'updateToInventory'     => 'Update inventory',
     'detailsInventory'     => 'Details inventory',
 
 ];
