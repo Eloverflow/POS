@@ -68,14 +68,14 @@ Route::post('/items/edit/{slug}',  ['uses' => 'ERP\ItemsController@postEdit', 'm
 Route::get('/extras',  ['uses' => 'ERP\ExtrasController@index', 'middleware' => 'auth']);
 Route::get('/extras/create',  ['uses' => 'ERP\ExtrasController@create', 'middleware' => 'auth']);
 Route::post('/extras/create',  ['uses' => 'ERP\ExtrasController@postCreate', 'middleware' => 'auth']);
-
+Route::get('/extras/details/{slug}',  ['uses' => 'ERP\ExtrasController@details', 'middleware' => 'auth']);
 Route::get('/extras/edit/{slug}',  ['uses' => 'ERP\ExtrasController@edit', 'middleware' => 'auth']);
 Route::post('/extras/edit/{slug}',  ['uses' => 'ERP\ExtrasController@postEdit', 'middleware' => 'auth']);
 
 Route::get('/filters',  ['uses' => 'POS\FiltersController@index', 'middleware' => 'auth']);
 Route::get('/filters/create',  ['uses' => 'POS\FiltersController@create', 'middleware' => 'auth']);
 Route::post('/filters/create',  ['uses' => 'POS\FiltersController@postCreate', 'middleware' => 'auth']);
-
+Route::get('/filters/details/{slug}',  ['uses' => 'POS\FiltersController@details', 'middleware' => 'auth']);
 Route::get('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@edit', 'middleware' => 'auth']);
 Route::post('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@postEdit', 'middleware' => 'auth']);
 

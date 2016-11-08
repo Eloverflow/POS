@@ -1,25 +1,16 @@
 @extends('master')
 
-
-@section('csrfToken')
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
-@stop
-
-
 @section('afterContent')
     @include('shared.afterContent')
 @stop
 
-
-@section('title', 'Extra')
-
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">{{ @Lang::get('client.detailsClient') }}</h1>
+        <h1 class="page-header">{{ @Lang::get('filter.detailsFilter') }}</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">
-            <a class="btn btn-danger pull-right" href="{{ @URL::to('clients') }}"> {{ @Lang::get('client.backToClient') }} </a>
+            <a class="btn btn-danger pull-right" href="{{ @URL::to('filters') }}"> {{ @Lang::get('filter.backToFilter') }} </a>
         </div>
     </div>
     <div class="row">
@@ -30,7 +21,7 @@
 
                         <div class="form-group">
                             <label for="item" >Item</label>
-                            <p>{{ $clients }}</p>
+                            <p>{{ $filter }}</p>
                             <label for="item" >Item Size</label>
                         </div>
 
@@ -46,8 +37,4 @@
             </div>
         </div>
     </div>
-@stop
-
-@section("myjsfile")
-
 @stop
