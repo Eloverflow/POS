@@ -116,6 +116,11 @@
                     <button id="btnEditPunch" type="button" class="btn btn-primary">Edit</button>
                 </div>
 
+                <div class="modal-footer">
+                    <button id="btnDelPunch" type="button" class="btn btn-danger">Delete</button>
+                    <button id="btnEditPunch" type="button" class="btn btn-primary">Edit</button>
+                </div>
+
             </div>
         </div>
     </div>
@@ -130,14 +135,22 @@
         $(document).ready(function (e) {
 
          $('a.editPunch').bind('click', function(e) {
-         /*$('#addModal #sHour').val("");
-         $('#addModal #sMin').val("");*/
 
-             $startTimeMoment =  moment("2016-06-06 19:00:00");
+
+            console.log($(this).parent());
+            console.log($(this).parent());
+             /*$startTimeMoment =  moment("2016-06-06 19:00:00");
+             $endTimeMoment  = moment();
+
+
+
              $('#startTimePicker').datetimepicker({
                  defaultDate: $startTimeMoment
              });
-             $("#editModal").modal('show');
+             $('#endTimePicker').datetimepicker({
+                 // Pass parameters here.
+             });
+             $("#editModal").modal('show');*/
              e.preventDefault();
          });
          $('a.delPunch').bind('click', function(e) {
@@ -147,9 +160,7 @@
 
         // Les binds pour ce qui concerne les controles dans les modals.
 
-        $('#endTimePicker').datetimepicker({
-            // Pass parameters here.
-        });
+
 
         $('#punchDatePicker').datetimepicker({
             format: 'DD/MM/YYYY'

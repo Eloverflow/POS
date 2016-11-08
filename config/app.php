@@ -186,11 +186,6 @@ return [
         App\Providers\RouteServiceProvider::class,
         Barryvdh\Cors\ServiceProvider::class,
 
-        /*
-         * Application Service Providers...
-         */
-        App\Providers\ValidationExtensionServiceProvider::class,
-
     ],
 
     /*
