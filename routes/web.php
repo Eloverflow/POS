@@ -50,8 +50,11 @@ Route::get('/inventory/create',  ['uses' => 'ERP\InventoriesController@create', 
 Route::post('/inventory/create',  ['uses' => 'ERP\InventoriesController@postCreate', 'middleware' => 'auth']);
 
 Route::get('/itemtypes',  ['uses' => 'ERP\ItemTypesController@index', 'middleware' => 'auth']);
+Route::get('/itemtypes/create',  ['uses' => 'ERP\ItemTypesController@create', 'middleware' => 'auth']);
+Route::post('/itemtypes/create',  ['uses' => 'ERP\ItemTypesController@postCreate', 'middleware' => 'auth']);
 Route::get('/itemtypes/edit/{slug}',  ['uses' => 'ERP\ItemTypesController@edit', 'middleware' => 'auth']);
-Route::post('/itemtypes/edit/{slug}',  ['uses' => 'ERP\ItemTypesController@update', 'middleware' => 'auth']);
+Route::get('/itemtypes/details/{slug}',  ['uses' => 'ERP\ItemTypesController@details', 'middleware' => 'auth']);
+Route::post('/itemtypes/edit/{slug}',  ['uses' => 'ERP\ItemTypesController@postEdit', 'middleware' => 'auth']);
 
 Route::post('/item/type/create',  ['uses' => 'ERP\ItemTypesController@postCreate', 'middleware' => 'auth']);
 
@@ -67,14 +70,14 @@ Route::get('/extras/create',  ['uses' => 'ERP\ExtrasController@create', 'middlew
 Route::post('/extras/create',  ['uses' => 'ERP\ExtrasController@postCreate', 'middleware' => 'auth']);
 
 Route::get('/extras/edit/{slug}',  ['uses' => 'ERP\ExtrasController@edit', 'middleware' => 'auth']);
-Route::post('/extras/edit/{slug}',  ['uses' => 'ERP\ExtrasController@update', 'middleware' => 'auth']);
+Route::post('/extras/edit/{slug}',  ['uses' => 'ERP\ExtrasController@postEdit', 'middleware' => 'auth']);
 
 Route::get('/filters',  ['uses' => 'POS\FiltersController@index', 'middleware' => 'auth']);
 Route::get('/filters/create',  ['uses' => 'POS\FiltersController@create', 'middleware' => 'auth']);
 Route::post('/filters/create',  ['uses' => 'POS\FiltersController@postCreate', 'middleware' => 'auth']);
 
 Route::get('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@edit', 'middleware' => 'auth']);
-Route::post('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@update', 'middleware' => 'auth']);
+Route::post('/filters/edit/{slug}',  ['uses' => 'POS\FiltersController@postEdit', 'middleware' => 'auth']);
 
 Route::get('/clients',  ['uses' => 'POS\ClientController@index', 'middleware' => 'auth']);
 Route::get('/clients/create',  ['uses' => 'POS\ClientController@create', 'middleware' => 'auth']);
@@ -114,7 +117,7 @@ Route::post('/addon/rfid/checkRequest',  ['uses' => 'Addons\Rfid\RfidRequestCont
 
 Route::get('/addon/rfid/table',  ['uses' => 'Addons\Rfid\RfidTableController@index', 'middleware' => 'auth']);
 Route::get('/addon/rfid/table/edit/{slug}',  ['uses' => 'Addons\Rfid\RfidTableController@edit', 'middleware' => 'auth']);
-Route::post('/addon/rfid/table/edit/{slug}',  ['uses' => 'Addons\Rfid\RfidTableController@update', 'middleware' => 'auth']);
+Route::post('/addon/rfid/table/edit/{slug}',  ['uses' => 'Addons\Rfid\RfidTableController@postEdit', 'middleware' => 'auth']);
 Route::post('/addon/rfid/beers',  ['uses' => 'Addons\Rfid\RfidTableController@getBeers', 'middleware' => 'auth']);
 
 /* Start schedule */
