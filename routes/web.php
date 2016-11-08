@@ -154,6 +154,7 @@ Route::post('/schedule/AjaxGetEmployeeDaySchedules',  ['uses' => 'POS\ScheduleCo
 /* Start Punch */
 Route::post('/punch/edit',  ['uses' => 'POS\PunchController@postEdit', 'middleware' => 'auth']);
 Route::post('/punch/create',  ['uses' => 'POS\PunchController@postCreate', 'middleware' => 'auth']);
+Route::post('/punch/delete',  ['uses' => 'POS\PunchController@postDelete', 'middleware' => 'auth']);
 
 /*Route::get('/punch',  ['uses' => 'POS\PunchController@index', 'middleware' => 'auth']);*/
 /*Route::get('/keyboard',  ['uses' => 'POS\PunchController@keyboard', 'middleware' => 'auth']);*/

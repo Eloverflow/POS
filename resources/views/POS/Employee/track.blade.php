@@ -303,10 +303,7 @@
                 },
                 dataType: 'JSON',
                 error: function (xhr, status, error) {
-                    var erro = jQuery.parseJSON(xhr.responseText);
-                    $("#errors").empty();
 
-                    $("#displayErrors").show();
                 },
                 success: function(xhr) {
                     $startTimeCell.text($startTimeMoment.format("YYYY-MM-DD HH:mm"));
