@@ -12,8 +12,9 @@ return [
     | as the size rules. Feel free to tweak each of these messages here.
     |
     */
+    'date_multi_format' => 'The :attribute format should be YYYY-MM-DD !',
+    'select_multiple_number' => 'At least one of the work title should be selected !',
 
-    'employee_titles' => 'At least one of the work title should be selected !',
     'accepted'             => 'The :attribute must be accepted.',
     'active_url'           => 'The :attribute is not a valid URL.',
     'after'                => 'The :attribute must be a date after :date.',

@@ -17,7 +17,7 @@
     </div>
     <div class="row">
         <div class="col-lg-12">
-            <div class="panel panel-default">
+            <div class="panel panel-default panel-no-pad-bottom">
                 <div class="panel-body">
                     {!! Form::text('idEmployee', $ViewBag["employee"]->idEmployee, array('style' => 'display:none;visibility:hidden;', 'id' => 'idEmployee')) !!}
                     <div class="form-group">
@@ -35,7 +35,8 @@
     </div>
     <div class="row">
         <div class="col-lg-12 cmd-section">
-            <a class="btn btn-primary pull-left" id="btnAdd" href="#"><span class="glyphicon glyphicon-plus"></span>&nbsp; Add </a>
+            <a class="btn btn-primary pull-left" id="btnBack" href="/employee"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp; Back to employees </a>
+            <a class="btn btn-primary pull-right" id="btnAdd" href="#"><span class="glyphicon glyphicon-plus"></span>&nbsp; Add </a>
         </div>
     </div>
     <div class="row">

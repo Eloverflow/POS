@@ -236,7 +236,7 @@
     <script type="text/javascript">
 
         $('#birthDate').datepicker();
-        $('#hireDate').datepicker();
+        /*$('#hireDate').datepicker();*/
 
     </script>
 @stop
