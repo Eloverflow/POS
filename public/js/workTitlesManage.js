@@ -7,7 +7,6 @@ $(document).ready(function(){
 
     var isCreatingNew = false;
 
-
     $("#btnCreateNew").bind('click', function () {
 
         if(isCreatingNew == false) {
@@ -109,7 +108,7 @@ $(document).ready(function(){
     });
 
     $(".btnOk").bind("click", function() {
-        okEditGroup($(this).parent().parent());
+        okEditGroup(this);
     });
     // Find des binds au depart de la page
 
@@ -225,26 +224,32 @@ $(document).ready(function(){
         });
     };
 
-    var okEditGroup = function(groupHeader){
+    var okEditGroup = function(elem){
 
-        var viewToShow = groupHeader.find(".viewHide");
+        $viewHide = $(elem).parent().parent();
 
-        var inptTitleId = viewToShow.find("#emplTitleId").text();
+        /*console.log($viewHide.find("#emplTitleId").text());
 
-        var inptTitleName = viewToShow.find("#inptTitleName").val();
+        var viewToShow = groupHeader.find(".viewHide");*/
 
-        var inptBaseSalary = viewToShow.find("#inptBaseSalary").val();
+
+        var inptTitleId = $viewHide.find("#emplTitleId").text();
+
+        var inptTitleName = $viewHide.find("#inptTitleName").val();
+
+        var inptBaseSalary = $viewHide.find("#inptBaseSalary").val();
 
         // vs for ViewShow
-        viewToShow.hide();
+        $viewHide.hide();
 
-        var viewToHide = groupHeader.find(".viewShow");
+        $viewShow = $viewHide.parent().find(".viewShow");
 
-        viewToHide.find("#emplTitleName").text(inptTitleName);
+        $viewShow.find("#emplTitleName").text(inptTitleName);
 
-        viewToHide.find("#emplTitleBaseSalary").text(inptBaseSalary + " /h");
+        $viewShow.find(".textCase").text(inptBaseSalary);
+        
 
-        viewToHide.show();
+        $viewShow.show();
 
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -256,7 +261,7 @@ $(document).ready(function(){
         console.log(emplTitleName);
         console.log(emplTitleBaseSalary);
 
-        $.ajax({
+       /* $.ajax({
             url: '/work/title/edit',
             type: 'POST',
             async: true,
@@ -285,7 +290,7 @@ $(document).ready(function(){
                     alert(xhr[key]);
                 });
             }
-        });
+        });*/
     };
 
     var delEmployee = function(lethis) {
@@ -390,7 +395,7 @@ $(document).ready(function(){
         var vsTitleName = viewToHide.find("#emplTitleName").text();
         console.log(vsTitleName);
 
-        var vsBaseSalary = viewToHide.find("#emplTitleBaseSalary").text();
+        var vsBaseSalary = viewToHide.find("#emplTitleBaseSalary").find(".textCase").text();
         console.log(vsBaseSalary);
 
         viewToHide.hide();
