@@ -1,7 +1,5 @@
 @extends('master')
 
-@section('title', $title)
-
 @section('content')
     <div class="panel panel-default">
         <div class="panel-body">
@@ -35,7 +33,7 @@
                                     <label for="{{ $tableChoiceList['dbColumn'] }}">{{ $tableChoiceList["title"] }}</label>
                                     <?php $dbColumn = $tableChoiceList['dbColumn'] ?>
                                     <input class="form-control input{{$tableIteration}}" type="hidden" id="{{ $tableChoiceList['dbColumn'] }}" name="{{ $tableChoiceList['dbColumn'] }}" value="{{ $tableRow->$dbColumn }}">
-                                    <div id="tableChoiceList{{$tableIteration}}" class="list-group tableChoiceList">
+                                    <div id="tableChoiceList{{$tableIteration}}" class="tableChoiceList tableChoiceListRfid">
                                         @foreach($tableChoiceList["table"] as $oneChoice)
                                             <?php $titleColumn = $tableChoiceList["titleColumn"]; $contentColumn = $tableChoiceList["contentColumn"] ?>
                                             <a id="{{$oneChoice->id}}" class="list-group-item tableChoice choiceList{{$tableIteration}} @if($oneChoice->id == $tableRow->$dbColumn ) active @endif' ">
@@ -44,7 +42,7 @@
                                             </a>
                                         @endforeach
                                     </div>
-                                    <a><div id="tableChoiceListArrow{{$tableIteration}}" class="alert alert-info tableChoiceListArrow" role="alert"><span class="glyphicon glyphicon-chevron-down"></span></div></a>
+                                    <a><div id="tableChoiceListArrow{{$tableIteration}}" class="alert-info tableChoiceListArrow" role="alert"><span class="glyphicon glyphicon-chevron-down"></span></div></a>
 
                                     <?php $tableIteration++ ?>
                                 @endforeach
@@ -58,24 +56,12 @@
 
                 @include('partials.alerts.errors')
 
-                @if(Session::has('flash_message'))
-                    <div class="alert alert-success">
-                        {{ Session::get('flash_message') }}
-                    </div>
-                @endif
                 </div>
             </div>
-            <nav>
-                <ul class="pager">
-                    @if($previousTableRow->slug)
-                        <li class="previous"><a href="{{@URL::to( $path ) }}/{{ $previousTableRow->slug }}"><span aria-hidden="true">&larr;</span> {{ $previousTableRow->slug }}</a></li>
-                    @endif
-
-                    @if($nextTableRow->slug)
-                        <li class="next"><a href="{{@URL::to( $path ) }}/{{ $nextTableRow->slug }}">{{ $nextTableRow->slug }} <span aria-hidden="true">&rarr;</span></a></li>
-                    @endif
-                </ul>
-            </nav>
         </div>
     </div>
+@stop
+
+@section("myjsfile")
+    <script src="{{ @URL::to('js/tableChoiceListRfidTable.js') }}"></script>
 @stop

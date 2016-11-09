@@ -22,7 +22,8 @@ class RfidTableController extends Controller
     {
         $tableRows = TableRfid::get();
 
-        $title = "Table";
+        $tableRows->load('beer1');
+        $tableRows->load('beer2');
 
         $columns = array('name','flash_card_hw_code', 'phone_hw_code');
 

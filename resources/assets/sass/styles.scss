@@ -497,11 +497,14 @@ li.addTable .glyphicon{
 }
 
 .tableChoiceList{
-	visibility: hidden;
 	overflow-y: scroll;
 	overflow-x: hidden;
 	height: 250px;
 	margin-bottom: 0;
+}
+
+.tableChoiceListRfid{
+	height: 80px;
 }
 
 .tableChoiceList .tableChoice a.view{

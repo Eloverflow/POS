@@ -127,7 +127,7 @@ class ItemsController extends Controller
 
 
 
-    public  function postEdit($slug, Request $request)
+    public function postEdit($slug, Request $request)
     {
         /*Main table row to retrieve from DB*/
         $tableRow = Item::whereSlug($slug)->first();
