@@ -84,7 +84,7 @@ class ClientController extends Controller
         $tableRow->update(Input::all());
         Session::flash('success', $tableRow->slug.' '. trans('flashmsg.successUpdate'));
 
-        return Redirect::back();
+        return Redirect::to('/clients');
     }
 
 
@@ -142,8 +142,7 @@ class ClientController extends Controller
 
             Session::flash('success', $client->slug.' '. trans('flashmsg.successCreate'));
 
-
-            return Redirect::back();
+            return Redirect::to('/clients');
         }
     }
 }

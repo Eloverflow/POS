@@ -14,7 +14,7 @@ class InventoryTest extends TestCase
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
             ->visit('/inventory/create')
-            ->press('1')
+            ->click('1')
             ->select(0, 'item_size')
             ->type(10, 'quantity')
             ->press('btn-create-inventory')
@@ -28,6 +28,7 @@ class InventoryTest extends TestCase
 
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
+            ->visit('/inventory/edit/keith-baril')
             ->type(10, 'quantity')
             ->press('btn-edit-inventory')
             ->seePageIs('/inventory')

@@ -134,7 +134,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
             }
             else{
 
-                $itemSlug = Item::whereId(Input::get('item_id'))->first()->slug . '-' . Input::get('item_size');
+                $itemSlug = strtolower(Item::whereId(Input::get('item_id'))->first()->slug . '-' . Input::get('item_size'));
 
                 Inventory::create([
                     'quantity' =>  Input::get('quantity'),
