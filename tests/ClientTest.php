@@ -30,7 +30,7 @@ class ClientTest extends TestCase
             ->visit('/clients/edit/2784390787')
             ->type(20, 'credit')
             ->press('btn-edit-client')
-            ->seePageIs('/client')
+            ->seePageIs('/clients')
             ->see('was successfully updated!');
 
     }

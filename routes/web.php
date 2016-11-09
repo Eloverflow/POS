@@ -100,11 +100,9 @@ Route::post('/work/title/edit',  ['uses' => 'POS\WorkTitleController@postEdit', 
 Route::post('/work/title/add/employee',  ['uses' => 'POS\WorkTitleController@addEmployee', 'middleware' => 'auth']);
 Route::delete('/work/title/del/employee',  ['uses' => 'POS\WorkTitleController@delEmployee', 'middleware' => 'auth']);
 
-
 Route::get('/employee/edit/{id}',  ['uses' => 'POS\EmployeeController@edit', 'middleware' => 'auth']);
 Route::get('/employee/track/{id}',  ['uses' => 'POS\EmployeeController@track', 'middleware' => 'auth']);
-Route::post('/employee/edit',  ['uses' => 'POS\EmployeeController@postedit', 'middleware' => 'auth']);
-
+Route::post('/employee/edit/{id}',  ['uses' => 'POS\EmployeeController@postEdit', 'middleware' => 'auth']);
 Route::get('/employee/delete/{id}',  ['uses' => 'POS\EmployeeController@delete', 'middleware' => 'auth']);
 Route::post('/employee/Partialdelete',  ['uses' => 'POS\EmployeeController@ajaxPartdelete', 'middleware' => 'auth']);
 Route::post('/employee/Completedelete',  ['uses' => 'POS\EmployeeController@ajaxCompdelete', 'middleware' => 'auth']);
@@ -198,6 +196,7 @@ Route::get('/availability/details/{id}',  ['uses' => 'POS\AvailabilityController
 Route::get('/stats',  ['uses' => 'POS\StatsController@index', 'middleware' => 'auth']);
 
 /* End Statistics */
+
 
 /* Start Calendar */
 Route::get('/calendar',  ['uses' => 'POS\CalendarController@index', 'middleware' => 'auth']);
