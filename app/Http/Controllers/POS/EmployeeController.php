@@ -77,7 +77,8 @@ class EmployeeController extends Controller
             'phone' => ['required', 'regex:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/'] ,
             'pc' => ['regex:/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/'],
             'bonusSalary' => ['regex:/^\d*\.?\d*$/'],
-            'hireDate' => ['required']
+            'hireDate' => ['required', 'date_multi_format:"Y-m-d"'  ], //'date_multi_format:"Y-m-d H:i:s.u","Y-m-d"'
+            'birthDate' => ['date_multi_format:"Y-m-d"'],
         );
 
         $message = array(
@@ -156,7 +157,9 @@ class EmployeeController extends Controller
             'password' => 'required|min:6|confirmed',
             'password_confirmation' => 'required|min:6',
             'bonusSalary' => ['regex:/^\d*\.?\d*$/'],
-            'hireDate' => ['required']
+            'hireDate' => ['required', 'date_multi_format:"Y-m-d"'  ], //'date_multi_format:"Y-m-d H:i:s.u","Y-m-d"'
+            'birthDate' => ['date_multi_format:"Y-m-d"'],
+            /*'employeeTitles[]' => ['select_multiple_number:1']*/
         );
 
         $message = array(
@@ -166,12 +169,19 @@ class EmployeeController extends Controller
         $validation = \Validator::make($inputs, $rules, $message);
 
 
+        // Faire une regle unique (A voir) pour conserver la priorité des validation
         $validation->after(function($validator) {
             if (!$this->ValidateSelectedWorkTitles(Input::get('employeeTitles'))) {
                 $validator->errors()->add('employeeTitles', 'At least one of the work title should be selected !');
             }
         });
 
+        $validation->after(function($validator) {
+            $user = User::where('email', '=', Input::get('email'))->first();
+            if ($user != null) {
+                $validator->errors()->add('email', 'This email is already in use !');
+            }
+        });
 
         if($validation->fails())
         {
@@ -182,6 +192,7 @@ class EmployeeController extends Controller
         }
         else
         {
+
             $user = User::create([
                 'name' => 'user_employee',
                 'email' => Input::get('email'),

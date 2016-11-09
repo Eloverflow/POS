@@ -109,7 +109,6 @@ class PunchController extends Controller
         $rules = array(
             'startTime' => 'required',
             'endTime' => 'required',
-            'idPunch' => 'required',
             'idWorkTitle' => 'required',
             'idEmployee' => 'required'
         );
@@ -125,22 +124,42 @@ class PunchController extends Controller
         }
         else
         {
-                Punch::create([
+                $punch = Punch::create([
                     'startTime' => Input::get('startTime'),
                     'endTime' => Input::get('endTime'),
                     'work_title_id' => Input::get('idWorkTitle'),
                     'employee_id' => Input::get('idEmployee')
                 ]);
 
-            return \Response::json("The punch has been successfully created !", 200);
+            return \Response::json(['Status' => "Success",
+                'idPunch' => $punch->id,
+                'Message' => "The punch has been successfully created !"], 200);
         }
     }
 
-    public function postDelete($id)
+    public function postDelete()
     {
-        Punch::where('id', $id)
-            ->delete();
-        return \Response::json("The punch has been successfully deleted !", 200);
+        $inputs = Input::all();
+
+        $rules = array(
+            'idPunch' => 'required'
+        );
+
+        $message = array(
+            'required' => 'The :attribute is required !'
+        );
+
+        $validation = \Validator::make($inputs, $rules, $message);
+        if($validation -> fails())
+        {
+            return \Response::json($validation->messages(), 400);
+        }
+        else
+        {
+            Punch::where('id', Input::get('idPunch'))
+                ->delete();
+            return \Response::json("The punch has been successfully deleted !", 200);
+        }
     }
 
     public function delete($id)

@@ -41,6 +41,7 @@ class Employee extends Model
     }
 
 
+    
     public function user()
     {
         return $this->hasOne('App\Models\Auth\User', 'id', 'userId');
