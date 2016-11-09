@@ -43,7 +43,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <table data-toggle="table" id="tblPunches">
+                    <table data-toggle="table" id="tblPunches" data-show-toggle="true" data-show-columns="true" data-search="true" data-select-item-name="toolbar1" data-pagination="true" data-sort-name="name" data-sort-order="desc">
                         <thead>
                         <tr>
                             <th class="col-md-2" data-field="startTime">Start Time</th>

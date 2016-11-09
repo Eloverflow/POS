@@ -77,7 +77,8 @@ class EmployeeController extends Controller
             'phone' => ['required', 'regex:/^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$/'] ,
             'pc' => ['regex:/^[A-Za-z]\d[A-Za-z][ -]?\d[A-Za-z]\d$/'],
             'bonusSalary' => ['regex:/^\d*\.?\d*$/'],
-            'hireDate' => ['required']
+            'hireDate' => ['required', 'date_multi_format:"Y-m-d"'  ], //'date_multi_format:"Y-m-d H:i:s.u","Y-m-d"'
+            'birthDate' => ['date_multi_format:"Y-m-d"'],
         );
 
         $message = array(
@@ -191,7 +192,7 @@ class EmployeeController extends Controller
         }
         else
         {
-            
+
             $user = User::create([
                 'name' => 'user_employee',
                 'email' => Input::get('email'),
