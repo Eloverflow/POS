@@ -42,7 +42,7 @@
         <div class="col-lg-12">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <table data-toggle="table" >
+                    <table data-toggle="table" id="tblPunches">
                         <thead>
                         <tr>
                             <th class="col-md-2" data-field="startTime">Start Time</th>
@@ -228,6 +228,9 @@
     <script type="text/javascript">
     $(document).ready(function (e) {
 
+        // Table Object
+        $tblPunches = $("#tblPunches");
+
         // Modal Object
         $addModal = $("#addModal");
         $editModal = $("#editModal");
@@ -236,19 +239,20 @@
         $startTimeCell = null;
         $endTimeCell = null;
 
+        $addModal.find('#startTimePicker').datetimepicker({});
+        $addModal.find('#endTimePicker').datetimepicker({});
+
+        $editModal.find('#startTimePicker').datetimepicker({});
+        $editModal.find('#endTimePicker').datetimepicker({});
+
         // Show the Modal
         $("#btnAdd").bind('click', function (e) {
 
             // On set les values
-            $editModal.find("#workTitleSelect" ).val(1);
+            $addModal.find("#workTitleSelect" ).val(1);
 
-            $addModal.find('#startTimePicker').datetimepicker({
-                defaultDate: moment()
-            });
-
-            $addModal.find('#endTimePicker').datetimepicker({
-                defaultDate: moment().add(2, 'hours')
-            });
+            $addModal.find('#startTimePicker').data("DateTimePicker").date(moment());
+            $addModal.find('#endTimePicker').data("DateTimePicker").date(moment().add(2, 'hours'));
 
             $addModal.modal('show');
             e.preventDefault();
@@ -256,14 +260,78 @@
 
         // Create the punch
         $("#btnAddPunch").bind('click', function (e) {
+            $startTimeMoment = moment($addModal.find("#startTimePicker").data("DateTimePicker").date());
+            $endTimeMoment = moment($addModal.find("#endTimePicker").data("DateTimePicker").date());
 
-        }
+            $idWorkTitle = $addModal.find("#workTitleSelect option:selected" ).val();
+            $idEmployee = $("#idEmployee").val();
+
+
+            /*  console.log($startTimeMoment);
+             console.log($endTimeMoment);
+             console.log($idPunch);
+             console.log($idWorkTitle);
+             console.log($idEmployee);*/
+
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+            $.ajax({
+                url: '/punch/create',
+                type: 'POST',
+                async: true,
+                data: {
+                    _token: CSRF_TOKEN,
+                    startTime: $startTimeMoment.format(),
+                    endTime: $endTimeMoment.format(),
+                    idWorkTitle: $idWorkTitle,
+                    idEmployee: $idEmployee
+                },
+                dataType: 'JSON',
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                },
+                success: function(xhr) {
+                    console.log(xhr);
+
+                    if($tblPunches.find('> tbody > tr').length === 1){
+
+                        if($tblPunches.find("> tbody > tr:first").hasClass("no-records-found")){
+                            $tblPunches.find("> tbody > tr:first").remove();
+                        }
+                    }
+                    $tblPunches.append("<tr><td>" + $startTimeMoment.format("YYYY-MM-DD HH:mm") +
+                            "</td><td>" + $endTimeMoment.format("YYYY-MM-DD HH:mm") + "</td>" +
+                            "<td><a class=\"editPunch\" href=\"#\" data-id=\"" + xhr.idPunch + "\" data-work-title-id=\"" + $idWorkTitle + "\">Edit</a>&nbsp;" +
+                            "<a class=\"delPunch\" href=\"#\" data-id=\"" + xhr.idPunch + "\">Delete</a></td>" +
+                            "</tr>")
+
+                    // Bind events on the options button (Edit, Delete)
+                    $lastRow = $tblPunches.find("> tbody > tr:last");
+                    $lastRow.find(".editPunch").bind('click', function(e) {
+                        EditPunch(this);
+                    })
+                    $lastRow.find(".delPunch").bind('click', function(e) {
+                        DeletePunch(this);
+                    })
+                    alert(xhr.Message);
+
+                }
+            });
+
+            $addModal.modal('hide');
+        });
 
         $('a.editPunch').bind('click', function(e) {
 
-            $idPunch = $(this).data("id");
-            $idWorkTitle = $(this).data("work-title-id");
-            $selectedRow = $(this).parent().parent();
+            EditPunch(this);
+
+        });
+
+        function EditPunch(elem){
+
+            $idPunch = $(elem).data("id");
+            $idWorkTitle = $(elem).data("work-title-id");
+            $selectedRow = $(elem).parent().parent();
 
             // On set les values
             $editModal.find("#idPunch").val($idPunch);
@@ -272,48 +340,50 @@
             $startTimeCell = $selectedRow.find('td:eq(0)');
             $endTimeCell = $selectedRow.find('td:eq(1)');
 
-            $editModal.find('#startTimePicker').datetimepicker({
-                defaultDate: moment($startTimeCell.text())
-            });
-
-            $editModal.find('#endTimePicker').datetimepicker({
-                defaultDate: moment($endTimeCell.text())
-            });
+            $editModal.find('#startTimePicker').data("DateTimePicker").date(moment($startTimeCell.text()));
+            $editModal.find('#endTimePicker').data("DateTimePicker").date(moment($endTimeCell.text()));
 
             $editModal.modal('show');
-            e.preventDefault();
 
-        });
+        }
 
         $('a.delPunch').bind('click', function(e) {
 
-            $idPunch = $(this).data("id");
-
-            $.ajax({
-                url: '/punch/edit',
-                type: 'POST',
-                async: true,
-                data: {
-                    _token: CSRF_TOKEN,
-                    startTime: $startTimeMoment.format(),
-                    endTime: $endTimeMoment.format(),
-                    idPunch: $idPunch,
-                    idWorkTitle: $idWorkTitle,
-                    idEmployee: $idEmployee
-                },
-                dataType: 'JSON',
-                error: function (xhr, status, error) {
-
-                },
-                success: function(xhr) {
-                    $startTimeCell.text($startTimeMoment.format("YYYY-MM-DD HH:mm"));
-                    $endTimeCell.text($endTimeMoment.format("YYYY-MM-DD HH:mm"));
-                    alert(xhr);
-
-                }
-            });
+            DeletePunch(this);
 
         });
+
+        function DeletePunch(elem) {
+            $idPunch = $(elem).data("id");
+
+            $selectedRow = $(elem).parent().parent();
+
+            var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+
+            if(confirm("Are you sure you want to delete this punch ?")) {
+                $.ajax({
+                    url: '/punch/delete',
+                    type: 'POST',
+                    async: true,
+                    data: {
+                        _token: CSRF_TOKEN,
+                        idPunch: $idPunch
+                    },
+                    dataType: 'JSON',
+                    error: function (xhr, status, error) {
+                        console.log(xhr);
+                    },
+                    success: function (xhr) {
+                        $selectedRow.remove();
+                        if($tblPunches.find('> tbody > tr').length === 0){
+                            $tblPunches.append("<tr class=\"no-records-found\"><td colspan=\"3\">No matching records found</td></tr>")
+                        }
+                        alert(xhr);
+
+                    }
+                });
+            }
+        }
 
         // Les binds pour ce qui concerne les controles dans les modals.
         $("#btnEditPunch").bind('click', function(e) {
@@ -349,17 +419,7 @@
                 },
                 dataType: 'JSON',
                 error: function (xhr, status, error) {
-                    var erro = jQuery.parseJSON(xhr.responseText);
-                    $("#errors").empty();
-                    //$("##errors").append('<ul id="errorsul">');
-                    [].forEach.call( Object.keys( erro ), function( key ){
-                        [].forEach.call( Object.keys( erro[key] ), function( keyy ) {
-                            $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
-                        });
-                        //console.log( key , erro[key] );
-                    });
-                    //$("#displayErrors").append('</ul>');
-                    $("#displayErrors").show();
+                    console.log(xhr);
                 },
                 success: function(xhr) {
                     $startTimeCell.text($startTimeMoment.format("YYYY-MM-DD HH:mm"));
@@ -369,13 +429,8 @@
                 }
             });
 
-            $("#editModal").modal('hide');
+            $editModal.modal('hide');
         })
-
-
-        $('#punchDatePicker').datetimepicker({
-            format: 'DD/MM/YYYY'
-        });
 
     });
     </script>
