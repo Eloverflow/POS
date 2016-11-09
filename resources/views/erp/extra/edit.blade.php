@@ -12,11 +12,11 @@
 
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">Edit Extra</h1>
+        <h1 class="page-header">{{ @Lang::get('extra.updateToExtra') }}</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">
-            <a class="btn btn-danger pull-right" href="{{ @URL::to('extras') }}"> Back to extras </a>
+            <a class="btn btn-danger pull-right" href="{{ @URL::to('extras') }}">{{ @Lang::get('extra.backToExtra') }}</a>
         </div>
     </div>
     <div class="row">

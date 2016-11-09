@@ -29,7 +29,7 @@ class RfidRequestController extends Controller
 
         $columns = array('id', 'flash_card_hw_code', 'rfid_card_code');
 
-        return view('addins.rfid.request.list', compact('title', 'items', 'columns'));
+        return view('addins.rfid.request.index', compact('title', 'items', 'columns'));
     }
 
     protected function create(Request $request)

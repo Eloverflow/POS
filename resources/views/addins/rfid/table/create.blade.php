@@ -5,14 +5,9 @@
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
 
-@section('afterContent')
-    @include('shared.afterContent')
-@stop
-
-
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">{{ @Lang::get('rfidtable.updateToRfidtable') }}</h1>
+        <h1 class="page-header">{{ @Lang::get('rfidtable.addToRfidtable') }}</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">
@@ -28,7 +23,7 @@
                                 <div class="form-group">
                                     @foreach($tableColumns as $column)
                                         <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
-                                        <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $tableRow->$column }}">
+                                        <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="">
                                     @endforeach
 
                                     @if( isset($tableChildRows))
@@ -50,11 +45,11 @@
 
                                             <label for="{{ $tableChoiceList['dbColumn'] }}">{{ $tableChoiceList["title"] }}</label>
                                             <?php $dbColumn = $tableChoiceList['dbColumn'] ?>
-                                            <input class="form-control input{{$tableIteration}}" type="hidden" id="{{ $tableChoiceList['dbColumn'] }}" name="{{ $tableChoiceList['dbColumn'] }}" value="{{ $tableRow->$dbColumn }}">
+                                            <input class="form-control input{{$tableIteration}}" type="hidden" id="{{ $tableChoiceList['dbColumn'] }}" name="{{ $tableChoiceList['dbColumn'] }}" value="">
                                             <div id="tableChoiceList{{$tableIteration}}" class="tableChoiceList tableChoiceListRfid">
                                                 @foreach($tableChoiceList["table"] as $oneChoice)
                                                     <?php $titleColumn = $tableChoiceList["titleColumn"]; $contentColumn = $tableChoiceList["contentColumn"] ?>
-                                                    <a id="{{$oneChoice->id}}" class="list-group-item tableChoice choiceList{{$tableIteration}} @if($oneChoice->id == $tableRow->$dbColumn ) active @endif' ">
+                                                    <a id="{{$oneChoice->id}}" class="list-group-item tableChoice choiceList{{$tableIteration}} @if($oneChoice->id == 0 ) active @endif' ">
                                                         <h4 class="list-group-item-heading">{{ $oneChoice->$titleColumn }}</h4>
                                                         <p class="list-group-item-text">{{ $oneChoice->$contentColumn }}</p>
                                                     </a>
@@ -68,7 +63,7 @@
 
                                     <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                                 </div>
-                                <button type="submit" class="btn btn-default">Update</button>
+                                <button type="submit" class="btn btn-default pull-right">{{ @Lang::get('rfidtable.addToRfidtable') }}</button>
                             </form>
                         <br>
 

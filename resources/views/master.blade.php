@@ -95,7 +95,7 @@ $userMenuTabs = array
             <li class="{{areActiveRoutes(['availability', 'availability/*'])}}"><a name="Availability"  href="{{ URL::to('availability') }}"><svg class="glyph stroked calendar blank"><use xlink:href="#stroked-calendar-blank"/></svg> {{ Lang::get('menu.availability') }}</a></li>
             <li class="{{areActiveRoutes(['inventory', 'inventory/*'])}}"><a name="Inventory"  href="{{ URL::to('inventory') }}"><svg class="glyph stroked clipboard with paper"><use xlink:href="#stroked-clipboard-with-paper"/></svg> {{ Lang::get('menu.inventory') }}</a></li>
             <li class="{{areActiveRoutes(['clients', 'clients/*'])}}"><a name="Clients"  href="{{ URL::to('clients') }}"><svg class="glyph stroked female user"><use xlink:href="#stroked-female-user"/></svg> Clients</a></li>
-            <li id="" class="parent {{areActiveRoutes(['plan', 'plan/*','items', 'items/*','itemtypes','itemtypes/*','extras','extras/*','filters', 'filters/*'])}}">
+            <li id="" class="parent ">
                 <a id="" data-toggle="collapse" href="#sub-item-0" class="collapsed" aria-expanded="false">
                     <svg id="" class="glyph stroked chevron-down"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-chevron-down"></use></svg>
                     <span id="" class="menuLinkText">{{ Lang::get('menu.posMenu') }}</span>
@@ -110,14 +110,14 @@ $userMenuTabs = array
                 </ul>
             </li>
             <li role="presentation" class="divider"></li>
-            <li id="" class="parent {{areActiveRoutes(['addon/rfid/table','addon/rfid/request'])}}">
+            <li id="" class="parent">
                 <a id="" data-toggle="collapse" href="#sub-item-1" class="collapsed" aria-expanded="false">
                     <svg id="" class="glyph stroked chevron-down"><use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="#stroked-chevron-down"></use></svg>
                     <span id="" class="menuLinkText"> {{ Lang::get('menu.addons') }}</span>
                 </a>
-                <ul class="children collapse {{isCollapseIn(['addon/rfid/table','addon/rfid/request'])}}" id="sub-item-1" aria-expanded="false">
-                    <li class="{{isActiveRoute('addon/rfid/table')}}"><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> {{ Lang::get('menu.rfidTables') }}</a></li>
-                    <li class="{{isActiveRoute('addon/rfid/request')}}"><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> {{ Lang::get('menu.rfidRequests') }}</a></li>
+                <ul class="children collapse {{isCollapseIn(['addon/rfid/table','addon/rfid/table/*','addon/rfid/request','addon/rfid/request/*'])}}" id="sub-item-1" aria-expanded="false">
+                    <li class="{{areActiveRoutes(['addon/rfid/table', 'addon/rfid/table/*'])}}"><a href="{{ URL::to('addon/rfid/table') }}"><svg class="glyph stroked table"><use xlink:href="#stroked-table"/></svg> {{ Lang::get('menu.rfidTables') }}</a></li>
+                    <li class="{{areActiveRoutes(['addon/rfid/request', 'addon/rfid/request/*'])}}"><a href="{{ URL::to('addon/rfid/request') }}"><svg class="glyph stroked wireless router"><use xlink:href="#stroked-wireless-router"/></svg> {{ Lang::get('menu.rfidRequests') }}</a></li>
                 </ul>
             </li>
             <li role="presentation" class="divider"></li>

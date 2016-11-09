@@ -58,6 +58,14 @@ class PlanController extends Controller
         return $view;
     }
 
+    public function details($id)
+    {/*
+        $plan = Plan::GetById($id);
+        $tables =  Table::GetByPlanId($id);
+        $separations =  Separation::where('plan_id', $id)->get();*/
+        return \View::make('POS.Plan.details');
+    }
+
     public function create($planName, $nbFloor)
     {
         $view = \View::make('POS.Plan.create')
