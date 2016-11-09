@@ -11,7 +11,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
                     <div class="col-md-6">
-                        {!! Form::open(array('url' => @URL::to('/employee/edit/' . (int)$ViewBag['employee']->idEmployee), 'role' => 'form')) !!}
+                        {!! Form::open(array('url' => 'employee/edit', 'role' => 'form')) !!}
                         {!! Form::text('idUser', $ViewBag['employee']->idUser, array('style' => 'display:none;visibility:hidden;')) !!}
                         {!! Form::text('idEmployee', $ViewBag['employee']->idEmployee, array('style' => 'display:none;visibility:hidden;')) !!}
                         @if (count($errors) > 0)
@@ -175,7 +175,8 @@
                                     @endif
                                 </div>
                             </div>
-                        {!! Form::submit('Edit', array('id' => 'btn-edit-employee', 'class' => 'btn btn-primary')) !!}
+                        {!! Form::submit('Edit', array('class' => 'btn btn-primary')) !!}
+                        {!! Form::close() !!}
                     </div>
                 </div>
             </div>

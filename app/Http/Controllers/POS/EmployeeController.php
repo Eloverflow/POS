@@ -66,7 +66,7 @@ class EmployeeController extends Controller
         return $view;
     }
 
-    public function postEdit($id)
+    public function postEdit()
     {
         $inputs = Input::all();
 
@@ -105,7 +105,7 @@ class EmployeeController extends Controller
         else
         {
 
-            $employee = Employee::where('id', $id)
+            $employee = Employee::where('id', Input::get('idEmployee'))
                 ->update(['firstName' => Input::get('firstName'),
                 'lastName' => Input::get('lastName'),
                 'streetAddress' => Input::get('streetAddress'),
@@ -120,12 +120,12 @@ class EmployeeController extends Controller
             ]);
 
             // We delete so we can re-insert properly.
-            TitleEmployee::DeleteByEmployeeId($id);
+            TitleEmployee::DeleteByEmployeeId(Input::get('idEmployee'));
 
             $employeeTitlesInpt = Input::get('employeeTitles');
             for($i = 0; $i < count($employeeTitlesInpt); $i++){
                 TitleEmployee::create([
-                    'employee_id' => $id,
+                    'employee_id' => Input::get('idEmployee'),
                     'work_titles_id' => $employeeTitlesInpt[$i]
                 ]);
             }
