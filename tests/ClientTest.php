@@ -28,7 +28,7 @@ class ClientTest extends TestCase
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
             ->visit('/clients/edit/2784390787')
-            ->type(20, 'quantity')
+            ->type(20, 'credit')
             ->press('btn-edit-client')
             ->seePageIs('/client')
             ->see('was successfully updated!');

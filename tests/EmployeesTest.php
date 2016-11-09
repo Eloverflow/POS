@@ -42,8 +42,6 @@ class EmployeesTest extends TestCase
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
             ->visit('/employee/edit/3')
-            ->see('John')
-            ->see('Mccormick')
             ->type('Test', 'firstName')
             ->type('Testing', 'lastName')
             ->type('111222333', 'nas')

@@ -68,11 +68,8 @@
                             @endforeach
                             </select>
                         </div>
-
-                    </div>
-                    <div class="col-lg-12">
-                        <!-- dialog buttons -->
                         {!! Form::submit(@Lang::get('extra.addToExtra'), array('id' => 'btn-create-extra', 'class' => 'btn btn-primary pull-right')) !!}
+
                     </div>
 
                 </div>
