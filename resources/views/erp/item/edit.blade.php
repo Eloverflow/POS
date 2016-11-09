@@ -37,15 +37,14 @@
                                 @foreach($tableColumns as $column)
                                     @if($column == "img_id")
 
-                                        <label for="uploadId" >{{ ucwords( str_replace('_', ' ', $column)) }} </label>
+                                        <label for="uploadId" >Image</label>
                                         <div class="row">
                                             <div class="col-sm-6 col-md-4">
-
                                                 <div id="uploadImg" class="thumbnail">
                                                     <img id="img_display" src="
-                                                        @if($tableRow->$column != null)
+                                                    @if($tableRow->$column != null)
                                                         {{ @URL::to('img/item/' . $tableRow->$column) }}
-                                                        @endif
+                                                    @endif
                                                     " alt=""  width="300">
                                                 </div>
                                             <input id="uploadFile" class="form-control" placeholder="Choose File" disabled="disabled" />
@@ -56,10 +55,6 @@
 
                                             </div>
                                             <p class="errors">{!!$errors->first('image')!!}</p>
-
-                                            {{--
-                                            <label for="image" class="secure">Upload form</label>--}}
-
 
                                             </div>
                                         </div>

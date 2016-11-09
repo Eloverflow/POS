@@ -162,7 +162,7 @@ class ItemsController extends Controller
             $product->save();*/
 
 
-            Session::flash('success', $slug.' image updated!');
+            //Session::flash('success', $slug.' image updated!');
 
 
             Input::merge(array('img_id' =>  $filename));
@@ -172,7 +172,7 @@ class ItemsController extends Controller
 
 
         $tableRow->update(Input::all());
-        Session::flash('success', $tableRow->slug.' successfully updated!');
+        Session::flash('success', $tableRow->slug.' '. trans('flashmsg.successUpdate'));
 
 
 

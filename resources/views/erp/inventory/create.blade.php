@@ -51,6 +51,7 @@
 @section("myjsfile")
 
     <script src="{{ @URL::to('js/inventoriesManage.js') }}"></script>
+    <script src="{{ @URL::to('js/tableChoiceListItem.js') }}"></script>
     <script type="text/javascript">
 
         $("#tableChoiceList1 span").on("click", function() {

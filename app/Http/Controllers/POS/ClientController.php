@@ -75,14 +75,14 @@ class ClientController extends Controller
             /*$product->image = 'img/item/'.$filename;
             $product->save();*/
 
-            Session::flash('success', $slug.' image updated!');
+            //Session::flash('success', $slug.' image updated!');
 
             Input::merge(array('img_id' =>  $filename));
 
         }
 
         $tableRow->update(Input::all());
-        Session::flash('success', $tableRow->slug.' successfully updated');
+        Session::flash('success', $tableRow->slug.' '. trans('flashmsg.successUpdate'));
 
         return Redirect::back();
     }
@@ -140,7 +140,7 @@ class ClientController extends Controller
                 'slug' => Input::get('rfid_card_code') . '-' . rand(10, 10000)
             ]);
 
-            Session::flash('success', $client->slug.' successfully created');
+            Session::flash('success', $client->slug.' '. trans('flashmsg.successCreate'));
 
 
             return Redirect::back();
