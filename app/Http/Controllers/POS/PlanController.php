@@ -36,14 +36,77 @@ class PlanController extends Controller
         return $view;
     }
 
-    /*For posio menu angilar app*/
-    public function tablePlan($id)
+    public function create($planName, $nbFloor)
     {
-        $plan = Plan::where('id', $id)->first();
-        $plan->load('table');
-        $plan->load('separation');
-        return $plan;
+        $view = \View::make('POS.Plan.create')
+            ->with('ViewBag', array (
+                'planName' => $planName,
+                'nbFloor' => $nbFloor
+            ));
+        return $view;
     }
+    public function postCreate()
+    {
+        $inputs = Input::all();
+
+        $rules = array(
+            'planName' => 'required',
+            'nbFloor' => 'required'
+        );
+
+        $message = array(
+            'required' => 'The :attribute is required !'
+        );
+
+        $validation = \Validator::make($inputs, $rules, $message);
+        if($validation -> fails())
+        {
+            $messages = $validation->errors();
+            return \Response::json([
+                'errors' => $messages
+            ], 422);
+        }
+        else
+        {
+
+            $plan = Plan::create([
+                'name' => Input::get('planName'),
+                'nbFloor' => Input::get('nbFloor'),
+                'wallPoints' => Input::get('wallPoints')
+            ]);
+
+            $jsonArray = json_decode(Input::get('tables'), true);
+            for($i = 0; $i < count($jsonArray); $i++)
+            {
+                Table::create([
+                    "type" => $jsonArray[$i]["tblType"],
+                    "tblNumber" => $jsonArray[$i]["tblNum"],
+                    "noFloor" => $jsonArray[$i]["noFloor"],
+                    'xPos' => $jsonArray[$i]["xPos"],
+                    "yPos" => $jsonArray[$i]["yPos"],
+                    "angle" => $jsonArray[$i]["angle"],
+                    "plan_id" => $plan->id,
+                    "status" => 1
+                ]);
+            }
+
+        }
+
+        $jsonArraySep = json_decode(Input::get('separations'), true);
+        for ($i = 0; $i < count($jsonArraySep); $i++) {
+            $jsonArraySep[$i]["plan_id"] = $plan->id;
+
+            $separation = Separation::create($jsonArraySep[$i]);
+            if ($separation == "") {
+                //Failed at creating table
+            }
+        }
+
+        return \Response::json([
+            'success' => "The plan " . Input::get('planName') . " has been successfully created !"
+        ], 201);
+    }
+
     public function edit($id)
     {
         $plan = Plan::GetById($id);
@@ -54,24 +117,6 @@ class PlanController extends Controller
                 'plan' => $plan,
                 'tables' => json_encode($tables),
                 'separations' => json_encode($separations)
-            ));
-        return $view;
-    }
-
-    public function details($id)
-    {/*
-        $plan = Plan::GetById($id);
-        $tables =  Table::GetByPlanId($id);
-        $separations =  Separation::where('plan_id', $id)->get();*/
-        return \View::make('POS.Plan.details');
-    }
-
-    public function create($planName, $nbFloor)
-    {
-        $view = \View::make('POS.Plan.create')
-            ->with('ViewBag', array (
-                'planName' => $planName,
-                'nbFloor' => $nbFloor
             ));
         return $view;
     }
@@ -180,74 +225,26 @@ class PlanController extends Controller
         ], 201);
     }
 
-
-
-    public function postCreate()
+    public function details()
     {
-        $inputs = Input::all();
-
-        $rules = array(
-            'planName' => 'required',
-            'nbFloor' => 'required'
-        );
-
-        $message = array(
-            'required' => 'The :attribute is required !'
-        );
-
-        $validation = \Validator::make($inputs, $rules, $message);
-        if($validation -> fails())
-        {
-            $messages = $validation->errors();
-            return \Response::json([
-                'errors' => $messages
-            ], 422);
-        }
-        else
-        {
-
-            $plan = Plan::create([
-                'name' => Input::get('planName'),
-                'nbFloor' => Input::get('nbFloor'),
-                'wallPoints' => Input::get('wallPoints')
-            ]);
-
-            $jsonArray = json_decode(Input::get('tables'), true);
-            for($i = 0; $i < count($jsonArray); $i++)
-            {
-                    Table::create([
-                        "type" => $jsonArray[$i]["tblType"],
-                        "tblNumber" => $jsonArray[$i]["tblNum"],
-                        "noFloor" => $jsonArray[$i]["noFloor"],
-                        'xPos' => $jsonArray[$i]["xPos"],
-                        "yPos" => $jsonArray[$i]["yPos"],
-                        "angle" => $jsonArray[$i]["angle"],
-                        "plan_id" => $plan->id,
-                        "status" => 1
-                    ]);
-                }
-
-            }
-
-        $jsonArraySep = json_decode(Input::get('separations'), true);
-        for ($i = 0; $i < count($jsonArraySep); $i++) {
-            $jsonArraySep[$i]["plan_id"] = $plan->id;
-
-                $separation = Separation::create($jsonArraySep[$i]);
-                if ($separation == "") {
-                    //Failed at creating table
-                }
-        }
-
-            return \Response::json([
-                'success' => "The plan " . Input::get('planName') . " has been successfully created !"
-            ], 201);
+        return \View::make('POS.Plan.details');
     }
+
 
     public function delete($id)
     {
         $employee = Employee::GetById($id);
         $view = \View::make('POS.Employee.delete')->with('employee', $employee);
         return $view;
+    }
+
+
+    /*For posio menu angilar app*/
+    public function tablePlan($id)
+    {
+        $plan = Plan::where('id', $id)->first();
+        $plan->load('table');
+        $plan->load('separation');
+        return $plan;
     }
 }
