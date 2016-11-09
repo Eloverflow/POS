@@ -15,17 +15,17 @@ $(document).ready(function(){
                 '<div class="groupHeader"><h6 id="emplTitleName" class="hsize"></h6> <span id="emplTitleBaseSalary" class="secondInfo"><p class="textCase"></p><p class="hcase">h</p></span></div>' +
                 '<span class="editEmplTitle pull-right glyphicon glyphicon-pencil"></span>' +
                 '</div>' +
-                '<a class="viewHide">' +
+                '<div class="viewHide">' +
                 '<span id="emplTitleId" class="hidden"></span>' +
                 '<div class="cont-block">' +
                 '<label for="emplTitleName">Title Name :</label>' +
                 '<br />' +
-                '<input id="inptTitleName" class="form-control inpt-bar in-Title" type="text" name="emplTitleName">' +
-                '</div>' +
+                '<input id="inptTitleName" class="form-control inpt-bar in-Title dark-border" type="text" name="emplTitleName">' +
+                '</div>&nbsp;' +
                 '<div class="cont-block">' +
                 '<label for="emplTitleName">Base Salary :</label>' +
                 '<br />' +
-                '<input id="inptBaseSalary" class="form-control inpt-bar in-BSalary" type="text" name="emplTitleBaseSalary">' +
+                '<input id="inptBaseSalary" class="form-control inpt-bar in-BSalary dark-border" type="text" name="emplTitleBaseSalary">' +
                 '</div>' +
                 '<span class="btnCancel pull-right glyphicon glyphicon glyphicon-remove"></span>' +
                 '<a id="btn-confirm-work-title">' +
@@ -69,7 +69,7 @@ $(document).ready(function(){
             });
 
             newObj.find(".btnOk").bind("click", function() {
-                createWorkTitle($(this).parent().parent());
+                createWorkTitle(this);
             });
 
             newObj.find(".btnCancel").bind("click", function() {
@@ -129,25 +129,24 @@ $(document).ready(function(){
         accordion.accordion("refresh");
     };
 
-    var createWorkTitle = function(groupHeader){
+    var createWorkTitle = function(elem){
 
-        var viewToShow = groupHeader.find(".viewHide");
+        $viewHide = $(elem).parent().parent();
 
-        var inptTitleName = viewToShow.find("#inptTitleName").val();
+        var inptTitleName = $viewHide.find("#inptTitleName").val();
 
-        var inptBaseSalary = parseFloat(viewToShow.find("#inptBaseSalary").val());
+        var inptBaseSalary = parseFloat($viewHide.find("#inptBaseSalary").val());
 
         // vs for ViewShow
-        viewToShow.hide();
+        $viewHide.hide();
 
-        var viewToHide = groupHeader.find(".viewShow");
+        $viewShow = $viewHide.parent().find(".viewShow");
 
-        viewToHide.find("#emplTitleName").text(inptTitleName);
+        $viewShow.find("#emplTitleName").text(inptTitleName);
 
-        viewToHide.find("#emplTitleBaseSalary .textCase").text(inptBaseSalary.toFixed(2));
+        $viewShow.find("#emplTitleBaseSalary .textCase").text(inptBaseSalary.toFixed(2));
 
-        viewToHide.show();
-
+        $viewShow.show();
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
 
@@ -180,13 +179,13 @@ $(document).ready(function(){
 
                     var groupContent =  $("#newWorkTitleContent");
 
-                    groupHeader.find(".editEmplTitle").unbind();
-                    groupHeader.find(".editEmplTitle").bind("click", function() {
+                    $viewShow.find(".editEmplTitle").unbind();
+                    $viewShow.find(".editEmplTitle").bind("click", function() {
                         editGroup(this);
                     });
 
-                    $btnOk =  groupHeader.find(".btnOk");
-                    $btnCancel = groupHeader.find(".btnCancel");
+                    $btnOk =  $viewShow.find(".btnOk");
+                    $btnCancel = $viewShow.find(".btnCancel");
 
                     $btnOk.unbind();
                     $btnOk.bind("click", function(){
@@ -207,11 +206,11 @@ $(document).ready(function(){
 
                     groupContent.find('.btnAddEmployee').attr("data-emplTitleId", workTitleId);
 
-                    groupHeader.find("#emplTitleId").text(workTitleId);
+                    $viewShow.find("#emplTitleId").text(workTitleId);
 
                     groupContent.find("tbl-0").attr("id", workTitleId);
 
-                    groupHeader.removeAttr('id');
+                    $viewShow.removeAttr('id');
                     groupContent.removeAttr('id');
 
                     $("#accordion").accordion("refresh");
@@ -228,11 +227,6 @@ $(document).ready(function(){
 
         $viewHide = $(elem).parent().parent();
 
-        /*console.log($viewHide.find("#emplTitleId").text());
-
-        var viewToShow = groupHeader.find(".viewHide");*/
-
-
         var inptTitleId = $viewHide.find("#emplTitleId").text();
 
         var inptTitleName = $viewHide.find("#inptTitleName").val();
@@ -247,10 +241,8 @@ $(document).ready(function(){
         $viewShow.find("#emplTitleName").text(inptTitleName);
 
         $viewShow.find(".textCase").text(inptBaseSalary);
-        
 
         $viewShow.show();
-
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var emplTitleId = parseInt(inptTitleId);
@@ -261,7 +253,7 @@ $(document).ready(function(){
         console.log(emplTitleName);
         console.log(emplTitleBaseSalary);
 
-       /* $.ajax({
+        $.ajax({
             url: '/work/title/edit',
             type: 'POST',
             async: true,
@@ -290,7 +282,7 @@ $(document).ready(function(){
                     alert(xhr[key]);
                 });
             }
-        });*/
+        });
     };
 
     var delEmployee = function(lethis) {

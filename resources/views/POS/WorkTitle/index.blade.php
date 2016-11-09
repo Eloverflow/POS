@@ -40,13 +40,13 @@
                                            <div class="cont-block">
                                                 <label for="emplTitleName">Title Name :</label>
                                                 <br />
-                                                <input id="inptTitleName" class="form-control inpt-bar in-Title" type="text" name="emplTitleName">
+                                                <input id="inptTitleName" class="form-control inpt-bar in-Title dark-border" type="text" name="emplTitleName">
                                            </div>
 
                                            <div class="cont-block">
                                                 <label for="emplTitleName">Base Salary :</label>
                                                 <br />
-                                                <input id="inptBaseSalary" class="form-control inpt-bar in-BSalary" type="text" name="emplTitleBaseSalary">
+                                                <input id="inptBaseSalary" class="form-control inpt-bar in-BSalary dark-border" type="text" name="emplTitleBaseSalary">
                                            </div>
 
 
