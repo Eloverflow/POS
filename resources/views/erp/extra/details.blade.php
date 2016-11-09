@@ -22,26 +22,22 @@
                             @if($column == 'effect')
                                 <div class="form-group">
                                     <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
-                                    <select name="{{ $column }}" class="form-control">
-                                        <option value="" @if($extra[$column] == "") selected @endif >Aucun</option>
-                                        <option value="-" @if($extra[$column] == "-") selected @endif >Soustraire</option>
-                                        <option value="+" @if($extra[$column] == "+") selected @endif >Additionner</option>
-                                        <option value="/" @if($extra[$column] == "/") selected @endif >Soustraire pourcentage</option>
-                                        <option value="*" @if($extra[$column] == "*") selected @endif >Additionner pourcentage</option>
-                                    </select>
+                                        @if($extra[$column] == "") <p>Aucun</p> @endif
+                                        @if($extra[$column] == "-") <p>Soustraire</p>  @endif
+                                        @if($extra[$column] == "+") <p>Additionner</p>  @endif
+                                        @if($extra[$column] == "/") <p>Soustraire pourcentage</p>  @endif
+                                        @if($extra[$column] == "*") <p>Additionner pourcentage</p>  @endif
                                 </div>
                             @elseif($column == 'avail_for_command')
                                 <div class="form-group">
                                     <label for="{{ $column }}" >Peut être appliqué sur commande ?</label>
-                                    <select name="{{ $column }}" class="form-control">
-                                        <option value="0" @if($extra[$column] == 0) selected @endif >Non</option>
-                                        <option value="1" @if($extra[$column] == 1) selected @endif >Oui</option>
-                                    </select>
+                                    @if($extra[$column] == 0)<p>Non</p>@endif
+                                    @if($extra[$column] == 1)<p>Oui</p>@endif
                                 </div>
                             @else
                                 <div class="form-group">
                                     <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
-                                    <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $extra[$column] }}">
+                                  <p>{{ $extra[$column] }}</p>
                                 </div>
                             @endif
 
@@ -49,18 +45,16 @@
 
 
                         <div class="form-group">
-                            <label for="items[]" >Associer aux items :</label>
-                                @foreach($items as $item)
-                                    <p>  @foreach($extra['items'] as $extraItem) @if($item->id == $extraItem->item->id) {{ $item->name }}@endif @endforeach</p>
-                                @endforeach
+                            @if(!empty($extra['items']) && count($extra['items']) > 0)
+                                <label for="" >Item:</label>
+                                <p>@foreach($extra['items'] as $extraItem) {{ $extraItem->item->name }}@endforeach</p>
+                            @endif
 
+                            @if(!empty($extra['itemtypes']) && count($extra['itemtypes']) > 0)
+                                <label for="" >Item type:</label>
+                                <p>@foreach($extra['itemtypes'] as $extraItemtype) {{ $extraItemtype->itemtype->type }}@endforeach</p>
+                            @endif
 
-                            <label for="itemtypes[]" >Associer aux types d'items</label>
-                            <select multiple name="itemtypes[]" class="form-control">
-                                @foreach($itemtypes as $itemtype)
-                                    <option value="{{ $itemtype->id }}"  @foreach($extra['itemtypes'] as $extraItemtype) @if($itemtype->id == $extraItemtype->itemtype->id) selected @endif @endforeach>{{ $itemtype->type }}</option>
-                                @endforeach
-                            </select>
                         </div>
 
                     </div>
@@ -69,5 +63,4 @@
 
             </div>
         </div>
-    </div>
 @stop

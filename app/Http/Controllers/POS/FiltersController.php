@@ -12,7 +12,7 @@ use App\Models\POS\FilterItem;
 use App\Models\POS\FilterItemType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Intervention\Image\Facades\Image;
 use Redirect;
 use Session;
@@ -22,9 +22,8 @@ use Validator;
 class FiltersController extends Controller
 {
 
-    public  function index()
+    public function index()
     {
-
         $filters = Filter::all();
 
         foreach ($filters as $filter)
@@ -42,7 +41,6 @@ class FiltersController extends Controller
 
     public  function liste()
     {
-
         $filters = Filter::all();
 
         foreach ($filters as $filter)
@@ -60,10 +58,6 @@ class FiltersController extends Controller
 
     public  function create()
     {
-
-
-
-
         /*Page Title*/
         $title = 'Filter';
 
@@ -72,16 +66,11 @@ class FiltersController extends Controller
         $items = Item::all();
         $itemtypes = ItemType::all();
 
-
-
-
         return view('POS.filter.create',compact('title', 'tableColumns', 'items', 'itemtypes' ));
-
     }
 
     public  function postCreate()
     {
-
         $inputs = Input::all();
 
         $rules = array(
@@ -128,16 +117,7 @@ class FiltersController extends Controller
 
         }
 
-        /*Page Title*/
-        $title = 'Filter';
-
-        $tableColumns = array('name', 'description', 'importance');
-
-        $items = Item::all();
-        $itemtypes = ItemType::all();
-
-
-        return Redirect::to('/filters')->with('success', '');
+        return Redirect::to('/filters')->with('success', $filter->slug . ' successfully created');
 
     }
 
@@ -167,9 +147,11 @@ class FiltersController extends Controller
             Item::where('id', $item->id)->get();
         }
 
+        /*Previous and Next */
+        $previousTableRow = Filter::find(($filter->id)-1);
+        $nextTableRow = Filter::find(($filter->id)+1);
 
-
-        return view('POS.filter.edit',compact('title', 'filter', 'tableColumns', 'items', 'itemtypes' ));
+        return view('POS.filter.edit',compact('title', 'filter', 'tableColumns', 'items', 'itemtypes', 'previousTableRow', 'nextTableRow' ));
 
     }
 
@@ -238,32 +220,13 @@ class FiltersController extends Controller
 
         }
 
-        /*Page Title*/
-        $title = 'Filter';
-
-        $tableColumns = array('name', 'description', 'importance');
-
-        $items = Item::all();
-        $itemtypes = ItemType::all();
-
-        $filter = Filter::whereSlug($slug)->first();
-
-        $filterItems = FilterItem::where('filter_id', $filter->id)->get();
-        $filterItemTypes = FilterItemType::where('filter_id', $filter->id)->get();
-
-        $filterItem = $filterItems->load('item');
-        $filterItemtype = $filterItemTypes->load('itemtype');
-
-        $filter['items'] = $filterItem;
-        $filter['itemtypes'] = $filterItemtype;
-
-
-        return view('POS.filter.edit',compact('title','filter', 'tableColumns', 'items', 'itemtypes' ));
-
+        return Redirect::to('/filters')->with('success', $filter->slug . ' successfully updated');
     }
-    
+
     public function details($slug)
     {
+        $tableColumns = array('name', 'description', 'importance');
+
         $filter = Filter::whereSlug($slug)->first();
 
         $filterItems = FilterItem::where('filter_id', $filter->id)->get();
@@ -274,14 +237,12 @@ class FiltersController extends Controller
 
         $filter['items'] = $filterItem;
         $filter['itemtypes'] = $filterItemtype;
-
-
 
         /*Previous and Next */
         $previousTableRow = Filter::find(($filter->id)-1);
         $nextTableRow = Filter::find(($filter->id)+1);
 
-        return view('POS.filter.details',compact('filter', 'previousTableRow', 'nextTableRow'));
+        return view('POS.filter.details',compact('filter', 'tableColumns', 'previousTableRow', 'nextTableRow'));
     }
 
 }

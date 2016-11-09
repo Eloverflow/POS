@@ -134,11 +134,6 @@ class ExtrasController extends Controller
 
     public function edit($slug)
     {
-
-
-        /*Page Title*/
-        $title = 'Extra';
-
         $tableColumns = array('name', 'description', 'effect', 'value', 'avail_for_command');
 
         $extra = Extra::whereSlug($slug)->first();
@@ -157,9 +152,11 @@ class ExtrasController extends Controller
         Item::where('id', $item->id)->get();
         }
 
+        /*Previous and Next */
+        $previousTableRow = Extra::find(($extra->id)-1);
+        $nextTableRow = Extra::find(($extra->id)+1);
 
-
-        return view('erp.extra.edit',compact('title', 'extra', 'tableColumns', 'items', 'itemtypes' ));
+        return view('erp.extra.edit',compact('title', 'extra', 'tableColumns', 'items', 'itemtypes','previousTableRow', 'nextTableRow' ));
 
     }
 

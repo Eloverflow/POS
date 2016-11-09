@@ -13,7 +13,7 @@
     </div>
     <div class="col-md-6">
         <div class="vcenter">
-            <a class="btn btn-danger pull-right" href="{{ @URL::to('filters') }}"> Back to filters </a>
+            <a class="btn btn-danger pull-right" href="{{ @URL::to('filters') }}"> {{ @Lang::get('filter.backToFilter') }} </a>
         </div>
     </div>
     <div class="row">
@@ -58,10 +58,12 @@
 
                     </div>
 
+                    <div class="col-lg-12">
+                        <!-- dialog buttons -->
+                        {!! Form::submit(@Lang::get('filter.addToFilter'), array('class' => 'btn btn-primary pull-right')) !!}
+                    </div>
                 </div>
 
-                <!-- dialog buttons -->
-                {!! Form::submit('Create', array('class' => 'btn btn-primary')) !!}
             </div>
         </div>
     </div>

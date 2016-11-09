@@ -9,11 +9,11 @@
 
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">Extras</h1>
+        <h1 class="page-header">{{ @Lang::get('extra.title') }}</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">
-            <a href="{{@URL::to('/extras/create')}}"  ><button type="button" class="btn btn-primary">Create</button></a>
+            <a href="{{@URL::to('/extras/create')}}"  ><button type="button" class="btn btn-primary">{{ @Lang::get('extra.addToExtra') }}</button></a>
         </div>
     </div>
     <div class="row">
