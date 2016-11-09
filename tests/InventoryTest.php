@@ -7,7 +7,8 @@ use Illuminate\Foundation\Testing\DatabaseTransactions;
 class InventoryTest extends TestCase
 {
 
-    public function testCreateInventory()
+    /*Create use js..*/
+    /*public function testCreateInventory()
     {
         $user = factory(App\Models\Auth\User::class)->create();
 
@@ -21,7 +22,9 @@ class InventoryTest extends TestCase
             ->seePageIs('/inventory/create')
             ->see('was successfully created!');
 
-    }
+    }*/
+
+
     public function testEditInventory()
     {
         $user = factory(App\Models\Auth\User::class)->create();

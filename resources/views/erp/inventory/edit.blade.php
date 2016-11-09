@@ -43,11 +43,8 @@
                         <input class="form-control" type="number" id="quantity" name="quantity" value="{{ $inventory->quantity }}">
                     </div>
 
-
-                    </div>
-                    <!-- dialog buttons -->
                     {!! Form::submit('Metre à jour', array('id' => 'btn-edit-inventory','class' => 'btn btn-primary pull-right ')) !!}
-
+                    </div>
                 </div>
 
             </div>

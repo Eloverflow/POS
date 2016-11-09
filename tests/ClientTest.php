@@ -27,7 +27,7 @@ class ClientTest extends TestCase
 
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
-            ->visit('/client/edit/2784390787')
+            ->visit('/clients/edit/2784390787')
             ->type(20, 'quantity')
             ->press('btn-edit-client')
             ->seePageIs('/client')

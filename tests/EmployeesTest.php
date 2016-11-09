@@ -44,8 +44,6 @@ class EmployeesTest extends TestCase
             ->visit('/employee/edit/3')
             ->see('John')
             ->see('Mccormick')
-            ->type('111122', 'password')
-            ->type('111122', 'password_confirmation')
             ->type('Test', 'firstName')
             ->type('Testing', 'lastName')
             ->type('111222333', 'nas')
