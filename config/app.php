@@ -173,6 +173,7 @@ return [
         Barryvdh\DomPDF\ServiceProvider::class,
         Laravel\Scout\ScoutServiceProvider::class,
         AlgoliaSearch\Laravel\AlgoliaServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
 
         //
 
@@ -241,6 +242,7 @@ return [
         'Html' => Collective\Html\HtmlFacade::class,
         'PDF' => Barryvdh\DomPDF\Facade::class,
         'Calendar' => MaddHatter\LaravelFullcalendar\Facades\Calendar::class,
+        'Image' => Intervention\Image\Facades\Image::class
 
     ],
 
