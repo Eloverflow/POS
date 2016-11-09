@@ -39,7 +39,7 @@
 
                     <div class="col-md-12">
                         <!-- dialog buttons -->
-                        {!! Form::submit('Ajouter', array('class' => 'btn btn-primary pull-right ')) !!}
+                        {!! Form::submit('Ajouter', array('id' => 'btn-create-inventory', 'class' => 'btn btn-primary pull-right ')) !!}
                     </div>
                 </div>
 
@@ -51,6 +51,7 @@
 @section("myjsfile")
 
     <script src="{{ @URL::to('js/inventoriesManage.js') }}"></script>
+    <script src="{{ @URL::to('js/tableChoiceListItem.js') }}"></script>
     <script type="text/javascript">
 
         $("#tableChoiceList1 span").on("click", function() {

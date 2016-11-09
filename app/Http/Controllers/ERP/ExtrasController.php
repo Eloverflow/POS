@@ -128,7 +128,9 @@ class ExtrasController extends Controller
 
         }
 
-        return Redirect::to('/extras')->with('success', $extra->slug . ' successfully created');
+        Session::flash('success', $extra->slug.' '. trans('flashmsg.successCreate'));
+
+        return Redirect::to('/extras');
 
     }
 
@@ -227,7 +229,10 @@ class ExtrasController extends Controller
 
         }
 
-        return Redirect::to('/extras')->with('success', $extra->slug . ' successfully updated');
+
+        Session::flash('success', $extra->slug.' '. trans('flashmsg.successUpdate'));
+
+        return Redirect::to('/extras');
 
     }
 

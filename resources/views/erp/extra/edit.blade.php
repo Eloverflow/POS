@@ -73,12 +73,12 @@
                             </select>
                         </div>
 
+                        <!-- dialog buttons -->
+                        {!! Form::submit('Update', array('id' => 'btn-edit-extra','class' => 'btn btn-primary')) !!}
                     </div>
 
                 </div>
 
-                <!-- dialog buttons -->
-                {!! Form::submit('Update', array('class' => 'btn btn-primary')) !!}
             </div>
         </div>
     </div>

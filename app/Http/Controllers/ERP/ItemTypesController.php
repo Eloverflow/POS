@@ -118,7 +118,7 @@ class ItemTypesController extends \App\Http\Controllers\Controller
 
         $item->update($input);
 
-        Session::flash('flash_message', $slug.' successfully updated!');
+        Session::flash('success', $slug.' '. trans('flashmsg.successUpdate'));
 
         return Redirect::back();
     }

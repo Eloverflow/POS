@@ -120,7 +120,7 @@ class VisitTest extends TestCase
             ->withSession(['foo' => 'bar'])
             ->visit('/')
             ->click('MenuPOS')
-            ->seePageIs('/menu');
+            ->seePageIs('http://pos.mirageflow.com:8000');
     }
 
     public function testPagePlans()

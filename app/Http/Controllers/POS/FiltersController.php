@@ -117,7 +117,9 @@ class FiltersController extends Controller
 
         }
 
-        return Redirect::to('/filters')->with('success', $filter->slug . ' successfully created');
+        Session::flash('success', $filter->slug.' '. trans('flashmsg.successCreate'));
+
+        return Redirect::to('/filters');
 
     }
 
@@ -220,7 +222,9 @@ class FiltersController extends Controller
 
         }
 
-        return Redirect::to('/filters')->with('success', $filter->slug . ' successfully updated');
+        Session::flash('success', $filter->slug.' '. trans('flashmsg.successUpdate'));
+
+        return Redirect::to('/filters');
     }
 
     public function details($slug)

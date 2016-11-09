@@ -67,7 +67,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
         $item->update($input);
 
-        Session::flash('success', $slug.' successfully updated!');
+        Session::flash('success', $slug.' '. trans('flashmsg.successUpdate'));
 
         return Redirect::action('ERP\InventoriesController@index');
     }
@@ -129,12 +129,12 @@ class InventoriesController extends \App\Http\Controllers\Controller
 
                 $inventories->update(Input::all());
 
-                Session::flash('success', $inventories->slug.' quantity successfully updated!');
+                Session::flash('success', $inventories->slug.' '. trans('flashmsg.successUpdate'));
 
             }
             else{
 
-                $itemSlug = Item::whereId(Input::get('item_id'))->first()->slug . '-' . Input::get('item_size');
+                $itemSlug = strtolower(Item::whereId(Input::get('item_id'))->first()->slug . '-' . Input::get('item_size'));
 
                 Inventory::create([
                     'quantity' =>  Input::get('quantity'),
@@ -143,7 +143,7 @@ class InventoriesController extends \App\Http\Controllers\Controller
                     'slug' => $itemSlug
                 ]);
 
-                Session::flash('success', $itemSlug . ' successfully created!');
+                Session::flash('success', $itemSlug.' '. trans('flashmsg.successCreate'));
             }
 
             return Redirect::back();

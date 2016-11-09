@@ -64,7 +64,7 @@
                 </div>
 
                 <!-- dialog buttons -->
-                {!! Form::submit('Update', array('class' => 'btn btn-primary')) !!}
+                {!! Form::submit('Update', array('id' => 'btn-edit-filter','class' => 'btn btn-primary')) !!}
             </div>
         </div>
     </div>

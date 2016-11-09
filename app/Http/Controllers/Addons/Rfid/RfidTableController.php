@@ -50,9 +50,6 @@ class RfidTableController extends Controller
         $tableColumns = array('name', 'phone_hw_code', 'flash_card_hw_code');
 
         $tableChoiceListTable = Item::where('item_type_id', '1')->get();
-/*
-        var_dump($tableChoiceListTable);*/
-        /*select all where type = beer*/
 
         $tableChoiceListTitle = "Beer 1";
         $tableChoiceListDBColumn = "beer1_item_id";
@@ -60,7 +57,6 @@ class RfidTableController extends Controller
         $tableChoiceListContentColumn = "description";
 
         $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
-
 
         $tableChoiceListTitle = "Beer 2";
         $tableChoiceListDBColumn = "beer2_item_id";
@@ -89,7 +85,7 @@ class RfidTableController extends Controller
             'slug' => $tableSlug
         ]);
 
-        Session::flash('success', $table->slug.' successfully created!');
+        Session::flash('success', $table->slug.' '. trans('flashmsg.successCreate'));
 
         return Redirect::action('Addons\Rfid\RfidTableController@index');
     }
@@ -98,13 +94,11 @@ class RfidTableController extends Controller
     {
         /*Main table row to retrieve from DB*/
         $tableRow = TableRfid::whereSlug($slug)->first();
+
         /*Main table desired column to display*/
         $tableColumns = array('name', 'phone_hw_code', 'flash_card_hw_code');
 
         $tableChoiceListTable = Item::where('item_type_id', '1')->get();
-/*
-        var_dump($tableChoiceListTable);*/
-        /*select all where type = beer*/
 
         $tableChoiceListTitle = "Beer 1";
         $tableChoiceListDBColumn = "beer1_item_id";
@@ -140,7 +134,7 @@ class RfidTableController extends Controller
 
         $tableRow->update($input);
 
-        Session::flash('success', $tableRow->slug.' successfully updated!');
+        Session::flash('success', $tableRow->slug.' '. trans('flashmsg.successUpdate'));
 
         return Redirect::action('Addons\Rfid\RfidTableController@index');
     }
@@ -154,9 +148,6 @@ class RfidTableController extends Controller
         $tableColumns = array('name', 'phone_hw_code', 'flash_card_hw_code');
 
         $tableChoiceListTable = Item::where('item_type_id', '1')->get();
-        /*
-                var_dump($tableChoiceListTable);*/
-        /*select all where type = beer*/
 
         $tableChoiceListTitle = "Beer 1";
         $tableChoiceListDBColumn = "beer1_item_id";
@@ -164,7 +155,6 @@ class RfidTableController extends Controller
         $tableChoiceListContentColumn = "description";
 
         $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
-
 
         $tableChoiceListTitle = "Beer 2";
         $tableChoiceListDBColumn = "beer2_item_id";
@@ -179,17 +169,12 @@ class RfidTableController extends Controller
         $previousTableRow = TableRfid::find(($tableRow->id)-1);
         $nextTableRow = TableRfid::find(($tableRow->id)+1);
 
-
         return view('addins.rfid.table.details',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow', 'tableChoiceLists'));
     }
 
     public function getBeers(Request $request)
     {
         $input = $request->all();
-/*
-        $typeBeer = Item::where('type' , '=', 'beer');*/
-/*
-        $table = TableRfid::where('flash_card_hw_code', '=', $input['flash_card_hw_code'])->where('item_type_id' , '=', $typeBeer->id )->first();*/
         $table = TableRfid::where('phone_hw_code', $input['phone_hw_code'])->first();
 
         if($table == null){
@@ -204,8 +189,6 @@ class RfidTableController extends Controller
 
         $beers = array('beer1' => $table->beer1, 'beer2' => $table->beer2, 'table' => $table);
         Return $beers;
-
-        /*return Response::make($content)->withCookie($cookie);*/
     }
 
 
