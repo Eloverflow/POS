@@ -125,6 +125,7 @@
     <script src="{{ @URL::to('js/utils.js') }}"></script>
     <script src="{{ @URL::to('js/itemsManage.js') }}"></script>
     <script src="{{ @URL::to('js/itemTypesManage.js') }}"></script>
+    <script src="{{ @URL::to('js/tableChoiceListItem.js') }}"></script>
     <script type="text/javascript">
         $("#btnAddItemType").click(function () {
             $("#addModal").modal('show');
