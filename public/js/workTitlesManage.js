@@ -265,17 +265,7 @@ $(document).ready(function(){
             },
             dataType: 'JSON',
             error: function (xhr, status, error) {
-                var erro = jQuery.parseJSON(xhr.responseText);
-                $("#errors").empty();
-                //$("##errors").append('<ul id="errorsul">');
-                [].forEach.call(Object.keys(erro), function (key) {
-                    [].forEach.call(Object.keys(erro[key]), function (keyy) {
-                        $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
-                    });
-                    //console.log( key , erro[key] );
-                });
-                //$("#displayErrors").append('</ul>');
-                $("#displayErrors").show();
+                console.log(xhr);
             },
             success: function (xhr) {
                 [].forEach.call(Object.keys(xhr), function (key) {
