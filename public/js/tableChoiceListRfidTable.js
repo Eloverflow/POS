@@ -148,11 +148,23 @@ function choiceClick(allCurrentTableChoice, tableItaration){
 
         var currentTableChoiceActive = $('.tableChoice.choiceList'+tableItaration+'.active');
 
-        currentTableChoiceActive.removeClass("active");
+        if(this.className.indexOf('active') == -1){
 
-        this.className = this.className + " active";
+            currentTableChoiceActive.removeClass("active");
 
-        $('.input'+tableItaration).attr("value", this.id);
+            this.className = this.className + " active";
+
+            $('.input'+tableItaration).attr("value", this.id);
+        }
+        else{
+
+            currentTableChoiceActive.removeClass("active");
+
+            $('.input'+tableItaration).attr("value", '');
+
+        }
+
+
 
     });
 

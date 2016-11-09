@@ -7,7 +7,7 @@ use App\Models\ERP\Item;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use App\Http\Controllers\Controller;
-use Input;
+use Illuminate\Support\Facades\Input;
 use Redirect;
 use Session;
 
@@ -30,7 +30,7 @@ class RfidTableController extends Controller
         return view('addins.rfid.table.index', compact('title', 'tableRows', 'columns'));
     }
 
-    protected function create(Request $request)
+/*    protected function create(Request $request)
     {
 
         $input = $request->all();
@@ -41,19 +41,13 @@ class RfidTableController extends Controller
             'flash_card_hw_code' => $input['flash_card_hw_code'],
             'name' => $input['name'],
         ]);
-    }
+    }*/
 
 
-    public  function edit($slug)
+    public  function create()
     {
-        /*Page Title*/
-        $title = 'table';
-
-        /*Main table row to retrieve from DB*/
-        $tableRow = TableRfid::whereSlug($slug)->first();
         /*Main table desired column to display*/
         $tableColumns = array('name', 'phone_hw_code', 'flash_card_hw_code');
-
 
         $tableChoiceListTable = Item::where('item_type_id', '1')->get();
 /*
@@ -75,20 +69,63 @@ class RfidTableController extends Controller
 
         $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
 
+        $tableChoiceLists = array($tableChoiceList1, $tableChoiceList2);
 
+        return view('addins.rfid.table.create',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow', 'tableChoiceLists'));
+    }
+
+    public function postCreate()
+    {
+
+        $tableSlug = Input::get('flash_card_hw_code');
+
+        $table = TableRfid::create([
+            'flash_card_hw_code' =>  Input::get('flash_card_hw_code'),
+            'phone_hw_code' => Input::get('phone_hw_code'),
+            'name' => Input::get('name'),
+            'description' => Input::get('description'),
+            'beer1_item_id' => Input::get('beer1_item_id'),
+            'beer2_item_id' => Input::get('beer2_item_id'),
+            'slug' => $tableSlug
+        ]);
+
+        Session::flash('success', $table->slug.' successfully created!');
+
+        return Redirect::action('Addons\Rfid\RfidTableController@index');
+    }
+
+    public  function edit($slug)
+    {
+        /*Main table row to retrieve from DB*/
+        $tableRow = TableRfid::whereSlug($slug)->first();
+        /*Main table desired column to display*/
+        $tableColumns = array('name', 'phone_hw_code', 'flash_card_hw_code');
+
+        $tableChoiceListTable = Item::where('item_type_id', '1')->get();
+/*
+        var_dump($tableChoiceListTable);*/
+        /*select all where type = beer*/
+
+        $tableChoiceListTitle = "Beer 1";
+        $tableChoiceListDBColumn = "beer1_item_id";
+        $tableChoiceListTitleColumn = "name";
+        $tableChoiceListContentColumn = "description";
+
+        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
+
+
+        $tableChoiceListTitle = "Beer 2";
+        $tableChoiceListDBColumn = "beer2_item_id";
+        $tableChoiceListTitleColumn = "name";
+        $tableChoiceListContentColumn = "description";
+
+        $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
 
         $tableChoiceLists = array($tableChoiceList1, $tableChoiceList2);
 
-        /*Child table name
-        $tableChild = "tableRfidbeer";
-        /*Child table rows
-        $tableChildRows = $tableRow->$tableChild;
-        /*Child table desired column to display
-        $tableChildColumns = array('img_url');
-
         /*Previous and Next */
-        $previousTableRow = TableRfid::findOrNew(($tableRow->id)-1);
-        $nextTableRow = TableRfid::findOrNew(($tableRow->id)+1);
+        $previousTableRow = TableRfid::find(($tableRow->id)-1);
+        $nextTableRow = TableRfid::find(($tableRow->id)+1);
 
 
         return view('addins.rfid.table.edit',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow', 'tableChoiceLists'));
@@ -99,33 +136,51 @@ class RfidTableController extends Controller
         /*Main table row to retrieve from DB*/
         $tableRow = TableRfid::whereSlug($slug)->first();
 
-
         $input = $request->all();
 
         $tableRow->update($input);
 
-        /*Child table name
-        $tableChild = "tableRfidbeer";
-        /*Child table rows
-        $tableChildRows = $tableRow->$tableChild;
+        Session::flash('success', $tableRow->slug.' successfully updated!');
+
+        return Redirect::action('Addons\Rfid\RfidTableController@index');
+    }
 
 
+    public  function details($slug)
+    {
+        /*Main table row to retrieve from DB*/
+        $tableRow = TableRfid::whereSlug($slug)->first();
+        /*Main table desired column to display*/
+        $tableColumns = array('name', 'phone_hw_code', 'flash_card_hw_code');
 
-        if(is_array($tableChildRows)){
-            foreach($tableChildRows as $tableChildRow){
-                $tableChildRow->update($input);
-            }
-        }
-        else
-        {
-            $tableChildRows->update($input);
-        }
+        $tableChoiceListTable = Item::where('item_type_id', '1')->get();
+        /*
+                var_dump($tableChoiceListTable);*/
+        /*select all where type = beer*/
 
-        */
+        $tableChoiceListTitle = "Beer 1";
+        $tableChoiceListDBColumn = "beer1_item_id";
+        $tableChoiceListTitleColumn = "name";
+        $tableChoiceListContentColumn = "description";
 
-        Session::flash('flash_message', $slug.' successfully updated!');
+        $tableChoiceList1 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
 
-        return Redirect::back();
+
+        $tableChoiceListTitle = "Beer 2";
+        $tableChoiceListDBColumn = "beer2_item_id";
+        $tableChoiceListTitleColumn = "name";
+        $tableChoiceListContentColumn = "description";
+
+        $tableChoiceList2 = array("table" => $tableChoiceListTable,"title" => $tableChoiceListTitle, "dbColumn" => $tableChoiceListDBColumn, "titleColumn" => $tableChoiceListTitleColumn, "contentColumn" => $tableChoiceListContentColumn);
+
+        $tableChoiceLists = array($tableChoiceList1, $tableChoiceList2);
+
+        /*Previous and Next */
+        $previousTableRow = TableRfid::find(($tableRow->id)-1);
+        $nextTableRow = TableRfid::find(($tableRow->id)+1);
+
+
+        return view('addins.rfid.table.details',compact('title','tableRow', 'tableColumns', 'tableChildRows', 'tableChildColumns', 'previousTableRow', 'nextTableRow', 'tableChoiceLists'));
     }
 
     public function getBeers(Request $request)
@@ -152,6 +207,8 @@ class RfidTableController extends Controller
 
         /*return Response::make($content)->withCookie($cookie);*/
     }
+
+
 
 }
 

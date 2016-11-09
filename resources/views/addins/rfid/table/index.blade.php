@@ -6,11 +6,11 @@
 
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">{{ @Lang::get('itemtype.title') }}</h1>
+        <h1 class="page-header">{{ @Lang::get('tablerfid.title') }}</h1>
     </div>
     <div class="col-md-6">
         <div class="vcenter">
-            <a href="{{@URL::to('/itemtypes/create')}}"  ><button type="button" class="btn btn-primary">{{ @Lang::get('itemtype.addToItemtype') }}</button></a>
+            <a href="{{@URL::to('/addon/rfid/table/create')}}"  ><button type="button" class="btn btn-primary">{{ @Lang::get('tablerfid.addToTablerfid') }}</button></a>
         </div>
     </div>
     <div class="row">
