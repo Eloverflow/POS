@@ -39,7 +39,7 @@
 
                     <div class="col-md-12">
                         <!-- dialog buttons -->
-                        {!! Form::submit('Ajouter', array('class' => 'btn btn-primary pull-right ')) !!}
+                        {!! Form::submit('Ajouter', array('id' => 'btn-create-inventory', 'class' => 'btn btn-primary pull-right ')) !!}
                     </div>
                 </div>
 

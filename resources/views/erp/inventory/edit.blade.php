@@ -47,7 +47,7 @@
                     </div>
                     <div class="col-md-12">
                         <!-- dialog buttons -->
-                        {!! Form::submit('Metre à jour', array('class' => 'btn btn-primary pull-right ')) !!}
+                        {!! Form::submit('Metre à jour', array('id' => 'btn-edit-inventory','class' => 'btn btn-primary pull-right ')) !!}
                     </div>
                 </div>
 
