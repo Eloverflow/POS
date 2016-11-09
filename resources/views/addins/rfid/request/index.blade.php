@@ -4,7 +4,7 @@
 
 @section('content')
     <div class="col-md-6">
-        <h1 class="page-header">{{ @Lang::get('rfidreques.title') }}</h1>
+        <h1 class="page-header">{{ @Lang::get('rfidrequest.title') }}</h1>
     </div>
     <div class="row">
         <div class="col-lg-12">
