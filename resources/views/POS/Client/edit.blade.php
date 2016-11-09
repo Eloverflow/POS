@@ -36,64 +36,13 @@
                         {!! Form::open(array('url' => @URL::to(Request::path()),'files' => true)) !!}
                             <div class="form-group">
                                 @foreach($tableColumns as $column)
-                                    @if($column == "img_id")
-
-                                        <label for="uploadId" >{{ ucwords( str_replace('_', ' ', $column)) }} </label>
-                                        <div class="row">
-                                            <div class="col-sm-6 col-md-4">
-
-                                                <div id="uploadImg" class="thumbnail">
-                                                    <img id="img_display" src="
-                                                        @if($tableRow->$column != null)
-                                                        {{ @URL::to('img/item/' . $tableRow->$column) }}
-                                                        @endif
-                                                    " alt=""  width="300">
-                                                </div>
-                                            <input id="uploadFile" class="form-control" placeholder="Choose File" disabled="disabled" />
-                                            <div class="fileUpload btn btn-primary input-group">
-                                                <span>Change Image</span>
-                                                {{--{!! Form::file('image')  !!}--}}
-                                                <input id="uploadId" class="upload" type='file' name="image" onchange="readURL(this);" />
-
-                                            </div>
-                                            <p class="errors">{!!$errors->first('image')!!}</p>
-
-                                            {{--
-                                            <label for="image" class="secure">Upload form</label>--}}
-
-
-                                            </div>
-                                        </div>
-                                    @else
-                                        <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
+                                    <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
+                                    @if($column != 'rfid_card_code')
                                         <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="{{ $tableRow->$column }}">
-                                    @endif
-                                @endforeach
-
-                                @if(!empty($tableChildRows))
-                                    @if(is_array($tableChildRows))
-                                        @foreach($tableChildRows as $tableChildRow)
-
-
-
-                                            @foreach($tableChildColumns as $column)
-
-                                                    <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
-                                                    <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="@if($tableChildRow->$column != null){{ $tableChildRow->$column }}@endif">
-                                            @endforeach
-
-                                        @endforeach
                                     @else
-                                        @foreach($tableChildColumns as $column)
-                                            <label for="{{ $column }}" >{{ ucwords( str_replace('_', ' ', $column)) }}</label>
-                                            <input class="form-control" type="text" id="{{ $column }}" name="{{ $column }}" value="@if($tableChildRows->$column != null){{ $tableChildRows->$column }}@endif">
-                                        @endforeach
+                                        <p>{{ $tableRow->$column }}</p>
                                     @endif
-                                @endif
-
-                                @if(isset($tableChoiceLists))
-                                    @include('erp.item.choiceList')
-                                @endif
+                                    @endforeach
 
                                     @if(Session::has('error'))
                                         <p class="errors">{!! Session::get('error') !!}</p>
@@ -102,7 +51,7 @@
 
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}" />
                             </div>
-                            <button type="submit" class="btn btn-default">Update</button>
+                            <button type="submit" id="btn-edit-client" class="btn btn-default">Update</button>
                         </form>
                         <br>
 

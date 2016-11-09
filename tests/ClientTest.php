@@ -4,34 +4,33 @@ use Illuminate\Foundation\Testing\WithoutMiddleware;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 
-class InventoryTest extends TestCase
+class ClientTest extends TestCase
 {
 
-    public function testCreateInventory()
+    public function testCreateClient()
     {
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
-            ->visit('/inventory/create')
-            ->click('link-1')
-            ->select(0, 'item_size')
-            ->type(10, 'quantity')
-            ->press('btn-create-inventory')
-            ->seePageIs('/inventory/create')
+            ->visit('/clients/create')
+            ->type(10, 'credit')
+            ->type('123141511123', 'rfid_card_code')
+            ->press('btn-create-client')
+            ->seePageIs('/clients')
             ->see('was successfully created!');
 
     }
-    public function testEditInventory()
+    public function testEditClient()
     {
         $user = factory(App\Models\Auth\User::class)->create();
 
         $this->actingAs($user)
             ->withSession(['foo' => 'bar'])
-            ->visit('/inventory/edit/keith-baril')
-            ->type(10, 'quantity')
-            ->press('btn-edit-inventory')
-            ->seePageIs('/inventory')
+            ->visit('/client/edit/2784390787')
+            ->type(20, 'quantity')
+            ->press('btn-edit-client')
+            ->seePageIs('/client')
             ->see('was successfully updated!');
 
     }
