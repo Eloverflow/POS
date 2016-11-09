@@ -517,6 +517,35 @@ li.addTable .glyphicon{
 	float: right;*/
 }
 
+#planModal{
+	background-color: #333;
+
+	.planRightButton{
+		position: absolute;
+		right: 20px;
+		padding: 20px;
+	}
+
+	.glyphicon{
+		transition: all 0.2s; cursor: pointer; color: #30a5ff; background-color: #fff; border-radius: 50%; padding: 10px; opacity:0.8; font-size: 36px; z-index: 1051; margin: 3px;
+	}
+
+	#floorNumber{
+		position: absolute; z-index: 1051; margin: 10px; color: white; font-size: 24px;
+	}
+
+	#planZoomout{
+		float: right;
+	}
+
+	#floorup{
+		float: right;
+	}
+	#floordown{
+		float: right;
+	}
+}
+
 .tableChoiceList h2 {
 	display: inline-block;
 }
