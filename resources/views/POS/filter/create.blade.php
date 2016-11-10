@@ -55,13 +55,9 @@
                             @endforeach
                             </select>
                         </div>
-
-                    </div>
-
-                    <div class="col-lg-12">
-                        <!-- dialog buttons -->
                         {!! Form::submit(@Lang::get('filter.addToFilter'), array('id' => 'btn-create-filter','class' => 'btn btn-primary pull-right')) !!}
                     </div>
+
                 </div>
 
             </div>

@@ -59,12 +59,9 @@
                             </select>
                         </div>
 
+                        {!! Form::submit('Update', array('id' => 'btn-edit-filter','class' => 'btn btn-primary')) !!}
                     </div>
-
                 </div>
-
-                <!-- dialog buttons -->
-                {!! Form::submit('Update', array('id' => 'btn-edit-filter','class' => 'btn btn-primary')) !!}
             </div>
         </div>
     </div>

@@ -175,7 +175,7 @@
                                     @endif
                                 </div>
                             </div>
-                        {!! Form::submit('Edit', array('id' => 'btn-edit-employee', 'class' => 'btn btn-primary')) !!}
+                        {!! Form::submit('Edit', array('class' => 'btn btn-primary')) !!}
                         {!! Form::close() !!}
                     </div>
                 </div>
