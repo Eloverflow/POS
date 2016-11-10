@@ -12,7 +12,7 @@
 @section('content')
     <div class="row">
         <div class="col-md-6">
-            <h1 class="page-header">Work Titles</h1>
+            <h1 class="page-header">Job Titles</h1>
         </div>
         <div class="col-md-6">
             <div class="vcenter">
@@ -37,16 +37,28 @@
                                     </div>
                                     <div class="viewHide">
                                            <span id="emplTitleId" class="hidden">{{ $workTitle->emplTitleId }}</span>
-                                           <div class="cont-block">
+
+                                            <div id="displayErrors" style="display:none;" class="alert alert-danger">
+                                                <ul id="errors"></ul>
+                                            </div>
+
+                                            {{--<div class="form-group has-error">
+                                                {!! Form::label('name', "Name" ) !!}
+                                                {!! Form::text('name', old('name'), array('class' => 'form-control')) !!}
+                                            </div>--}}
+
+                                           <div class="form-group cont-block">
                                                 <label for="emplTitleName">Title Name :</label>
                                                 <br />
-                                                <input id="inptTitleName" class="form-control inpt-bar in-Title dark-border" type="text" name="emplTitleName">
+                                                {{--inpt-bar in-Title dark-border--}}
+                                                <input id="inptTitleName" class="form-control" type="text" name="emplTitleName">
                                            </div>
 
-                                           <div class="cont-block">
+                                           <div class="form-group cont-block">
                                                 <label for="emplTitleName">Base Salary :</label>
                                                 <br />
-                                                <input id="inptBaseSalary" class="form-control inpt-bar in-BSalary dark-border" type="text" name="emplTitleBaseSalary">
+                                               {{--inpt-bar in-BSalary dark-border--}}
+                                                <input id="inptBaseSalary" class="form-control" type="text" name="emplTitleBaseSalary">
                                            </div>
 
 

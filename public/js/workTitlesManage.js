@@ -104,7 +104,7 @@ $(document).ready(function(){
     });
 
     $(".btnCancel").bind("click", function() {
-        cancelEditGroup($(this).parent().parent());
+        cancelEditGroup(this);
     });
 
     $(".btnOk").bind("click", function() {
@@ -194,7 +194,7 @@ $(document).ready(function(){
 
                     $btnCancel.unbind();
                     $btnCancel.bind("click", function(){
-                        cancelEditGroup($(this).parent().parent());
+                        cancelEditGroup(this);
                     });
 
                     groupContent.find(".btnAddEmployee").bind("click", function() {
@@ -233,16 +233,6 @@ $(document).ready(function(){
 
         var inptBaseSalary = $viewHide.find("#inptBaseSalary").val();
 
-        // vs for ViewShow
-        $viewHide.hide();
-
-        $viewShow = $viewHide.parent().find(".viewShow");
-
-        $viewShow.find("#emplTitleName").text(inptTitleName);
-
-        $viewShow.find(".textCase").text(inptBaseSalary);
-
-        $viewShow.show();
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
         var emplTitleId = parseInt(inptTitleId);
@@ -253,26 +243,40 @@ $(document).ready(function(){
         console.log(emplTitleName);
         console.log(emplTitleBaseSalary);
 
-        $.ajax({
-            url: '/work/title/edit',
-            type: 'POST',
-            async: true,
-            data: {
-                _token: CSRF_TOKEN,
-                emplTitleId: emplTitleId,
-                emplTitleName: emplTitleName,
-                emplTitleBaseSalary: emplTitleBaseSalary
-            },
-            dataType: 'JSON',
-            error: function (xhr, status, error) {
-                console.log(xhr);
-            },
-            success: function (xhr) {
-                [].forEach.call(Object.keys(xhr), function (key) {
-                    alert(xhr[key]);
-                });
-            }
-        });
+        if(ValidateWorkTitleForm(elem)) {
+            // vs for ViewShow
+            $viewHide.hide();
+
+            $viewShow = $viewHide.parent().find(".viewShow");
+
+            $viewShow.find("#emplTitleName").text(inptTitleName);
+
+            $viewShow.find(".textCase").text(inptBaseSalary);
+
+            $viewShow.show();
+
+
+            $.ajax({
+                url: '/work/title/edit',
+                type: 'POST',
+                async: true,
+                data: {
+                    _token: CSRF_TOKEN,
+                    emplTitleId: emplTitleId,
+                    emplTitleName: emplTitleName,
+                    emplTitleBaseSalary: emplTitleBaseSalary
+                },
+                dataType: 'JSON',
+                error: function (xhr, status, error) {
+                    console.log(xhr);
+                },
+                success: function (xhr) {
+                    [].forEach.call(Object.keys(xhr), function (key) {
+                        alert(xhr[key]);
+                    });
+                }
+            });
+        }
     };
 
     var delEmployee = function(lethis) {
@@ -396,15 +400,83 @@ $(document).ready(function(){
     };
 
 
-    var cancelEditGroup = function(groupHeader) {
+    var cancelEditGroup = function(elem) {
 
-        var viewToShow = groupHeader.find(".viewHide");
-        viewToShow.hide();
+        $viewHide = $(elem).parent();
+        $viewShow = $viewHide.parent().find(".viewShow");
 
-        var viewToHide = groupHeader.find(".viewShow");
-        viewToHide.show();
+
+        $inputTitleName = $viewHide.find("#inptTitleName");
+        $inputBaseSalary = $viewHide.find("#inptBaseSalary");
+
+        $errorContainer = $viewHide.find("#displayErrors");
+        $errorsList = $errorContainer.find("#errors");
+
+        // On nettoie les trace de la validation presente si le cas
+        $inputBaseSalary.parent().removeClass('has-error');
+        $inputTitleName.parent().removeClass('has-error');
+        $errorsList.empty();
+        $errorContainer.hide();
+
+        /*console.log($viewShow);
+        console.log("Sep -------");
+        console.log($viewHide);*/
+        $viewHide.hide();
+        $viewShow.show();
 
     };
 
+
+    function ValidateWorkTitleForm(elem) {
+
+        $isValid = true;
+
+        $viewHide = $(elem).parent().parent();
+        $inputTitleName = $viewHide.find("#inptTitleName");
+        $inputBaseSalary = $viewHide.find("#inptBaseSalary");
+
+        $errorContainer = $viewHide.find("#displayErrors");
+        $errorsList = $errorContainer.find("#errors");
+
+        // On nettoie les trace de la validation presente si le cas
+        $inputBaseSalary.parent().removeClass('has-error');
+        $inputTitleName.parent().removeClass('has-error');
+        $errorsList.empty();
+
+        /*var inptTitleId = $viewHide.find("#emplTitleId").text();*/
+
+        var inptTitleName = $inputTitleName.val();
+
+        var inptBaseSalary = parseFloat($inputBaseSalary.val());
+
+
+
+        if(!$.isNumeric(inptBaseSalary)){
+            $errorsList.append("<li>The salary is required !</li>");
+            $inputBaseSalary.parent().addClass('has-error');
+            $isValid = false;
+        } else {
+            if(inptBaseSalary < 0){
+                $errorsList.append("<li>The salary must be positive !</li>");
+                $inputBaseSalary.parent().addClass('has-error');
+                $isValid = false;
+            }
+        }
+
+        if(inptTitleName == ''){
+            $errorsList.append("<li>The Job title is required !</li>");
+            $inputTitleName.parent().addClass('has-error');
+            $isValid = false;
+        }
+
+        if($isValid){
+            $errorsList.empty();
+            $errorContainer.hide();
+        } else {
+            $errorContainer.show();
+        }
+        return $isValid;
+
+    }
 
 });
