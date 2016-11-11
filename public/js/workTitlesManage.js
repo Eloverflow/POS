@@ -17,15 +17,18 @@ $(document).ready(function(){
                 '</div>' +
                 '<div class="viewHide">' +
                 '<span id="emplTitleId" class="hidden"></span>' +
+                '<div id="displayErrors" style="display:none;" class="alert alert-danger">' +
+                '<ul id="errors"></ul>' +
+                '</div>' +
                 '<div class="cont-block">' +
                 '<label for="emplTitleName">Title Name :</label>' +
                 '<br />' +
-                '<input id="inptTitleName" class="form-control inpt-bar in-Title dark-border" type="text" name="emplTitleName">' +
+                '<input id="inptTitleName" class="form-control" type="text" name="emplTitleName">' +
                 '</div>&nbsp;' +
                 '<div class="cont-block">' +
                 '<label for="emplTitleName">Base Salary :</label>' +
                 '<br />' +
-                '<input id="inptBaseSalary" class="form-control inpt-bar in-BSalary dark-border" type="text" name="emplTitleBaseSalary">' +
+                '<input id="inptBaseSalary" class="form-control" type="text" name="emplTitleBaseSalary">' +
                 '</div>' +
                 '<span class="btnCancel pull-right glyphicon glyphicon glyphicon-remove"></span>' +
                 '<a id="btn-confirm-work-title">' +
@@ -138,89 +141,92 @@ $(document).ready(function(){
         var inptBaseSalary = parseFloat($viewHide.find("#inptBaseSalary").val());
 
         // vs for ViewShow
-        $viewHide.hide();
-
-        $viewShow = $viewHide.parent().find(".viewShow");
-
-        $viewShow.find("#emplTitleName").text(inptTitleName);
-
-        $viewShow.find("#emplTitleBaseSalary .textCase").text(inptBaseSalary.toFixed(2));
-
-        $viewShow.show();
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
+        if(ValidateWorkTitleForm(elem)) {
 
-        $.ajax({
-            url: '/work/title/create',
-            type: 'POST',
-            async: true,
-            data: {
-                _token: CSRF_TOKEN,
-                emplTitleName: inptTitleName,
-                emplTitleBaseSalary: inptBaseSalary
-            },
-            dataType: 'JSON',
-            error: function (xhr, status, error) {
-                var erro = jQuery.parseJSON(xhr.responseText);
-                $("#errors").empty();
-                //$("##errors").append('<ul id="errorsul">');
-                [].forEach.call(Object.keys(erro), function (key) {
-                    [].forEach.call(Object.keys(erro[key]), function (keyy) {
-                        $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
+            $viewHide.hide();
+
+            $viewShow = $viewHide.parent().find(".viewShow");
+
+            $viewShow.find("#emplTitleName").text(inptTitleName);
+
+            $viewShow.find("#emplTitleBaseSalary .textCase").text(inptBaseSalary.toFixed(2));
+
+            $viewShow.show();
+
+            $.ajax({
+                url: '/work/title/create',
+                type: 'POST',
+                async: true,
+                data: {
+                    _token: CSRF_TOKEN,
+                    emplTitleName: inptTitleName,
+                    emplTitleBaseSalary: inptBaseSalary
+                },
+                dataType: 'JSON',
+                error: function (xhr, status, error) {
+                    var erro = jQuery.parseJSON(xhr.responseText);
+                    $("#errors").empty();
+                    //$("##errors").append('<ul id="errorsul">');
+                    [].forEach.call(Object.keys(erro), function (key) {
+                        [].forEach.call(Object.keys(erro[key]), function (keyy) {
+                            $("#errors").append('<li class="errors">' + erro[key][keyy][0] + '</li>');
+                        });
+                        //console.log( key , erro[key] );
                     });
-                    //console.log( key , erro[key] );
-                });
-                //$("#displayErrors").append('</ul>');
-                $("#displayErrors").show();
-            },
-            success: function (xhr) {
-                [].forEach.call(Object.keys(xhr), function (key) {
-                    var workTitleId = xhr[key]["workTitleId"];
+                    //$("#displayErrors").append('</ul>');
+                    $("#displayErrors").show();
+                },
+                success: function (xhr) {
+                    [].forEach.call(Object.keys(xhr), function (key) {
+                        var workTitleId = xhr[key]["workTitleId"];
 
-                    var groupContent =  $("#newWorkTitleContent");
+                        var groupContent = $("#newWorkTitleContent");
 
-                    $viewShow.find(".editEmplTitle").unbind();
-                    $viewShow.find(".editEmplTitle").bind("click", function() {
-                        editGroup(this);
+                        $viewShow.find(".editEmplTitle").unbind();
+                        $viewShow.find(".editEmplTitle").bind("click", function () {
+                            editGroup(this);
+                        });
+
+                        $btnOk = $viewShow.find(".btnOk");
+                        $btnCancel = $viewShow.find(".btnCancel");
+
+                        $btnOk.unbind();
+                        $btnOk.bind("click", function () {
+                            okEditGroup($(this).parent().parent());
+                        });
+
+                        $btnCancel.unbind();
+                        $btnCancel.bind("click", function () {
+                            cancelEditGroup(this);
+                        });
+
+                        groupContent.find(".btnAddEmployee").bind("click", function () {
+                            //alert();
+                            $("#frmTitleId").val($(this).attr("data-emplTitleId"));
+                            $("#addModal").modal('show');
+                        });
+
+
+                        groupContent.find('.btnAddEmployee').attr("data-emplTitleId", workTitleId);
+
+                        $viewShow.find("#emplTitleId").text(workTitleId);
+
+                        groupContent.find("tbl-0").attr("id", workTitleId);
+
+                        $viewShow.removeAttr('id');
+                        groupContent.removeAttr('id');
+
+                        $("#accordion").accordion("refresh");
+
+                        isCreatingNew = false;
+                        alert(xhr[key]["success"]);
+
                     });
-
-                    $btnOk =  $viewShow.find(".btnOk");
-                    $btnCancel = $viewShow.find(".btnCancel");
-
-                    $btnOk.unbind();
-                    $btnOk.bind("click", function(){
-                        okEditGroup($(this).parent().parent());
-                    });
-
-                    $btnCancel.unbind();
-                    $btnCancel.bind("click", function(){
-                        cancelEditGroup(this);
-                    });
-
-                    groupContent.find(".btnAddEmployee").bind("click", function() {
-                        //alert();
-                        $("#frmTitleId").val($(this).attr("data-emplTitleId"));
-                        $("#addModal").modal('show');
-                    });
-
-
-                    groupContent.find('.btnAddEmployee').attr("data-emplTitleId", workTitleId);
-
-                    $viewShow.find("#emplTitleId").text(workTitleId);
-
-                    groupContent.find("tbl-0").attr("id", workTitleId);
-
-                    $viewShow.removeAttr('id');
-                    groupContent.removeAttr('id');
-
-                    $("#accordion").accordion("refresh");
-
-                    isCreatingNew = false;
-                    alert(xhr[key]["success"]);
-
-                });
-            }
-        });
+                }
+            });
+        }
     };
 
     var okEditGroup = function(elem){
