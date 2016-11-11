@@ -213,7 +213,7 @@ $(document).ready(function(){
 
                         $viewShow.find("#emplTitleId").text(workTitleId);
 
-                        groupContent.find("tbl-0").attr("id", workTitleId);
+                        groupContent.find("#tbl-0").attr("id", "tbl-" + workTitleId);
 
                         $viewShow.removeAttr('id');
                         groupContent.removeAttr('id');
@@ -360,6 +360,7 @@ $(document).ready(function(){
 
                 [].forEach.call(Object.keys(xhr), function (key) {
                     var jsonTitleEmplObj = JSON.parse(xhr[key]["titleEmployee"]);
+                    // Old line $("#tbl-" + emplTitleId).append('<tr><td>' + jsonTitleEmplObj['id'] +
                     $("#tbl-" + emplTitleId).append('<tr><td>' + jsonTitleEmplObj['id'] +
                         '</td><td>' + jsonTitleEmplObj['fullName'] +
                         '</td><td>' + jsonTitleEmplObj['hireDate'] +

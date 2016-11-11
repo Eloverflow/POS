@@ -12,6 +12,8 @@
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/styles.css') }}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/LuminoAdmin/css/datepicker3.css')}}" rel="stylesheet">
     <link href="{{ @URL::to('Framework/Bootstrap/css/bootstrap-datetimepicker.min.css') }}" rel="stylesheet">
+
+    <link href="{{ @URL::to('css/kits/Buttons/creotipBtn.css') }}" rel="stylesheet">
     {{--End of Stylesheet call--}}
 
     <!--Icons-->

@@ -8,7 +8,7 @@
     <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>
 
-    <script src="{{ @URL::to('js/fr-ca.js') }}"></script>
+    {{--<script src="{{ @URL::to('js/fr-ca.js') }}"></script>--}}
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
 @section('content')
