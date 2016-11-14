@@ -48,7 +48,7 @@ class CalendarController extends Controller
             'editable' => false,
             'defaultView' => 'agendaWeek',
             'header' => $calendarSettings,
-            'titleFormat' => $strCalendar,
+            /*'titleFormat' => $strCalendar,*/
             'lang' => 'fr-ca'
         ]);
 

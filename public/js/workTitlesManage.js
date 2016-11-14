@@ -237,7 +237,7 @@ $(document).ready(function(){
 
         var inptTitleName = $viewHide.find("#inptTitleName").val();
 
-        var inptBaseSalary = $viewHide.find("#inptBaseSalary").val();
+        var inptBaseSalary = parseFloat($viewHide.find("#inptBaseSalary").val());
 
 
         var CSRF_TOKEN = $('meta[name="csrf-token"]').attr('content');
@@ -257,7 +257,7 @@ $(document).ready(function(){
 
             $viewShow.find("#emplTitleName").text(inptTitleName);
 
-            $viewShow.find(".textCase").text(inptBaseSalary);
+            $viewShow.find(".textCase").text(inptBaseSalary.toFixed(2));
 
             $viewShow.show();
 
@@ -353,7 +353,7 @@ $(document).ready(function(){
                     });
                     //console.log( key , erro[key] );
                 });
-                //$("#displayErrors").append('</ul>');
+                $("#displayErrors").append('</ul>');
                 $("#displayErrors").show();
             },
             success: function (xhr) {
@@ -457,17 +457,22 @@ $(document).ready(function(){
         var inptBaseSalary = parseFloat($inputBaseSalary.val());
 
 
-
-        if(!$.isNumeric(inptBaseSalary)){
+        if(inptBaseSalary != '') {
+            if (!$.isNumeric(inptBaseSalary)) {
+                $errorsList.append("<li>The salary must be numeric value !</li>");
+                $inputBaseSalary.parent().addClass('has-error');
+                $isValid = false;
+            } else {
+                if (inptBaseSalary < 0) {
+                    $errorsList.append("<li>The salary must be positive !</li>");
+                    $inputBaseSalary.parent().addClass('has-error');
+                    $isValid = false;
+                }
+            }
+        } else {
             $errorsList.append("<li>The salary is required !</li>");
             $inputBaseSalary.parent().addClass('has-error');
             $isValid = false;
-        } else {
-            if(inptBaseSalary < 0){
-                $errorsList.append("<li>The salary must be positive !</li>");
-                $inputBaseSalary.parent().addClass('has-error');
-                $isValid = false;
-            }
         }
 
         if(inptTitleName == ''){
