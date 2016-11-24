@@ -37,6 +37,17 @@
         <div class="col-lg-12 cmd-section">
             <a class="btn btn-primary pull-left" id="btnBack" href="/employee"><span class="glyphicon glyphicon-chevron-left"></span>&nbsp; Back to employees </a>
             <a class="btn btn-primary pull-right" id="btnAdd" href="#"><span class="glyphicon glyphicon-plus"></span>&nbsp; Add </a>
+
+            {{--<a href="#" class="btn-creotip">
+                <span class="left icon glyphicon glyphicon-leaf"></span>
+                <span class="right title">Buy in App Store</span>
+            </a>
+
+            <a href="#" class="btn-creotip pull-right">
+                <span class="left title">Add Punch</span>
+                <span class="right icon glyphicon glyphicon-plus"></span>
+            </a>--}}
+
         </div>
     </div>
     <div class="row">

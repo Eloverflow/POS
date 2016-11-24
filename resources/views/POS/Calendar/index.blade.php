@@ -8,19 +8,19 @@
     <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datepicker.min.js') }}"></script>
     <script src="{{ @URL::to('Framework/Bootstrap/js/bootstrap-datetimepicker.min.js') }}"></script>
 
-    <script src="{{ @URL::to('js/fr-ca.js') }}"></script>
+    {{--<script src="{{ @URL::to('js/fr-ca.js') }}"></script>--}}
     <meta name="csrf-token" content="{{ csrf_token() }}" />
 @stop
 @section('content')
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-6">
             <h1 class="page-header">Calendar</h1>
         </div>
-    </div>
 
-    <div class="row">
-        <div class="col-lg-12 cmd-section">
-            <a class="btn btn-warning pull-right" id="btnEdit" href="{{ @URL::to('calendar/edit') }}"><span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit </a>
+        <div class="col-lg-6">
+            <div class="vcenter">
+                <a class="btn btn-warning pull-right" id="btnEdit" href="{{ @URL::to('calendar/edit') }}"><span class="glyphicon glyphicon-pencil"></span>&nbsp; Edit </a>
+            </div>
         </div>
     </div>
 @stop

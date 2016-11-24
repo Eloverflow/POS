@@ -3,7 +3,6 @@
     <script src="{{ @URL::to('js/moment/moment.js') }}"></script>
     <script src="{{ @URL::to('js/moment/moment-timezone.js') }}"></script>
     <meta name="csrf-token" content="{{ csrf_token() }}" />
-    <link href="{{ @URL::to('css/scheduleTracking.css') }}" rel="stylesheet">
 @stop
 @section('content')
     <div class="row">
